@@ -249,10 +249,12 @@ export const Skeleton = ({
   );
 };
 
-export default {
+const DesignSystem = {
   designTokens,
   Button,
   Card,
   ProgressIndicator,
   Skeleton
 };
+
+export default DesignSystem;

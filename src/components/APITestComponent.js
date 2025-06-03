@@ -4,7 +4,6 @@ import { Brain, CheckCircle, AlertCircle, Zap } from 'lucide-react';
 const APITestComponent = () => {
   const [testResults, setTestResults] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [testUrl, setTestUrl] = useState('https://example.com');
 
   const testClaudeAPI = async () => {
     setIsLoading(true);

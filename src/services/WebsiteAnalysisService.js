@@ -226,7 +226,6 @@ class WebsiteAnalysisService {
     
     // Look for conversion elements in content
     const bodyTextLower = content.bodyText.toLowerCase();
-    const titleLower = content.title.toLowerCase();
     
     // Contact information
     if (bodyTextLower.includes('contact') || bodyTextLower.includes('phone') || bodyTextLower.includes('email')) score += 10;

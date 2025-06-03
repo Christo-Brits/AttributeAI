@@ -11,7 +11,6 @@ import APITestComponent from './components/APITestComponent';
 const ClaudeAIDemo = lazy(() => import('./components/ClaudeAIDemo'));
 const UnifiedDashboardEnhanced = lazy(() => import('./components/UnifiedDashboard.enhanced'));
 const SEOAnalysisEnhanced = lazy(() => import('./components/SEOCompetitorAnalysis.enhanced'));
-const APITest = lazy(() => import('./components/APITest'));
 
 // Lazy load components for better performance
 const AttributionEngine = lazy(() => import('./components/AttributionEngine'));

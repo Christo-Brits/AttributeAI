@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
+import React, { useState } from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { TrendingUp, Eye, Clock, Target, Zap, Cloud, Users, DollarSign, MapPin, ArrowRight } from 'lucide-react';
 import SEODashboardWidget from './SEODashboardWidget';
 import ContentStrategyWidget from './ContentStrategyWidget';

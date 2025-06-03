@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { PenTool, Search, FileText, Link, Target, Zap, Eye, CheckCircle, Clock, ExternalLink, Hash, Users } from 'lucide-react';
+import { PenTool, FileText, Target, Eye, CheckCircle, Clock } from 'lucide-react';
 
 const SEOContentStrategist = () => {
   const [targetSite, setTargetSite] = useState('');

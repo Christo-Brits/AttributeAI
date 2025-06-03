@@ -1,6 +1,6 @@
 // Phase 2 - AI Insights Component
 import React from 'react';
-import { Brain, TrendingUp, AlertCircle, CheckCircle, Clock, Zap } from 'lucide-react';
+import { Brain, TrendingUp, AlertCircle, Clock, Zap } from 'lucide-react';
 
 const AIInsights = ({ 
   analysis, 

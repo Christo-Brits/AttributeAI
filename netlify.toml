@@ -1,0 +1,18 @@
+[build]
+  command = "npm run build"
+  publish = "build"
+
+[build.environment]
+  CI = "false"
+  GENERATE_SOURCEMAP = "false"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[context.production.environment]
+  NODE_VERSION = "18"
+
+[context.deploy-preview.environment]
+  NODE_VERSION = "18"

@@ -1,0 +1,232 @@
+// Phase 2 - Claude AI Integration Service
+// Real-time AI analysis for all AttributeAI tools
+
+import Anthropic from '@anthropic-ai/sdk';
+
+class ClaudeService {
+  constructor() {
+    this.client = null;
+    this.initialized = false;
+    this.analysisCache = new Map();
+    this.cacheTimeout = 5 * 60 * 1000; // 5 minutes
+  }
+
+  // Initialize with API key from environment
+  initialize() {
+    const apiKey = process.env.REACT_APP_ANTHROPIC_API_KEY;
+    
+    if (!apiKey) {
+      console.warn('Claude API key not found in environment');
+      return false;
+    }
+    
+    try {
+      this.client = new Anthropic({
+        apiKey: apiKey,
+        dangerouslyAllowBrowser: true
+      });
+      this.initialized = true;
+      console.log('✅ Claude AI service initialized');
+      return true;
+    } catch (error) {
+      console.error('❌ Claude initialization failed:', error);
+      return false;
+    }
+  }
+
+  isReady() {
+    return this.initialized && this.client !== null;
+  }
+
+  // Core AI analysis method with caching
+  async analyzeData(analysisType, data, context = {}) {
+    if (!this.isReady()) {
+      throw new Error('Claude service not initialized. Please check your API key.');
+    }
+
+    // Check cache first
+    const cacheKey = this.getCacheKey(analysisType, data, context);
+    const cached = this.getFromCache(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
+    const prompt = this.buildPrompt(analysisType, data, context);
+    
+    try {
+      const response = await this.client.messages.create({
+        model: 'claude-3-sonnet-20240229',
+        max_tokens: 4000,
+        temperature: 0.1,
+        messages: [{
+          role: 'user',
+          content: prompt
+        }]
+      });
+
+      const result = this.parseResponse(response.content[0].text, analysisType);
+      
+      // Cache the result
+      this.setCache(cacheKey, result);
+      
+      return result;
+    } catch (error) {
+      console.error('Claude API error:', error);
+      throw new Error(`AI analysis failed: ${error.message}`);
+    }
+  }  // Specialized prompts for each AttributeAI tool
+  buildPrompt(analysisType, data, context) {
+    const baseContext = `
+You are an expert marketing attribution analyst for AttributeAI.
+Provide actionable insights in valid JSON format.
+Focus on high-impact opportunities and specific recommendations.
+Current context: ${JSON.stringify(context)}
+    `;
+
+    const prompts = {
+      seo_analysis: `${baseContext}
+Analyze this SEO data and provide insights:
+${JSON.stringify(data)}
+
+Return JSON with:
+{
+  "opportunities": [{"title": "string", "impact": 1-10, "effort": 1-10, "description": "string"}],
+  "technicalIssues": [{"issue": "string", "priority": "high|medium|low", "solution": "string"}],
+  "contentGaps": [{"keyword": "string", "searchVolume": number, "difficulty": 1-10}],
+  "quickWins": [{"action": "string", "expectedImpact": "string", "timeToImplement": "string"}],
+  "summary": "string"
+}`,
+
+      content_strategy: `${baseContext}
+Create content strategy from this data:
+${JSON.stringify(data)}
+
+Return JSON with:
+{
+  "topicRecommendations": [{"topic": "string", "searchVolume": number, "competition": 1-10}],
+  "contentCalendar": [{"week": number, "topics": ["string"], "contentType": "string"}],
+  "distributionChannels": [{"channel": "string", "priority": 1-10, "reason": "string"}],
+  "performancePredictions": {"expectedTraffic": number, "timeframe": "string"},
+  "summary": "string"
+}`,
+      lead_magnet_optimization: `${baseContext}
+Optimize lead magnet strategy:
+${JSON.stringify(data)}
+
+Return JSON with:
+{
+  "magnetIdeas": [{"title": "string", "type": "string", "conversionPotential": 1-10}],
+  "optimizations": [{"element": "string", "improvement": "string", "expectedLift": "string"}],
+  "audienceInsights": [{"segment": "string", "preference": "string", "messaging": "string"}],
+  "testingStrategy": [{"test": "string", "hypothesis": "string", "metrics": ["string"]}],
+  "summary": "string"
+}`,
+
+      cro_analysis: `${baseContext}
+Analyze conversion optimization opportunities:
+${JSON.stringify(data)}
+
+Return JSON with:
+{
+  "conversionBottlenecks": [{"page": "string", "issue": "string", "impact": 1-10}],
+  "testingPriorities": [{"test": "string", "expectedLift": "string", "effort": 1-10}],
+  "uxImprovements": [{"element": "string", "recommendation": "string", "reasoning": "string"}],
+  "audienceBehaviorInsights": [{"behavior": "string", "implication": "string"}],
+  "summary": "string"
+}`,
+
+      attribution_analysis: `${baseContext}
+Analyze attribution data for insights:
+${JSON.stringify(data)}
+
+Return JSON with:
+{
+  "topPerformingChannels": [{"channel": "string", "attribution": number, "trend": "string"}],
+  "undervaluedTouchpoints": [{"touchpoint": "string", "hiddenValue": "string", "optimization": "string"}],
+  "journeyOptimizations": [{"stage": "string", "improvement": "string", "impact": 1-10}],
+  "budgetRecommendations": [{"channel": "string", "adjustment": "string", "reasoning": "string"}],
+  "summary": "string"
+}`
+    };
+
+    return prompts[analysisType] || `${baseContext}
+Analyze this data: ${JSON.stringify(data)}
+Provide actionable insights in JSON format.`;
+  }
+  // Parse and validate AI responses
+  parseResponse(responseText, analysisType) {
+    try {
+      // Extract JSON from response (Claude sometimes adds explanation text)
+      const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) {
+        throw new Error('No valid JSON found in response');
+      }
+      
+      const parsed = JSON.parse(jsonMatch[0]);
+      
+      // Add metadata
+      return {
+        ...parsed,
+        analysisType,
+        timestamp: new Date().toISOString(),
+        confidence: this.calculateConfidence(parsed),
+        source: 'claude-ai'
+      };
+    } catch (error) {
+      console.error('Response parsing error:', error);
+      return {
+        error: 'Failed to parse AI response',
+        rawResponse: responseText,
+        analysisType,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
+
+  // Calculate confidence score based on response completeness
+  calculateConfidence(data) {
+    const expectedFields = {
+      seo_analysis: ['opportunities', 'technicalIssues', 'contentGaps'],
+      content_strategy: ['topicRecommendations', 'contentCalendar'],
+      lead_magnet_optimization: ['magnetIdeas', 'optimizations'],
+      cro_analysis: ['conversionBottlenecks', 'testingPriorities'],
+      attribution_analysis: ['topPerformingChannels', 'journeyOptimizations']
+    };
+    
+    const expected = expectedFields[data.analysisType] || [];
+    const present = expected.filter(field => data[field] && data[field].length > 0);
+    
+    return Math.round((present.length / expected.length) * 100);
+  }
+
+  // Cache management
+  getCacheKey(analysisType, data, context) {
+    const dataHash = JSON.stringify(data).slice(0, 100);
+    return `${analysisType}_${dataHash}_${Date.now()}`;
+  }
+
+  getFromCache(key) {
+    const cached = this.analysisCache.get(key);
+    if (cached && Date.now() - cached.timestamp < this.cacheTimeout) {
+      return cached.data;
+    }
+    return null;
+  }
+
+  setCache(key, data) {
+    this.analysisCache.set(key, {
+      data,
+      timestamp: Date.now()
+    });
+  }
+}
+// Create singleton instance
+const claudeService = new ClaudeService();
+
+// Auto-initialize on import
+claudeService.initialize();
+
+export default claudeService;
+
+// Export class for testing
+export { ClaudeService };

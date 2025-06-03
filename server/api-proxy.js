@@ -1,0 +1,480 @@
+const express = require('express');
+const cors = require('cors');
+const fetch = require('node-fetch');
+require('dotenv').config();
+
+const app = express();
+const PORT = process.env.PORT || 3001;
+
+// Middleware
+app.use(cors({
+    origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
+    credentials: true
+}));
+app.use(express.json());
+
+// Claude API proxy endpoint
+app.post('/api/claude', async (req, res) => {
+    try {
+        const { messages, model = 'claude-3-sonnet-20240229', max_tokens = 4000 } = req.body;
+        
+        if (!process.env.CLAUDE_API_KEY) {
+            return res.status(500).json({ 
+                error: 'Claude API key not configured',
+                details: 'Please set CLAUDE_API_KEY in your environment variables'
+            });
+        }
+
+        const response = await fetch('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': process.env.CLAUDE_API_KEY,
+                'anthropic-version': '2023-06-01'
+            },
+            body: JSON.stringify({
+                model,
+                max_tokens,
+                messages
+            })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.text();
+            console.error('Claude API Error:', response.status, errorData);
+            return res.status(response.status).json({ 
+                error: 'Claude API request failed',
+                details: errorData
+            });
+        }
+
+        const data = await response.json();
+        res.json(data);
+
+    } catch (error) {
+        console.error('Proxy Error:', error);
+        res.status(500).json({ 
+            error: 'Internal server error',
+            details: error.message
+        });
+    }
+});
+
+// OpenAI API proxy endpoint
+app.post('/api/openai', async (req, res) => {
+    try {
+        const { messages, model = 'gpt-3.5-turbo', max_tokens = 4000 } = req.body;
+        
+        if (!process.env.OPENAI_API_KEY) {
+            return res.status(500).json({ 
+                error: 'OpenAI API key not configured',
+                details: 'Please set OPENAI_API_KEY in your environment variables'
+            });
+        }
+
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+            },
+            body: JSON.stringify({
+                model,
+                messages,
+                max_tokens
+            })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.text();
+            console.error('OpenAI API Error:', response.status, errorData);
+            return res.status(response.status).json({ 
+                error: 'OpenAI API request failed',
+                details: errorData
+            });
+        }
+
+        const data = await response.json();
+        res.json(data);
+
+    } catch (error) {
+        console.error('Proxy Error:', error);
+        res.status(500).json({ 
+            error: 'Internal server error',
+            details: error.message
+        });
+    }
+});
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+    res.json({ 
+        status: 'OK', 
+        timestamp: new Date().toISOString(),
+        env: {
+            claudeApiKey: !!process.env.CLAUDE_API_KEY,
+            openaiApiKey: !!process.env.OPENAI_API_KEY,
+            googleApiKey: !!process.env.GOOGLE_AI_API_KEY
+        }
+    });
+});
+
+app.listen(PORT, () => {
+    console.log(`🚀 API Proxy server running on http://localhost:${PORT}`);
+    console.log(`🔑 Claude API Key: ${process.env.CLAUDE_API_KEY ? 'Configured' : 'Missing'}`);
+    console.log(`🔑 OpenAI API Key: ${process.env.OPENAI_API_KEY ? 'Configured' : 'Missing'}`);
+});
+
+module.exports = app;
+// Website analysis endpoint - fetch and analyze websites server-side
+app.post('/api/analyze-website', async (req, res) => {
+    try {
+        const { url } = req.body;
+        
+        if (!url) {
+            return res.status(400).json({ 
+                error: 'URL is required',
+                details: 'Please provide a valid website URL'
+            });
+        }
+
+        console.log(`Fetching website: ${url}`);
+        
+        // Fetch website content with proper headers
+        const response = await fetch(url, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                'Accept-Language': 'en-US,en;q=0.5',
+                'Accept-Encoding': 'gzip, deflate, br',
+                'Connection': 'keep-alive',
+                'Upgrade-Insecure-Requests': '1'
+            },
+            timeout: 10000, // 10 second timeout
+            redirect: 'follow',
+            compress: true
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        const htmlContent = await response.text();
+        
+        if (!htmlContent || htmlContent.length < 100) {
+            throw new Error('Website returned empty or invalid content');
+        }
+
+        // Perform server-side analysis
+        const analysis = analyzeWebsiteContent(htmlContent, url);
+        
+        res.json({
+            success: true,
+            url,
+            timestamp: new Date().toISOString(),
+            contentLength: htmlContent.length,
+            analysis
+        });
+
+    } catch (error) {
+        console.error('Website analysis error:', error);
+        res.status(500).json({ 
+            success: false,
+            error: error.message,
+            details: 'Failed to fetch or analyze website content'
+        });
+    }
+});
+
+// Server-side website analysis function
+function analyzeWebsiteContent(htmlContent, url) {
+    const cheerio = require('cheerio');
+    const $ = cheerio.load(htmlContent);
+    
+    // Extract basic SEO elements
+    const title = $('title').text() || '';
+    const metaDescription = $('meta[name="description"]').attr('content') || '';
+    const h1Tags = $('h1').map((i, el) => $(el).text()).get();
+    const h2Tags = $('h2').map((i, el) => $(el).text()).get();
+    const images = $('img');
+    const links = $('a[href]');
+    
+    // Count content elements
+    const paragraphs = $('p').length;
+    const lists = $('ul, ol').length;
+    const wordCount = $('body').text().split(/\s+/).filter(word => word.length > 0).length;
+    
+    // Analyze images
+    const totalImages = images.length;
+    const imagesWithoutAlt = images.filter((i, img) => !$(img).attr('alt')).length;
+    
+    // Technical analysis
+    const hasViewport = $('meta[name="viewport"]').length > 0;
+    const hasCharset = $('meta[charset]').length > 0;
+    const structuredData = $('script[type="application/ld+json"]').length;
+    const openGraph = $('meta[property^="og:"]').length;
+    
+    // Calculate scores
+    const seoScore = calculateSEOScore(title, metaDescription, h1Tags, h2Tags, totalImages, imagesWithoutAlt);
+    const contentScore = calculateContentScore(wordCount, paragraphs, h1Tags, h2Tags, lists);
+    const technicalScore = calculateTechnicalScore(hasViewport, hasCharset, structuredData, openGraph);
+    const uxScore = calculateUXScore($);
+    
+    const overallScore = Math.round((seoScore + contentScore + technicalScore + uxScore) / 4);
+    
+    return {
+        overallScore,
+        scores: {
+            seo: seoScore,
+            content: contentScore,
+            technical: technicalScore,
+            ux: uxScore
+        },
+        seoAnalysis: {
+            title: { content: title, length: title.length, status: title.length >= 30 && title.length <= 60 ? 'good' : 'needs_improvement' },
+            metaDescription: { content: metaDescription, length: metaDescription.length, status: metaDescription.length >= 120 && metaDescription.length <= 160 ? 'good' : 'needs_improvement' },
+            h1Count: h1Tags.length,
+            h2Count: h2Tags.length,
+            images: { total: totalImages, withoutAlt: imagesWithoutAlt }
+        },
+        contentAnalysis: {
+            wordCount,
+            paragraphs,
+            headings: h1Tags.length + h2Tags.length,
+            lists
+        },
+        technicalAnalysis: {
+            hasViewport,
+            hasCharset,
+            structuredData,
+            openGraph
+        },
+        recommendations: generateRecommendations(title, metaDescription, h1Tags, imagesWithoutAlt, hasViewport),
+        quickWins: generateQuickWins(title, metaDescription, imagesWithoutAlt, hasViewport)
+    };
+}
+// Analysis helper functions
+function calculateSEOScore(title, metaDescription, h1Tags, h2Tags, totalImages, imagesWithoutAlt) {
+    let score = 0;
+    
+    // Title analysis (0-25 points)
+    if (title.length === 0) score += 0;
+    else if (title.length >= 30 && title.length <= 60) score += 25;
+    else score += 15;
+    
+    // Meta description (0-25 points)
+    if (metaDescription.length === 0) score += 0;
+    else if (metaDescription.length >= 120 && metaDescription.length <= 160) score += 25;
+    else score += 15;
+    
+    // Headers (0-25 points)
+    if (h1Tags.length === 1) score += 15;
+    if (h2Tags.length > 0) score += 10;
+    
+    // Images (0-25 points)
+    if (totalImages > 0) {
+        const altRatio = (totalImages - imagesWithoutAlt) / totalImages;
+        score += Math.round(altRatio * 25);
+    } else {
+        score += 20; // No images is fine
+    }
+    
+    return Math.min(100, score);
+}
+
+function calculateContentScore(wordCount, paragraphs, h1Tags, h2Tags, lists) {
+    let score = 0;
+    
+    // Word count (0-30 points)
+    if (wordCount < 300) score += 10;
+    else if (wordCount < 1000) score += 20;
+    else score += 30;
+    
+    // Structure (0-40 points)
+    if (paragraphs >= 3) score += 15;
+    if (h1Tags.length > 0 && h2Tags.length > 0) score += 15;
+    if (lists > 0) score += 10;
+    
+    // Base content score (0-30 points)
+    score += 30;
+    
+    return Math.min(100, score);
+}
+
+function calculateTechnicalScore(hasViewport, hasCharset, structuredData, openGraph) {
+    let score = 40; // Base score
+    
+    if (hasViewport) score += 20;
+    if (hasCharset) score += 15;
+    if (structuredData > 0) score += 15;
+    if (openGraph > 0) score += 10;
+    
+    return Math.min(100, score);
+}
+
+function calculateUXScore($) {
+    let score = 30; // Base score
+    
+    // Navigation
+    if ($('nav').length > 0 || $('header nav').length > 0) score += 20;
+    
+    // Footer
+    if ($('footer').length > 0) score += 15;
+    
+    // Forms
+    if ($('form').length > 0) score += 15;
+    
+    // Buttons/CTAs
+    if ($('button, input[type="submit"]').length > 0) score += 20;
+    
+    return Math.min(100, score);
+}
+
+function generateRecommendations(title, metaDescription, h1Tags, imagesWithoutAlt, hasViewport) {
+    const recommendations = [];
+    
+    if (title.length === 0) {
+        recommendations.push({ title: "Add Page Title", description: "Create descriptive title tags for better SEO", priority: "high" });
+    } else if (title.length < 30 || title.length > 60) {
+        recommendations.push({ title: "Optimize Title Length", description: "Adjust title to 30-60 characters for optimal display", priority: "medium" });
+    }
+    
+    if (metaDescription.length === 0) {
+        recommendations.push({ title: "Add Meta Description", description: "Write compelling meta descriptions to improve click-through rates", priority: "high" });
+    }
+    
+    if (h1Tags.length === 0) {
+        recommendations.push({ title: "Add H1 Header", description: "Include a clear H1 tag on every page", priority: "high" });
+    }
+    
+    if (imagesWithoutAlt > 0) {
+        recommendations.push({ title: "Add Alt Text to Images", description: `${imagesWithoutAlt} images are missing alt text for accessibility`, priority: "medium" });
+    }
+    
+    if (!hasViewport) {
+        recommendations.push({ title: "Add Viewport Meta Tag", description: "Include viewport meta tag for mobile optimization", priority: "high" });
+    }
+    
+    return recommendations;
+}
+
+function generateQuickWins(title, metaDescription, imagesWithoutAlt, hasViewport) {
+    const quickWins = [];
+    
+    if (metaDescription.length === 0) {
+        quickWins.push("Add meta description (15 minutes, high impact)");
+    }
+    
+    if (imagesWithoutAlt > 0) {
+        quickWins.push(`Add alt text to ${imagesWithoutAlt} images (20 minutes)`);
+    }
+    
+    if (!hasViewport) {
+        quickWins.push("Add viewport meta tag (2 minutes)");
+    }
+    
+    if (title.length < 30) {
+        quickWins.push("Expand page title (10 minutes)");
+    }
+    
+    return quickWins;
+}
+// Website Analysis Endpoint
+app.post('/api/analyze-website', async (req, res) => {
+  const startTime = Date.now();
+  
+  try {
+    const { url } = req.body;
+    
+    if (!url) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'URL is required' 
+      });
+    }
+
+    console.log('Fetching website:', url);
+    
+    // Create AbortController for timeout
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+    
+    try {
+      // Fetch the website content with timeout and headers
+      const response = await fetch(url, {
+        signal: controller.signal,
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+          'Accept-Language': 'en-US,en;q=0.5',
+          'Accept-Encoding': 'gzip, deflate',
+          'DNT': '1',
+          'Connection': 'keep-alive',
+          'Upgrade-Insecure-Requests': '1'
+        },
+        redirect: 'follow'
+      });
+      
+      clearTimeout(timeout);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      const html = await response.text();
+      console.log('Successfully fetched HTML, length:', html.length);
+      
+      const $ = cheerio.load(html);
+      
+      // Extract SEO data
+      const analysis = {
+        url: url,
+        title: $('title').text() || '',
+        metaDescription: $('meta[name="description"]').attr('content') || '',
+        headings: {
+          h1: $('h1').length,
+          h2: $('h2').length,
+          h3: $('h3').length,
+          h4: $('h4').length
+        },
+        images: {
+          total: $('img').length,
+          withAlt: $('img[alt]').length
+        },
+        links: {
+          internal: $('a[href^="/"], a[href*="' + new URL(url).hostname + '"]').length,
+          external: $('a[href^="http"]').not('a[href*="' + new URL(url).hostname + '"]').length
+        },
+        textContent: $('body').text().replace(/\s+/g, ' ').trim(),
+        loadTime: Date.now() - startTime
+      };
+      
+      console.log('Analysis complete:', {
+        title: analysis.title,
+        headings: analysis.headings,
+        images: analysis.images,
+        textLength: analysis.textContent.length
+      });
+      
+      res.json({
+        success: true,
+        data: analysis
+      });
+      
+    } catch (fetchError) {
+      clearTimeout(timeout);
+      if (fetchError.name === 'AbortError') {
+        throw new Error('Request timeout - website took too long to respond');
+      }
+      throw fetchError;
+    }
+    
+  } catch (error) {
+    console.error('Website analysis error:', error.message);
+    res.status(500).json({
+      success: false,
+      error: error.message || 'Failed to analyze website'
+    });
+  }
+});
+

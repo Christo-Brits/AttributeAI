@@ -12,7 +12,7 @@ const users = new Map();
 users.set('demo@attributeai.com', {
   id: 'demo-user-id',
   email: 'demo@attributeai.com',
-  password: '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', // 'demo123' hashed
+  password: '$2a$10$BjFGKv3Czq4Qe8d4WyCxPOYER6voficsB1YNmoT4YPXyK9cNpCu8C', // 'demo123' hashed
   firstName: 'Demo',
   lastName: 'User',
   company: 'AttributeAI Demo',

@@ -40,6 +40,7 @@ const UnifiedDashboard = ({ userProfile, websiteAnalysis }) => {
   }
 
   return (
+    <>
     <div className="p-6">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
@@ -392,6 +393,7 @@ const UnifiedDashboard = ({ userProfile, websiteAnalysis }) => {
       isOpen={isChatOpen}
       onClose={() => setIsChatOpen(false)}
     />
+    </>
   );
 };
 

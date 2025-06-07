@@ -6,6 +6,7 @@ import LoginPage from './components/LoginPage';
 import WebsiteAnalysisComponent from './components/WebsiteAnalysisComponent';
 import DemoVideo from './components/DemoVideo';
 import APITestComponent from './components/APITestComponent';
+import FloatingChatButton from './components/FloatingChatButton';
 
 // Phase 2: Enhanced components with Claude AI
 const ClaudeAIDemo = lazy(() => import('./components/ClaudeAIDemo'));

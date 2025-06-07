@@ -2,7 +2,8 @@ import React, { lazy, Suspense, useState } from 'react';
 import './App.css';
 import Navigation from './components/Navigation';
 import UnifiedDashboard from './components/UnifiedDashboard';
-import LoginPage from './components/LoginPage';
+import AuthenticatedApp from './components/auth/AuthWrapper';
+import { useAuth } from './components/auth/AuthContext';
 import WebsiteAnalysisComponent from './components/WebsiteAnalysisComponent';
 import FloatingChatButton from './components/FloatingChatButton';
 
@@ -27,22 +28,11 @@ const ComponentLoader = () => (
   </div>
 );
 
-function App() {
+function AppContent() {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userProfile, setUserProfile] = useState(null);
   const [showAnalysis, setShowAnalysis] = useState(false);
   const [websiteAnalysisResults, setWebsiteAnalysisResults] = useState(null);
-
-  const handleLogin = (userData) => {
-    setUserProfile(userData);
-    setIsAuthenticated(true);
-    
-    // If user signed up with website, show analysis
-    if (userData.website) {
-      setShowAnalysis(true);
-    }
-  };
 
   const handleAnalysisComplete = (results) => {
     setWebsiteAnalysisResults(results);
@@ -50,16 +40,11 @@ function App() {
     setActiveTab('dashboard'); // Navigate to dashboard with results
   };
 
-  // Show login page if not authenticated
-  if (!isAuthenticated) {
-    return <LoginPage onLogin={handleLogin} />;
-  }
-
-  // Show website analysis if needed
-  if (showAnalysis && userProfile.website) {
+  // Show website analysis if user just signed up with a website
+  if (showAnalysis && user?.websiteUrl) {
     return (
       <WebsiteAnalysisComponent 
-        userProfile={userProfile}
+        userProfile={user}
         onAnalysisComplete={handleAnalysisComplete}
       />
     );
@@ -67,7 +52,7 @@ function App() {
 
   const renderActiveComponent = () => {
     const components = {
-      dashboard: () => <UnifiedDashboard userProfile={userProfile} websiteAnalysis={websiteAnalysisResults} />,
+      dashboard: () => <UnifiedDashboard userProfile={user} websiteAnalysis={websiteAnalysisResults} />,
       'seo-enhanced': SEOAnalysisEnhanced,
       attribution: AttributionEngine,
       realtime: RealTimeJourneyTracker,
@@ -77,7 +62,7 @@ function App() {
       cro: CROAnalyzer
     };
 
-    const Component = components[activeTab] || (() => <UnifiedDashboard userProfile={userProfile} websiteAnalysis={websiteAnalysisResults} />);
+    const Component = components[activeTab] || (() => <UnifiedDashboard userProfile={user} websiteAnalysis={websiteAnalysisResults} />);
 
     // Don't wrap dashboard in Suspense since it's not lazy loaded
     if (activeTab === 'dashboard') {
@@ -96,24 +81,25 @@ function App() {
       <Navigation 
         activeTab={activeTab} 
         setActiveTab={setActiveTab}
-        userProfile={userProfile}
-        onLogout={() => {
-          setIsAuthenticated(false);
-          setUserProfile(null);
-          setWebsiteAnalysisResults(null);
-          setActiveTab('dashboard');
-        }}
+        userProfile={user}
       />
       <main className="min-h-screen bg-gray-50">
         {renderActiveComponent()}
         
         {/* Floating Chat Button - Available on all pages */}
         <FloatingChatButton 
-          userProfile={userProfile}
           websiteAnalysis={websiteAnalysisResults}
         />
       </main>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <AuthenticatedApp>
+      <AppContent />
+    </AuthenticatedApp>
   );
 }
 

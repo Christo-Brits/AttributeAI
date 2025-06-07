@@ -16,14 +16,18 @@ const AIChatInterface = ({ userProfile, websiteAnalysis, isOpen, onClose }) => {
     {
       id: 1,
       type: 'ai',
-      content: "👋 Hi there! I'm your AttributeAI marketing strategist. I remember our previous conversations, so we can pick up where we left off. What would you like to focus on today?",
+      content: user 
+        ? `👋 Hi ${user.firstName}! I'm your AttributeAI marketing strategist. I have access to your profile and ${user.websiteUrl ? 'website data' : 'can analyze any website you mention'}. I remember our previous conversations, so we can pick up where we left off. What would you like to focus on today?`
+        : "👋 Hi there! I'm your AttributeAI marketing strategist. I remember our previous conversations, so we can pick up where we left off. What would you like to focus on today?",
       timestamp: new Date(),
-      suggestions: [
-        "Review my current performance",
-        "Set marketing goals for next quarter", 
-        "Analyze competitor strategies",
-        "Improve conversion rates"
-      ]
+      suggestions: user?.primaryGoals?.length > 0 
+        ? user.primaryGoals.slice(0, 4).map(goal => `Help with: ${goal}`)
+        : [
+            "Review my current performance",
+            "Set marketing goals for next quarter", 
+            "Analyze competitor strategies",
+            "Improve conversion rates"
+          ]
     }
   ]);
   const [inputMessage, setInputMessage] = useState('');
@@ -44,16 +48,18 @@ const AIChatInterface = ({ userProfile, websiteAnalysis, isOpen, onClose }) => {
 
   useEffect(() => {
     // Initialize chat context with available data
-    if (websiteAnalysis || userProfile) {
+    if (websiteAnalysis || user) {
       setChatContext(prev => ({
         ...prev,
         analysisData: {
           website: websiteAnalysis,
-          profile: userProfile
-        }
+          profile: user
+        },
+        userGoals: user?.primaryGoals || [],
+        userAnalytics: user?.analytics || {}
       }));
     }
-  }, [websiteAnalysis, userProfile]);
+  }, [websiteAnalysis, user]);
 
   // Load conversation memory when chat opens
   useEffect(() => {
@@ -203,10 +209,14 @@ const AIChatInterface = ({ userProfile, websiteAnalysis, isOpen, onClose }) => {
           message: messageText,
           userId: userId, // Include user ID for memory
           context: {
-            userProfile,
+            userProfile: user,
             websiteAnalysis: websiteAnalysis || websiteAnalysisData,
             chatHistory: messages.slice(-10),
-            userGoals: chatContext.userGoals,
+            userGoals: user?.primaryGoals || chatContext.userGoals,
+            userAnalytics: user?.analytics || {},
+            userWebsite: user?.websiteUrl,
+            userIndustry: user?.industry,
+            userTools: user?.currentTools || [],
             // Include fresh website analysis if available
             freshWebsiteAnalysis: websiteAnalysisData
           }

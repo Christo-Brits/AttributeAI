@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { MessageCircle } from 'lucide-react';
 import AIChatInterface from './AIChatInterface';
 
-const FloatingChatButton = ({ userProfile, websiteAnalysis }) => {
+const FloatingChatButton = ({ websiteAnalysis }) => {
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   return (
@@ -26,8 +26,13 @@ const FloatingChatButton = ({ userProfile, websiteAnalysis }) => {
 
       {/* AI Chat Interface */}
       <AIChatInterface 
-        userProfile={userProfile}
         websiteAnalysis={websiteAnalysis}
+        isOpen={isChatOpen}
+        onClose={() => setIsChatOpen(false)}
+      />
+    </>
+  );
+};
         isOpen={isChatOpen}
         onClose={() => setIsChatOpen(false)}
       />

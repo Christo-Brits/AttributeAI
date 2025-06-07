@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BarChart3, Activity, TrendingUp, Search, PenTool, Target, Eye, Settings, User, Bell, Grid, LogOut, Globe } from 'lucide-react';
+import { useAuth } from './auth/AuthContext';
+import UserProfile from './auth/UserProfile';
 
-const Navigation = ({ activeTab, setActiveTab, userProfile, onLogout }) => {
+const Navigation = ({ activeTab, setActiveTab, userProfile }) => {
+  const { logout } = useAuth();
+  const [showProfile, setShowProfile] = useState(false);
   const tabs = [
     { id: 'dashboard', name: 'Unified Dashboard', icon: Grid },
     { id: 'seo-enhanced', name: 'AI SEO Analysis', icon: Search, phase2: true },
@@ -63,15 +67,15 @@ const Navigation = ({ activeTab, setActiveTab, userProfile, onLogout }) => {
             </button>
             
             {/* Website Badge */}
-            {userProfile?.website && (
+            {userProfile?.websiteUrl && (
               <div className="hidden lg:flex items-center space-x-2 bg-green-50 px-3 py-2 rounded-lg border border-green-200">
                 <Globe className="h-4 w-4 text-green-600" />
                 <span className="text-sm text-green-800">
                   {(() => {
                     try {
-                      return new URL(userProfile.website).hostname;
+                      return new URL(userProfile.websiteUrl).hostname;
                     } catch {
-                      return userProfile.website.replace(/^https?:\/\//, '');
+                      return userProfile.websiteUrl.replace(/^https?:\/\//, '');
                     }
                   })()}
                 </span>
@@ -79,21 +83,26 @@ const Navigation = ({ activeTab, setActiveTab, userProfile, onLogout }) => {
             )}
             
             <div className="flex items-center space-x-2 pl-3 border-l border-gray-200">
-              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                <User className="h-4 w-4 text-blue-600" />
-              </div>
-              <div className="hidden md:block">
-                <span className="text-sm font-medium text-gray-700">
-                  {userProfile?.businessName || userProfile?.email || 'Demo User'}
-                </span>
-                <p className="text-xs text-gray-500">
-                  {userProfile?.industry || 'Free Trial'}
-                </p>
-              </div>
+              <button
+                onClick={() => setShowProfile(true)}
+                className="flex items-center space-x-2 hover:bg-gray-50 p-2 rounded-lg transition-colors"
+              >
+                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                  <User className="h-4 w-4 text-blue-600" />
+                </div>
+                <div className="hidden md:block text-left">
+                  <span className="text-sm font-medium text-gray-700">
+                    {userProfile?.firstName ? `${userProfile.firstName} ${userProfile.lastName}` : userProfile?.email || 'Demo User'}
+                  </span>
+                  <p className="text-xs text-gray-500">
+                    {userProfile?.company || userProfile?.industry || 'Free Trial'}
+                  </p>
+                </div>
+              </button>
               
               {/* Logout Button */}
               <button
-                onClick={onLogout}
+                onClick={logout}
                 className="ml-3 p-2 text-gray-400 hover:text-red-600 transition-colors rounded-lg hover:bg-red-50"
                 title="Logout"
               >
@@ -103,6 +112,11 @@ const Navigation = ({ activeTab, setActiveTab, userProfile, onLogout }) => {
           </div>
         </div>
       </div>
+
+      {/* User Profile Modal */}
+      {showProfile && (
+        <UserProfile onClose={() => setShowProfile(false)} />
+      )}
     </nav>
   );
 };

@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const fetch = require('node-fetch');
+const authRoutes = require('./routes/auth');
 require('dotenv').config();
 
 const app = express();
@@ -12,6 +13,9 @@ app.use(cors({
     credentials: true
 }));
 app.use(express.json());
+
+// Authentication routes
+app.use('/api', authRoutes);
 
 // Claude API proxy endpoint
 app.post('/api/claude', async (req, res) => {

@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, Send, Bot, User, Target, TrendingUp, Lightbulb, BarChart3, Zap, X } from 'lucide-react';
+import { useAuth } from './auth/AuthContext';
 
-const AIChatInterface = ({ userProfile, websiteAnalysis, isOpen, onClose }) => {
+const AIChatInterface = ({ websiteAnalysis, isOpen, onClose }) => {
+  const { user } = useAuth();
   // Generate or retrieve user ID for memory
   const [userId] = useState(() => {
     let id = localStorage.getItem('attributeai-user-id');

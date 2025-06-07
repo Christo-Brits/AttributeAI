@@ -1,4 +1,112 @@
-{handleSubmit} className="space-y-6">
+import React, { useState } from 'react';
+import { Mail, Lock, Eye, EyeOff, ChevronRight } from 'lucide-react';
+
+const LoginPage = ({ onLoginSuccess, onSwitchToSignup }) => {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    rememberMe: false
+  });
+  const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleInputChange = (field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+    
+    if (errors[field]) {
+      setErrors(prev => ({
+        ...prev,
+        [field]: null
+      }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Email is invalid';
+    }
+
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!validateForm()) return;
+
+    setIsLoading(true);
+    setErrors({});
+
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password
+        })
+      });
+
+      if (response.ok) {
+        const userData = await response.json();
+        
+        // Store user session
+        if (formData.rememberMe) {
+          localStorage.setItem('attributeai_session', JSON.stringify({
+            token: userData.token,
+            expiresAt: Date.now() + (30 * 24 * 60 * 60 * 1000) // 30 days
+          }));
+        } else {
+          sessionStorage.setItem('attributeai_session', JSON.stringify({
+            token: userData.token,
+            expiresAt: Date.now() + (24 * 60 * 60 * 1000) // 24 hours
+          }));
+        }
+
+        // Store user data for chatbot
+        localStorage.setItem('attributeai_user', JSON.stringify(userData.user));
+
+        if (onLoginSuccess) {
+          onLoginSuccess(userData);
+        }
+      } else {
+        const errorData = await response.json();
+        setErrors({ submit: errorData.message || 'Login failed. Please check your credentials.' });
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      setErrors({ submit: 'Network error. Please try again.' });
+    }
+
+    setIsLoading(false);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+      <div className="bg-white rounded-lg shadow-2xl w-full max-w-md overflow-hidden">
+        
+        {/* Header */}
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-6 text-center">
+          <h1 className="text-2xl font-bold mb-2">Welcome Back</h1>
+          <p className="text-blue-100">Sign in to access your AttributeAI dashboard</p>
+        </div>
+
+        {/* Login Form */}
+        <div className="p-8">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <Mail size={16} className="inline mr-1" />

@@ -33,11 +33,5 @@ const FloatingChatButton = ({ websiteAnalysis }) => {
     </>
   );
 };
-        isOpen={isChatOpen}
-        onClose={() => setIsChatOpen(false)}
-      />
-    </>
-  );
-};
 
 export default FloatingChatButton;

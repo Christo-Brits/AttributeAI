@@ -52,8 +52,19 @@ const UnifiedDashboard = ({ userProfile, websiteAnalysis }) => {
           
           {/* AI Chat Button */}
           <div className="mt-4">
+            {/* Test Button */}
             <button
-              onClick={() => setIsChatOpen(true)}
+              onClick={() => alert('Test button works!')}
+              className="bg-red-500 text-white px-4 py-2 rounded mb-2 mr-2"
+            >
+              TEST BUTTON
+            </button>
+            
+            <button
+              onClick={() => {
+                console.log('Chat button clicked! Opening chat...');
+                setIsChatOpen(true);
+              }}
               className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all flex items-center mx-auto space-x-2 shadow-lg"
             >
               <MessageCircle className="h-5 w-5" />

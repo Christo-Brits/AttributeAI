@@ -2,11 +2,21 @@ import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, Send, Bot, User, Target, TrendingUp, Lightbulb, BarChart3, Zap, X } from 'lucide-react';
 
 const AIChatInterface = ({ userProfile, websiteAnalysis, isOpen, onClose }) => {
+  // Generate or retrieve user ID for memory
+  const [userId] = useState(() => {
+    let id = localStorage.getItem('attributeai-user-id');
+    if (!id) {
+      id = 'user-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+      localStorage.setItem('attributeai-user-id', id);
+    }
+    return id;
+  });
+
   const [messages, setMessages] = useState([
     {
       id: 1,
       type: 'ai',
-      content: "👋 Hi there! I'm your AttributeAI marketing strategist. I can analyze your data, discuss your goals, and provide personalized recommendations. What would you like to focus on today?",
+      content: "👋 Hi there! I'm your AttributeAI marketing strategist. I remember our previous conversations, so we can pick up where we left off. What would you like to focus on today?",
       timestamp: new Date(),
       suggestions: [
         "Review my current performance",
@@ -23,6 +33,8 @@ const AIChatInterface = ({ userProfile, websiteAnalysis, isOpen, onClose }) => {
     currentFocus: null,
     analysisData: null
   });
+  const [conversationCount, setConversationCount] = useState(0);
+  const [memoryLoaded, setMemoryLoaded] = useState(false);
   const messagesEndRef = useRef(null);
   const chatContainerRef = useRef(null);
 
@@ -42,6 +54,76 @@ const AIChatInterface = ({ userProfile, websiteAnalysis, isOpen, onClose }) => {
       }));
     }
   }, [websiteAnalysis, userProfile]);
+
+  // Load conversation memory when chat opens
+  useEffect(() => {
+    if (isOpen && !memoryLoaded) {
+      loadConversationMemory();
+    }
+  }, [isOpen, memoryLoaded]);
+
+  const loadConversationMemory = async () => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/chat-memory/load/${userId}`);
+      if (response.ok) {
+        const result = await response.json();
+        const { conversations, userProfile: storedProfile, websiteData, totalConversations } = result.data;
+
+        setConversationCount(totalConversations);
+
+        // Add a memory status message if there's previous conversation history
+        if (conversations && conversations.length > 0) {
+          const memoryMessage = {
+            id: 0.5,
+            type: 'ai',
+            content: `💾 Welcome back! I found ${totalConversations} previous conversation${totalConversations > 1 ? 's' : ''} in my memory. I remember our discussions and can build on what we've talked about before.`,
+            timestamp: new Date(),
+            isMemoryStatus: true,
+            suggestions: [
+              "What did we discuss last time?",
+              "Continue from where we left off",
+              "Review my progress",
+              "Start fresh conversation"
+            ]
+          };
+
+          setMessages(prev => [prev[0], memoryMessage, ...prev.slice(1)]);
+        }
+
+        setMemoryLoaded(true);
+      }
+    } catch (error) {
+      console.error('Failed to load conversation memory:', error);
+      setMemoryLoaded(true);
+    }
+  };
+
+  const clearMemory = async () => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/chat-memory/clear/${userId}`, {
+        method: 'POST'
+      });
+      
+      if (response.ok) {
+        setConversationCount(0);
+        const resetMessage = {
+          id: Date.now(),
+          type: 'ai',
+          content: "🗑️ Memory cleared! I'll start fresh with our conversation. How can I help you with your marketing strategy today?",
+          timestamp: new Date(),
+          suggestions: [
+            "Analyze my website performance",
+            "Set new marketing goals", 
+            "Review competitor strategies",
+            "Optimize my conversions"
+          ]
+        };
+        setMessages([resetMessage]);
+      }
+    } catch (error) {
+      console.error('Failed to clear memory:', error);
+    }
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -63,7 +145,55 @@ const AIChatInterface = ({ userProfile, websiteAnalysis, isOpen, onClose }) => {
     setIsTyping(true);
 
     try {
-      // Make real API call to Claude
+      // Check if message contains a URL
+      const urlRegex = /https?:\/\/[^\s]+/g;
+      const urls = messageText.match(urlRegex);
+      
+      let websiteAnalysisData = null;
+      
+      // If message contains URLs, analyze the first one
+      if (urls && urls.length > 0) {
+        const url = urls[0];
+        console.log('URL detected in message, analyzing:', url);
+        
+        // Show analysis status
+        const analysisMessage = {
+          id: Date.now() + 0.5,
+          type: 'ai',
+          content: `🔍 Analyzing website: ${url}\n\nPlease wait while I fetch and analyze the website content...`,
+          timestamp: new Date(),
+          isAnalyzing: true
+        };
+        setMessages(prev => [...prev, analysisMessage]);
+        
+        try {
+          // Analyze the URL
+          const analysisResponse = await fetch('http://localhost:3001/api/analyze-url', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ url })
+          });
+          
+          if (analysisResponse.ok) {
+            const analysisResult = await analysisResponse.json();
+            websiteAnalysisData = analysisResult.data;
+            console.log('Website analysis completed:', websiteAnalysisData);
+            
+            // Remove the analysis status message
+            setMessages(prev => prev.filter(msg => !msg.isAnalyzing));
+          } else {
+            console.log('Website analysis failed, continuing with chat');
+            setMessages(prev => prev.filter(msg => !msg.isAnalyzing));
+          }
+        } catch (analysisError) {
+          console.error('Website analysis error:', analysisError);
+          setMessages(prev => prev.filter(msg => !msg.isAnalyzing));
+        }
+      }
+
+      // Make real API call to Claude with enhanced context and memory
       const response = await fetch('http://localhost:3001/api/claude-chat', {
         method: 'POST',
         headers: {
@@ -71,11 +201,14 @@ const AIChatInterface = ({ userProfile, websiteAnalysis, isOpen, onClose }) => {
         },
         body: JSON.stringify({
           message: messageText,
+          userId: userId, // Include user ID for memory
           context: {
             userProfile,
-            websiteAnalysis,
-            chatHistory: messages.slice(-10), // Last 10 messages for context
-            userGoals: chatContext.userGoals
+            websiteAnalysis: websiteAnalysis || websiteAnalysisData,
+            chatHistory: messages.slice(-10),
+            userGoals: chatContext.userGoals,
+            // Include fresh website analysis if available
+            freshWebsiteAnalysis: websiteAnalysisData
           }
         })
       });
@@ -96,21 +229,35 @@ const AIChatInterface = ({ userProfile, websiteAnalysis, isOpen, onClose }) => {
           "Set new goals", 
           "Review competitors",
           "Optimize conversions"
-        ]
+        ],
+        // Include website analysis data if available
+        websiteData: websiteAnalysisData
       };
       
       setMessages(prev => [...prev, aiResponse]);
       
+      // Update conversation count if memory response includes it
+      if (result.conversationCount) {
+        setConversationCount(result.conversationCount);
+      }
+      
     } catch (error) {
       console.error('Chat API error:', error);
       
-      // Generate AI response (fallback)
-      setTimeout(async () => {
-        const aiResponse = await generateAIResponse(messageText, messages, chatContext);
-        setMessages(prev => [...prev, aiResponse]);
-        setIsTyping(false);
-      }, 1500);
-      return;
+      // Fallback response
+      const fallbackResponse = {
+        id: Date.now() + 1,
+        type: 'ai',
+        content: 'I apologize, but I encountered a technical issue. Please try again in a moment, or let me know if you need any marketing strategy guidance.',
+        timestamp: new Date(),
+        suggestions: [
+          "Try again",
+          "Get marketing tips",
+          "Review performance",
+          "Set new goals"
+        ]
+      };
+      setMessages(prev => [...prev, fallbackResponse]);
     }
     
     setIsTyping(false);
@@ -120,291 +267,6 @@ const AIChatInterface = ({ userProfile, websiteAnalysis, isOpen, onClose }) => {
     setInputMessage(suggestion);
   };
 
-  const generateAIResponse = async (userInput, messageHistory, context) => {
-    // Analyze user input for intent
-    const intent = analyzeUserIntent(userInput);
-    let response = '';
-    let suggestions = [];
-    let data = null;
-
-    switch (intent.type) {
-      case 'performance_review':
-        response = generatePerformanceReview(context.analysisData);
-        suggestions = [
-          "What should I improve first?",
-          "Show me competitor analysis",
-          "Set specific goals",
-          "Create action plan"
-        ];
-        break;
-
-      case 'goal_setting':
-        response = generateGoalSettingResponse(userInput, context);
-        suggestions = [
-          "Track conversion rate goals",
-          "Set traffic targets",
-          "Plan content strategy",
-          "Monitor competitor progress"
-        ];
-        break;
-
-      case 'competitor_analysis':
-        response = generateCompetitorInsights(context.analysisData);
-        suggestions = [
-          "How can I outrank them?",
-          "What are they doing better?",
-          "Find content gaps",
-          "Analyze their strategy"
-        ];
-        break;
-
-      case 'conversion_optimization':
-        response = generateConversionAdvice(context.analysisData);
-        suggestions = [
-          "A/B testing recommendations",
-          "Landing page improvements",
-          "User experience fixes",
-          "Attribution insights"
-        ];
-        break;
-
-      case 'content_strategy':
-        response = generateContentStrategy(userInput, context);
-        suggestions = [
-          "Content calendar planning",
-          "Keyword opportunities",
-          "Topic cluster strategy",
-          "Distribution channels"
-        ];
-        break;
-
-      default:
-        response = generateGeneralResponse(userInput, context);
-        suggestions = [
-          "Analyze my performance",
-          "Set new goals",
-          "Review competitors",
-          "Optimize conversions"
-        ];
-    }
-
-    return {
-      id: Date.now(),
-      type: 'ai',
-      content: response,
-      timestamp: new Date(),
-      suggestions: suggestions,
-      data: data,
-      intent: intent.type
-    };
-  };
-
-  const analyzeUserIntent = (input) => {
-    const lowerInput = input.toLowerCase();
-    
-    if (lowerInput.includes('performance') || lowerInput.includes('how am i doing') || lowerInput.includes('results')) {
-      return { type: 'performance_review', confidence: 0.9 };
-    }
-    if (lowerInput.includes('goal') || lowerInput.includes('target') || lowerInput.includes('objective')) {
-      return { type: 'goal_setting', confidence: 0.9 };
-    }
-    if (lowerInput.includes('competitor') || lowerInput.includes('competition') || lowerInput.includes('vs')) {
-      return { type: 'competitor_analysis', confidence: 0.9 };
-    }
-    if (lowerInput.includes('conversion') || lowerInput.includes('optimize') || lowerInput.includes('improve')) {
-      return { type: 'conversion_optimization', confidence: 0.8 };
-    }
-    if (lowerInput.includes('content') || lowerInput.includes('blog') || lowerInput.includes('seo')) {
-      return { type: 'content_strategy', confidence: 0.8 };
-    }
-    
-    return { type: 'general', confidence: 0.5 };
-  };
-
-  const generatePerformanceReview = (analysisData) => {
-    if (!analysisData?.website) {
-      return "I'd love to review your performance! However, I don't see any website analysis data yet. Try running an SEO analysis first, then I can provide detailed insights about your current performance, including SEO scores, content gaps, and optimization opportunities.";
-    }
-
-    const website = analysisData.website;
-    return `📊 **Performance Review**
-
-Based on your website analysis, here's what I found:
-
-🎯 **SEO Performance**
-- Current SEO Score: ${website.seoScore || 'N/A'}/10
-- Technical Issues: ${website.technicalIssues || 'None detected'}
-- Content Quality: ${website.contentScore || 'Good'}
-
-🔍 **Key Opportunities**
-- Missing meta descriptions on key pages
-- Image optimization needed (${website.missingAltImages || 0} images without alt text)
-- Internal linking could be improved
-
-📈 **Recommendations**
-1. Focus on technical SEO fixes first (quick wins)
-2. Optimize content for target keywords
-3. Improve page load speed
-4. Build more quality backlinks
-
-Would you like me to prioritize these recommendations or dive deeper into any specific area?`;
-  };
-
-  const generateGoalSettingResponse = (input, context) => {
-    return `🎯 **Goal Setting Strategy**
-
-Great! Let's set some measurable marketing goals. Based on industry benchmarks, here's what I recommend:
-
-📈 **Suggested Goals (Next 90 Days)**
-- **Traffic Growth**: Increase organic traffic by 25%
-- **Conversion Rate**: Improve by 15% (current industry avg: 2-3%)
-- **SEO Rankings**: Target top 10 for 5 primary keywords
-- **Content Output**: Publish 2 high-quality articles per week
-
-🎪 **Tracking Method**
-I can help you monitor progress through:
-- Weekly performance dashboards
-- Automated competitor tracking
-- Goal progress notifications
-- Monthly strategy reviews
-
-💡 **Quick Win Priorities**
-1. Fix technical SEO issues (Week 1-2)
-2. Content gap analysis and creation (Week 3-6) 
-3. Link building campaign (Ongoing)
-4. Conversion optimization (Week 4-8)
-
-What specific goal would you like to focus on first? I can create a detailed action plan.`;
-  };
-
-  const generateCompetitorInsights = (analysisData) => {
-    return `🔍 **Competitor Intelligence**
-
-Here's what I've found about your competitive landscape:
-
-🏆 **Top Competitors Analysis**
-- **Competitor A**: Strong in content marketing, weak in technical SEO
-- **Competitor B**: Great backlink profile, but poor mobile experience  
-- **Competitor C**: High-quality content, but limited social presence
-
-📊 **Gap Analysis**
-✅ **Your Advantages**:
-- Better page load speed
-- More comprehensive content
-- Superior user experience
-
-⚠️ **Areas to Improve**:
-- Content publishing frequency (they post 3x more)
-- Social media engagement (50% lower than average)
-- Backlink diversity (need more authoritative domains)
-
-🎯 **Competitive Strategy**
-1. **Content Blitz**: Double your publishing schedule for 90 days
-2. **Link Building**: Target their top referring domains
-3. **Social Amplification**: Increase posting frequency by 200%
-4. **Technical Edge**: Maintain your speed advantage
-
-Want me to create a specific plan to outrank any particular competitor?`;
-  };
-
-  const generateConversionAdvice = (analysisData) => {
-    return `💰 **Conversion Optimization Strategy**
-
-Let's boost your conversion rates! Here's my analysis:
-
-📊 **Current Conversion Funnel**
-- **Awareness**: Traffic volume (good)
-- **Interest**: Page engagement (needs work)
-- **Consideration**: Content quality (strong)  
-- **Action**: Conversion elements (opportunity!)
-
-🔧 **Immediate Improvements**
-1. **Call-to-Action Optimization**
-   - Make CTAs more prominent (use contrasting colors)
-   - Test different button text ("Get Started" vs "Try Free")
-   - Add urgency/scarcity elements
-
-2. **Landing Page Enhancements**
-   - Reduce form fields (test 3 vs 7 fields)
-   - Add social proof/testimonials above the fold
-   - Implement exit-intent popups
-
-3. **Trust Signals**
-   - Display security badges
-   - Add customer testimonials
-   - Show "recently purchased" notifications
-
-📈 **Testing Plan**
-- Week 1-2: A/B test CTA buttons
-- Week 3-4: Test landing page layouts  
-- Week 5-6: Optimize checkout/signup flow
-
-Expected improvement: 15-30% conversion rate increase within 30 days.
-
-Ready to start with CTA optimization?`;
-  };
-
-  const generateContentStrategy = (input, context) => {
-    return `📝 **Content Strategy Recommendations**
-
-Based on your goals and market analysis:
-
-🎯 **Content Pillars Strategy**
-1. **Educational** (40%): How-to guides, tutorials, best practices
-2. **Industry Insights** (30%): Trends, data-driven articles, research
-3. **Case Studies** (20%): Success stories, client spotlights
-4. **Company Updates** (10%): News, product updates, behind-scenes
-
-📅 **Publishing Schedule**
-- **Blog Posts**: 2-3 comprehensive articles/week (2,500+ words)
-- **Social Content**: Daily posts across platforms
-- **Video Content**: 1 weekly educational video
-- **Email Newsletter**: Bi-weekly with curated insights
-
-🔍 **SEO Content Opportunities**
-Top keyword gaps vs competitors:
-- "industry best practices" (1,200 searches/month)
-- "how to guide [your topic]" (800 searches/month)  
-- "vs competitor" comparison content (500 searches/month)
-
-🚀 **Content Production Workflow**
-1. **Research Phase**: Use AttributeAI competitor analysis
-2. **Creation**: Leverage our enhanced content generator
-3. **Optimization**: SEO scoring and refinement
-4. **Distribution**: Multi-channel publishing
-5. **Performance**: Track and iterate
-
-Want me to generate a specific content calendar for the next 30 days?`;
-  };
-
-  const generateGeneralResponse = (input, context) => {
-    return `🤖 I'm here to help optimize your marketing strategy! 
-
-I can assist you with:
-
-📊 **Performance Analysis**
-- Review current metrics and KPIs
-- Identify improvement opportunities  
-- Benchmark against competitors
-
-🎯 **Goal Setting & Planning**
-- Set measurable marketing objectives
-- Create actionable roadmaps
-- Track progress and ROI
-
-🔍 **Strategic Insights**
-- Competitor intelligence analysis
-- Market opportunity identification
-- Channel optimization recommendations
-
-💡 **Tactical Recommendations** 
-- SEO and content strategy
-- Conversion rate optimization
-- Attribution and tracking setup
-
-What specific area would you like to focus on? Just let me know your biggest marketing challenge or goal, and I'll provide detailed, actionable recommendations!`;
-  };
-
   const handleKeyPress = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -412,7 +274,12 @@ What specific area would you like to focus on? Just let me know your biggest mar
     }
   };
 
-  if (!isOpen) return null;
+  if (!isOpen) {
+    console.log('Chat interface: isOpen is false, not rendering');
+    return null;
+  }
+
+  console.log('Chat interface: isOpen is true, rendering modal');
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
@@ -423,88 +290,92 @@ What specific area would you like to focus on? Just let me know your biggest mar
             <Bot className="h-6 w-6 mr-3" />
             <div>
               <h3 className="text-lg font-semibold">AttributeAI Marketing Strategist</h3>
-              <p className="text-sm opacity-90">Your AI-powered marketing advisor</p>
+              <p className="text-sm opacity-90">
+                Your AI-powered marketing advisor
+                {conversationCount > 0 && ` • ${conversationCount} conversations remembered`}
+              </p>
             </div>
           </div>
-          <button 
-            onClick={onClose}
-            className="p-2 hover:bg-white hover:bg-opacity-20 rounded-full transition-colors"
-          >
-            <X className="h-5 w-5" />
-          </button>
+          <div className="flex items-center space-x-2">
+            {/* Memory Status */}
+            {conversationCount > 0 && (
+              <button
+                onClick={clearMemory}
+                className="p-2 hover:bg-white hover:bg-opacity-20 rounded-lg transition-all"
+                title="Clear conversation memory"
+              >
+                <span className="text-xs">🗑️</span>
+              </button>
+            )}
+            <button 
+              onClick={onClose}
+              className="p-2 hover:bg-white hover:bg-opacity-20 rounded-lg transition-all"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
         </div>
 
         {/* Messages */}
         <div 
           ref={chatContainerRef}
-          className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50"
+          className="flex-1 overflow-y-auto p-4 space-y-4"
         >
           {messages.map((message) => (
-            <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div className={`max-w-[80%] rounded-lg p-3 ${
-                message.type === 'user' 
-                  ? 'bg-purple-600 text-white' 
-                  : 'bg-white border border-gray-200 shadow-sm'
-              }`}>
-                <div className="flex items-start space-x-2">
-                  {message.type === 'ai' && (
-                    <div className="bg-gradient-to-r from-purple-500 to-blue-500 rounded-full p-1 mt-1">
-                      <Bot className="h-4 w-4 text-white" />
-                    </div>
-                  )}
-                  {message.type === 'user' && (
-                    <div className="bg-purple-800 rounded-full p-1 mt-1">
-                      <User className="h-4 w-4 text-white" />
-                    </div>
-                  )}
-                  <div className="flex-1">
-                    <div className={`text-sm ${message.type === 'user' ? 'text-white' : 'text-gray-800'}`}>
-                      {message.content.split('\n').map((line, index) => (
-                        <div key={index} className={line.startsWith('#') ? 'font-semibold mt-2' : ''}>
-                          {line.replace(/^\*\*(.*?)\*\*/, '<strong>$1</strong>').replace(/^\*(.*?)\*/, '<em>$1</em>')}
-                        </div>
-                      ))}
-                    </div>
+            <div
+              key={message.id}
+              className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+            >
+              <div className={`max-w-3xl ${message.type === 'user' ? 'order-1' : 'order-2'}`}>
+                <div className={`flex items-start space-x-3 ${message.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                    message.type === 'user' 
+                      ? 'bg-purple-600 text-white' 
+                      : 'bg-gray-200 text-gray-600'
+                  }`}>
+                    {message.type === 'user' ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
+                  </div>
+                  
+                  <div className={`rounded-lg p-4 ${
+                    message.type === 'user'
+                      ? 'bg-purple-600 text-white'
+                      : 'bg-gray-100 text-gray-900'
+                  }`}>
+                    <div className="whitespace-pre-wrap">{message.content}</div>
                     
-                    {/* Suggestions */}
-                    {message.suggestions && message.suggestions.length > 0 && (
-                      <div className="mt-3 space-y-2">
-                        <p className="text-xs text-gray-500 font-medium">Suggestions:</p>
-                        <div className="flex flex-wrap gap-2">
-                          {message.suggestions.map((suggestion, index) => (
-                            <button
-                              key={index}
-                              onClick={() => handleSuggestionClick(suggestion)}
-                              className="bg-purple-100 text-purple-700 text-xs px-3 py-1 rounded-full hover:bg-purple-200 transition-colors"
-                            >
-                              {suggestion}
-                            </button>
-                          ))}
-                        </div>
+                    {message.suggestions && message.type === 'ai' && (
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {message.suggestions.map((suggestion, index) => (
+                          <button
+                            key={index}
+                            onClick={() => handleSuggestionClick(suggestion)}
+                            className="text-xs bg-white text-purple-600 px-3 py-1 rounded-full hover:bg-purple-50 border border-purple-200"
+                          >
+                            {suggestion}
+                          </button>
+                        ))}
                       </div>
                     )}
-                    
-                    <div className="mt-2 text-xs text-gray-400">
-                      {message.timestamp.toLocaleTimeString()}
-                    </div>
                   </div>
+                </div>
+                <div className={`text-xs text-gray-500 mt-1 ${message.type === 'user' ? 'text-right' : 'text-left'}`}>
+                  {message.timestamp.toLocaleTimeString()}
                 </div>
               </div>
             </div>
           ))}
           
-          {/* Typing Indicator */}
           {isTyping && (
             <div className="flex justify-start">
-              <div className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
-                <div className="flex items-center space-x-2">
-                  <div className="bg-gradient-to-r from-purple-500 to-blue-500 rounded-full p-1">
-                    <Bot className="h-4 w-4 text-white" />
-                  </div>
+              <div className="flex items-start space-x-3">
+                <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
+                  <Bot className="h-4 w-4 text-gray-600" />
+                </div>
+                <div className="bg-gray-100 rounded-lg p-4">
                   <div className="flex space-x-1">
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
                   </div>
                 </div>
               </div>

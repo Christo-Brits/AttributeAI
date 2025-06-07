@@ -109,7 +109,7 @@ app.post('/api/openai', async (req, res) => {
 // Claude Chat endpoint for AI Chat Interface
 app.post('/api/claude-chat', async (req, res) => {
     try {
-        const { message, context } = req.body;
+        const { message, context, userId } = req.body;
         
         if (!process.env.CLAUDE_API_KEY) {
             return res.status(500).json({ 
@@ -118,22 +118,76 @@ app.post('/api/claude-chat', async (req, res) => {
             });
         }
 
-        // Build context-aware prompt
+        // Load conversation memory if userId provided
+        let conversationHistory = '';
+        let storedUserProfile = null;
+        let storedWebsiteData = null;
+
+        if (userId) {
+            const conversations = chatMemory.conversations.get(userId) || [];
+            const userProfile = chatMemory.userProfiles.get(userId);
+            const websiteData = chatMemory.websiteData.get(userId);
+
+            // Build conversation history summary
+            if (conversations.length > 0) {
+                const recentConversations = conversations.slice(-10); // Last 10 conversations
+                conversationHistory = `
+
+CONVERSATION HISTORY:
+${recentConversations.map(conv => 
+    `[${new Date(conv.timestamp).toLocaleDateString()}] User: ${conv.userMessage}\nAI: ${conv.aiResponse?.substring(0, 200)}...`
+).join('\n\n')}`;
+            }
+
+            storedUserProfile = userProfile;
+            storedWebsiteData = websiteData;
+        }
+
+        // Build enhanced context-aware prompt with memory
         let systemPrompt = `You are an expert AI marketing strategist for AttributeAI. You help users optimize their marketing performance through data-driven insights and actionable recommendations.
 
 Available user context:
-- User Profile: ${context.userProfile ? JSON.stringify(context.userProfile) : 'Not available'}
-- Website Analysis: ${context.websiteAnalysis ? JSON.stringify(context.websiteAnalysis) : 'Not available'}
-- User Goals: ${context.userGoals ? context.userGoals.join(', ') : 'Not specified'}
+- User Profile: ${context.userProfile ? JSON.stringify(context.userProfile) : (storedUserProfile ? JSON.stringify(storedUserProfile) : 'Not available')}
+- Website Analysis: ${context.websiteAnalysis ? JSON.stringify(context.websiteAnalysis) : (storedWebsiteData ? JSON.stringify(storedWebsiteData) : 'Not available')}
+- User Goals: ${context.userGoals ? context.userGoals.join(', ') : 'Not specified'}${conversationHistory}`;
+
+        // Add fresh website analysis if available
+        if (context.freshWebsiteAnalysis) {
+            systemPrompt += `
+
+FRESH WEBSITE ANALYSIS DATA:
+Website: ${context.freshWebsiteAnalysis.url}
+Title: ${context.freshWebsiteAnalysis.title}
+Meta Description: ${context.freshWebsiteAnalysis.metaDescription}
+Main Headings: ${context.freshWebsiteAnalysis.headings.h1.join(', ')}
+SEO Metrics:
+- Title Length: ${context.freshWebsiteAnalysis.seoMetrics.titleLength} characters
+- Meta Description Length: ${context.freshWebsiteAnalysis.seoMetrics.metaDescriptionLength} characters
+- H1 Count: ${context.freshWebsiteAnalysis.seoMetrics.h1Count}
+- Images: ${context.freshWebsiteAnalysis.seoMetrics.imageCount} total, ${context.freshWebsiteAnalysis.seoMetrics.imagesWithoutAlt} without alt text
+Technology Stack:
+- Google Analytics: ${context.freshWebsiteAnalysis.technology.hasGA ? 'Yes' : 'No'}
+- WordPress: ${context.freshWebsiteAnalysis.technology.hasWordPress ? 'Yes' : 'No'}
+- Shopify: ${context.freshWebsiteAnalysis.technology.hasShopify ? 'Yes' : 'No'}
+Contact Information: ${context.freshWebsiteAnalysis.contactInfo.emails.join(', ')}
+
+Use this fresh data to provide specific, actionable recommendations about their website's SEO, user experience, and marketing optimization.`;
+        }
+
+        systemPrompt += `
 
 Your responses should be:
-1. Personalized based on their specific data
-2. Actionable with clear next steps
-3. Data-driven with specific metrics when possible
-4. Encouraging and supportive
-5. Include 3-4 relevant follow-up suggestions
+1. Reference previous conversations when relevant (avoid repeating the same advice)
+2. Build on previous recommendations and check progress
+3. Specific and data-driven (reference actual website data when available)
+4. Actionable with clear next steps
+5. Personalized based on their website, goals, and conversation history
+6. Professional but conversational
+7. Include 3-4 relevant follow-up suggestions
 
-Keep responses concise but valuable (2-3 paragraphs max).`;
+When you have conversation history, acknowledge previous discussions and build upon them. Ask about progress on previous recommendations.
+
+Keep responses concise but valuable (2-4 paragraphs max).`;
 
         const messages = [
             {
@@ -151,7 +205,7 @@ Keep responses concise but valuable (2-3 paragraphs max).`;
             },
             body: JSON.stringify({
                 model: 'claude-3-sonnet-20240229',
-                max_tokens: 1000,
+                max_tokens: 1500,
                 messages
             })
         });
@@ -163,13 +217,43 @@ Keep responses concise but valuable (2-3 paragraphs max).`;
         const data = await response.json();
         const aiContent = data.content[0].text;
 
-        // Generate contextual suggestions based on the conversation
+        // Save conversation to memory if userId provided
+        if (userId) {
+            try {
+                const conversation = {
+                    userMessage: message,
+                    aiResponse: aiContent,
+                    context: context.freshWebsiteAnalysis ? {
+                        websiteAnalyzed: context.freshWebsiteAnalysis.url,
+                        title: context.freshWebsiteAnalysis.title
+                    } : null
+                };
+
+                // Save to memory (fire and forget - don't wait for response)
+                fetch('http://localhost:3001/api/chat-memory/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId,
+                        conversation,
+                        userProfile: context.userProfile,
+                        websiteData: context.freshWebsiteAnalysis
+                    })
+                }).catch(err => console.log('Memory save failed:', err));
+            } catch (memoryError) {
+                console.log('Memory save error:', memoryError);
+            }
+        }
+
+        // Generate contextual suggestions based on the conversation and website data
         const suggestions = generateChatSuggestions(message, context);
 
         res.json({
             content: aiContent,
             suggestions,
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
+            hasMemory: !!userId,
+            conversationCount: userId ? (chatMemory.conversations.get(userId)?.length || 0) + 1 : 0
         });
 
     } catch (error) {
@@ -229,6 +313,223 @@ app.post('/api/claude-generate', async (req, res) => {
         res.status(500).json({ 
             error: 'Failed to generate content',
             details: error.message
+        });
+    }
+});
+
+// Memory storage for chatbot conversations
+let chatMemory = {
+    conversations: new Map(),
+    userProfiles: new Map(),
+    websiteData: new Map()
+};
+
+// Chat memory endpoints
+app.post('/api/chat-memory/save', async (req, res) => {
+    try {
+        const { userId, conversation, userProfile, websiteData } = req.body;
+        
+        if (!userId) {
+            return res.status(400).json({ error: 'User ID required' });
+        }
+
+        // Store conversation history
+        if (conversation) {
+            const existingConversations = chatMemory.conversations.get(userId) || [];
+            existingConversations.push({
+                ...conversation,
+                timestamp: new Date().toISOString()
+            });
+            
+            // Keep only last 50 messages to prevent memory bloat
+            if (existingConversations.length > 50) {
+                existingConversations.splice(0, existingConversations.length - 50);
+            }
+            
+            chatMemory.conversations.set(userId, existingConversations);
+        }
+
+        // Store user profile and preferences
+        if (userProfile) {
+            chatMemory.userProfiles.set(userId, {
+                ...userProfile,
+                lastUpdated: new Date().toISOString()
+            });
+        }
+
+        // Store website analysis data
+        if (websiteData) {
+            chatMemory.websiteData.set(userId, {
+                ...websiteData,
+                lastAnalyzed: new Date().toISOString()
+            });
+        }
+
+        res.json({ 
+            success: true, 
+            message: 'Memory saved successfully',
+            conversationCount: chatMemory.conversations.get(userId)?.length || 0
+        });
+
+    } catch (error) {
+        console.error('Memory save error:', error);
+        res.status(500).json({ 
+            error: 'Failed to save memory',
+            details: error.message
+        });
+    }
+});
+
+app.get('/api/chat-memory/load/:userId', async (req, res) => {
+    try {
+        const { userId } = req.params;
+        
+        if (!userId) {
+            return res.status(400).json({ error: 'User ID required' });
+        }
+
+        const conversations = chatMemory.conversations.get(userId) || [];
+        const userProfile = chatMemory.userProfiles.get(userId) || null;
+        const websiteData = chatMemory.websiteData.get(userId) || null;
+
+        res.json({
+            success: true,
+            data: {
+                conversations: conversations.slice(-20), // Return last 20 conversations
+                userProfile,
+                websiteData,
+                totalConversations: conversations.length
+            }
+        });
+
+    } catch (error) {
+        console.error('Memory load error:', error);
+        res.status(500).json({ 
+            error: 'Failed to load memory',
+            details: error.message
+        });
+    }
+});
+
+app.post('/api/chat-memory/clear/:userId', async (req, res) => {
+    try {
+        const { userId } = req.params;
+        
+        if (!userId) {
+            return res.status(400).json({ error: 'User ID required' });
+        }
+
+        chatMemory.conversations.delete(userId);
+        chatMemory.userProfiles.delete(userId);
+        chatMemory.websiteData.delete(userId);
+
+        res.json({ 
+            success: true, 
+            message: 'Memory cleared successfully' 
+        });
+
+    } catch (error) {
+        console.error('Memory clear error:', error);
+        res.status(500).json({ 
+            error: 'Failed to clear memory',
+            details: error.message
+        });
+    }
+});
+
+// Web search and analysis endpoint for chatbot
+app.post('/api/analyze-url', async (req, res) => {
+    try {
+        const { url } = req.body;
+        
+        if (!url) {
+            return res.status(400).json({ 
+                error: 'URL is required'
+            });
+        }
+
+        console.log(`Analyzing URL for chatbot: ${url}`);
+        
+        // Fetch website content
+        const response = await fetch(url, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                'Accept-Language': 'en-US,en;q=0.5',
+                'Connection': 'keep-alive',
+            },
+            timeout: 10000,
+            redirect: 'follow'
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        const htmlContent = await response.text();
+        
+        if (!htmlContent || htmlContent.length < 100) {
+            throw new Error('Website returned empty or invalid content');
+        }
+
+        // Analyze website content
+        const cheerio = require('cheerio');
+        const $ = cheerio.load(htmlContent);
+        
+        // Extract key information for chatbot context
+        const analysis = {
+            url: url,
+            title: $('title').text() || '',
+            metaDescription: $('meta[name="description"]').attr('content') || '',
+            headings: {
+                h1: $('h1').map((i, el) => $(el).text()).get().slice(0, 5),
+                h2: $('h2').map((i, el) => $(el).text()).get().slice(0, 10)
+            },
+            // Get main content text (limit to reasonable size)
+            mainContent: $('body').text().replace(/\s+/g, ' ').trim().substring(0, 5000),
+            images: {
+                total: $('img').length,
+                withAlt: $('img[alt]').length
+            },
+            links: {
+                internal: $('a[href^="/"], a[href*="' + new URL(url).hostname + '"]').length,
+                external: $('a[href^="http"]').not('a[href*="' + new URL(url).hostname + '"]').length
+            },
+            // Extract business information
+            contactInfo: {
+                emails: (htmlContent.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g) || []).slice(0, 3),
+                phones: (htmlContent.match(/[\+]?[1-9]?[\d\s\-\(\)\.]{10,}/g) || []).slice(0, 2)
+            },
+            // SEO metrics
+            seoMetrics: {
+                titleLength: $('title').text().length,
+                metaDescriptionLength: ($('meta[name="description"]').attr('content') || '').length,
+                h1Count: $('h1').length,
+                imageCount: $('img').length,
+                imagesWithoutAlt: $('img').not('[alt]').length
+            },
+            // Technology stack hints
+            technology: {
+                hasGA: htmlContent.includes('gtag') || htmlContent.includes('google-analytics'),
+                hasGTM: htmlContent.includes('googletagmanager'),
+                hasFacebook: htmlContent.includes('facebook.com') || htmlContent.includes('fbq'),
+                hasWordPress: htmlContent.includes('wp-content') || htmlContent.includes('wordpress'),
+                hasShopify: htmlContent.includes('shopify') || htmlContent.includes('cdn.shopify'),
+                hasSquarespace: htmlContent.includes('squarespace')
+            },
+            fetchedAt: new Date().toISOString()
+        };
+        
+        res.json({
+            success: true,
+            data: analysis
+        });
+
+    } catch (error) {
+        console.error('URL Analysis error:', error);
+        res.status(500).json({ 
+            success: false,
+            error: error.message || 'Failed to analyze URL'
         });
     }
 });

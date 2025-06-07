@@ -10,7 +10,10 @@ const FloatingChatButton = ({ userProfile, websiteAnalysis }) => {
       {/* Floating Chat Button */}
       <div className="fixed bottom-6 right-6 z-40">
         <button
-          onClick={() => setIsChatOpen(true)}
+          onClick={() => {
+            console.log('Floating chat button clicked!');
+            setIsChatOpen(true);
+          }}
           className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-4 rounded-full shadow-lg hover:from-purple-700 hover:to-blue-700 transition-all transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-300"
           title="Chat with AI Marketing Strategist"
         >

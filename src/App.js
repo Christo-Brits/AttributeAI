@@ -119,13 +119,11 @@ function App() {
       <main className="min-h-screen bg-gray-50">
         {renderActiveComponent()}
         
-        {/* Floating Chat Button - Available on all pages when authenticated */}
-        {isAuthenticated && (
-          <FloatingChatButton 
-            userProfile={userProfile}
-            websiteAnalysis={websiteAnalysisResults}
-          />
-        )}
+        {/* Floating Chat Button - Available on all pages */}
+        <FloatingChatButton 
+          userProfile={userProfile}
+          websiteAnalysis={websiteAnalysisResults}
+        />
       </main>
     </div>
   );

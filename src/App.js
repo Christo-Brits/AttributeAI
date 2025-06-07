@@ -4,24 +4,18 @@ import Navigation from './components/Navigation';
 import UnifiedDashboard from './components/UnifiedDashboard';
 import LoginPage from './components/LoginPage';
 import WebsiteAnalysisComponent from './components/WebsiteAnalysisComponent';
-import DemoVideo from './components/DemoVideo';
-import APITestComponent from './components/APITestComponent';
 import FloatingChatButton from './components/FloatingChatButton';
 
-// Phase 2: Enhanced components with Claude AI
-const ClaudeAIDemo = lazy(() => import('./components/ClaudeAIDemo'));
-const UnifiedDashboardEnhanced = lazy(() => import('./components/UnifiedDashboard.enhanced'));
+// Phase 2: Enhanced components with Claude AI  
 const SEOAnalysisEnhanced = lazy(() => import('./components/SEOCompetitorAnalysis.enhanced'));
 
 // Lazy load components for better performance
 const AttributionEngine = lazy(() => import('./components/AttributionEngine'));
 const RealTimeJourneyTracker = lazy(() => import('./components/RealTimeJourneyTracker'));
 const JourneyAnalytics = lazy(() => import('./components/JourneyAnalytics'));
-const SEOCompetitorAnalysis = lazy(() => import('./components/SEOCompetitorAnalysis'));
 const SEOContentStrategist = lazy(() => import('./components/SEOContentStrategist'));
 const LeadMagnetGenerator = lazy(() => import('./components/LeadMagnetGenerator'));
 const CROAnalyzer = lazy(() => import('./components/CROAnalyzer'));
-const GSCAnalyzer = lazy(() => import('./components/GSCAnalyzer'));
 
 // Loading component
 const ComponentLoader = () => (
@@ -74,25 +68,19 @@ function App() {
   const renderActiveComponent = () => {
     const components = {
       dashboard: () => <UnifiedDashboard userProfile={userProfile} websiteAnalysis={websiteAnalysisResults} />,
-      'demo-video': () => <DemoVideo />,
-      'api-test': () => <APITestComponent />,
-      'dashboard-enhanced': UnifiedDashboardEnhanced,
-      'claude-demo': ClaudeAIDemo,
       'seo-enhanced': SEOAnalysisEnhanced,
       attribution: AttributionEngine,
       realtime: RealTimeJourneyTracker,
       analytics: JourneyAnalytics,
-      seo: SEOCompetitorAnalysis,
       content: SEOContentStrategist,
       leadmagnet: LeadMagnetGenerator,
-      cro: CROAnalyzer,
-      gsc: GSCAnalyzer
+      cro: CROAnalyzer
     };
 
     const Component = components[activeTab] || (() => <UnifiedDashboard userProfile={userProfile} websiteAnalysis={websiteAnalysisResults} />);
 
-    // Don't wrap dashboard or demo-video or api-test in Suspense since they're not lazy loaded
-    if (activeTab === 'dashboard' || activeTab === 'demo-video' || activeTab === 'api-test') {
+    // Don't wrap dashboard in Suspense since it's not lazy loaded
+    if (activeTab === 'dashboard') {
       return <Component />;
     }
 

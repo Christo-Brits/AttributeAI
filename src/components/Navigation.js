@@ -1,22 +1,16 @@
-import React, { useState } from 'react';
-import { BarChart3, Activity, TrendingUp, Search, PenTool, Target, Eye, FileSpreadsheet, Settings, User, Bell, Grid, Brain, Sparkles, LogOut, Globe } from 'lucide-react';
+import React from 'react';
+import { BarChart3, Activity, TrendingUp, Search, PenTool, Target, Eye, Settings, User, Bell, Grid, LogOut, Globe } from 'lucide-react';
 
 const Navigation = ({ activeTab, setActiveTab, userProfile, onLogout }) => {
   const tabs = [
     { id: 'dashboard', name: 'Unified Dashboard', icon: Grid },
-    { id: 'demo-video', name: 'Demo Video', icon: Eye },
-    { id: 'api-test', name: 'API Test', icon: Brain },
-    { id: 'claude-demo', name: 'Claude AI Demo', icon: Brain, phase2: true },
-    { id: 'dashboard-enhanced', name: 'Enhanced Dashboard', icon: Sparkles, phase2: true },
     { id: 'seo-enhanced', name: 'AI SEO Analysis', icon: Search, phase2: true },
+    { id: 'content', name: 'Content Strategy', icon: PenTool },
     { id: 'attribution', name: 'Attribution Engine', icon: BarChart3 },
     { id: 'realtime', name: 'Real-Time Tracking', icon: Activity },
     { id: 'analytics', name: 'Journey Analytics', icon: TrendingUp },
-    { id: 'seo', name: 'SEO Analysis', icon: Search },
-    { id: 'content', name: 'Content Strategy', icon: PenTool },
     { id: 'leadmagnet', name: 'Lead Magnet Generator', icon: Target },
-    { id: 'cro', name: 'CRO Analyzer', icon: Eye },
-    { id: 'gsc', name: 'GSC Data Analyzer', icon: FileSpreadsheet }
+    { id: 'cro', name: 'CRO Analyzer', icon: Eye }
   ];
 
   return (

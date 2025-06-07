@@ -81,8 +81,8 @@ Execute this strategy now for ${targetSite} targeting: ${longTails}
         await new Promise(resolve => setTimeout(resolve, 1500));
 
         // Generate enhanced content with research and images
-        const enhancedResults = await enhancedContentService.generateResearchBackedContent(
-          targetSite, seedLongTails, userExperience, locale
+        const enhancedResults = await enhancedContentService.generateEnhancedContent(
+          targetSite, seedLongTails, userExperience || 'Professional business', locale || 'United States'
         );
         setContentResults(enhancedResults);
       } else {

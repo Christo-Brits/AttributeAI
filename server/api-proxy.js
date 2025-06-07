@@ -106,6 +106,171 @@ app.post('/api/openai', async (req, res) => {
     }
 });
 
+// Claude Chat endpoint for AI Chat Interface
+app.post('/api/claude-chat', async (req, res) => {
+    try {
+        const { message, context } = req.body;
+        
+        if (!process.env.CLAUDE_API_KEY) {
+            return res.status(500).json({ 
+                error: 'Claude API key not configured',
+                details: 'Please set CLAUDE_API_KEY in your environment variables'
+            });
+        }
+
+        // Build context-aware prompt
+        let systemPrompt = `You are an expert AI marketing strategist for AttributeAI. You help users optimize their marketing performance through data-driven insights and actionable recommendations.
+
+Available user context:
+- User Profile: ${context.userProfile ? JSON.stringify(context.userProfile) : 'Not available'}
+- Website Analysis: ${context.websiteAnalysis ? JSON.stringify(context.websiteAnalysis) : 'Not available'}
+- User Goals: ${context.userGoals ? context.userGoals.join(', ') : 'Not specified'}
+
+Your responses should be:
+1. Personalized based on their specific data
+2. Actionable with clear next steps
+3. Data-driven with specific metrics when possible
+4. Encouraging and supportive
+5. Include 3-4 relevant follow-up suggestions
+
+Keep responses concise but valuable (2-3 paragraphs max).`;
+
+        const messages = [
+            {
+                role: 'user',
+                content: `${systemPrompt}\n\nUser message: ${message}`
+            }
+        ];
+
+        const response = await fetch('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': process.env.CLAUDE_API_KEY,
+                'anthropic-version': '2023-06-01'
+            },
+            body: JSON.stringify({
+                model: 'claude-3-sonnet-20240229',
+                max_tokens: 1000,
+                messages
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Claude API error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const aiContent = data.content[0].text;
+
+        // Generate contextual suggestions based on the conversation
+        const suggestions = generateChatSuggestions(message, context);
+
+        res.json({
+            content: aiContent,
+            suggestions,
+            timestamp: new Date().toISOString()
+        });
+
+    } catch (error) {
+        console.error('Claude Chat Error:', error);
+        res.status(500).json({ 
+            error: 'Failed to generate AI response',
+            details: error.message
+        });
+    }
+});
+
+// Enhanced content generation endpoint
+app.post('/api/claude-generate', async (req, res) => {
+    try {
+        const { prompt } = req.body;
+        
+        if (!process.env.CLAUDE_API_KEY) {
+            return res.status(500).json({ 
+                error: 'Claude API key not configured'
+            });
+        }
+
+        const messages = [
+            {
+                role: 'user',
+                content: prompt
+            }
+        ];
+
+        const response = await fetch('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': process.env.CLAUDE_API_KEY,
+                'anthropic-version': '2023-06-01'
+            },
+            body: JSON.stringify({
+                model: 'claude-3-sonnet-20240229',
+                max_tokens: 4000,
+                messages
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Claude API error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        res.json({
+            content: data.content[0].text,
+            timestamp: new Date().toISOString()
+        });
+
+    } catch (error) {
+        console.error('Content Generation Error:', error);
+        res.status(500).json({ 
+            error: 'Failed to generate content',
+            details: error.message
+        });
+    }
+});
+
+// Helper function to generate contextual suggestions
+function generateChatSuggestions(userMessage, context) {
+    const suggestions = [];
+    
+    // Analyze user message for context
+    const lowerMessage = userMessage.toLowerCase();
+    
+    if (lowerMessage.includes('performance') || lowerMessage.includes('analytics')) {
+        suggestions.push("Show me specific metrics to track");
+        suggestions.push("What's my biggest opportunity?");
+        suggestions.push("Compare to industry benchmarks");
+        suggestions.push("Create a performance dashboard");
+    } else if (lowerMessage.includes('seo') || lowerMessage.includes('search')) {
+        suggestions.push("Analyze my competitors");
+        suggestions.push("Find keyword opportunities");
+        suggestions.push("Audit my current SEO");
+        suggestions.push("Create content strategy");
+    } else if (lowerMessage.includes('content') || lowerMessage.includes('blog')) {
+        suggestions.push("Generate content ideas");
+        suggestions.push("Optimize existing content");
+        suggestions.push("Plan content calendar");
+        suggestions.push("Analyze content performance");
+    } else if (lowerMessage.includes('conversion') || lowerMessage.includes('optimize')) {
+        suggestions.push("Audit my landing pages");
+        suggestions.push("Test conversion elements");
+        suggestions.push("Analyze user journey");
+        suggestions.push("Improve checkout process");
+    } else {
+        // Default suggestions
+        suggestions.push("Analyze my performance");
+        suggestions.push("Set marketing goals");
+        suggestions.push("Review competitors");
+        suggestions.push("Optimize conversions");
+    }
+    
+    return suggestions.slice(0, 4); // Return max 4 suggestions
+}
+
 // Health check endpoint
 app.get('/health', (req, res) => {
     res.json({ 

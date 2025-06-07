@@ -1,7 +1,7 @@
 class EnhancedContentService {
   constructor() {
     this.apiKey = process.env.REACT_APP_ANTHROPIC_API_KEY;
-    this.baseURL = 'http://localhost:5000';
+    this.baseURL = 'http://localhost:3001';
   }
 
   // Enhanced content generation with full AI integration

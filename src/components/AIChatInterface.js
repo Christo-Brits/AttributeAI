@@ -58,15 +58,62 @@ const AIChatInterface = ({ userProfile, websiteAnalysis, isOpen, onClose }) => {
     };
 
     setMessages(prev => [...prev, userMessage]);
+    const messageText = inputMessage;
     setInputMessage('');
     setIsTyping(true);
 
-    // Generate AI response
-    setTimeout(async () => {
-      const aiResponse = await generateAIResponse(inputMessage, messages, chatContext);
+    try {
+      // Make real API call to Claude
+      const response = await fetch('http://localhost:3001/api/claude-chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: messageText,
+          context: {
+            userProfile,
+            websiteAnalysis,
+            chatHistory: messages.slice(-10), // Last 10 messages for context
+            userGoals: chatContext.userGoals
+          }
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('API call failed');
+      }
+
+      const result = await response.json();
+      
+      const aiResponse = {
+        id: Date.now() + 1,
+        type: 'ai',
+        content: result.content || 'I apologize, but I encountered an issue. Let me provide some general guidance based on your query.',
+        timestamp: new Date(),
+        suggestions: result.suggestions || [
+          "Analyze my performance",
+          "Set new goals", 
+          "Review competitors",
+          "Optimize conversions"
+        ]
+      };
+      
       setMessages(prev => [...prev, aiResponse]);
-      setIsTyping(false);
-    }, 1500);
+      
+    } catch (error) {
+      console.error('Chat API error:', error);
+      
+      // Generate AI response (fallback)
+      setTimeout(async () => {
+        const aiResponse = await generateAIResponse(messageText, messages, chatContext);
+        setMessages(prev => [...prev, aiResponse]);
+        setIsTyping(false);
+      }, 1500);
+      return;
+    }
+    
+    setIsTyping(false);
   };
 
   const handleSuggestionClick = (suggestion) => {

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff, ChevronRight } from 'lucide-react';
+import { useAuth } from './AuthContext';
 
 const LoginPage = ({ onLoginSuccess, onSwitchToSignup }) => {
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -51,40 +53,19 @@ const LoginPage = ({ onLoginSuccess, onSwitchToSignup }) => {
     setErrors({});
 
     try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password
-        })
+      const result = await login({
+        email: formData.email,
+        password: formData.password,
+        rememberMe: formData.rememberMe
       });
 
-      if (response.ok) {
-        const userData = await response.json();
-        
-        // Store user session
-        if (formData.rememberMe) {
-          localStorage.setItem('attributeai_session', JSON.stringify({
-            token: userData.token,
-            expiresAt: Date.now() + (30 * 24 * 60 * 60 * 1000) // 30 days
-          }));
-        } else {
-          sessionStorage.setItem('attributeai_session', JSON.stringify({
-            token: userData.token,
-            expiresAt: Date.now() + (24 * 60 * 60 * 1000) // 24 hours
-          }));
-        }
-
-        // Store user data for chatbot
-        localStorage.setItem('attributeai_user', JSON.stringify(userData.user));
-
+      if (result.success) {
+        // Login successful - AuthContext handles state updates
         if (onLoginSuccess) {
-          onLoginSuccess(userData);
+          onLoginSuccess();
         }
       } else {
-        const errorData = await response.json();
-        setErrors({ submit: errorData.message || 'Login failed. Please check your credentials.' });
+        setErrors({ submit: result.error || 'Login failed. Please check your credentials.' });
       }
     } catch (error) {
       console.error('Login error:', error);

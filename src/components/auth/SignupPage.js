@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { ChevronRight, Globe, BarChart3, Facebook, Search, Mail, User, Lock, CheckCircle, AlertCircle } from 'lucide-react';
+import { useAuth } from './AuthContext';
 
 const SignupPage = ({ onSignupComplete }) => {
+  const { signup } = useAuth();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     // Basic Info
@@ -106,15 +108,42 @@ const SignupPage = ({ onSignupComplete }) => {
     const status = { ...connectionStatus };
 
     try {
-      // Verify website accessibility
+      // Verify website accessibility and analyze content
       if (formData.websiteUrl) {
         try {
-          const response = await fetch('/api/verify-website', {
+          // First verify accessibility
+          const verifyResponse = await fetch('/api/verify-website', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ url: formData.websiteUrl })
           });
-          status.website = response.ok ? 'success' : 'warning';
+          
+          if (verifyResponse.ok) {
+            status.website = 'success';
+            
+            // If accessible, perform full analysis
+            try {
+              const analysisResponse = await fetch('/api/analyze-website', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url: formData.websiteUrl })
+              });
+              
+              if (analysisResponse.ok) {
+                const analysisData = await analysisResponse.json();
+                // Store analysis data for later use in content strategist
+                setFormData(prev => ({
+                  ...prev,
+                  websiteAnalysis: analysisData.data
+                }));
+              }
+            } catch (analysisError) {
+              console.log('Website analysis failed:', analysisError);
+              // Website is accessible but analysis failed - still mark as success
+            }
+          } else {
+            status.website = 'warning';
+          }
         } catch {
           status.website = 'warning';
         }
@@ -156,19 +185,13 @@ const SignupPage = ({ onSignupComplete }) => {
     setIsLoading(true);
 
     try {
-      // Save user data to backend
-      const response = await fetch('/api/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
+      // Use AuthContext for signup
+      const result = await signup(formData);
 
-      if (response.ok) {
-        const userData = await response.json();
-        
-        // Store user data locally for chatbot access
-        localStorage.setItem('attributeai_user', JSON.stringify({
-          id: userData.id,
+      if (result.success) {
+        // Store additional enhanced user data for content strategy
+        const enhancedUserData = {
+          id: result.user?.id || Date.now().toString(),
           name: `${formData.firstName} ${formData.lastName}`,
           email: formData.email,
           company: formData.company,
@@ -183,18 +206,21 @@ const SignupPage = ({ onSignupComplete }) => {
             facebookPixelId: formData.facebookPixelId
           },
           monthlyTraffic: formData.monthlyTraffic,
+          websiteAnalysis: formData.websiteAnalysis || null,
           registeredAt: new Date().toISOString()
-        }));
+        };
+
+        localStorage.setItem('attributeai_user', JSON.stringify(enhancedUserData));
 
         if (onSignupComplete) {
-          onSignupComplete(userData);
+          onSignupComplete();
         }
       } else {
-        throw new Error('Signup failed');
+        alert(result.error || 'Signup failed. Please try again.');
       }
     } catch (error) {
       console.error('Signup error:', error);
-      setErrors({ submit: 'Signup failed. Please try again.' });
+      alert('Signup failed. Please check your connection and try again.');
     }
 
     setIsLoading(false);
@@ -524,8 +550,8 @@ const SignupPage = ({ onSignupComplete }) => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">Tools Currently Using (Select all that apply)</label>
-                <div className="grid grid-cols-2 gap-2">
+                <label className="block text-sm font-medium text-gray-700 mb-3">Current Marketing Tools (Select all that apply)</label>
+                <div className="grid grid-cols-3 gap-2">
                   {toolOptions.map(tool => (
                     <label key={tool} className="flex items-center space-x-2 p-2 border rounded-lg cursor-pointer hover:bg-gray-50">
                       <input
@@ -578,6 +604,19 @@ const SignupPage = ({ onSignupComplete }) => {
               </button>
             )}
           </div>
+        </div>
+
+        {/* Switch to Login */}
+        <div className="bg-gray-50 px-8 py-4 border-t">
+          <p className="text-center text-gray-600">
+            Already have an account?{' '}
+            <button
+              onClick={() => window.location.reload()}
+              className="text-blue-600 hover:text-blue-700 font-medium"
+            >
+              Sign in here
+            </button>
+          </p>
         </div>
       </div>
     </div>

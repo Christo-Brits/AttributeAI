@@ -948,3 +948,212 @@ app.post('/api/analyze-website', async (req, res) => {
   }
 });
 
+
+// Perplexity research endpoint
+app.post('/api/perplexity-research', async (req, res) => {
+  try {
+    const { query, category, max_results = 5 } = req.body;
+    
+    if (!query) {
+      return res.status(400).json({ error: 'Query is required' });
+    }
+
+    console.log(`🔍 Perplexity research request: ${category} - ${query}`);
+
+    // Use Claude's web search capability for research
+    const researchPrompt = `Conduct comprehensive research on: "${query}"
+
+Please provide:
+1. Key statistics and data points with sources
+2. Recent trends and developments (last 12 months)
+3. Market insights and analysis
+4. Regulatory or compliance information (if applicable)
+5. Cost/pricing information (if relevant)
+
+Format your response as detailed research findings with specific data points, and include source references where possible.
+
+Focus on providing factual, up-to-date information that would be valuable for content creation about this topic.`;
+
+    // Call Claude with web search capabilities
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': process.env.CLAUDE_API_KEY,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify({
+        model: 'claude-3-5-sonnet-20241022',
+        max_tokens: 4000,
+        messages: [
+          {
+            role: 'user',
+            content: researchPrompt
+          }
+        ],
+        tools: [
+          {
+            name: 'web_search',
+            description: 'Search the web for current information',
+            input_schema: {
+              type: 'object',
+              properties: {
+                query: {
+                  type: 'string',
+                  description: 'Search query'
+                }
+              },
+              required: ['query']
+            }
+          }
+        ]
+      })
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Anthropic API error:', errorText);
+      throw new Error(`Anthropic API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    
+    // Extract research results
+    let researchContent = '';
+    let sources = [];
+    
+    if (data.content && data.content.length > 0) {
+      researchContent = data.content
+        .filter(block => block.type === 'text')
+        .map(block => block.text)
+        .join(' ');
+    }
+
+    // Extract sources from tool use results if available
+    if (data.content) {
+      data.content.forEach(block => {
+        if (block.type === 'tool_use' && block.name === 'web_search') {
+          // Tool use detected - sources would be in the response
+          if (block.result && block.result.sources) {
+            sources.push(...block.result.sources);
+          }
+        }
+      });
+    }
+
+    // Parse the research content for key insights
+    const insights = parseResearchInsights(researchContent, query);
+
+    const result = {
+      query,
+      category,
+      summary: insights.summary,
+      results: insights.keyPoints,
+      sources: sources.slice(0, max_results), // Limit sources
+      statistics: insights.statistics,
+      trends: insights.trends,
+      compliance: insights.compliance,
+      costs: insights.costs,
+      timestamp: new Date().toISOString(),
+      success: true
+    };
+
+    console.log(`✅ Research completed for: ${category}`);
+    res.json(result);
+
+  } catch (error) {
+    console.error('Perplexity research error:', error);
+    
+    // Return fallback research data
+    res.json({
+      query,
+      category,
+      summary: `Research on ${query} - limited data available due to API limitations.`,
+      results: [
+        `${query} is an important topic requiring current market analysis.`,
+        'Industry trends show continued growth and development.',
+        'Local regulations and compliance requirements should be considered.',
+        'Cost analysis varies by location and specific requirements.'
+      ],
+      sources: [],
+      statistics: {},
+      trends: [],
+      compliance: [],
+      costs: {},
+      timestamp: new Date().toISOString(),
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// Helper function to parse research insights from Claude's response
+function parseResearchInsights(content, query) {
+  const insights = {
+    summary: '',
+    keyPoints: [],
+    statistics: {},
+    trends: [],
+    compliance: [],
+    costs: {}
+  };
+
+  if (!content) {
+    return insights;
+  }
+
+  // Extract summary (first paragraph or first 200 characters)
+  const sentences = content.split('.').filter(s => s.trim().length > 10);
+  insights.summary = sentences.slice(0, 2).join('.') + '.';
+
+  // Extract key points (look for bullet points or numbered lists)
+  const bulletPoints = content.match(/[•\-\*]\s*([^\n\r]+)/g) || [];
+  const numberedPoints = content.match(/\d+\.\s*([^\n\r]+)/g) || [];
+  
+  insights.keyPoints = [
+    ...bulletPoints.map(point => point.replace(/^[•\-\*]\s*/, '')),
+    ...numberedPoints.map(point => point.replace(/^\d+\.\s*/, ''))
+  ].slice(0, 5); // Limit to 5 key points
+
+  // Extract statistics (look for numbers with % or currency symbols)
+  const statisticMatches = content.match(/\$?[\d,]+(?:\.\d+)?[%]?(?:\s*(?:million|billion|thousand|percent|%))?/g) || [];
+  statisticMatches.forEach((stat, index) => {
+    if (index < 3) { // Limit to 3 key statistics
+      insights.statistics[`stat_${index + 1}`] = stat;
+    }
+  });
+
+  // Extract trends (look for trend-related keywords)
+  const trendKeywords = ['trend', 'increase', 'decrease', 'growth', 'decline', 'rising', 'falling', 'growing'];
+  sentences.forEach(sentence => {
+    if (trendKeywords.some(keyword => sentence.toLowerCase().includes(keyword))) {
+      insights.trends.push(sentence.trim());
+    }
+  });
+  insights.trends = insights.trends.slice(0, 3); // Limit to 3 trends
+
+  // Extract compliance information (look for regulation-related keywords)
+  const complianceKeywords = ['regulation', 'compliance', 'law', 'requirement', 'standard', 'must', 'mandatory'];
+  sentences.forEach(sentence => {
+    if (complianceKeywords.some(keyword => sentence.toLowerCase().includes(keyword))) {
+      insights.compliance.push(sentence.trim());
+    }
+  });
+  insights.compliance = insights.compliance.slice(0, 3); // Limit to 3 compliance points
+
+  // Extract cost information (look for cost-related keywords and currency)
+  const costMatches = content.match(/(?:cost|price|fee|rate)s?\s*(?:of|for)?\s*[^.]*\$[\d,]+(?:\.\d+)?[^.]*/gi) || [];
+  costMatches.forEach((cost, index) => {
+    if (index < 3) { // Limit to 3 cost points
+      insights.costs[`cost_${index + 1}`] = cost.trim();
+    }
+  });
+
+  return insights;
+}
+
+// Start server
+app.listen(PORT, () => {
+    console.log(`🚀 AttributeAI API Server running on port ${PORT}`);
+    console.log(`📊 Health check: http://localhost:${PORT}/api/health`);
+});

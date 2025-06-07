@@ -8,12 +8,12 @@ import FloatingChatButton from './components/FloatingChatButton';
 
 // Phase 2: Enhanced components with Claude AI  
 const SEOAnalysisEnhanced = lazy(() => import('./components/SEOCompetitorAnalysis.enhanced'));
+const SEOContentStrategist = lazy(() => import('./components/SEOContentStrategist.enhanced'));
 
 // Lazy load components for better performance
 const AttributionEngine = lazy(() => import('./components/AttributionEngine'));
 const RealTimeJourneyTracker = lazy(() => import('./components/RealTimeJourneyTracker'));
 const JourneyAnalytics = lazy(() => import('./components/JourneyAnalytics'));
-const SEOContentStrategist = lazy(() => import('./components/SEOContentStrategist'));
 const LeadMagnetGenerator = lazy(() => import('./components/LeadMagnetGenerator'));
 const CROAnalyzer = lazy(() => import('./components/CROAnalyzer'));
 

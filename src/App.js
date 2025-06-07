@@ -1,9 +1,8 @@
 import React, { lazy, Suspense, useState } from 'react';
 import './App.css';
-import Navigation from './components/Navigation';
+import NavigationWrapper from './components/NavigationWrapper';
 import UnifiedDashboard from './components/UnifiedDashboard';
 import AuthenticatedApp from './components/auth/AuthWrapper';
-import { useAuth } from './components/auth/AuthContext';
 import WebsiteAnalysisComponent from './components/WebsiteAnalysisComponent';
 import FloatingChatButton from './components/FloatingChatButton';
 
@@ -29,7 +28,6 @@ const ComponentLoader = () => (
 );
 
 function AppContent() {
-  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [showAnalysis, setShowAnalysis] = useState(false);
   const [websiteAnalysisResults, setWebsiteAnalysisResults] = useState(null);
@@ -40,19 +38,9 @@ function AppContent() {
     setActiveTab('dashboard'); // Navigate to dashboard with results
   };
 
-  // Show website analysis if user just signed up with a website
-  if (showAnalysis && user?.websiteUrl) {
-    return (
-      <WebsiteAnalysisComponent 
-        userProfile={user}
-        onAnalysisComplete={handleAnalysisComplete}
-      />
-    );
-  }
-
   const renderActiveComponent = () => {
     const components = {
-      dashboard: () => <UnifiedDashboard userProfile={user} websiteAnalysis={websiteAnalysisResults} />,
+      dashboard: () => <UnifiedDashboard websiteAnalysis={websiteAnalysisResults} />,
       'seo-enhanced': SEOAnalysisEnhanced,
       attribution: AttributionEngine,
       realtime: RealTimeJourneyTracker,
@@ -62,7 +50,7 @@ function AppContent() {
       cro: CROAnalyzer
     };
 
-    const Component = components[activeTab] || (() => <UnifiedDashboard userProfile={user} websiteAnalysis={websiteAnalysisResults} />);
+    const Component = components[activeTab] || (() => <UnifiedDashboard websiteAnalysis={websiteAnalysisResults} />);
 
     // Don't wrap dashboard in Suspense since it's not lazy loaded
     if (activeTab === 'dashboard') {
@@ -78,10 +66,9 @@ function AppContent() {
 
   return (
     <div className="App">
-      <Navigation 
+      <NavigationWrapper 
         activeTab={activeTab} 
         setActiveTab={setActiveTab}
-        userProfile={user}
       />
       <main className="min-h-screen bg-gray-50">
         {renderActiveComponent()}

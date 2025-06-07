@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { BarChart3, Activity, TrendingUp, Search, PenTool, Target, Eye, Settings, User, Bell, Grid, LogOut, Globe } from 'lucide-react';
+import { useAuth } from './auth/AuthContext';
+import UserProfile from './auth/UserProfile';
 
-const Navigation = ({ activeTab, setActiveTab }) => {
+const NavigationWrapper = ({ activeTab, setActiveTab }) => {
+  const { user, logout } = useAuth();
   const [showProfile, setShowProfile] = useState(false);
+
   const tabs = [
     { id: 'dashboard', name: 'Unified Dashboard', icon: Grid },
     { id: 'seo-enhanced', name: 'AI SEO Analysis', icon: Search, phase2: true },
@@ -22,7 +26,7 @@ const Navigation = ({ activeTab, setActiveTab }) => {
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <h1 className="text-xl font-bold text-gray-900">AttributeAI</h1>
-              <p className="text-xs text-gray-500">Weather Intelligence Attribution</p>
+              <p className="text-xs text-gray-500">Marketing Intelligence Attribution</p>
             </div>
           </div>
 
@@ -64,15 +68,15 @@ const Navigation = ({ activeTab, setActiveTab }) => {
             </button>
             
             {/* Website Badge */}
-            {userProfile?.websiteUrl && (
+            {user?.websiteUrl && (
               <div className="hidden lg:flex items-center space-x-2 bg-green-50 px-3 py-2 rounded-lg border border-green-200">
                 <Globe className="h-4 w-4 text-green-600" />
                 <span className="text-sm text-green-800">
                   {(() => {
                     try {
-                      return new URL(userProfile.websiteUrl).hostname;
+                      return new URL(user.websiteUrl).hostname;
                     } catch {
-                      return userProfile.websiteUrl.replace(/^https?:\/\//, '');
+                      return user.websiteUrl.replace(/^https?:\/\//, '');
                     }
                   })()}
                 </span>
@@ -89,10 +93,10 @@ const Navigation = ({ activeTab, setActiveTab }) => {
                 </div>
                 <div className="hidden md:block text-left">
                   <span className="text-sm font-medium text-gray-700">
-                    {userProfile?.firstName ? `${userProfile.firstName} ${userProfile.lastName}` : userProfile?.email || 'Demo User'}
+                    {user?.firstName ? `${user.firstName} ${user.lastName}` : user?.email || 'Demo User'}
                   </span>
                   <p className="text-xs text-gray-500">
-                    {userProfile?.company || userProfile?.industry || 'Free Trial'}
+                    {user?.company || user?.industry || 'Free Trial'}
                   </p>
                 </div>
               </button>
@@ -118,4 +122,4 @@ const Navigation = ({ activeTab, setActiveTab }) => {
   );
 };
 
-export default Navigation;
+export default NavigationWrapper;

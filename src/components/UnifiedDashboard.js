@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { BarChart3, TrendingUp, Target, Zap, AlertCircle, CheckCircle, Clock, Users, Globe, Brain, MessageCircle } from 'lucide-react';
 import { Card, Button } from './ui/DesignSystem';
 import { useDataBridge } from '../utils/DataBridge';
+import { useAuth } from './auth/AuthContext';
 import AIChatInterface from './AIChatInterface';
 
-const UnifiedDashboard = ({ userProfile, websiteAnalysis }) => {
+const UnifiedDashboard = ({ websiteAnalysis }) => {
+  const { user } = useAuth();
   const { data, generateUnifiedInsights } = useDataBridge();
   const [insights, setInsights] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -399,7 +401,6 @@ const UnifiedDashboard = ({ userProfile, websiteAnalysis }) => {
     
     {/* AI Chat Interface */}
     <AIChatInterface 
-      userProfile={userProfile}
       websiteAnalysis={websiteAnalysis}
       isOpen={isChatOpen}
       onClose={() => setIsChatOpen(false)}

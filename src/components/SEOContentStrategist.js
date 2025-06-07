@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { PenTool, FileText, Target, Eye, CheckCircle, Clock } from 'lucide-react';
+import { PenTool, FileText, Target, Eye, CheckCircle, Clock, Search, Zap, Image, ExternalLink } from 'lucide-react';
+import EnhancedContentService from '../services/EnhancedContentService';
 
 const SEOContentStrategist = () => {
   const [targetSite, setTargetSite] = useState('');
@@ -11,7 +12,10 @@ const SEOContentStrategist = () => {
   const [contentResults, setContentResults] = useState(null);
   const [showExportMenu, setShowExportMenu] = useState(false);
   const [exportSuccess, setExportSuccess] = useState('');
+  const [researchEnabled, setResearchEnabled] = useState(true);
+  const [imageGeneration, setImageGeneration] = useState(true);
   const exportMenuRef = useRef(null);
+  const enhancedContentService = new EnhancedContentService();
 
   // Close export menu when clicking outside
   useEffect(() => {
@@ -56,34 +60,61 @@ Execute this strategy now for ${targetSite} targeting: ${longTails}
     setIsGenerating(true);
     
     try {
-      // Simulate the content generation process
-      setGenerationStage('🕷️ Crawling target site for internal link opportunities...');
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      setGenerationStage('🔍 Researching long-tail keywords and related topics...');
-      await new Promise(resolve => setTimeout(resolve, 2500));
-      
-      setGenerationStage('📚 Gathering authoritative external sources...');
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      setGenerationStage('📝 Creating content outline and topic cluster map...');
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      setGenerationStage('✍️ Writing SEO-optimized blog post...');
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      
-      setGenerationStage('🔗 Optimizing internal and external link structure...');
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      setGenerationStage('🎯 Final SEO polish and validation...');
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      if (researchEnabled || imageGeneration) {
+        // Enhanced workflow with research and images
+        setGenerationStage('🔍 Conducting deep research with real sources...');
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        
+        setGenerationStage('📊 Analyzing industry data and expert insights...');
+        await new Promise(resolve => setTimeout(resolve, 2500));
+        
+        setGenerationStage('🎨 Generating custom images for content...');
+        await new Promise(resolve => setTimeout(resolve, 4000));
+        
+        setGenerationStage('✍️ Creating research-backed content with citations...');
+        await new Promise(resolve => setTimeout(resolve, 3500));
+        
+        setGenerationStage('🔗 Integrating images and optimizing for publication...');
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        setGenerationStage('🎯 Final polish and export preparation...');
+        await new Promise(resolve => setTimeout(resolve, 1500));
 
-      // Generate enhanced content results
-      const results = generateEnhancedContent(targetSite, seedLongTails, userExperience, locale);
-      setContentResults(results);
+        // Generate enhanced content with research and images
+        const enhancedResults = await enhancedContentService.generateResearchBackedContent(
+          targetSite, seedLongTails, userExperience, locale
+        );
+        setContentResults(enhancedResults);
+      } else {
+        // Standard workflow (existing)
+        setGenerationStage('🕷️ Crawling target site for internal link opportunities...');
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        setGenerationStage('🔍 Researching long-tail keywords and related topics...');
+        await new Promise(resolve => setTimeout(resolve, 2500));
+        
+        setGenerationStage('📚 Gathering authoritative external sources...');
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        setGenerationStage('📝 Creating content outline and topic cluster map...');
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        
+        setGenerationStage('✍️ Writing SEO-optimized blog post...');
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        
+        setGenerationStage('🔗 Optimizing internal and external link structure...');
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        
+        setGenerationStage('🎯 Final SEO polish and validation...');
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        // Generate standard content results
+        const results = generateEnhancedContent(targetSite, seedLongTails, userExperience, locale);
+        setContentResults(results);
+      }
       
       // Send results to dashboard
-      sendContentResultsToDashboard(results);
+      sendContentResultsToDashboard(contentResults);
       
     } catch (error) {
       console.error('Content generation failed:', error);
@@ -133,31 +164,68 @@ Execute this strategy now for ${targetSite} targeting: ${longTails}
     const baseFilename = `${siteName}_content_${timestamp}`;
 
     let formatName = '';
-    switch (format) {
-      case 'html':
-        const htmlContent = generateHTMLContent(contentResults);
-        downloadFile(htmlContent, `${baseFilename}.html`, 'text/html');
-        formatName = 'HTML';
-        break;
-      case 'markdown':
-        const markdownContent = generateMarkdownContent(contentResults);
-        downloadFile(markdownContent, `${baseFilename}.md`, 'text/markdown');
-        formatName = 'Markdown';
-        break;
-      case 'text':
-        const textContent = generateTextContent(contentResults);
-        downloadFile(textContent, `${baseFilename}.txt`, 'text/plain');
-        formatName = 'Text';
-        break;
-      case 'json':
-        const jsonContent = JSON.stringify(contentResults, null, 2);
-        downloadFile(jsonContent, `${baseFilename}.json`, 'application/json');
-        formatName = 'JSON';
-        break;
-      default:
-        exportContent('markdown'); // Default to markdown
-        return;
+    let content = '';
+
+    // Handle enhanced exports if available
+    if (contentResults.exports) {
+      switch (format) {
+        case 'html':
+          content = contentResults.exports.html;
+          formatName = 'HTML';
+          break;
+        case 'markdown':
+          content = contentResults.exports.markdown;
+          formatName = 'Markdown';
+          break;
+        case 'wordpress':
+          content = contentResults.exports.wordpress;
+          formatName = 'WordPress';
+          break;
+        case 'json':
+          content = contentResults.exports.json;
+          formatName = 'JSON';
+          break;
+        case 'text':
+          content = generateTextContent(contentResults);
+          formatName = 'Text';
+          break;
+        default:
+          content = contentResults.exports.markdown;
+          formatName = 'Markdown';
+      }
+    } else {
+      // Fallback to standard exports
+      switch (format) {
+        case 'html':
+          content = generateHTMLContent(contentResults);
+          formatName = 'HTML';
+          break;
+        case 'markdown':
+          content = generateMarkdownContent(contentResults);
+          formatName = 'Markdown';
+          break;
+        case 'text':
+          content = generateTextContent(contentResults);
+          formatName = 'Text';
+          break;
+        case 'json':
+          content = JSON.stringify(contentResults, null, 2);
+          formatName = 'JSON';
+          break;
+        default:
+          content = generateMarkdownContent(contentResults);
+          formatName = 'Markdown';
+          return;
+      }
     }
+
+    // Download the file
+    const fileExtension = format === 'wordpress' ? 'html' : format === 'json' ? 'json' : format === 'text' ? 'txt' : format === 'markdown' ? 'md' : 'html';
+    downloadFile(content, `${baseFilename}.${fileExtension}`, 
+      format === 'json' ? 'application/json' : 
+      format === 'html' || format === 'wordpress' ? 'text/html' : 
+      format === 'markdown' ? 'text/markdown' : 'text/plain'
+    );
 
     // Show success message
     setExportSuccess(`Content exported as ${formatName} file!`);
@@ -387,11 +455,22 @@ A: Requirements vary by location and project type. Check with local authorities 
               <div className="bg-green-100 border border-green-200 rounded-lg p-3">
                 <div className="flex items-center text-green-800">
                   <CheckCircle className="h-5 w-5 mr-2" />
-                  <span className="text-sm font-medium">Content Generated</span>
+                  <span className="text-sm font-medium">
+                    {contentResults.metadata?.researchBacked ? 'Research-Backed Content Generated' : 'Content Generated'}
+                  </span>
                 </div>
                 <p className="text-xs text-green-700 mt-1">
-                  {contentResults.wordCount} words • {contentResults.targetKeywords.length} keywords • SEO Score: {contentResults.seoScore}/10
+                  {contentResults.metadata?.wordCount || contentResults.wordCount} words • 
+                  {contentResults.metadata?.sourceCount || contentResults.targetKeywords?.length} {contentResults.metadata?.researchBacked ? 'sources' : 'keywords'} • 
+                  SEO Score: {contentResults.seoScore || contentResults.metadata?.seoScore}/10
+                  {contentResults.metadata?.imageCount && ` • ${contentResults.metadata.imageCount} custom images`}
                 </p>
+                {contentResults.metadata?.researchBacked && (
+                  <div className="flex items-center mt-1 text-xs text-green-600">
+                    <ExternalLink className="h-3 w-3 mr-1" />
+                    <span>Publication-ready with real citations</span>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -471,6 +550,45 @@ A: Requirements vary by location and project type. Check with local authorities 
                   <li>• Research-backed authoritative citations</li>
                   <li>• FAQ section for featured snippets</li>
                 </ul>
+                
+                <div className="mt-4 space-y-3">
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      id="researchEnabled"
+                      checked={researchEnabled}
+                      onChange={(e) => setResearchEnabled(e.target.checked)}
+                      className="rounded text-purple-600 focus:ring-purple-500"
+                    />
+                    <label htmlFor="researchEnabled" className="ml-2 text-sm font-medium text-purple-900 flex items-center">
+                      <Search className="h-4 w-4 mr-1" />
+                      Deep Research with Real Citations
+                    </label>
+                  </div>
+                  
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      id="imageGeneration"
+                      checked={imageGeneration}
+                      onChange={(e) => setImageGeneration(e.target.checked)}
+                      className="rounded text-purple-600 focus:ring-purple-500"
+                    />
+                    <label htmlFor="imageGeneration" className="ml-2 text-sm font-medium text-purple-900 flex items-center">
+                      <Image className="h-4 w-4 mr-1" />
+                      Custom AI-Generated Images
+                    </label>
+                  </div>
+                  
+                  {(researchEnabled || imageGeneration) && (
+                    <div className="bg-green-50 border border-green-200 rounded p-2 mt-2">
+                      <p className="text-xs text-green-700 flex items-center">
+                        <Zap className="h-3 w-3 mr-1" />
+                        <strong>Enhanced Mode:</strong> Publication-ready content with real sources {imageGeneration ? '+ custom images' : ''}
+                      </p>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>

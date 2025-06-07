@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { BarChart3, TrendingUp, Target, Zap, AlertCircle, CheckCircle, Clock, Users, Globe, Brain } from 'lucide-react';
+import { BarChart3, TrendingUp, Target, Zap, AlertCircle, CheckCircle, Clock, Users, Globe, Brain, MessageCircle } from 'lucide-react';
 import { Card, Button } from './ui/DesignSystem';
 import { useDataBridge } from '../utils/DataBridge';
+import AIChatInterface from './AIChatInterface';
 
 const UnifiedDashboard = ({ userProfile, websiteAnalysis }) => {
   const { data, generateUnifiedInsights } = useDataBridge();
   const [insights, setInsights] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   useEffect(() => {
     // Generate unified insights when data changes
@@ -46,6 +48,18 @@ const UnifiedDashboard = ({ userProfile, websiteAnalysis }) => {
           <p className="text-lg text-gray-600">
             Unified insights from all your marketing analysis tools
           </p>
+          
+          {/* AI Chat Button */}
+          <div className="mt-4">
+            <button
+              onClick={() => setIsChatOpen(true)}
+              className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all flex items-center mx-auto space-x-2 shadow-lg"
+            >
+              <MessageCircle className="h-5 w-5" />
+              <span>Chat with AI Marketing Strategist</span>
+            </button>
+            <p className="text-sm text-gray-500 mt-2">Get personalized recommendations and strategy advice</p>
+          </div>
         </div>
 
         {/* Performance Overview */}
@@ -370,6 +384,14 @@ const UnifiedDashboard = ({ userProfile, websiteAnalysis }) => {
         )}
       </div>
     </div>
+    
+    {/* AI Chat Interface */}
+    <AIChatInterface 
+      userProfile={userProfile}
+      websiteAnalysis={websiteAnalysis}
+      isOpen={isChatOpen}
+      onClose={() => setIsChatOpen(false)}
+    />
   );
 };
 

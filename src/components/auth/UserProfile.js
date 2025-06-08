@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth } from './AuthContext';
+import { useAuth } from '../../App'; // Use mock auth from App.js
 import { User, Globe, BarChart3, Facebook, Search, Edit3, Save, X, CheckCircle, AlertCircle } from 'lucide-react';
 
 const UserProfile = ({ onClose }) => {

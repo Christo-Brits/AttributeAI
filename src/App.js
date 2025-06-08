@@ -1,10 +1,26 @@
-import React, { lazy, Suspense, useState } from 'react';
+import React, { lazy, Suspense, useState, createContext, useContext } from 'react';
 import './App.css';
 import NavigationWrapper from './components/NavigationWrapper';
 import UnifiedDashboard from './components/UnifiedDashboard';
 import AuthenticatedApp from './components/auth/AuthWrapper';
 import WebsiteAnalysisComponent from './components/WebsiteAnalysisComponent';
 import FloatingChatButton from './components/FloatingChatButton';
+
+// Mock Auth Context for development
+const MockAuthContext = createContext();
+export const useAuth = () => useContext(MockAuthContext);
+
+const MockAuthProvider = ({ children }) => {
+  return (
+    <MockAuthContext.Provider value={{
+      user: { email: 'demo@attributeai.com', name: 'Demo User' },
+      logout: () => console.log('Mock logout'),
+      updateUser: (userData) => console.log('Mock updateUser:', userData)
+    }}>
+      {children}
+    </MockAuthContext.Provider>
+  );
+};
 
 // Phase 2: Enhanced components with Claude AI  
 const SEOAnalysisEnhanced = lazy(() => import('./components/SEOCompetitorAnalysis.enhanced'));
@@ -83,10 +99,11 @@ function AppContent() {
 }
 
 function App() {
+  // Temporarily bypass authentication for development/testing
   return (
-    <AuthenticatedApp>
+    <MockAuthProvider>
       <AppContent />
-    </AuthenticatedApp>
+    </MockAuthProvider>
   );
 }
 

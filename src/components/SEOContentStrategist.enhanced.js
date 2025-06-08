@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { PenTool, FileText, Target, Eye, CheckCircle, Clock, Search, Zap, Image, ExternalLink, Brain, TrendingUp, Users, Globe } from 'lucide-react';
+import { PenTool, FileText, Target, Eye, CheckCircle, Clock, Search, Zap, Image, ExternalLink, Brain, TrendingUp, Users, Globe, Sparkles } from 'lucide-react';
 import EnhancedContentService from '../services/EnhancedContentService';
+import ContentPolishModal from './ContentPolishModal';
 
 const SEOContentStrategist = () => {
   const [userProfile, setUserProfile] = useState(null);
@@ -16,6 +17,7 @@ const SEOContentStrategist = () => {
   const [showExportMenu, setShowExportMenu] = useState(false);
   const [exportSuccess, setExportSuccess] = useState('');
   const [analysisResults, setAnalysisResults] = useState(null);
+  const [showPolishModal, setShowPolishModal] = useState(false);
   const exportMenuRef = useRef(null);
   const enhancedContentService = new EnhancedContentService();
 
@@ -554,14 +556,23 @@ Return only the JSON array, no other text.`;
                       Generated Content
                     </h3>
                     
-                    <div className="relative" ref={exportMenuRef}>
+                    <div className="flex items-center gap-3">
                       <button
-                        onClick={() => setShowExportMenu(!showExportMenu)}
-                        className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 flex items-center space-x-2"
+                        onClick={() => setShowPolishModal(true)}
+                        className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center space-x-2"
                       >
-                        <ExternalLink size={16} />
-                        <span>Export</span>
+                        <Sparkles size={16} />
+                        <span>Polish for Publication</span>
                       </button>
+                      
+                      <div className="relative" ref={exportMenuRef}>
+                        <button
+                          onClick={() => setShowExportMenu(!showExportMenu)}
+                          className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 flex items-center space-x-2"
+                        >
+                          <ExternalLink size={16} />
+                          <span>Export</span>
+                        </button>
                       
                       {showExportMenu && (
                         <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
@@ -631,6 +642,20 @@ Return only the JSON array, no other text.`;
           </div>
         </div>
       </div>
+      
+      {/* Polish Modal */}
+      {showPolishModal && contentResults && (
+        <ContentPolishModal
+          content={contentResults.content}
+          metadata={{
+            keywords: contentResults.metadata?.focusKeyword || selectedTopic || customTopic,
+            title: contentResults.metadata?.title,
+            description: contentResults.metadata?.description,
+            website: userProfile?.website
+          }}
+          onClose={() => setShowPolishModal(false)}
+        />
+      )}
     </div>
   );
 };

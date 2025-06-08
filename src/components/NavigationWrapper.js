@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { BarChart3, Activity, TrendingUp, Search, PenTool, Target, Eye, Settings, User, Bell, Grid, LogOut, Globe } from 'lucide-react';
-import { useAuth } from './auth/AuthContext';
+import { useAuth } from '../App'; // Use mock auth from App.js
 import UserProfile from './auth/UserProfile';
 
 const NavigationWrapper = ({ activeTab, setActiveTab }) => {

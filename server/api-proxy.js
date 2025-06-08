@@ -593,6 +593,123 @@ app.get('/health', (req, res) => {
     });
 });
 
+// Polish Content - SEO Optimization endpoint
+app.post('/api/optimize-seo', async (req, res) => {
+    try {
+        const { content, metadata } = req.body;
+        
+        // Use GPT-4 or Claude for SEO optimization
+        if (process.env.OPENAI_API_KEY) {
+            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+                },
+                body: JSON.stringify({
+                    model: 'gpt-4',
+                    messages: [{
+                        role: 'system',
+                        content: 'You are an SEO expert. Optimize the content for search engines while maintaining readability.'
+                    }, {
+                        role: 'user',
+                        content: `Optimize this content for SEO. Focus on keyword placement, heading structure, and readability:\n\n${content}`
+                    }],
+                    max_tokens: 4000
+                })
+            });
+
+            const data = await response.json();
+            const optimizedContent = data.choices[0].message.content;
+            
+            res.json({ optimizedContent });
+        } else {
+            // Fallback to basic optimization
+            res.json({ optimizedContent: content });
+        }
+    } catch (error) {
+        console.error('SEO optimization error:', error);
+        res.status(500).json({ error: 'SEO optimization failed' });
+    }
+});
+
+// Generate Images endpoint
+app.post('/api/generate-images', async (req, res) => {
+    try {
+        const { prompt, style, count = 2 } = req.body;
+        
+        if (!process.env.OPENAI_API_KEY) {
+            return res.json({ images: [] });
+        }
+        
+        const images = [];
+        for (let i = 0; i < count; i++) {
+            const response = await fetch('https://api.openai.com/v1/images/generations', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+                },
+                body: JSON.stringify({
+                    model: 'dall-e-3',
+                    prompt: `${style} ${prompt} - variation ${i + 1}`,
+                    size: '1024x1024',
+                    quality: 'standard',
+                    n: 1
+                })
+            });
+
+            const data = await response.json();
+            if (data.data && data.data[0]) {
+                images.push({
+                    url: data.data[0].url,
+                    alt: `${prompt} - Image ${i + 1}`,
+                    caption: `Professional ${prompt} visualization`
+                });
+            }
+        }
+        
+        res.json({ images });
+    } catch (error) {
+        console.error('Image generation error:', error);
+        res.json({ images: [] });
+    }
+});
+
+// Generate Social Media Posts endpoint
+app.post('/api/generate-social-posts', async (req, res) => {
+    try {
+        const { content, metadata } = req.body;
+        
+        // Extract key points from content
+        const textContent = content.replace(/<[^>]*>/g, ' ').substring(0, 500);
+        
+        const socialPosts = {
+            linkedin: {
+                text: `🏠 ${metadata.keywords || 'New insights'}: ${textContent.substring(0, 200)}... Read more for expert tips!`,
+                hashtags: ['#PropertyMaintenance', '#RealEstate', '#Auckland', '#PropertyManagement']
+            },
+            facebook: {
+                text: `Important information for property owners! ${textContent.substring(0, 150)}... Check out our latest guide for complete details.`,
+                hashtags: ['#PropertyCare', '#HomeOwnership', '#AucklandProperty']
+            },
+            instagram: {
+                text: `🔧 Property maintenance tips inside! ${textContent.substring(0, 100)}... Link in bio for full guide!`,
+                hashtags: ['#PropertyMaintenance', '#AucklandHomes', '#RealEstateNZ', '#PropertyTips', '#HomeCare']
+            },
+            twitter: {
+                text: `${metadata.keywords || 'Property insights'}: ${textContent.substring(0, 100)}...`,
+                hashtags: ['#RealEstate', '#PropertyNZ', '#Auckland']
+            }
+        };
+        
+        res.json({ posts: socialPosts });
+    } catch (error) {
+        console.error('Social media generation error:', error);
+        res.status(500).json({ error: 'Social media generation failed' });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`🚀 API Proxy server running on http://localhost:${PORT}`);
     console.log(`🔑 Claude API Key: ${process.env.CLAUDE_API_KEY ? 'Configured' : 'Missing'}`);

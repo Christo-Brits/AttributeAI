@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, Send, Bot, User, Target, TrendingUp, Lightbulb, BarChart3, Zap, X } from 'lucide-react';
-import { useAuth } from './auth/AuthContext';
+import { useAuth } from '../App'; // Use mock auth from App.js
 
 const AIChatInterface = ({ websiteAnalysis, isOpen, onClose }) => {
   const { user } = useAuth();

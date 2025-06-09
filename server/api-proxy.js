@@ -710,6 +710,123 @@ app.post('/api/generate-social-posts', async (req, res) => {
     }
 });
 
+// Extract Key Points endpoint for Video Generation
+app.post('/api/extract-key-points', async (req, res) => {
+  try {
+    const { content } = req.body;
+    
+    if (!content) {
+      return res.status(400).json({ error: 'Content is required' });
+    }
+    
+    // Use GPT-4 or Claude to extract key points
+    if (process.env.OPENAI_API_KEY) {
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: 'gpt-4',
+          messages: [{
+            role: 'system',
+            content: 'You are an expert at extracting key actionable points from content. Extract 3-5 main points that would work well in a short video.'
+          }, {
+            role: 'user',
+            content: `Extract 3-5 key actionable points from this content for a short video:\n\n${content.substring(0, 2000)}`
+          }],
+          max_tokens: 500
+        })
+      });
+
+      const data = await response.json();
+      const extractedText = data.choices[0].message.content;
+      
+      // Parse the extracted points
+      const keyPoints = extractedText.split('\n')
+        .filter(line => line.trim())
+        .map(line => line.replace(/^\d+\.\s*/, '').trim())
+        .slice(0, 5);
+      
+      res.json({ keyPoints });
+    } else {
+      // Fallback to basic extraction
+      const sentences = content.match(/[^.!?]+[.!?]+/g) || [];
+      const keyPoints = sentences
+        .filter(s => s.match(/\d+|tip|step|way|reason|benefit|must|should|need/i))
+        .slice(0, 5)
+        .map(s => s.trim());
+      
+      res.json({ keyPoints });
+    }
+  } catch (error) {
+    console.error('Key point extraction error:', error);
+    res.status(500).json({ error: 'Failed to extract key points' });
+  }
+});
+
+// Generate Video Script endpoint
+app.post('/api/generate-video-script', async (req, res) => {
+  try {
+    const { keyPoints, platform, style, duration, tone } = req.body;
+    
+    if (!keyPoints || !platform) {
+      return res.status(400).json({ error: 'Key points and platform are required' });
+    }
+    
+    const platformPrompts = {
+      tiktok: `Create a TikTok script that's ${style}, ${duration} seconds long. Use trendy language, hooks, and make it shareable.`,
+      youtube: `Create a YouTube Shorts script that's ${style}, ${duration} seconds long. Make it educational with clear value and a strong CTA.`,
+      instagram: `Create an Instagram Reels script that's ${style}, ${duration} seconds long. Make it aesthetic and engaging with good visual cues.`
+    };
+    
+    if (process.env.OPENAI_API_KEY) {
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: 'gpt-4',
+          messages: [{
+            role: 'system',
+            content: `You are a viral video script writer. ${platformPrompts[platform]} The tone should be ${tone}.`
+          }, {
+            role: 'user',
+            content: `Create a video script using these key points:\n${keyPoints.join('\n')}\n\nInclude a strong hook, clear sections, and a compelling CTA.`
+          }],
+          max_tokens: 800
+        })
+      });
+
+      const data = await response.json();
+      const script = data.choices[0].message.content;
+      
+      res.json({ script });
+    } else {
+      // Fallback to template
+      const hooks = {
+        tiktok: "STOP! This will save you thousands 💰",
+        youtube: "Here's exactly how to...",
+        instagram: "Save this for later! 📌"
+      };
+      
+      let script = `${hooks[platform]}\n\n`;
+      keyPoints.forEach((point, i) => {
+        script += `${i + 1}. ${point}\n`;
+      });
+      script += `\nFollow for more tips!`;
+      
+      res.json({ script });
+    }
+  } catch (error) {
+    console.error('Script generation error:', error);
+    res.status(500).json({ error: 'Failed to generate script' });
+  }
+});
+
 app.listen(PORT, () => {
     console.log(`🚀 API Proxy server running on http://localhost:${PORT}`);
     console.log(`🔑 Claude API Key: ${process.env.CLAUDE_API_KEY ? 'Configured' : 'Missing'}`);

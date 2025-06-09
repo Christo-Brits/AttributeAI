@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { PenTool, FileText, Target, Eye, CheckCircle, Clock, Search, Zap, Image, ExternalLink, Brain, TrendingUp, Users, Globe, Sparkles } from 'lucide-react';
+import { PenTool, FileText, Target, Eye, CheckCircle, Clock, Search, Zap, Image, ExternalLink, Brain, TrendingUp, Users, Globe, Sparkles, Video } from 'lucide-react';
 import EnhancedContentService from '../services/EnhancedContentService';
 import ContentPolishModal from './ContentPolishModal';
+import VideoGenerationModal from './VideoGenerationModal';
 
 const SEOContentStrategist = () => {
   const [userProfile, setUserProfile] = useState(null);
@@ -18,6 +19,7 @@ const SEOContentStrategist = () => {
   const [exportSuccess, setExportSuccess] = useState('');
   const [analysisResults, setAnalysisResults] = useState(null);
   const [showPolishModal, setShowPolishModal] = useState(false);
+  const [showVideoModal, setShowVideoModal] = useState(false);
   const exportMenuRef = useRef(null);
   const enhancedContentService = new EnhancedContentService();
 
@@ -558,6 +560,14 @@ Return only the JSON array, no other text.`;
                     
                     <div className="flex items-center gap-3">
                       <button
+                        onClick={() => setShowVideoModal(true)}
+                        className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 flex items-center space-x-2"
+                      >
+                        <Video size={16} />
+                        <span>Generate Video Scripts</span>
+                      </button>
+                      
+                      <button
                         onClick={() => setShowPolishModal(true)}
                         className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center space-x-2"
                       >
@@ -654,6 +664,20 @@ Return only the JSON array, no other text.`;
             website: userProfile?.website
           }}
           onClose={() => setShowPolishModal(false)}
+        />
+      )}
+      
+      {/* Video Generation Modal */}
+      {showVideoModal && contentResults && (
+        <VideoGenerationModal
+          content={contentResults.content}
+          metadata={{
+            keywords: contentResults.metadata?.focusKeyword || selectedTopic || customTopic,
+            title: contentResults.metadata?.title,
+            description: contentResults.metadata?.description,
+            website: userProfile?.website
+          }}
+          onClose={() => setShowVideoModal(false)}
         />
       )}
     </div>

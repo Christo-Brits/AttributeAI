@@ -611,24 +611,26 @@ Return only the JSON array, no other text.`;
                       </div>
                     </div>
 
-                  {exportSuccess && (
-                    <div className="mb-4 bg-green-50 border border-green-200 rounded-lg p-3">
-                      <p className="text-green-800 text-sm">{exportSuccess}</p>
-                    </div>
-                  )}
+                  <>
+                    {exportSuccess && (
+                      <div className="mb-4 bg-green-50 border border-green-200 rounded-lg p-3">
+                        <p className="text-green-800 text-sm">{exportSuccess}</p>
+                      </div>
+                    )}
 
-                  <div className="bg-gray-50 rounded-lg p-4 max-h-96 overflow-y-auto">
-                    <div className="prose max-w-none">
-                      <pre className="whitespace-pre-wrap text-sm text-gray-700 font-sans">
-                        {contentResults.content}
-                      </pre>
+                    <div className="bg-gray-50 rounded-lg p-4 max-h-96 overflow-y-auto">
+                      <div className="prose max-w-none">
+                        <pre className="whitespace-pre-wrap text-sm text-gray-700 font-sans">
+                          {contentResults.content}
+                        </pre>
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="mt-4 text-xs text-gray-500 flex items-center justify-between">
-                    <span>Generated: {new Date(contentResults.timestamp).toLocaleString()}</span>
-                    <span>Type: {contentResults.type} • Target: {contentResults.targetAudience}</span>
-                  </div>
+                    <div className="mt-4 text-xs text-gray-500 flex items-center justify-between">
+                      <span>Generated: {new Date(contentResults.timestamp).toLocaleString()}</span>
+                      <span>Type: {contentResults.type} • Target: {contentResults.targetAudience}</span>
+                    </div>
+                  </>
                 </div>
               )}
 

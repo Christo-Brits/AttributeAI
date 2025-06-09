@@ -583,21 +583,21 @@ Return only the JSON array, no other text.`;
                           <ExternalLink size={16} />
                           <span>Export</span>
                         </button>
-                      
-                      {showExportMenu && (
-                        <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
-                          <div className="py-1">
-                            <button
-                              onClick={() => exportContent('html')}
-                              className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            >
-                              Export as HTML
-                            </button>
-                            <button
-                              onClick={() => exportContent('markdown')}
-                              className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            >
-                              Export as Markdown
+                        
+                        {showExportMenu && (
+                          <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
+                            <div className="py-1">
+                              <button
+                                onClick={() => exportContent('html')}
+                                className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                              >
+                                Export as HTML
+                              </button>
+                              <button
+                                onClick={() => exportContent('markdown')}
+                                className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                              >
+                                Export as Markdown
                             </button>
                             <button
                               onClick={() => exportContent('txt')}
@@ -607,9 +607,9 @@ Return only the JSON array, no other text.`;
                             </button>
                           </div>
                         </div>
-                      )}
+                        )}
+                      </div>
                     </div>
-                  </div>
 
                   {exportSuccess && (
                     <div className="mb-4 bg-green-50 border border-green-200 rounded-lg p-3">

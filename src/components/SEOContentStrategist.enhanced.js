@@ -655,7 +655,6 @@ Return only the JSON array, no other text.`;
           </div>
         </div>
       </div>
-    </div>
       
       {/* Polish Modal */}
       {showPolishModal && contentResults && (

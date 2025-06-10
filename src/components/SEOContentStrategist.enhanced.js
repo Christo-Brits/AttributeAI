@@ -356,8 +356,9 @@ Return only the JSON array, no other text.`;
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto">
+    <>
+      <div className="min-h-screen bg-gray-50 p-6">
+        <div className="max-w-7xl mx-auto">
         
         {/* Header */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
@@ -682,7 +683,7 @@ Return only the JSON array, no other text.`;
           onClose={() => setShowVideoModal(false)}
         />
       )}
-    </div>
+    </>
   );
 };
 

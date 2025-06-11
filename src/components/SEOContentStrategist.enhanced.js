@@ -633,27 +633,26 @@ Return only the JSON array, no other text.`;
                   </div>
                 )}
 
-              {/* Help Text */}
-              {!userProfile && (
-                <div className="border border-yellow-200 rounded-lg p-4 bg-yellow-50">
-                  <div className="flex items-start">
-                    <Users className="text-yellow-600 mr-2 mt-1" size={16} />
-                    <div>
-                      <p className="text-yellow-800 text-sm font-medium">
-                        Complete your signup for personalized content suggestions
-                      </p>
-                      <p className="text-yellow-700 text-xs mt-1">
-                        Provide your website and business details to get AI-powered content gap analysis and targeted content recommendations.
-                      </p>
+                {/* Help Text */}
+                {!userProfile && (
+                  <div className="border border-yellow-200 rounded-lg p-4 bg-yellow-50">
+                    <div className="flex items-start">
+                      <Users className="text-yellow-600 mr-2 mt-1" size={16} />
+                      <div>
+                        <p className="text-yellow-800 text-sm font-medium">
+                          Complete your signup for personalized content suggestions
+                        </p>
+                        <p className="text-yellow-700 text-xs mt-1">
+                          Provide your website and business details to get AI-powered content gap analysis and targeted content recommendations.
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
     
     {/* Polish Modal */}
     {showPolishModal && contentResults && (

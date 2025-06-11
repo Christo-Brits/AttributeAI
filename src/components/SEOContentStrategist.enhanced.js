@@ -653,36 +653,36 @@ Return only the JSON array, no other text.`;
             </div>
           </div>
         </div>
-    
-    {/* Polish Modal */}
-    {showPolishModal && contentResults && (
-      <ContentPolishModal
-        content={contentResults.content}
-        metadata={{
-          keywords: contentResults.metadata?.focusKeyword || selectedTopic || customTopic,
-          title: contentResults.metadata?.title,
-          description: contentResults.metadata?.description,
-          website: userProfile?.website
-        }}
-        onClose={() => setShowPolishModal(false)}
-      />
-    )}
-    
-    {/* Video Generation Modal */}
-    {showVideoModal && contentResults && (
-      <VideoGenerationModal
-          content={contentResults.content}
-          metadata={{
-            keywords: contentResults.metadata?.focusKeyword || selectedTopic || customTopic,
-            title: contentResults.metadata?.title,
-            description: contentResults.metadata?.description,
-            website: userProfile?.website
-          }}
-          onClose={() => setShowVideoModal(false)}
-        />
-      )}
-    </>
-  );
+        
+        {/* Polish Modal */}
+        {showPolishModal && contentResults && (
+          <ContentPolishModal
+            content={contentResults.content}
+            metadata={{
+              keywords: contentResults.metadata?.focusKeyword || selectedTopic || customTopic,
+              title: contentResults.metadata?.title,
+              description: contentResults.metadata?.description,
+              website: userProfile?.website
+            }}
+            onClose={() => setShowPolishModal(false)}
+          />
+        )}
+        
+        {/* Video Generation Modal */}
+        {showVideoModal && contentResults && (
+          <VideoGenerationModal
+            content={contentResults.content}
+            metadata={{
+              keywords: contentResults.metadata?.focusKeyword || selectedTopic || customTopic,
+              title: contentResults.metadata?.title,
+              description: contentResults.metadata?.description,
+              website: userProfile?.website
+            }}
+            onClose={() => setShowVideoModal(false)}
+          />
+        )}
+      </div>
+    );
 };
 
 export default SEOContentStrategist;

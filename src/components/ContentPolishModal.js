@@ -125,15 +125,15 @@ const ContentPolishModal = ({ content, metadata, onClose }) => {
                     <p className="text-gray-900">{polishedData.metadata.title}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Meta Description:</p>                          src={img.url} 
-                          alt={img.alt || `Generated image ${index + 1}`}
-                          className="w-full h-48 object-cover rounded-lg mb-2"
-                        />
-                        <p className="text-sm text-gray-600">{img.caption || `Image ${index + 1}`}</p>
-                      </div>
-                    ))}
+                    <p className="text-sm font-medium text-gray-600">Meta Description:</p>
+                    <p className="text-gray-900">{polishedData.metadata.description}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">URL Slug:</p>
+                    <p className="text-gray-900">{polishedData.metadata.slug}</p>
                   </div>
                 </div>
+              </div>
               )}
 
               {/* Social Media Posts */}

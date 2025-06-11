@@ -26,7 +26,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "pre-check": "npm run build",
+    "deploy-check": "npm run pre-check && echo Ready for deployment!"
   },
   "eslintConfig": {
     "extends": [

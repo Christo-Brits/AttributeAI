@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BarChart3, TrendingUp, Target, Zap, AlertCircle, CheckCircle, Clock, Users, Globe, Brain, MessageCircle } from 'lucide-react';
 import { Card, Button } from './ui/DesignSystem';
 import { useDataBridge } from '../utils/DataBridge';
-import { useAuth } from '../App'; // Use mock auth from App.js
+import { useAuth } from './auth/AuthContext';
 import AIChatInterface from './AIChatInterface';
 
 const UnifiedDashboard = ({ websiteAnalysis }) => {

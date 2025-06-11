@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Brain, Mail, Lock, Globe, User, ArrowRight } from 'lucide-react';
+import { useAuth } from './auth/AuthContext';
 
-const LoginPage = ({ onLogin }) => {
+const LoginPage = () => {
+  const { login, signup } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -11,6 +13,7 @@ const LoginPage = ({ onLogin }) => {
   });
   const [isSignUp, setIsSignUp] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -23,20 +26,18 @@ const LoginPage = ({ onLogin }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setError('');
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    onLogin({
-      ...formData,
-      analysisTarget: formData.website,
-      userProfile: {
-        email: formData.email,
-        businessName: formData.businessName,
-        industry: formData.industry,
-        website: formData.website
+    try {
+      const result = isSignUp ? await signup(formData) : await login(formData);
+      
+      if (!result.success) {
+        setError(result.error || 'Authentication failed');
       }
-    });
+      // On success, the AuthContext will handle the redirect
+    } catch (err) {
+      setError('Something went wrong. Please try again.');
+    }
     
     setIsLoading(false);
   };
@@ -55,6 +56,12 @@ const LoginPage = ({ onLogin }) => {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {error && (
+            <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+              <p className="text-red-700 text-sm">{error}</p>
+            </div>
+          )}
+          
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Email Address

@@ -21,33 +21,29 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuthStatus = async () => {
     try {
-      // Check for stored session
-      const session = localStorage.getItem('attributeai_session') || sessionStorage.getItem('attributeai_session');
+      // Check for stored user data (for demo/development)
+      const storedUser = localStorage.getItem('attributeai_user');
       
-      if (session) {
-        const sessionData = JSON.parse(session);
+      if (storedUser) {
+        const userData = JSON.parse(storedUser);
+        setUser(userData);
+        setIsAuthenticated(true);
+      } else {
+        // Check for stored session (for production)
+        const session = localStorage.getItem('attributeai_session') || sessionStorage.getItem('attributeai_session');
         
-        // Check if session is expired
-        if (sessionData.expiresAt > Date.now()) {
-          // Verify session with backend
-          const response = await fetch('/api/verify-session', {
-            headers: {
-              'Authorization': `Bearer ${sessionData.token}`
-            }
-          });
-
-          if (response.ok) {
-            const userData = await response.json();
+        if (session) {
+          const sessionData = JSON.parse(session);
+          
+          // Check if session is expired
+          if (sessionData.expiresAt > Date.now()) {
+            // In demo mode, just use stored user data
+            const userData = JSON.parse(localStorage.getItem('attributeai_user') || '{}');
             setUser(userData);
             setIsAuthenticated(true);
-            
-            // Store updated user data
-            localStorage.setItem('attributeai_user', JSON.stringify(userData));
           } else {
             clearAuth();
           }
-        } else {
-          clearAuth();
         }
       }
     } catch (error) {
@@ -60,6 +56,37 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     try {
+      // For demo/development: simulate login
+      const userData = {
+        email: credentials.email,
+        firstName: credentials.businessName?.split(' ')[0] || 'Demo',
+        lastName: credentials.businessName?.split(' ')[1] || 'User',
+        company: credentials.businessName || 'Demo Company',
+        industry: credentials.industry || 'Professional Services',
+        website: credentials.website || '',
+        websiteUrl: credentials.website || ''
+      };
+      
+      setUser(userData);
+      setIsAuthenticated(true);
+      
+      // Store session data
+      const sessionData = {
+        token: 'demo-token-' + Date.now(),
+        expiresAt: Date.now() + (credentials.rememberMe ? 30 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000)
+      };
+
+      if (credentials.rememberMe) {
+        localStorage.setItem('attributeai_session', JSON.stringify(sessionData));
+      } else {
+        sessionStorage.setItem('attributeai_session', JSON.stringify(sessionData));
+      }
+
+      localStorage.setItem('attributeai_user', JSON.stringify(userData));
+      return { success: true };
+      
+      // For production: actual API call
+      /*
       const response = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -89,6 +116,7 @@ export const AuthProvider = ({ children }) => {
         const errorData = await response.json();
         return { success: false, error: errorData.message };
       }
+      */
     } catch (error) {
       console.error('Login error:', error);
       return { success: false, error: 'Network error' };
@@ -97,6 +125,11 @@ export const AuthProvider = ({ children }) => {
 
   const signup = async (userData) => {
     try {
+      // For demo/development: simulate signup (same as login)
+      return await login(userData);
+      
+      // For production: actual API call
+      /*
       const response = await fetch('/api/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -122,6 +155,7 @@ export const AuthProvider = ({ children }) => {
         const errorData = await response.json();
         return { success: false, error: errorData.message };
       }
+      */
     } catch (error) {
       console.error('Signup error:', error);
       return { success: false, error: 'Network error' };

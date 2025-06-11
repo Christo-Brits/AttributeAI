@@ -1,26 +1,10 @@
-import React, { lazy, Suspense, useState, createContext, useContext } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 import './App.css';
+import { AuthProvider, useAuth } from './components/auth/AuthContext';
 import NavigationWrapper from './components/NavigationWrapper';
 import UnifiedDashboard from './components/UnifiedDashboard';
-import AuthenticatedApp from './components/auth/AuthWrapper';
-import WebsiteAnalysisComponent from './components/WebsiteAnalysisComponent';
+import LoginPage from './components/LoginPage';
 import FloatingChatButton from './components/FloatingChatButton';
-
-// Mock Auth Context for development
-const MockAuthContext = createContext();
-export const useAuth = () => useContext(MockAuthContext);
-
-const MockAuthProvider = ({ children }) => {
-  return (
-    <MockAuthContext.Provider value={{
-      user: { email: 'demo@attributeai.com', name: 'Demo User' },
-      logout: () => console.log('Mock logout'),
-      updateUser: (userData) => console.log('Mock updateUser:', userData)
-    }}>
-      {children}
-    </MockAuthContext.Provider>
-  );
-};
 
 // Phase 2: Enhanced components with Claude AI  
 const SEOAnalysisEnhanced = lazy(() => import('./components/SEOCompetitorAnalysis.enhanced'));
@@ -43,16 +27,9 @@ const ComponentLoader = () => (
   </div>
 );
 
-function AppContent() {
+function AuthenticatedApp() {
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [showAnalysis, setShowAnalysis] = useState(false);
   const [websiteAnalysisResults, setWebsiteAnalysisResults] = useState(null);
-
-  const handleAnalysisComplete = (results) => {
-    setWebsiteAnalysisResults(results);
-    setShowAnalysis(false);
-    setActiveTab('dashboard'); // Navigate to dashboard with results
-  };
 
   const renderActiveComponent = () => {
     const components = {
@@ -99,12 +76,41 @@ function AppContent() {
 }
 
 function App() {
-  // Temporarily bypass authentication for development/testing
   return (
-    <MockAuthProvider>
-      <AppContent />
-    </MockAuthProvider>
+    <AuthProvider>
+      <AppRouter />
+    </AuthProvider>
   );
+}
+
+function AppRouter() {
+  const { isAuthenticated, isLoading, updateUser } = useAuth();
+
+  const handleLogin = (userData) => {
+    // Store user data and mark as authenticated
+    updateUser(userData.userProfile);
+    // The AuthContext will handle the authentication state
+  };
+
+  // Show loading spinner while checking authentication
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="loading-spinner h-12 w-12 border-blue-600 mb-4 mx-auto"></div>
+          <p className="text-gray-600">Loading AttributeAI...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show login page if not authenticated
+  if (!isAuthenticated) {
+    return <LoginPage onLogin={handleLogin} />;
+  }
+
+  // Show main app if authenticated
+  return <AuthenticatedApp />;
 }
 
 export default App;

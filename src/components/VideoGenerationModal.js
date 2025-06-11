@@ -55,7 +55,8 @@ const VideoGenerationModal = ({ content, metadata, onClose }) => {
       setVideoData(result);
       setIsGenerating(false);
     } catch (err) {
-      console.error('Video generation error:', err);      setError('Failed to generate video content. Please try again.');
+      console.error('Video generation error:', err);
+      setError('Failed to generate video content. Please try again.');
       setIsGenerating(false);
     }
   };
@@ -84,7 +85,8 @@ const VideoGenerationModal = ({ content, metadata, onClose }) => {
         break;
       case 'srt':
         content = videoData.captions.srt;
-        filename = `captions-${selectedPlatform}.srt`;        mimeType = 'text/plain';
+        filename = `captions-${selectedPlatform}.srt`;
+        mimeType = 'text/plain';
         break;
       default:
         return;
@@ -142,7 +144,39 @@ const VideoGenerationModal = ({ content, metadata, onClose }) => {
                 {platform.name}
               </button>
             ))}
-          </div> font-medium text-gray-700 mb-2">Generating video content...</p>
+          </div>
+        </div>
+
+        {/* Content Area */}
+        <div className="flex-1 overflow-hidden">
+          {/* Tab Navigation */}
+          {!isGenerating && !error && videoData && (
+            <div className="border-b border-gray-200">
+              <div className="flex space-x-1 p-4">
+                {tabs.map(tab => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
+                      activeTab === tab.id
+                        ? 'bg-purple-100 text-purple-700'
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                    }`}
+                  >
+                    {tab.icon}
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Content */}
+          <div className="p-6 overflow-y-auto">
+            {isGenerating ? (
+              <div className="text-center py-12">
+                <Loader className="w-8 h-8 text-purple-600 animate-spin mx-auto mb-4" />
+                <p className="font-medium text-gray-700 mb-2">Generating video content...</p>
                 <p className="text-sm text-gray-500">{generationStage}</p>
               </div>
             ) : error ? (
@@ -169,7 +203,8 @@ const VideoGenerationModal = ({ content, metadata, onClose }) => {
                     <div className="bg-gray-50 rounded-lg p-6">
                       <pre className="whitespace-pre-wrap font-sans">{videoData.script}</pre>
                     </div>
-                    <div className="mt-4 grid grid-cols-3 gap-4">                      <div className="bg-blue-50 rounded-lg p-4">
+                    <div className="mt-4 grid grid-cols-3 gap-4">
+                      <div className="bg-blue-50 rounded-lg p-4">
                         <p className="text-sm text-blue-600 font-medium">Duration</p>
                         <p className="text-2xl font-bold text-blue-900">{videoData.metadata.totalDuration}s</p>
                       </div>
@@ -198,7 +233,8 @@ const VideoGenerationModal = ({ content, metadata, onClose }) => {
                             </span>
                             <span className="text-sm text-gray-600 bg-white px-2 py-1 rounded">
                               {scene.duration}s
-                            </span>                          </div>
+                            </span>
+                          </div>
                           <p className="text-gray-800 mb-2">{scene.text}</p>
                           <div className="text-sm text-gray-600 space-y-1">
                             <p><strong>Visual:</strong> {scene.visual}</p>
@@ -286,7 +322,8 @@ const VideoGenerationModal = ({ content, metadata, onClose }) => {
                             <p className="text-sm text-gray-600">{audio.description}</p>
                           </div>
                           <div className="text-right">
-                            {audio.trending && (                              <span className="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs font-medium">
+                            {audio.trending && (
+                              <span className="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs font-medium">
                                 Trending
                               </span>
                             )}
@@ -316,7 +353,8 @@ const VideoGenerationModal = ({ content, metadata, onClose }) => {
         </div>
 
         {/* Footer */}
-        {videoData && (          <div className="border-t p-4 bg-gray-50">
+        {videoData && (
+          <div className="border-t p-4 bg-gray-50">
             <div className="flex justify-between items-center">
               <p className="text-sm text-gray-600">
                 Generated for {videoData.platform.name} • {videoData.platform.aspectRatio} • 

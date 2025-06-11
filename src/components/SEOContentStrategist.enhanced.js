@@ -681,7 +681,7 @@ Return only the JSON array, no other text.`;
             onClose={() => setShowVideoModal(false)}
           />
         )}
-      </div>
+      </>
     );
 };
 

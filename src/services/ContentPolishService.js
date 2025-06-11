@@ -116,7 +116,8 @@ class ContentPolishService {
     return fixed;
   }
 
-  async optimizeSEO(content, metadata) {    try {
+  async optimizeSEO(content, metadata) {
+    try {
       const response = await fetch(`${this.baseURL}/api/optimize-seo`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -154,7 +155,8 @@ class ContentPolishService {
       nzContent = nzContent.replace(regex, nz);
     });
     
-    // Add NZ-specific disclaimers if needed    if (nzContent.toLowerCase().includes('property') || nzContent.toLowerCase().includes('real estate')) {
+    // Add NZ-specific disclaimers if needed
+    if (nzContent.toLowerCase().includes('property') || nzContent.toLowerCase().includes('real estate')) {
       const disclaimer = '<div class="nz-disclaimer"><p><em>Note: Property information is subject to change. Please verify all details with relevant authorities. This content is for informational purposes only.</em></p></div>';
       if (!nzContent.includes('disclaimer')) {
         nzContent += '\n\n' + disclaimer;
@@ -188,7 +190,8 @@ class ContentPolishService {
 
   async generateSocialMediaContent(content, metadata) {
     try {
-      const response = await fetch(`${this.baseURL}/api/generate-social-posts`, {        method: 'POST',
+      const response = await fetch(`${this.baseURL}/api/generate-social-posts`, {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content, metadata })
       });
@@ -221,7 +224,8 @@ class ContentPolishService {
   }
 
   generateOptimizedTitle(keywords) {
-    const title = keywords ?       `${keywords} - Expert Guide | AttributeAI` : 
+    const title = keywords ?
+      `${keywords} - Expert Guide | AttributeAI` : 
       'Professional Content Guide | AttributeAI';
     return title.length > 60 ? title.substring(0, 57) + '...' : title;
   }
@@ -255,7 +259,8 @@ class ContentPolishService {
     };
   }
 
-  getImprovementsList(analysis) {    const improvements = [];
+  getImprovementsList(analysis) {
+    const improvements = [];
     
     if (analysis.issues.includes('Heading hierarchy skip')) {
       improvements.push('Fixed heading hierarchy for better structure');
@@ -289,7 +294,8 @@ class ContentPolishService {
     </script>
     
     <style>
-        body {            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
             color: #333;
             max-width: 800px;
@@ -320,7 +326,8 @@ class ContentPolishService {
     ${socialPosts ? `
     <div class="social-posts">
         <h2>Social Media Posts</h2>
-        ${Object.entries(socialPosts).map(([platform, post]) => `        <div class="social-post">
+        ${Object.entries(socialPosts).map(([platform, post]) => `
+        <div class="social-post">
             <h3>${platform.charAt(0).toUpperCase() + platform.slice(1)}</h3>
             <p>${post.text}</p>
             <p><em>Hashtags: ${post.hashtags.join(' ')}</em></p>

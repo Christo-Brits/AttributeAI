@@ -2,9 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   PenTool, FileText, Target, CheckCircle, Clock, Search, Zap, 
   Brain, TrendingUp, Users, Globe, Sparkles, Video, Layers,
-  Link, BarChart3, Map, GitBranch, Workflow
+  Link, BarChart3, Map, GitBranch, Workflow, Key, AlertCircle
 } from 'lucide-react';
 import EnhancedContentService from '../services/EnhancedContentService';
+import KeywordResearchEngine from '../services/KeywordResearchEngine';
 import ContentPolishModal from './ContentPolishModal';
 import VideoGenerationModal from './VideoGenerationModal';
 
@@ -15,6 +16,12 @@ const ContentClusterStrategist = () => {
   const [selectedCluster, setSelectedCluster] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationStage, setGenerationStage] = useState('');
+  
+  // Keyword Research State
+  const [keywordResearch, setKeywordResearch] = useState(null);
+  const [isResearching, setIsResearching] = useState(false);
+  const [researchStage, setResearchStage] = useState('');
+  const [keywordClusters, setKeywordClusters] = useState([]);
   
   // Cluster Creation State
   const [clusterTopic, setClusterTopic] = useState('');
@@ -33,6 +40,7 @@ const ContentClusterStrategist = () => {
   
   const exportMenuRef = useRef(null);
   const enhancedContentService = new EnhancedContentService();
+  const keywordResearchEngine = new KeywordResearchEngine();
 
   // Load user profile on component mount
   useEffect(() => {
@@ -78,9 +86,89 @@ const ContentClusterStrategist = () => {
     { id: 'large', name: 'Large Cluster', articles: 30, description: 'Comprehensive topical authority' }
   ];
 
+  const performKeywordResearch = async () => {
+    if (!clusterTopic.trim()) {
+      alert('Please enter a cluster topic for keyword research');
+      return;
+    }
+
+    setIsResearching(true);
+    setResearchStage('Starting keyword research...');
+
+    try {
+      const stages = [
+        'Analyzing seed keyword...',
+        'Generating keyword variations...',
+        'Calculating search volumes...',
+        'Assessing keyword difficulty...',
+        'Determining search intent...',
+        'Clustering related keywords...',
+        'Identifying opportunities...',
+        'Finalizing research...'
+      ];
+
+      for (let i = 0; i < stages.length; i++) {
+        setResearchStage(stages[i]);
+        await new Promise(resolve => setTimeout(resolve, 800));
+      }
+
+      // Perform actual keyword research
+      const researchOptions = {
+        maxKeywords: clusterSize === 'small' ? 25 : clusterSize === 'medium' ? 50 : 100,
+        includeQuestions: true,
+        includeRelated: true,
+        minSearchVolume: 10
+      };
+
+      const researchResults = await keywordResearchEngine.performKeywordResearch(
+        clusterTopic, 
+        researchOptions
+      );
+
+      setKeywordResearch(researchResults);
+
+      // Perform keyword clustering
+      if (researchResults.success && researchResults.keywords.length > 0) {
+        setResearchStage('Clustering keywords...');
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        const clusteringResults = await keywordResearchEngine.clusterKeywords(
+          researchResults.keywords,
+          {
+            maxClusters: clusterSize === 'small' ? 3 : clusterSize === 'medium' ? 5 : 8,
+            minClusterSize: 3,
+            similarity: 0.6
+          }
+        );
+
+        setKeywordClusters(clusteringResults.clusters || []);
+      }
+
+      setResearchStage('Keyword research completed!');
+      setTimeout(() => {
+        setIsResearching(false);
+        setResearchStage('');
+      }, 2000);
+
+    } catch (error) {
+      console.error('Error performing keyword research:', error);
+      setResearchStage('Error during keyword research. Please try again.');
+      setTimeout(() => {
+        setIsResearching(false);
+        setResearchStage('');
+      }, 3000);
+    }
+  };
+
   const generateContentCluster = async () => {
     if (!clusterTopic.trim()) {
       alert('Please enter a cluster topic');
+      return;
+    }
+
+    // Check if we have keyword research data
+    if (!keywordResearch || !keywordResearch.success) {
+      alert('Please perform keyword research first');
       return;
     }
 
@@ -88,15 +176,14 @@ const ContentClusterStrategist = () => {
     setGenerationStage('Planning content cluster...');
 
     try {
-      // Simulate cluster generation process (to be implemented with real AI)
+      // Enhanced cluster generation process using keyword research
       const stages = [
-        'Analyzing topic and competition...',
-        'Performing keyword research...',
-        'Clustering related keywords...',
+        'Analyzing keyword clusters...',
         'Planning article structure...',
-        'Creating pillar content...',
+        'Creating pillar content outline...',
         'Generating supporting articles...',
-        'Setting up internal linking...',
+        'Setting up internal linking strategy...',
+        'Optimizing for search intent...',
         'Finalizing cluster...'
       ];
 
@@ -105,7 +192,7 @@ const ContentClusterStrategist = () => {
         await new Promise(resolve => setTimeout(resolve, 1500));
       }
 
-      // Create mock cluster data (to be replaced with real generation)
+      // Create enhanced cluster data using keyword research
       const newCluster = {
         id: Date.now(),
         topic: clusterTopic,
@@ -113,10 +200,14 @@ const ContentClusterStrategist = () => {
         audience: targetAudience,
         type: contentType,
         status: 'generated',
-        articles: generateMockClusterArticles(),
+        articles: generateEnhancedClusterArticles(),
         createdAt: new Date().toISOString(),
-        keywords: generateMockKeywords(),
-        pillarArticle: null // Will be set to main article ID
+        keywords: keywordResearch.keywords,
+        keywordClusters: keywordClusters,
+        pillarArticle: null, // Will be set to main article ID
+        totalSearchVolume: keywordResearch.keywords.reduce((sum, kw) => sum + kw.searchVolume, 0),
+        avgDifficulty: Math.round(keywordResearch.keywords.reduce((sum, kw) => sum + kw.difficulty, 0) / keywordResearch.keywords.length),
+        opportunities: this.extractUniqueOpportunities(keywordResearch.keywords)
       };
 
       setContentClusters(prev => [...prev, newCluster]);
@@ -138,35 +229,66 @@ const ContentClusterStrategist = () => {
     }
   };
 
-  const generateMockClusterArticles = () => {
+  const generateEnhancedClusterArticles = () => {
     const sizes = { small: 5, medium: 10, large: 30 };
     const articleCount = sizes[clusterSize];
     const articles = [];
 
-    for (let i = 0; i < articleCount; i++) {
-      articles.push({
-        id: `article-${Date.now()}-${i}`,
-        title: `${clusterTopic} - Article ${i + 1}`,
-        type: i === 0 ? 'pillar' : 'supporting',
-        status: 'planned',
-        wordCount: i === 0 ? 3000 : 1500,
-        keywords: [`keyword-${i + 1}`, `keyword-${i + 2}`],
-        internalLinks: [],
-        externalLinks: []
+    // Use keyword clusters to generate targeted articles
+    if (keywordClusters.length > 0) {
+      keywordClusters.forEach((cluster, index) => {
+        if (index < articleCount) {
+          articles.push({
+            id: `article-${Date.now()}-${index}`,
+            title: cluster.primaryKeyword.keyword,
+            type: index === 0 ? 'pillar' : 'supporting',
+            status: 'planned',
+            wordCount: index === 0 ? 3000 : 1500,
+            keywords: cluster.keywords.map(kw => kw.keyword),
+            targetKeyword: cluster.primaryKeyword.keyword,
+            searchVolume: cluster.totalVolume,
+            difficulty: cluster.avgDifficulty,
+            intent: cluster.intent,
+            opportunities: cluster.opportunities,
+            internalLinks: [],
+            externalLinks: []
+          });
+        }
+      });
+    }
+
+    // Fill remaining slots with top keywords if needed
+    const remainingSlots = articleCount - articles.length;
+    if (remainingSlots > 0 && keywordResearch?.keywords) {
+      const topKeywords = keywordResearch.keywords
+        .filter(kw => !articles.some(article => article.targetKeyword === kw.keyword))
+        .slice(0, remainingSlots);
+
+      topKeywords.forEach((keyword, index) => {
+        articles.push({
+          id: `article-${Date.now()}-${articles.length + index}`,
+          title: keyword.keyword,
+          type: 'supporting',
+          status: 'planned',
+          wordCount: 1500,
+          keywords: [keyword.keyword],
+          targetKeyword: keyword.keyword,
+          searchVolume: keyword.searchVolume,
+          difficulty: keyword.difficulty,
+          intent: keyword.intent,
+          opportunities: keyword.opportunities,
+          internalLinks: [],
+          externalLinks: []
+        });
       });
     }
 
     return articles;
   };
 
-  const generateMockKeywords = () => {
-    return [
-      { keyword: clusterTopic, volume: 5000, difficulty: 65, intent: 'informational' },
-      { keyword: `${clusterTopic} guide`, volume: 2000, difficulty: 45, intent: 'informational' },
-      { keyword: `${clusterTopic} tips`, volume: 1500, difficulty: 40, intent: 'informational' },
-      { keyword: `best ${clusterTopic}`, volume: 3000, difficulty: 60, intent: 'commercial' },
-      { keyword: `${clusterTopic} strategy`, volume: 1000, difficulty: 50, intent: 'informational' }
-    ];
+  const extractUniqueOpportunities = (keywords) => {
+    const allOpportunities = keywords.flatMap(kw => kw.opportunities);
+    return [...new Set(allOpportunities)];
   };
 
   const renderClusterPlanningTab = () => (
@@ -239,27 +361,121 @@ const ContentClusterStrategist = () => {
           </div>
         </div>
 
-        <div className="mt-6">
-          <button
-            onClick={generateContentCluster}
-            disabled={isGenerating || !clusterTopic.trim()}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
-          >
-            {isGenerating ? (
-              <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                Generating Cluster...
-              </>
-            ) : (
-              <>
-                <Sparkles className="h-4 w-4 mr-2" />
-                Generate Content Cluster
-              </>
-            )}
-          </button>
+        <div className="mt-6 space-y-4">
+          {/* Keyword Research Button */}
+          <div className="flex space-x-4">
+            <button
+              onClick={performKeywordResearch}
+              disabled={isResearching || !clusterTopic.trim()}
+              className="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+            >
+              {isResearching ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  Researching Keywords...
+                </>
+              ) : (
+                <>
+                  <Key className="h-4 w-4 mr-2" />
+                  Research Keywords
+                </>
+              )}
+            </button>
+
+            <button
+              onClick={generateContentCluster}
+              disabled={isGenerating || !keywordResearch?.success}
+              className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+            >
+              {isGenerating ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  Generating Cluster...
+                </>
+              ) : (
+                <>
+                  <Sparkles className="h-4 w-4 mr-2" />
+                  Generate Content Cluster
+                </>
+              )}
+            </button>
+          </div>
+          
+          {/* Status Messages */}
+          {researchStage && (
+            <p className="text-sm text-purple-600 flex items-center">
+              <Search className="h-4 w-4 mr-2" />
+              {researchStage}
+            </p>
+          )}
           
           {generationStage && (
-            <p className="mt-2 text-sm text-blue-600">{generationStage}</p>
+            <p className="text-sm text-blue-600 flex items-center">
+              <Sparkles className="h-4 w-4 mr-2" />
+              {generationStage}
+            </p>
+          )}
+
+          {/* Keyword Research Results */}
+          {keywordResearch?.success && (
+            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+              <h4 className="font-medium text-gray-900 mb-3 flex items-center">
+                <BarChart3 className="h-4 w-4 mr-2 text-green-600" />
+                Keyword Research Results
+              </h4>
+              
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                <div>
+                  <span className="text-gray-500">Total Keywords:</span>
+                  <p className="font-medium">{keywordResearch.keywords.length}</p>
+                </div>
+                <div>
+                  <span className="text-gray-500">Keyword Clusters:</span>
+                  <p className="font-medium">{keywordClusters.length}</p>
+                </div>
+                <div>
+                  <span className="text-gray-500">Total Volume:</span>
+                  <p className="font-medium">
+                    {keywordResearch.keywords.reduce((sum, kw) => sum + kw.searchVolume, 0).toLocaleString()}
+                  </p>
+                </div>
+                <div>
+                  <span className="text-gray-500">Avg Difficulty:</span>
+                  <p className="font-medium">
+                    {Math.round(keywordResearch.keywords.reduce((sum, kw) => sum + kw.difficulty, 0) / keywordResearch.keywords.length)}%
+                  </p>
+                </div>
+              </div>
+
+              {/* Top Keywords Preview */}
+              <div className="mt-4">
+                <h5 className="text-sm font-medium text-gray-700 mb-2">Top Keywords:</h5>
+                <div className="flex flex-wrap gap-2">
+                  {keywordResearch.keywords.slice(0, 8).map((keyword, index) => (
+                    <span
+                      key={index}
+                      className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
+                    >
+                      {keyword.keyword}
+                      <span className="ml-1 text-blue-600">({keyword.searchVolume})</span>
+                    </span>
+                  ))}
+                  {keywordResearch.keywords.length > 8 && (
+                    <span className="text-xs text-gray-500">+{keywordResearch.keywords.length - 8} more</span>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {!keywordResearch && !isResearching && clusterTopic && (
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 flex items-center">
+              <AlertCircle className="h-5 w-5 text-yellow-600 mr-3" />
+              <div>
+                <p className="text-sm font-medium text-yellow-800">Keyword Research Required</p>
+                <p className="text-sm text-yellow-700">Perform keyword research first to generate data-driven content clusters.</p>
+              </div>
+            </div>
           )}
         </div>
       </div>

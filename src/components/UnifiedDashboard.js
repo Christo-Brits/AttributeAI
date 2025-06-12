@@ -4,6 +4,7 @@ import { Card, Button } from './ui/DesignSystem';
 import { useDataBridge } from '../utils/DataBridge';
 import { useAuth } from './auth/AuthContext';
 import AIChatInterface from './AIChatInterface';
+import AttributeAILogo from './ui/AttributeAILogo';
 
 const UnifiedDashboard = ({ websiteAnalysis }) => {
   const { user } = useAuth();
@@ -33,6 +34,15 @@ const UnifiedDashboard = ({ websiteAnalysis }) => {
       <div className="p-6">
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
+            <div className="mb-8">
+              <AttributeAILogo 
+                width={200} 
+                height={60} 
+                className="text-blue-600 mx-auto mb-4"
+                showText={true}
+                variant="stacked"
+              />
+            </div>
             <div className="loading-spinner h-8 w-8 border-blue-600 mx-auto mb-4"></div>
             <p className="text-gray-600">Analyzing your marketing intelligence...</p>
           </div>

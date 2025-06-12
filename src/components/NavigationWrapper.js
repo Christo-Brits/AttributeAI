@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { BarChart3, Activity, TrendingUp, Search, PenTool, Target, Eye, Settings, User, Bell, Grid, LogOut, Globe, ChevronDown } from 'lucide-react';
 import { useAuth } from './auth/AuthContext';
 import UserProfile from './auth/UserProfile';
+import AttributeAILogo from './ui/AttributeAILogo';
 
 const NavigationWrapper = ({ activeTab, setActiveTab }) => {
   const { user, logout } = useAuth();
@@ -57,8 +58,13 @@ const NavigationWrapper = ({ activeTab, setActiveTab }) => {
           {/* Logo and Brand */}
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <h1 className="text-xl font-bold text-gray-900">AttributeAI</h1>
-              <p className="text-xs text-gray-500">Marketing Intelligence Attribution</p>
+              <AttributeAILogo 
+                width={220} 
+                height={40} 
+                className="text-gray-900"
+                showText={true}
+                variant="horizontal"
+              />
             </div>
           </div>
 

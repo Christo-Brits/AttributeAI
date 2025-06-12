@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Brain, Mail, Lock, Globe, User, ArrowRight } from 'lucide-react';
 import { useAuth } from './auth/AuthContext';
+import AttributeAILogo from './ui/AttributeAILogo';
 
 const LoginPage = () => {
   const { login, signup } = useAuth();
@@ -46,11 +47,16 @@ const LoginPage = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
       <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg p-8">
         <div className="text-center mb-8">
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-3 rounded-xl inline-block mb-4">
-            <Brain className="h-8 w-8 text-white" />
+          <div className="mb-6">
+            <AttributeAILogo 
+              width={280} 
+              height={80} 
+              className="text-gray-900 mx-auto"
+              showText={true}
+              variant="stacked"
+            />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">AttributeAI</h1>
-          <p className="text-gray-600">
+          <p className="text-gray-600 text-lg">
             {isSignUp ? 'Start Your Free Analysis' : 'Welcome Back'}
           </p>
         </div>

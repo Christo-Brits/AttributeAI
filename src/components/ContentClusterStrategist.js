@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import EnhancedContentService from '../services/EnhancedContentService';
 import KeywordResearchEngine from '../services/KeywordResearchEngine';
+import ContentClusterPlanner from '../services/ContentClusterPlanner';
 import ContentPolishModal from './ContentPolishModal';
 import VideoGenerationModal from './VideoGenerationModal';
 
@@ -41,6 +42,7 @@ const ContentClusterStrategist = () => {
   const exportMenuRef = useRef(null);
   const enhancedContentService = new EnhancedContentService();
   const keywordResearchEngine = new KeywordResearchEngine();
+  const contentClusterPlanner = new ContentClusterPlanner();
 
   // Load user profile on component mount
   useEffect(() => {
@@ -176,43 +178,67 @@ const ContentClusterStrategist = () => {
     setGenerationStage('Planning content cluster...');
 
     try {
-      // Enhanced cluster generation process using keyword research
+      // Enhanced cluster generation process using keyword research and content planning
       const stages = [
         'Analyzing keyword clusters...',
         'Planning article structure...',
-        'Creating pillar content outline...',
-        'Generating supporting articles...',
-        'Setting up internal linking strategy...',
-        'Optimizing for search intent...',
+        'Generating content outlines...',
+        'Creating internal linking strategy...',
+        'Optimizing content calendar...',
+        'Setting up SEO framework...',
         'Finalizing cluster...'
       ];
 
       for (let i = 0; i < stages.length; i++) {
         setGenerationStage(stages[i]);
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        await new Promise(resolve => setTimeout(resolve, 1200));
       }
 
-      // Create enhanced cluster data using keyword research
+      // Generate comprehensive article outlines
+      setGenerationStage('Generating detailed article outlines...');
+      const outlineResults = await contentClusterPlanner.generateClusterOutlines(
+        {
+          topic: clusterTopic,
+          keywords: keywordResearch.keywords,
+          size: clusterSize,
+          audience: targetAudience,
+          type: contentType
+        },
+        keywordClusters
+      );
+
+      // Generate content calendar
+      setGenerationStage('Creating content calendar...');
+      const contentCalendar = contentClusterPlanner.generateContentCalendar(
+        outlineResults.outlines || []
+      );
+
+      // Create enhanced cluster data using all planning data
       const newCluster = {
         id: Date.now(),
         topic: clusterTopic,
         size: clusterSize,
         audience: targetAudience,
         type: contentType,
-        status: 'generated',
+        status: 'planned',
         articles: generateEnhancedClusterArticles(),
+        articleOutlines: outlineResults.outlines || [],
+        contentCalendar: contentCalendar,
         createdAt: new Date().toISOString(),
         keywords: keywordResearch.keywords,
         keywordClusters: keywordClusters,
-        pillarArticle: null, // Will be set to main article ID
+        pillarArticle: outlineResults.outlines?.[0]?.id || null,
         totalSearchVolume: keywordResearch.keywords.reduce((sum, kw) => sum + kw.searchVolume, 0),
         avgDifficulty: Math.round(keywordResearch.keywords.reduce((sum, kw) => sum + kw.difficulty, 0) / keywordResearch.keywords.length),
-        opportunities: this.extractUniqueOpportunities(keywordResearch.keywords)
+        opportunities: extractUniqueOpportunities(keywordResearch.keywords),
+        estimatedWordCount: outlineResults.estimatedWords || 0,
+        estimatedWorkingHours: contentCalendar.reduce((sum, item) => sum + item.estimatedHours, 0),
+        seoScore: Math.round(outlineResults.outlines?.reduce((sum, outline) => sum + outline.seoScore, 0) / (outlineResults.outlines?.length || 1)) || 70
       };
 
       setContentClusters(prev => [...prev, newCluster]);
       setSelectedCluster(newCluster);
-      setGenerationStage('Content cluster generated successfully!');
+      setGenerationStage('Content cluster with detailed planning completed!');
       
       setTimeout(() => {
         setIsGenerating(false);
@@ -521,49 +547,161 @@ const ContentClusterStrategist = () => {
         </div>
       )}
 
-      {/* Cluster Details */}
+      {/* Cluster Details with Enhanced Planning */}
       {selectedCluster && (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-            <Workflow className="h-5 w-5 mr-2 text-purple-600" />
-            Cluster: {selectedCluster.topic}
-          </h3>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div>
-              <h4 className="font-medium text-gray-900 mb-3">Articles ({selectedCluster.articles.length})</h4>
-              <div className="space-y-2 max-h-64 overflow-y-auto">
-                {selectedCluster.articles.map(article => (
-                  <div key={article.id} className="flex items-center justify-between p-2 border border-gray-100 rounded">
-                    <div>
-                      <span className="text-sm font-medium text-gray-900">{article.title}</span>
-                      <div className="text-xs text-gray-500">
-                        {article.type === 'pillar' ? '📄 Pillar' : '📋 Supporting'} • {article.wordCount} words
-                      </div>
-                    </div>
-                    <span className={`px-2 py-1 rounded-full text-xs ${
-                      article.status === 'planned' ? 'bg-yellow-100 text-yellow-800' :
-                      article.status === 'generated' ? 'bg-green-100 text-green-800' :
-                      'bg-gray-100 text-gray-800'
-                    }`}>
-                      {article.status}
-                    </span>
-                  </div>
-                ))}
+        <div className="space-y-6">
+          {/* Cluster Overview */}
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+              <Workflow className="h-5 w-5 mr-2 text-purple-600" />
+              Cluster: {selectedCluster.topic}
+            </h3>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+              <div className="text-center p-3 bg-blue-50 rounded-lg">
+                <div className="text-2xl font-bold text-blue-600">{selectedCluster.articles.length}</div>
+                <div className="text-sm text-gray-600">Articles</div>
+              </div>
+              <div className="text-center p-3 bg-green-50 rounded-lg">
+                <div className="text-2xl font-bold text-green-600">{selectedCluster.seoScore || 'N/A'}</div>
+                <div className="text-sm text-gray-600">SEO Score</div>
+              </div>
+              <div className="text-center p-3 bg-purple-50 rounded-lg">
+                <div className="text-2xl font-bold text-purple-600">{selectedCluster.estimatedWordCount?.toLocaleString() || 'N/A'}</div>
+                <div className="text-sm text-gray-600">Total Words</div>
+              </div>
+              <div className="text-center p-3 bg-yellow-50 rounded-lg">
+                <div className="text-2xl font-bold text-yellow-600">{selectedCluster.estimatedWorkingHours || 'N/A'}h</div>
+                <div className="text-sm text-gray-600">Est. Hours</div>
               </div>
             </div>
-            
-            <div>
-              <h4 className="font-medium text-gray-900 mb-3">Target Keywords</h4>
-              <div className="space-y-2 max-h-64 overflow-y-auto">
-                {selectedCluster.keywords.map((kw, index) => (
-                  <div key={index} className="flex items-center justify-between p-2 border border-gray-100 rounded">
-                    <span className="text-sm text-gray-900">{kw.keyword}</span>
-                    <div className="text-xs text-gray-500">
-                      Vol: {kw.volume} • Diff: {kw.difficulty}%
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Article Outlines */}
+              <div>
+                <h4 className="font-medium text-gray-900 mb-3 flex items-center">
+                  <FileText className="h-4 w-4 mr-2" />
+                  Article Outlines ({selectedCluster.articles.length})
+                </h4>
+                <div className="space-y-3 max-h-80 overflow-y-auto">
+                  {selectedCluster.articleOutlines?.map((outline, index) => (
+                    <div key={outline.id} className="border border-gray-200 rounded-lg p-3 hover:border-blue-300 transition-colors">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <h5 className="font-medium text-gray-900 text-sm mb-1">{outline.title}</h5>
+                          <div className="flex items-center space-x-4 text-xs text-gray-500 mb-2">
+                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              outline.type === 'pillar' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'
+                            }`}>
+                              {outline.type === 'pillar' ? '📄 Pillar' : '📋 Supporting'}
+                            </span>
+                            <span>{outline.estimatedWordCount} words</span>
+                            <span>{outline.readingTime} min read</span>
+                          </div>
+                          <div className="text-xs text-gray-600">
+                            <span className="font-medium">Target:</span> {outline.targetKeyword}
+                          </div>
+                          <div className="text-xs text-gray-600">
+                            <span className="font-medium">SEO Score:</span> {outline.seoScore}/100
+                          </div>
+                          {outline.searchVolume && (
+                            <div className="text-xs text-gray-600">
+                              <span className="font-medium">Volume:</span> {outline.searchVolume.toLocaleString()}
+                            </div>
+                          )}
+                        </div>
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          outline.publishingPriority >= 8 ? 'bg-red-100 text-red-800' :
+                          outline.publishingPriority >= 6 ? 'bg-yellow-100 text-yellow-800' :
+                          'bg-green-100 text-green-800'
+                        }`}>
+                          Priority {outline.publishingPriority}
+                        </span>
+                      </div>
+                      
+                      {/* Outline Sections Preview */}
+                      {outline.outline && outline.outline.length > 0 && (
+                        <div className="mt-2 pt-2 border-t border-gray-100">
+                          <div className="text-xs text-gray-500">
+                            <span className="font-medium">Sections:</span> {outline.outline.map(section => section.title).join(', ').slice(0, 100)}...
+                          </div>
+                        </div>
+                      )}
                     </div>
+                  )) || selectedCluster.articles.map(article => (
+                    <div key={article.id} className="flex items-center justify-between p-2 border border-gray-100 rounded">
+                      <div>
+                        <span className="text-sm font-medium text-gray-900">{article.title}</span>
+                        <div className="text-xs text-gray-500">
+                          {article.type === 'pillar' ? '📄 Pillar' : '📋 Supporting'} • {article.wordCount} words
+                        </div>
+                      </div>
+                      <span className={`px-2 py-1 rounded-full text-xs ${
+                        article.status === 'planned' ? 'bg-yellow-100 text-yellow-800' :
+                        article.status === 'generated' ? 'bg-green-100 text-green-800' :
+                        'bg-gray-100 text-gray-800'
+                      }`}>
+                        {article.status}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Content Calendar */}
+              <div>
+                <h4 className="font-medium text-gray-900 mb-3 flex items-center">
+                  <Map className="h-4 w-4 mr-2" />
+                  Content Calendar
+                </h4>
+                {selectedCluster.contentCalendar && selectedCluster.contentCalendar.length > 0 ? (
+                  <div className="space-y-3 max-h-80 overflow-y-auto">
+                    {selectedCluster.contentCalendar.map((item, index) => (
+                      <div key={item.articleId} className="border border-gray-200 rounded-lg p-3">
+                        <div className="flex items-start justify-between mb-2">
+                          <div className="flex-1">
+                            <h5 className="font-medium text-gray-900 text-sm">{item.title}</h5>
+                            <div className="text-xs text-gray-500 mt-1">
+                              📅 {new Date(item.publishDate).toLocaleDateString()}
+                            </div>
+                          </div>
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            item.priority >= 8 ? 'bg-red-100 text-red-800' :
+                            item.priority >= 6 ? 'bg-yellow-100 text-yellow-800' :
+                            'bg-green-100 text-green-800'
+                          }`}>
+                            P{item.priority}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between text-xs text-gray-600">
+                          <span>{item.estimatedHours}h estimated</span>
+                          <span className={`px-2 py-1 rounded-full ${
+                            item.status === 'scheduled' ? 'bg-blue-100 text-blue-800' :
+                            'bg-gray-100 text-gray-800'
+                          }`}>
+                            {item.status}
+                          </span>
+                        </div>
+                        {item.dependencies && item.dependencies.length > 0 && (
+                          <div className="text-xs text-gray-500 mt-1">
+                            <span className="font-medium">Depends on:</span> {item.dependencies.join(', ')}
+                          </div>
+                        )}
+                      </div>
+                    ))}
                   </div>
-                ))}
+                ) : (
+                  <div className="space-y-2 max-h-64 overflow-y-auto">
+                    {selectedCluster.keywords.slice(0, 8).map((kw, index) => (
+                      <div key={index} className="flex items-center justify-between p-2 border border-gray-100 rounded">
+                        <span className="text-sm text-gray-900">{kw.keyword}</span>
+                        <div className="text-xs text-gray-500">
+                          Vol: {kw.volume} • Diff: {kw.difficulty}%
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>

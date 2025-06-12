@@ -9,6 +9,7 @@ import FloatingChatButton from './components/FloatingChatButton';
 // Phase 2: Enhanced components with Claude AI  
 const SEOAnalysisEnhanced = lazy(() => import('./components/SEOCompetitorAnalysis.enhanced'));
 const SEOContentStrategist = lazy(() => import('./components/SEOContentStrategist.enhanced'));
+const ContentClusterStrategist = lazy(() => import('./components/ContentClusterStrategist'));
 
 // Lazy load components for better performance
 const AttributionEngine = lazy(() => import('./components/AttributionEngine'));
@@ -35,6 +36,7 @@ function AuthenticatedApp() {
     const components = {
       dashboard: () => <UnifiedDashboard websiteAnalysis={websiteAnalysisResults} />,
       'seo-enhanced': SEOAnalysisEnhanced,
+      'content-clusters': ContentClusterStrategist,
       attribution: AttributionEngine,
       realtime: RealTimeJourneyTracker,
       analytics: JourneyAnalytics,

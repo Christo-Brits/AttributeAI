@@ -43,6 +43,7 @@ const NavigationWrapper = ({ activeTab, setActiveTab }) => {
   const tabs = [
     { id: 'dashboard', name: 'Unified Dashboard', icon: Grid },
     { id: 'seo-enhanced', name: 'AI SEO Analysis', icon: Search, phase2: true },
+    { id: 'content-clusters', name: 'Content Clusters', icon: PenTool, phase2: true },
     { id: 'content', name: 'Content Strategy', icon: PenTool },
     { id: 'attribution', name: 'Attribution Engine', icon: BarChart3 },
     { id: 'realtime', name: 'Real-Time Tracking', icon: Activity },

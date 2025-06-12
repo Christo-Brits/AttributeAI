@@ -1,4 +1,4 @@
-# Step 4: Advanced Research Integration Service
+// Step 4: Advanced Research Integration Service
 class AdvancedResearchService {
   constructor() {
     this.baseURL = 'http://localhost:3001';

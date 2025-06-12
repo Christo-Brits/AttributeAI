@@ -1,3 +1,9 @@
+class ContentGradingService {
+  constructor() {
+    this.apiKey = process.env.REACT_APP_ANTHROPIC_API_KEY;
+    this.baseURL = 'http://localhost:3001';
+  }
+
   // SEO basics analysis
   analyzeSEOBasics(content, text) {
     let score = 50; // Base score

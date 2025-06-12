@@ -33,6 +33,10 @@ const ContentClusterStrategist = () => {
   
   // Cluster Creation State
   const [clusterTopic, setClusterTopic] = useState('');
+  
+  // Interlinking State
+  const [showInterlinkingModal, setShowInterlinkingModal] = useState(false);
+  const [interlinkingCluster, setInterlinkingCluster] = useState(null);
   const [clusterSize, setClusterSize] = useState('medium'); // small (5), medium (10), large (30)
   const [targetAudience, setTargetAudience] = useState('');
   const [contentType, setContentType] = useState('informational');

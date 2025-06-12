@@ -1,3 +1,198 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  Clock, 
+  CheckCircle, 
+  AlertCircle, 
+  BarChart3, 
+  FileText, 
+  Zap, 
+  Download,
+  RefreshCw,
+  Sparkles,
+  TrendingUp,
+  Play,
+  Target,
+  Link,
+  Calendar
+} from 'lucide-react';
+
+const BatchContentDashboard = ({ researchData, userProfile, onComplete }) => {
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generationProgress, setGenerationProgress] = useState(0);
+  const [currentStep, setCurrentStep] = useState('');
+  const [generatedContent, setGeneratedContent] = useState([]);
+  const [isStarting, setIsStarting] = useState(false);
+  const [activeJobs, setActiveJobs] = useState([]);
+  const [batchSettings, setBatchSettings] = useState({
+    contentTypes: ['blog-post'],
+    quantity: 5,
+    quality: 'high',
+    generateImages: true,
+    applyEditorialReview: true
+  });
+
+  const startContentCluster = async () => {
+    setIsStarting(true);
+    setIsGenerating(true);
+    setCurrentStep('Initializing batch generation...');
+    
+    try {
+      // Simulate batch generation process
+      const steps = [
+        'Analyzing research data...',
+        'Creating content outlines...',
+        'Generating article content...',
+        'Optimizing for SEO...',
+        'Applying editorial review...',
+        'Finalizing content...'
+      ];
+      
+      for (let i = 0; i < steps.length; i++) {
+        setCurrentStep(steps[i]);
+        setGenerationProgress(((i + 1) / steps.length) * 100);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      }
+      
+      // Mock generated content
+      const mockContent = Array.from({ length: batchSettings.quantity }, (_, index) => ({
+        id: `content-${index + 1}`,
+        title: `Generated Article ${index + 1}`,
+        type: batchSettings.contentTypes[0],
+        status: 'completed',
+        wordCount: 1200 + (index * 100),
+        createdAt: new Date(),
+        quality: batchSettings.quality
+      }));
+      
+      setGeneratedContent(mockContent);
+      setCurrentStep('Batch generation completed!');
+      
+      if (onComplete) {
+        onComplete(mockContent);
+      }
+      
+    } catch (error) {
+      console.error('Batch generation failed:', error);
+      setCurrentStep('Generation failed');
+    } finally {
+      setIsGenerating(false);
+      setIsStarting(false);
+    }
+  };
+
+  const renderClusterConfig = () => (
+    <div className="bg-white rounded-lg shadow-sm p-6">
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">Batch Configuration</h3>
+      <div className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Content Types
+          </label>
+          <select 
+            value={batchSettings.contentTypes[0]}
+            onChange={(e) => setBatchSettings(prev => ({ ...prev, contentTypes: [e.target.value] }))}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="blog-post">Blog Posts</option>
+            <option value="article">Articles</option>
+            <option value="guide">Guides</option>
+            <option value="tutorial">Tutorials</option>
+          </select>
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Quantity: {batchSettings.quantity}
+          </label>
+          <input
+            type="range"
+            min="1"
+            max="20"
+            value={batchSettings.quantity}
+            onChange={(e) => setBatchSettings(prev => ({ ...prev, quantity: parseInt(e.target.value) }))}
+            className="w-full"
+          />
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Quality Level
+          </label>
+          <select 
+            value={batchSettings.quality}
+            onChange={(e) => setBatchSettings(prev => ({ ...prev, quality: e.target.value }))}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="high">High Quality</option>
+            <option value="medium">Medium Quality</option>
+            <option value="standard">Standard Quality</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderActiveJobs = () => (
+    <div className="bg-white rounded-lg shadow-sm p-6">
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">Active Generation</h3>
+      {isGenerating ? (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-gray-600">{currentStep}</span>
+            <span className="text-sm font-medium text-blue-600">{Math.round(generationProgress)}%</span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-2">
+            <div 
+              className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+              style={{ width: `${generationProgress}%` }}
+            />
+          </div>
+        </div>
+      ) : (
+        <p className="text-gray-500 text-sm">No active generation jobs</p>
+      )}
+    </div>
+  );
+
+  const renderCompletedJobs = () => (
+    <div className="bg-white rounded-lg shadow-sm p-6">
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">Generated Content</h3>
+      {generatedContent.length > 0 ? (
+        <div className="space-y-3">
+          {generatedContent.map((content) => (
+            <div key={content.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div>
+                <h4 className="font-medium text-gray-900">{content.title}</h4>
+                <p className="text-sm text-gray-600">
+                  {content.wordCount} words • {content.type} • {content.quality} quality
+                </p>
+              </div>
+              <div className="flex items-center space-x-2">
+                <CheckCircle className="h-5 w-5 text-green-600" />
+                <button className="text-blue-600 hover:text-blue-800 text-sm">
+                  View
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-gray-500 text-sm">No completed content yet</p>
+      )}
+    </div>
+  );
+
+  const renderJobDetailsModal = () => null; // Placeholder for future modal
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="bg-white rounded-lg shadow-sm p-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Batch Content Generation</h1>
+            <p className="text-gray-600">Generate multiple high-quality content pieces simultaneously</p>
+          </div>
           {researchData ? (
             <div className="text-right">
               <p className="text-sm text-gray-500">Research Topic</p>
@@ -32,83 +227,36 @@
         </div>
       )}
 
-      {/* Start Content Generation */}
-      <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold text-gray-900 flex items-center">
-            <Play className="mr-2 text-green-600" size={20} />
-            Start New Content Cluster
-          </h2>
-          {researchData && researchData.clusterRecommendations && (
-            <div className="text-sm text-green-600 bg-green-50 px-3 py-1 rounded">
-              Research Enhanced
-            </div>
+      {/* Start Generation Button */}
+      <div className="text-center">
+        <button
+          onClick={startContentCluster}
+          disabled={isStarting || !researchData || activeJobs.length > 0}
+          className={`inline-flex items-center px-6 py-3 rounded-lg font-medium transition-colors ${
+            isStarting || !researchData || activeJobs.length > 0
+              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              : 'bg-blue-600 text-white hover:bg-blue-700'
+          }`}
+        >
+          {isStarting ? (
+            <>
+              <RefreshCw className="h-5 w-5 mr-2 animate-spin" />
+              Starting Generation...
+            </>
+          ) : (
+            <>
+              <Play className="h-5 w-5 mr-2" />
+              Start Batch Generation
+            </>
           )}
-        </div>
-
-        {researchData ? (
-          <>
-            <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-              <h3 className="font-medium text-blue-900 mb-2">Research Summary</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-blue-700">
-                <div>
-                  <span className="font-medium">Topic:</span> {researchData.topic}
-                </div>
-                <div>
-                  <span className="font-medium">Research Phases:</span> {Object.keys(researchData.results || {}).length}
-                </div>
-                <div>
-                  <span className="font-medium">Generated:</span> {new Date(researchData.timestamp).toLocaleDateString()}
-                </div>
-              </div>
-              {researchData.clusterRecommendations && (
-                <div className="mt-2 text-sm text-blue-700">
-                  <span className="font-medium">Content Strategy:</span> {' '}
-                  {researchData.clusterRecommendations.pillar_content?.length || 0} pillar + {' '}
-                  {researchData.clusterRecommendations.supporting_content?.length || 0} supporting + {' '}
-                  {researchData.clusterRecommendations.rapid_content?.length || 0} rapid content pieces
-                </div>
-              )}
-            </div>
-
-            <button
-              onClick={startContentCluster}
-              disabled={isStarting || activeJobs.length >= 3}
-              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-6 rounded-lg hover:from-purple-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
-            >
-              {isStarting ? (
-                <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                  <span>Starting Content Generation...</span>
-                </>
-              ) : (
-                <>
-                  <Zap size={16} />
-                  <span>Generate Content Cluster</span>
-                </>
-              )}
-            </button>
-
-            {activeJobs.length >= 3 && (
-              <p className="mt-2 text-sm text-orange-600 text-center">
-                Maximum concurrent jobs reached. Please wait for current jobs to complete.
-              </p>
-            )}
-          </>
-        ) : (
-          <div className="text-center py-8 text-gray-500">
-            <BarChart3 size={32} className="mx-auto mb-2 text-gray-300" />
-            <p>Complete advanced research to start content cluster generation</p>
-            <p className="text-sm mt-1">Research provides the foundation for high-quality, strategic content</p>
-          </div>
-        )}
+        </button>
       </div>
 
-      {/* Cluster Configuration */}
-      {researchData && renderClusterConfig()}
-
-      {/* Active Jobs */}
-      {renderActiveJobs()}
+      {/* Dashboard Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {renderClusterConfig()}
+        {renderActiveJobs()}
+      </div>
 
       {/* Completed Jobs */}
       {renderCompletedJobs()}
@@ -116,63 +264,36 @@
       {/* Job Details Modal */}
       {renderJobDetailsModal()}
 
-      {/* Help Information */}
-      <div className="bg-gradient-to-r from-gray-50 to-purple-50 border border-gray-200 rounded-lg p-6">
-        <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
-          <Target className="mr-2 text-purple-500" size={20} />
-          How Batch Content Generation Works
+      {/* Benefits Section */}
+      <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+          <Target className="h-5 w-5 mr-2 text-blue-600" />
+          Batch Generation Benefits
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div className="flex items-start space-x-3">
-            <BarChart3 className="text-blue-500 mt-1" size={20} />
-            <div>
-              <h4 className="font-medium text-gray-900">Research Integration</h4>
-              <p className="text-sm text-gray-600">Uses comprehensive research to create strategic content clusters</p>
-            </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="text-center">
+            <Clock className="h-8 w-8 text-blue-600 mx-auto mb-2" />
+            <h4 className="font-medium text-gray-900">Time Efficient</h4>
+            <p className="text-sm text-gray-600">Generate multiple pieces simultaneously</p>
           </div>
-          <div className="flex items-start space-x-3">
-            <FileText className="text-green-500 mt-1" size={20} />
-            <div>
-              <h4 className="font-medium text-gray-900">Content Hierarchy</h4>
-              <p className="text-sm text-gray-600">Generates pillar, supporting, and rapid content with dependencies</p>
-            </div>
+          <div className="text-center">
+            <Link className="h-8 w-8 text-purple-600 mx-auto mb-2" />
+            <h4 className="font-medium text-gray-900">Consistent Quality</h4>
+            <p className="text-sm text-gray-600">Maintain standards across all content</p>
           </div>
-          <div className="flex items-start space-x-3">
-            <Link className="text-purple-500 mt-1" size={20} />
-            <div>
-              <h4 className="font-medium text-gray-900">Automated Interlinking</h4>
-              <p className="text-sm text-gray-600">Creates strategic internal linking between related content</p>
-            </div>
-          </div>
-          <div className="flex items-start space-x-3">
-            <Calendar className="text-orange-500 mt-1" size={20} />
-            <div>
-              <h4 className="font-medium text-gray-900">Publication Schedule</h4>
-              <p className="text-sm text-gray-600">Generates optimal publishing timeline for maximum impact</p>
-            </div>
-          </div>
-          <div className="flex items-start space-x-3">
-            <TrendingUp className="text-indigo-500 mt-1" size={20} />
-            <div>
-              <h4 className="font-medium text-gray-900">SEO Optimization</h4>
-              <p className="text-sm text-gray-600">Each piece optimized for target keywords and search intent</p>
-            </div>
-          </div>
-          <div className="flex items-start space-x-3">
-            <Download className="text-cyan-500 mt-1" size={20} />
-            <div>
-              <h4 className="font-medium text-gray-900">Export Package</h4>
-              <p className="text-sm text-gray-600">Complete cluster with content, strategy, and implementation guide</p>
-            </div>
+          <div className="text-center">
+            <Calendar className="h-8 w-8 text-green-600 mx-auto mb-2" />
+            <h4 className="font-medium text-gray-900">Strategic Planning</h4>
+            <p className="text-sm text-gray-600">Coordinated content calendar</p>
           </div>
         </div>
-
-        <div className="mt-6 p-4 bg-white border border-purple-200 rounded-lg">
-          <h4 className="font-medium text-gray-900 mb-2">Content Cluster Benefits:</h4>
+        
+        <div className="mt-6 bg-white rounded-lg p-4">
+          <h4 className="font-medium text-gray-900 mb-2">Key Features:</h4>
           <ul className="text-sm text-gray-600 space-y-1">
-            <li>• <strong>Topic Authority:</strong> Comprehensive coverage establishes expertise</li>
-            <li>• <strong>SEO Performance:</strong> Interlinking boosts search rankings</li>
-            <li>• <strong>User Journey:</strong> Guides visitors from awareness to conversion</li>
+            <li>• <strong>Research Integration:</strong> Leverage advanced research for informed content</li>
+            <li>• <strong>Quality Control:</strong> Automated editorial review and optimization</li>
+            <li>• <strong>SEO Optimization:</strong> Each piece optimized for search engines</li>
             <li>• <strong>Content Efficiency:</strong> Batch generation saves time and ensures consistency</li>
             <li>• <strong>Strategic Publishing:</strong> Optimal timeline maximizes impact</li>
           </ul>

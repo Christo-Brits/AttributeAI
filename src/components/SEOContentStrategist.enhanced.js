@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { PenTool, FileText, Target, Eye, CheckCircle, Clock, Search, Zap, Image, ExternalLink, Brain, TrendingUp, Users, Globe, Sparkles, Video, BarChart3, PlayCircle } from 'lucide-react';
+import { PenTool, FileText, Target, Eye, CheckCircle, Clock, Search, Zap, Image, ExternalLink, Brain, TrendingUp, Users, Globe, Sparkles, Video, BarChart3, PlayCircle, Award, Wand2 } from 'lucide-react';
 import EnhancedContentService from '../services/EnhancedContentService';
 import ContentPolishModal from './ContentPolishModal';
 import VideoGenerationModal from './VideoGenerationModal';
 import ContentClusterResearch from './ContentClusterResearch';
 import BatchContentDashboard from './BatchContentDashboard';
+import ContentQualityAnalyzer from './ContentQualityAnalyzer';
+import ContentOptimizationModal from './ContentOptimizationModal';
+import ContentGradingService from '../services/ContentGradingService';
 
 const SEOContentStrategist = () => {
   const [userProfile, setUserProfile] = useState(null);
@@ -25,8 +28,15 @@ const SEOContentStrategist = () => {
   const [showResearchModal, setShowResearchModal] = useState(false);
   const [researchData, setResearchData] = useState(null);
   const [activeTab, setActiveTab] = useState('content-gaps');
+  
+  // New state for quality analysis
+  const [qualityAnalysis, setQualityAnalysis] = useState(null);
+  const [showOptimizationModal, setShowOptimizationModal] = useState(false);
+  const [contentGrade, setContentGrade] = useState(null);
+  
   const exportMenuRef = useRef(null);
   const enhancedContentService = new EnhancedContentService();
+  const contentGradingService = new ContentGradingService();
 
   // Load user profile on component mount
   useEffect(() => {
@@ -342,6 +352,63 @@ Return only the JSON array, no other text.`;
     
     setIsGenerating(false);
   };
+
+  // Handle quality analysis updates
+  const handleQualityUpdate = (analysis) => {
+    setQualityAnalysis(analysis);
+    console.log('Quality analysis updated:', analysis);
+  };
+
+  // Handle optimized content from optimization modal
+  const handleOptimizedContent = (optimizedContent) => {
+    if (contentResults) {
+      setContentResults({
+        ...contentResults,
+        content: optimizedContent,
+        optimized: true,
+        optimizedAt: new Date().toISOString()
+      });
+      
+      // Trigger re-analysis of the optimized content
+      setTimeout(() => {
+        if (qualityAnalysis) {
+          // Re-analyze the optimized content
+          handleQualityUpdate(null); // Reset first
+        }
+      }, 500);
+    }
+  };
+
+  // Grade content using AI
+  const gradeContent = async () => {
+    if (!contentResults?.content) return;
+    
+    try {
+      const keywords = contentResults.topic ? [contentResults.topic] : [];
+      const industry = userProfile?.industry || 'general';
+      const audience = contentResults.targetAudience || 'general';
+      
+      const grade = await contentGradingService.gradeContent(
+        contentResults.content,
+        keywords,
+        industry,
+        audience
+      );
+      
+      setContentGrade(grade);
+      console.log('Content grade:', grade);
+    } catch (error) {
+      console.error('Content grading failed:', error);
+    }
+  };
+
+  // Trigger grading when content is generated
+  useEffect(() => {
+    if (contentResults?.content && !contentGrade) {
+      gradeContent();
+    }
+  }, [contentResults]);
+
   // Export content in different formats
   const exportContent = async (format) => {
     if (!contentResults) return;
@@ -577,6 +644,15 @@ Return only the JSON array, no other text.`;
                       </h3>
                       
                       <div className="flex items-center gap-3">
+                        {/* Quality Analysis Button */}
+                        <button
+                          onClick={() => setShowOptimizationModal(true)}
+                          className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center space-x-2"
+                        >
+                          <Wand2 size={16} />
+                          <span>Optimize Quality</span>
+                        </button>
+                        
                         <button
                           onClick={() => setShowVideoModal(true)}
                           className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 flex items-center space-x-2"
@@ -647,6 +723,64 @@ Return only the JSON array, no other text.`;
                       <span>Generated: {new Date(contentResults.timestamp).toLocaleString()}</span>
                       <span>Type: {contentResults.type} • Target: {contentResults.targetAudience}</span>
                     </div>
+
+                    {/* Content Quality Analysis */}
+                    <div className="mt-6">
+                      <ContentQualityAnalyzer
+                        content={contentResults.content}
+                        targetKeywords={contentResults.topic ? [contentResults.topic] : []}
+                        onQualityUpdate={handleQualityUpdate}
+                      />
+                    </div>
+
+                    {/* Content Grade Display */}
+                    {contentGrade && (
+                      <div className="mt-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6">
+                        <div className="flex items-center justify-between mb-4">
+                          <h4 className="text-lg font-semibold text-gray-900 flex items-center">
+                            <Award className="h-5 w-5 text-indigo-600 mr-2" />
+                            Content Grade Report
+                          </h4>
+                          <div className="text-center">
+                            <div className={`text-3xl font-bold ${
+                              contentGrade.overallScore >= 85 ? 'text-green-600' :
+                              contentGrade.overallScore >= 70 ? 'text-yellow-600' : 'text-red-600'
+                            }`}>
+                              {contentGrade.grade}
+                            </div>
+                            <div className="text-sm text-gray-600">{contentGrade.overallScore}/100</div>
+                          </div>
+                        </div>
+                        
+                        <p className="text-gray-700 mb-4">{contentGrade.gradeDescription}</p>
+                        
+                        {contentGrade.strengths && contentGrade.strengths.length > 0 && (
+                          <div className="mb-4">
+                            <h5 className="font-medium text-green-800 mb-2">Strengths:</h5>
+                            <div className="flex flex-wrap gap-2">
+                              {contentGrade.strengths.map((strength, index) => (
+                                <span key={index} className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
+                                  {strength.area}: {strength.score}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                        
+                        {contentGrade.weaknesses && contentGrade.weaknesses.length > 0 && (
+                          <div>
+                            <h5 className="font-medium text-red-800 mb-2">Areas for Improvement:</h5>
+                            <div className="space-y-1">
+                              {contentGrade.weaknesses.slice(0, 3).map((weakness, index) => (
+                                <div key={index} className="text-sm text-red-700">
+                                  • {weakness.description} (Score: {weakness.score})
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -753,6 +887,18 @@ Return only the JSON array, no other text.`;
               website: userProfile?.website
             }}
             onClose={() => setShowVideoModal(false)}
+          />
+        )}
+
+        {/* Content Optimization Modal */}
+        {showOptimizationModal && contentResults && (
+          <ContentOptimizationModal
+            isOpen={showOptimizationModal}
+            onClose={() => setShowOptimizationModal(false)}
+            content={contentResults.content}
+            qualityAnalysis={qualityAnalysis}
+            targetKeywords={contentResults.topic ? [contentResults.topic] : []}
+            onOptimizedContent={handleOptimizedContent}
           />
         )}
       </div>

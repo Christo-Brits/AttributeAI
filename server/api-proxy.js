@@ -3,6 +3,7 @@ const cors = require('cors');
 const fetch = require('node-fetch');
 const authRoutes = require('./routes/auth');
 const generateImageRoute = require('./routes/generate-image');
+const researchRoutes = require('./routes/research');
 require('dotenv').config();
 
 const app = express();
@@ -20,6 +21,9 @@ app.use('/api', authRoutes);
 
 // Image generation routes
 app.use('/api/generate-image', generateImageRoute);
+
+// Advanced research routes
+app.use('/api', researchRoutes);
 
 // Claude API proxy endpoint
 app.post('/api/claude', async (req, res) => {

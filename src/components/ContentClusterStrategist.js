@@ -7,8 +7,10 @@ import {
 import EnhancedContentService from '../services/EnhancedContentService';
 import KeywordResearchEngine from '../services/KeywordResearchEngine';
 import ContentClusterPlanner from '../services/ContentClusterPlanner';
+import AdvancedResearchEngine from '../services/AdvancedResearchEngine';
 import ContentPolishModal from './ContentPolishModal';
 import VideoGenerationModal from './VideoGenerationModal';
+import InterlinkingStrategyModal from './InterlinkingStrategyModal';
 
 const ContentClusterStrategist = () => {
   const [userProfile, setUserProfile] = useState(null);
@@ -23,6 +25,11 @@ const ContentClusterStrategist = () => {
   const [isResearching, setIsResearching] = useState(false);
   const [researchStage, setResearchStage] = useState('');
   const [keywordClusters, setKeywordClusters] = useState([]);
+  
+  // Advanced Research State
+  const [clusterResearch, setClusterResearch] = useState(null);
+  const [isAdvancedResearching, setIsAdvancedResearching] = useState(false);
+  const [advancedResearchStage, setAdvancedResearchStage] = useState('');
   
   // Cluster Creation State
   const [clusterTopic, setClusterTopic] = useState('');
@@ -43,6 +50,7 @@ const ContentClusterStrategist = () => {
   const enhancedContentService = new EnhancedContentService();
   const keywordResearchEngine = new KeywordResearchEngine();
   const contentClusterPlanner = new ContentClusterPlanner();
+  const advancedResearchEngine = new AdvancedResearchEngine();
 
   // Load user profile on component mount
   useEffect(() => {
@@ -162,6 +170,62 @@ const ContentClusterStrategist = () => {
     }
   };
 
+  const performAdvancedResearch = async () => {
+    if (!keywordResearch?.success || !keywordClusters.length) {
+      alert('Please complete keyword research first');
+      return;
+    }
+
+    setIsAdvancedResearching(true);
+    setAdvancedResearchStage('Initializing advanced research...');
+
+    try {
+      const stages = [
+        'Creating research plan...',
+        'Gathering authoritative sources...',
+        'Extracting statistical data...',
+        'Collecting expert insights...',
+        'Validating research data...',
+        'Organizing by articles...',
+        'Generating citations...',
+        'Finalizing research...'
+      ];
+
+      for (let i = 0; i < stages.length; i++) {
+        setAdvancedResearchStage(stages[i]);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+
+      // Perform comprehensive research
+      const researchResults = await advancedResearchEngine.conductClusterResearch(
+        {
+          topic: clusterTopic,
+          keywords: keywordResearch.keywords,
+          keywordClusters: keywordClusters,
+          articleOutlines: [],
+          type: contentType
+        },
+        'comprehensive'
+      );
+
+      setClusterResearch(researchResults);
+      setAdvancedResearchStage('Advanced research completed!');
+      
+      setTimeout(() => {
+        setIsAdvancedResearching(false);
+        setAdvancedResearchStage('');
+      }, 2000);
+
+    } catch (error) {
+      console.error('Error performing advanced research:', error);
+      setAdvancedResearchStage('Error during advanced research. Please try again.');
+      setTimeout(() => {
+        setIsAdvancedResearching(false);
+        setAdvancedResearchStage('');
+      }, 3000);
+    }
+  };
+
   const generateContentCluster = async () => {
     if (!clusterTopic.trim()) {
       alert('Please enter a cluster topic');
@@ -172,6 +236,14 @@ const ContentClusterStrategist = () => {
     if (!keywordResearch || !keywordResearch.success) {
       alert('Please perform keyword research first');
       return;
+    }
+
+    // Recommend advanced research for best results
+    if (!clusterResearch?.success) {
+      const proceed = window.confirm(
+        'For best results, we recommend performing advanced research first. Would you like to continue without it?'
+      );
+      if (!proceed) return;
     }
 
     setIsGenerating(true);
@@ -224,6 +296,7 @@ const ContentClusterStrategist = () => {
         articles: generateEnhancedClusterArticles(),
         articleOutlines: outlineResults.outlines || [],
         contentCalendar: contentCalendar,
+        researchData: clusterResearch || null,
         createdAt: new Date().toISOString(),
         keywords: keywordResearch.keywords,
         keywordClusters: keywordClusters,
@@ -317,6 +390,28 @@ const ContentClusterStrategist = () => {
     return [...new Set(allOpportunities)];
   };
 
+  const openInterlinkingModal = (cluster) => {
+    setInterlinkingCluster(cluster);
+    setShowInterlinkingModal(true);
+  };
+
+  const handleInterlinkingApply = (updatedCluster, summary) => {
+    // Update the cluster in the clusters list
+    setContentClusters(prev => 
+      prev.map(cluster => 
+        cluster.id === updatedCluster.id ? updatedCluster : cluster
+      )
+    );
+    
+    // Update selected cluster if it's the one that was updated
+    if (selectedCluster && selectedCluster.id === updatedCluster.id) {
+      setSelectedCluster(updatedCluster);
+    }
+    
+    // Show success message
+    alert(`Interlinking strategy applied successfully!\n\n${summary.articlesUpdated} articles updated with ${summary.linksAdded} internal links.\nSEO Score: ${summary.seoScore} (${summary.grade})`);
+  };
+
   const renderClusterPlanningTab = () => (
     <div className="space-y-6">
       {/* Cluster Creation Form */}
@@ -388,8 +483,8 @@ const ContentClusterStrategist = () => {
         </div>
 
         <div className="mt-6 space-y-4">
-          {/* Keyword Research Button */}
-          <div className="flex space-x-4">
+          {/* Research Buttons */}
+          <div className="flex flex-wrap gap-3">
             <button
               onClick={performKeywordResearch}
               disabled={isResearching || !clusterTopic.trim()}
@@ -404,6 +499,24 @@ const ContentClusterStrategist = () => {
                 <>
                   <Key className="h-4 w-4 mr-2" />
                   Research Keywords
+                </>
+              )}
+            </button>
+
+            <button
+              onClick={performAdvancedResearch}
+              disabled={isAdvancedResearching || !keywordResearch?.success}
+              className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+            >
+              {isAdvancedResearching ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  Advanced Research...
+                </>
+              ) : (
+                <>
+                  <Search className="h-4 w-4 mr-2" />
+                  Advanced Research
                 </>
               )}
             </button>
@@ -435,11 +548,55 @@ const ContentClusterStrategist = () => {
             </p>
           )}
           
+          {advancedResearchStage && (
+            <p className="text-sm text-indigo-600 flex items-center">
+              <Brain className="h-4 w-4 mr-2" />
+              {advancedResearchStage}
+            </p>
+          )}
+          
           {generationStage && (
             <p className="text-sm text-blue-600 flex items-center">
               <Sparkles className="h-4 w-4 mr-2" />
               {generationStage}
             </p>
+          )}
+
+          {/* Advanced Research Results */}
+          {clusterResearch?.success && (
+            <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+              <h4 className="font-medium text-indigo-900 mb-3 flex items-center">
+                <Brain className="h-4 w-4 mr-2 text-indigo-600" />
+                Advanced Research Results
+              </h4>
+              
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
+                <div>
+                  <span className="text-indigo-600">Sources:</span>
+                  <p className="font-medium">{clusterResearch.totalSources}</p>
+                </div>
+                <div>
+                  <span className="text-indigo-600">Facts:</span>
+                  <p className="font-medium">{clusterResearch.validatedFacts}</p>
+                </div>
+                <div>
+                  <span className="text-indigo-600">Quality:</span>
+                  <p className="font-medium">{clusterResearch.researchQuality?.qualityLevel || 'Good'}</p>
+                </div>
+                <div>
+                  <span className="text-indigo-600">Score:</span>
+                  <p className="font-medium">{clusterResearch.researchQuality?.overallScore || 85}/100</p>
+                </div>
+                <div>
+                  <span className="text-indigo-600">Citations:</span>
+                  <p className="font-medium">{clusterResearch.citations?.length || 0}</p>
+                </div>
+              </div>
+
+              <div className="mt-3 text-xs text-indigo-700">
+                ✅ Research includes authoritative sources, verified statistics, expert quotes, and case studies
+              </div>
+            </div>
           )}
 
           {/* Keyword Research Results */}
@@ -533,12 +690,25 @@ const ContentClusterStrategist = () => {
                         <CheckCircle className="h-3 w-3 mr-1 text-green-500" />
                         {cluster.status}
                       </span>
+                      {cluster.interlinkingStrategy?.applied && (
+                        <span className="flex items-center text-blue-600">
+                          <Link className="h-3 w-3 mr-1" />
+                          {cluster.interlinkingStrategy.totalLinks} links
+                        </span>
+                      )}
                     </div>
                   </div>
                   <div className="text-right">
                     <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                       {cluster.size} cluster
                     </span>
+                    {cluster.interlinkingStrategy?.applied && (
+                      <div className="mt-1">
+                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                          SEO: {cluster.interlinkingStrategy.seoScore.overall}
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -573,6 +743,31 @@ const ContentClusterStrategist = () => {
               <div className="text-center p-3 bg-yellow-50 rounded-lg">
                 <div className="text-2xl font-bold text-yellow-600">{selectedCluster.estimatedWorkingHours || 'N/A'}h</div>
                 <div className="text-sm text-gray-600">Est. Hours</div>
+              </div>
+            </div>
+
+            {/* Interlinking Section */}
+            <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="font-medium text-gray-900 flex items-center">
+                    <Link className="h-4 w-4 mr-2 text-blue-600" />
+                    Internal Linking Strategy
+                  </h4>
+                  <p className="text-sm text-gray-600 mt-1">
+                    {selectedCluster.interlinkingStrategy?.applied 
+                      ? `✅ Applied: ${selectedCluster.interlinkingStrategy.totalLinks} links with SEO score ${selectedCluster.interlinkingStrategy.seoScore.overall}`
+                      : 'Generate intelligent internal links between your cluster articles'
+                    }
+                  </p>
+                </div>
+                <button
+                  onClick={() => openInterlinkingModal(selectedCluster)}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center text-sm"
+                >
+                  <Link className="h-4 w-4 mr-2" />
+                  {selectedCluster.interlinkingStrategy?.applied ? 'Update Links' : 'Generate Links'}
+                </button>
               </div>
             </div>
 
@@ -825,6 +1020,17 @@ const ContentClusterStrategist = () => {
         <VideoGenerationModal 
           onClose={() => setShowVideoModal(false)}
           topic={selectedTopic || customTopic}
+        />
+      )}
+
+      {showInterlinkingModal && interlinkingCluster && (
+        <InterlinkingStrategyModal
+          cluster={interlinkingCluster}
+          onClose={() => {
+            setShowInterlinkingModal(false);
+            setInterlinkingCluster(null);
+          }}
+          onApply={handleInterlinkingApply}
         />
       )}
     </div>

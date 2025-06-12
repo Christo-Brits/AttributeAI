@@ -515,8 +515,30 @@ Return only the JSON array, no other text.`;
               ) : (
                 <div className="space-y-3">
                   {contentGaps.length > 0 ? (
-                    contentG            {/* Quick Content Generator */}
-            <div className="lg:col-span-2">
+                    contentGaps.map((gap, index) => (
+                      <div
+                        key={index}
+                        className="p-3 bg-blue-50 border border-blue-200 rounded-lg cursor-pointer hover:bg-blue-100 transition-colors"
+                        onClick={() => setSelectedTopic(gap)}
+                      >
+                        <div className="font-medium text-blue-900">{gap}</div>
+                        <div className="text-xs text-blue-600 mt-1">Click to use as topic</div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-8 text-gray-500">
+                      <TrendingUp className="mx-auto h-12 w-12 text-gray-300 mb-4" />
+                      <p>No content gaps identified yet</p>
+                      <p className="text-sm">Complete your profile to get personalized suggestions</p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Quick Content Generator */}
+          <div className="lg:col-span-2">
               <div className="bg-white rounded-lg shadow-sm p-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
                   <PenTool className="mr-2 text-purple-600" size={20} />

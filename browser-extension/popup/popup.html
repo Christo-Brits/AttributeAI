@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AttributeAI Keyword Intelligence</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="popup-container">
+        <!-- Header -->
+        <header class="popup-header">
+            <div class="logo-section">
+                <img src="../icons/icon32.png" alt="AttributeAI" class="logo">
+                <h1>AttributeAI</h1>
+            </div>
+            <div class="status-indicators">
+                <div id="connection-status" class="status-badge">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Connecting...</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- User Info -->
+        <div id="user-section" class="user-section hidden">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <span id="user-initials">AA</span>
+                </div>
+                <div class="user-details">
+                    <div id="user-name" class="user-name">Demo User</div>
+                    <div id="user-tier" class="user-tier">Free Plan</div>
+                </div>
+            </div>
+            <div class="quota-section">
+                <div class="quota-header">
+                    <span>Monthly Usage</span>
+                    <span id="quota-text">0 / 1000</span>
+                </div>
+                <div class="quota-bar">
+                    <div id="quota-progress" class="quota-progress"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Search -->
+        <div class="search-section">
+            <div class="search-container">
+                <input 
+                    type="text" 
+                    id="keyword-input" 
+                    placeholder="Enter keyword for AI analysis..."
+                    class="keyword-input"
+                >
+                <button id="analyze-btn" class="analyze-button">
+                    <span class="btn-icon">🧠</span>
+                    <span class="btn-text">Analyze</span>
+                </button>
+            </div>
+            <div class="search-suggestions" id="search-suggestions"></div>
+        </div>
+
+        <!-- Page Analysis */
+        <div class="page-analysis-section">
+            <button id="analyze-page-btn" class="page-analysis-btn">
+                <span class="btn-icon">📊</span>
+                <span>Analyze Current Page</span>
+            </button>
+        </div>
+
+        <!-- Results Section -->
+        <div id="results-section" class="results-section hidden">
+            <div class="results-header">
+                <h3>Keyword Analysis</h3>
+                <button id="export-btn" class="export-btn">Export</button>
+            </div>
+            
+            <div class="keyword-result">
+                <div class="keyword-title" id="result-keyword">digital marketing</div>
+                <div class="metrics-grid">
+                    <div class="metric">
+                        <div class="metric-value" id="search-volume">12,000</div>
+                        <div class="metric-label">Search Volume</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="difficulty">65</div>
+                        <div class="metric-label">Difficulty</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="cpc">$3.25</div>
+                        <div class="metric-label">CPC</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="intent">Commercial</div>
+                        <div class="metric-label">Intent</div>
+                    </div>
+                </div>
+                
+                <div class="ai-insights">
+                    <div class="insight-item">
+                        <div class="insight-source">
+                            <span class="ai-badge claude">Claude</span>
+                            <span class="confidence">94%</span>
+                        </div>
+                        <div class="insight-text" id="claude-insight">
+                            Strategic keyword with strong commercial intent...
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="action-btn primary" id="view-full-analysis">
+                        <span>View Full Analysis</span>
+                        <span class="btn-arrow">→</span>
+                    </button>
+                    <button class="action-btn secondary" id="save-keyword">
+                        <span>Save Keyword</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loading-section" class="loading-section hidden">
+            <div class="loading-animation">
+                <div class="loading-spinner"></div>
+            </div>
+            <div class="loading-text">
+                <div class="loading-title">Analyzing with AI...</div>
+                <div class="loading-subtitle">Multi-model intelligence in progress</div>
+            </div>
+            <div class="loading-progress">
+                <div class="progress-step active">
+                    <span class="step-icon">🧠</span>
+                    <span>Claude Analysis</span>
+                </div>
+                <div class="progress-step">
+                    <span class="step-icon">⚡</span>
+                    <span>GPT-4 Insights</span>
+                </div>
+                <div class="progress-step">
+                    <span class="step-icon">🔮</span>
+                    <span>Gemini Predictions</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <button class="quick-action-btn" id="open-dashboard">
+                <span class="action-icon">🏠</span>
+                <span>Dashboard</span>
+            </button>
+            <button class="quick-action-btn" id="view-history">
+                <span class="action-icon">📋</span>
+                <span>History</span>
+            </button>
+            <button class="quick-action-btn" id="upgrade-plan">
+                <span class="action-icon">⭐</span>
+                <span>Upgrade</span>
+            </button>
+        </div>
+
+        <!-- Footer -->
+        <footer class="popup-footer">
+            <div class="footer-links">
+                <a href="#" id="settings-link">Settings</a>
+                <a href="#" id="help-link">Help</a>
+                <a href="#" id="feedback-link">Feedback</a>
+            </div>
+            <div class="version-info">
+                <span>v1.0.0</span>
+                <span class="vs-keywords-everywhere">10x better than Keywords Everywhere</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>

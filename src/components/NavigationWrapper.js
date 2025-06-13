@@ -45,6 +45,8 @@ const NavigationWrapper = ({ activeTab, setActiveTab, onViewChange, user: authUs
 
   const tabs = [
     { id: 'dashboard', name: 'Unified Dashboard', icon: Grid },
+    { id: 'keyword-intelligence', name: 'Keyword Intelligence', icon: Search, new: true, gradient: true },
+    { id: 'enhanced-content', name: 'Enhanced Content', icon: PenTool, new: true, gradient: true, competitive: 'Outrank.so Killer' },
     { id: 'seo-enhanced', name: 'AI SEO Analysis', icon: Search, phase2: true },
     { id: 'content-clusters', name: 'Content Clusters', icon: PenTool, phase2: true },
     { id: 'content', name: 'Content Strategy', icon: PenTool },

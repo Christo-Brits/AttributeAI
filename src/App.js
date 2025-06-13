@@ -10,6 +10,9 @@ import AccountPage from './components/AccountPage';
 import SuccessPage from './components/SuccessPage';
 import FloatingChatButton from './components/FloatingChatButton';
 
+// NEW: Enhanced Content Generator (Outrank.so killer)
+const EnhancedContentGenerator = lazy(() => import('./components/EnhancedContentGenerator'));
+
 // NEW: Keyword Intelligence Engine
 const KeywordIntelligenceEngine = lazy(() => import('./components/KeywordIntelligenceEngine'));
 
@@ -67,6 +70,7 @@ function AuthenticatedApp() {
         onNavigateToTab={setActiveTab}
       />,
       'keyword-intelligence': KeywordIntelligenceEngine,
+      'enhanced-content': EnhancedContentGenerator, // NEW: Outrank.so killer
       'seo-enhanced': SEOAnalysisEnhanced,
       'content-clusters': ContentClusterStrategist,
       attribution: AttributionEngine,

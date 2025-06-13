@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BarChart3, TrendingUp, Target, Zap, AlertCircle, CheckCircle, Clock, Users, Globe, Brain, MessageCircle, Search, Eye } from 'lucide-react';
+import { BarChart3, TrendingUp, Target, Zap, AlertCircle, CheckCircle, Clock, Users, Globe, Brain, MessageCircle, Search, Eye, PenTool } from 'lucide-react';
 import { Card, Button } from './ui/DesignSystem';
 import { useDataBridge } from '../utils/DataBridge';
 import { useAuth } from './auth/AuthContext';
@@ -20,6 +20,19 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
     } else {
       // Fallback: try to find and click the navigation tab
       const navButton = document.querySelector('[data-tab="keyword-intelligence"]');
+      if (navButton) {
+        navButton.click();
+      }
+    }
+  };
+
+  // Handle navigation to enhanced content generator
+  const handleEnhancedContentClick = () => {
+    if (onNavigateToTab) {
+      onNavigateToTab('enhanced-content');
+    } else {
+      // Fallback: try to find and click the navigation tab
+      const navButton = document.querySelector('[data-tab="enhanced-content"]');
       if (navButton) {
         navButton.click();
       }
@@ -206,6 +219,71 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
             <div className="mt-4 text-sm text-gray-600">
               <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium animate-pulse">
                 ✨ 10x better value than Keywords Everywhere
+              </span>
+            </div>
+          </div>
+        </Card>
+
+        {/* NEW: Enhanced Content Generator Feature Callout */}
+        <Card className="bg-gradient-to-r from-purple-50 via-pink-50 to-purple-50 border-2 border-purple-200">
+          <div className="text-center p-6">
+            <div className="flex justify-center mb-4">
+              <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-3 rounded-full">
+                <PenTool className="h-8 w-8 text-white" />
+              </div>
+            </div>
+            
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              🔥 NEW: Enhanced Content Generator
+            </h2>
+            
+            <p className="text-lg text-gray-700 mb-4 max-w-3xl mx-auto">
+              Destroy Outrank.so with unlimited AI content generation. Multi-model AI creates SEO-optimized content 
+              with attribution tracking and competitive intelligence.
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div className="text-center p-4 bg-white rounded-lg border border-purple-100">
+                <Zap className="h-6 w-6 text-purple-600 mx-auto mb-2" />
+                <div className="font-semibold text-gray-900">Unlimited Generation</div>
+                <div className="text-sm text-gray-600">No credit limits like Outrank.so</div>
+              </div>
+              
+              <div className="text-center p-4 bg-white rounded-lg border border-pink-100">
+                <Brain className="h-6 w-6 text-pink-600 mx-auto mb-2" />
+                <div className="font-semibold text-gray-900">Multi-Model AI</div>
+                <div className="text-sm text-gray-600">Claude + GPT-4 + Gemini working together</div>
+              </div>
+              
+              <div className="text-center p-4 bg-white rounded-lg border border-purple-100">
+                <Target className="h-6 w-6 text-purple-600 mx-auto mb-2" />
+                <div className="font-semibold text-gray-900">Attribution Intelligence</div>
+                <div className="text-sm text-gray-600">Track content → conversions → revenue</div>
+              </div>
+            </div>
+            
+            <div className="flex justify-center space-x-4">
+              <Button 
+                onClick={handleEnhancedContentClick}
+                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 text-lg font-semibold hover:from-purple-600 hover:to-pink-600 transition-all duration-200 transform hover:scale-105"
+              >
+                <PenTool className="w-5 h-5 mr-2" />
+                Try Enhanced Content
+              </Button>
+              
+              <Button 
+                variant="secondary"
+                className="border-2 border-purple-200 text-purple-700 hover:bg-purple-50"
+                onClick={() => alert('Multi-model content generation ready! Click "Try Enhanced Content" to start creating.')}
+              >
+                <Eye className="w-4 h-4 mr-2" />
+                View Features
+              </Button>
+            </div>
+            
+            <div className="mt-4 text-sm text-gray-600">
+              <span className="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs font-medium animate-pulse">
+                🎯 Outrank.so Killer - Better features, lower cost
               </span>
             </div>
           </div>

@@ -188,4 +188,46 @@ router.post('/competitor-analysis', async (req, res) => {
     // Check cache
     const cacheKey = `competitor-${domain}`;
     if (competitorCache.has(cacheKey)) {
-      return res.json({
+      return res.json({        success: true,
+        data: competitorCache.get(cacheKey),
+        cached: true
+      });
+    }
+
+    try {
+      // Placeholder competitor analysis
+      const competitorData = {
+        domain: domain,
+        competitors: [
+          { name: 'competitor1.com', similarity: 85, keywords: 150 },
+          { name: 'competitor2.com', similarity: 72, keywords: 128 },
+          { name: 'competitor3.com', similarity: 68, keywords: 95 }
+        ],
+        analysis: `Competitor analysis for ${domain} completed.`
+      };
+
+      // Cache for 1 hour
+      competitorCache.set(cacheKey, competitorData);
+
+      res.json({
+        success: true,
+        data: competitorData
+      });
+
+    } catch (error) {
+      console.error('Competitor analysis error:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Failed to analyze competitors'
+      });
+    }
+  } catch (error) {
+    console.error('Competitor analysis route error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Internal server error'
+    });
+  }
+});
+
+module.exports = router;

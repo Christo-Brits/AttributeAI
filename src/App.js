@@ -4,6 +4,9 @@ import { AuthProvider, useAuth } from './components/auth/AuthContext';
 import NavigationWrapper from './components/NavigationWrapper';
 import UnifiedDashboard from './components/UnifiedDashboard';
 import LoginPage from './components/LoginPage';
+import LandingPage from './components/LandingPage';
+import AccountPage from './components/AccountPage';
+import SuccessPage from './components/SuccessPage';
 import FloatingChatButton from './components/FloatingChatButton';
 
 // Phase 2: Enhanced components with Claude AI  
@@ -33,8 +36,27 @@ const ComponentLoader = () => (
 function AuthenticatedApp() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [websiteAnalysisResults, setWebsiteAnalysisResults] = useState(null);
+  const [currentView, setCurrentView] = useState('dashboard'); // dashboard, account, success
+  const { user, updateUser } = useAuth();
 
   const renderActiveComponent = () => {
+    // Handle special views first
+    if (currentView === 'account') {
+      return <AccountPage 
+        user={user} 
+        onUpdateUser={updateUser} 
+        onBackToApp={() => setCurrentView('dashboard')} 
+      />;
+    }
+    
+    if (currentView === 'success') {
+      return <SuccessPage 
+        onGetStarted={() => setCurrentView('dashboard')} 
+        onGoToAccount={() => setCurrentView('account')} 
+      />;
+    }
+
+    // Regular dashboard components
     const components = {
       dashboard: () => <UnifiedDashboard websiteAnalysis={websiteAnalysisResults} />,
       'seo-enhanced': SEOAnalysisEnhanced,
@@ -65,17 +87,25 @@ function AuthenticatedApp() {
 
   return (
     <div className="App">
-      <NavigationWrapper 
-        activeTab={activeTab} 
-        setActiveTab={setActiveTab}
-      />
-      <main className="min-h-screen bg-gray-50">
+      {/* Only show navigation for regular dashboard views */}
+      {currentView === 'dashboard' && (
+        <NavigationWrapper 
+          activeTab={activeTab} 
+          setActiveTab={setActiveTab}
+          onViewChange={setCurrentView}
+          user={user}
+        />
+      )}
+      
+      <main className={currentView === 'dashboard' ? 'min-h-screen bg-gray-50' : ''}>
         {renderActiveComponent()}
         
-        {/* Floating Chat Button - Available on all pages */}
-        <FloatingChatButton 
-          websiteAnalysis={websiteAnalysisResults}
-        />
+        {/* Floating Chat Button - Available on dashboard pages only */}
+        {currentView === 'dashboard' && (
+          <FloatingChatButton 
+            websiteAnalysis={websiteAnalysisResults}
+          />
+        )}
       </main>
     </div>
   );
@@ -91,11 +121,39 @@ function App() {
 
 function AppRouter() {
   const { isAuthenticated, isLoading, updateUser } = useAuth();
+  const [appView, setAppView] = useState('landing'); // landing, login, app, success
+
+  // Check URL for success page
+  React.useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('session_id')) {
+      setAppView('success');
+    } else if (window.location.pathname === '/pricing') {
+      setAppView('landing');
+    }
+  }, []);
+
+  const handleGetStarted = (plan) => {
+    if (plan === 'freemium') {
+      setAppView('login');
+    } else if (plan === 'pro') {
+      // This will be handled by the LandingPage component's Stripe integration
+      // The user will be redirected to Stripe and then back to success page
+      setAppView('login');
+    } else {
+      setAppView('login');
+    }
+  };
 
   const handleLogin = (userData) => {
     // Store user data and mark as authenticated
     updateUser(userData.userProfile);
+    setAppView('app');
     // The AuthContext will handle the authentication state
+  };
+
+  const handleSuccess = () => {
+    setAppView('app');
   };
 
   // Show loading spinner while checking authentication
@@ -110,8 +168,25 @@ function AppRouter() {
     );
   }
 
-  // Show login page if not authenticated
-  if (!isAuthenticated) {
+  // Handle different app views
+  if (appView === 'success') {
+    return <SuccessPage 
+      onGetStarted={handleSuccess} 
+      onGoToAccount={() => {
+        handleSuccess();
+        // This will be handled by the authenticated app's account view
+      }} 
+    />;
+  }
+
+  if (appView === 'landing' && !isAuthenticated) {
+    return <LandingPage 
+      onGetStarted={handleGetStarted} 
+      onFreeTrial={() => setAppView('login')} 
+    />;
+  }
+
+  if (appView === 'login' || (!isAuthenticated && appView !== 'landing')) {
     return <LoginPage onLogin={handleLogin} />;
   }
 

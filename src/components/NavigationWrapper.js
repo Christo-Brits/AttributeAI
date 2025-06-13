@@ -4,13 +4,16 @@ import { useAuth } from './auth/AuthContext';
 import UserProfile from './auth/UserProfile';
 import AttributeAILogo from './ui/AttributeAILogo';
 
-const NavigationWrapper = ({ activeTab, setActiveTab }) => {
+const NavigationWrapper = ({ activeTab, setActiveTab, onViewChange, user: authUser }) => {
   const { user, logout } = useAuth();
   const [showProfile, setShowProfile] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [logoutSuccess, setLogoutSuccess] = useState(false);
   const dropdownRef = useRef(null);
+
+  // Use authUser if passed, otherwise use context user
+  const currentUser = authUser || user;
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -109,15 +112,15 @@ const NavigationWrapper = ({ activeTab, setActiveTab }) => {
             </button>
             
             {/* Website Badge */}
-            {user?.websiteUrl && (
+            {currentUser?.websiteUrl && (
               <div className="hidden lg:flex items-center space-x-2 bg-green-50 px-3 py-2 rounded-lg border border-green-200">
                 <Globe className="h-4 w-4 text-green-600" />
                 <span className="text-sm text-green-800">
                   {(() => {
                     try {
-                      return new URL(user.websiteUrl).hostname;
+                      return new URL(currentUser.websiteUrl).hostname;
                     } catch {
-                      return user.websiteUrl.replace(/^https?:\/\//, '');
+                      return currentUser.websiteUrl.replace(/^https?:\/\//, '');
                     }
                   })()}
                 </span>
@@ -136,10 +139,10 @@ const NavigationWrapper = ({ activeTab, setActiveTab }) => {
                   </div>
                   <div className="hidden md:block text-left">
                     <span className="text-sm font-medium text-gray-700">
-                      {user?.firstName ? `${user.firstName} ${user.lastName}` : user?.email || 'Demo User'}
+                      {currentUser?.firstName ? `${currentUser.firstName} ${currentUser.lastName}` : currentUser?.email || 'Demo User'}
                     </span>
                     <p className="text-xs text-gray-500">
-                      {user?.company || user?.industry || 'Free Trial'}
+                      {currentUser?.company || currentUser?.industry || 'Free Trial'}
                     </p>
                   </div>
                   <ChevronDown className="h-4 w-4 text-gray-400" />
@@ -148,6 +151,18 @@ const NavigationWrapper = ({ activeTab, setActiveTab }) => {
                 {/* User Dropdown Menu */}
                 {showUserDropdown && (
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                    <button
+                      onClick={() => {
+                        if (onViewChange) {
+                          onViewChange('account');
+                        }
+                        setShowUserDropdown(false);
+                      }}
+                      className="flex items-center space-x-2 w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 transition-colors"
+                    >
+                      <User className="h-4 w-4" />
+                      <span>Account Settings</span>
+                    </button>
                     <button
                       onClick={() => {
                         setShowProfile(true);

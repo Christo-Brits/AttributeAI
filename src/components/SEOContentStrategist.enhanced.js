@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { PenTool, FileText, Target, Eye, CheckCircle, Clock, Search, Zap, Image, ExternalLink, Brain, TrendingUp, Users, Globe, Sparkles, Video, BarChart3, PlayCircle, Award, Wand2, Send, Calendar, X } from 'lucide-react';
+import { PenTool, FileText, Target, Eye, CheckCircle, Clock, Search, Zap, Image, ExternalLink, Brain, TrendingUp, Users, Globe, Sparkles, Video, BarChart3, PlayCircle, Award, Wand2, Send, Calendar, X, Star } from 'lucide-react';
 import EnhancedContentService from '../services/EnhancedContentService';
 import ContentPolishModal from './ContentPolishModal';
 import VideoGenerationModal from './VideoGenerationModal';
@@ -9,6 +9,7 @@ import ContentQualityAnalyzer from './ContentQualityAnalyzer';
 import ContentOptimizationModal from './ContentOptimizationModal';
 import ContentGradingService from '../services/ContentGradingService';
 import PublishingPipeline from './PublishingPipeline';
+import ContentPerformanceAnalytics from './ContentPerformanceAnalytics';
 
 const SEOContentStrategist = () => {
   const [userProfile, setUserProfile] = useState(null);
@@ -35,6 +36,7 @@ const SEOContentStrategist = () => {
   const [showOptimizationModal, setShowOptimizationModal] = useState(false);
   const [contentGrade, setContentGrade] = useState(null);
   const [showPublishingModal, setShowPublishingModal] = useState(false);
+  const [showPerformanceAnalytics, setShowPerformanceAnalytics] = useState(false);
   
   const exportMenuRef = useRef(null);
   const enhancedContentService = new EnhancedContentService();
@@ -499,6 +501,54 @@ Return only the JSON array, no other text.`;
           </div>
         </div>
 
+        {/* Navigation Tabs */}
+        <div className="bg-white rounded-lg shadow-sm mb-6">
+          <div className="border-b border-gray-200">
+            <nav className="flex space-x-8 px-6">
+              <button
+                onClick={() => setActiveTab('content-gaps')}
+                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === 'content-gaps' 
+                    ? 'border-blue-500 text-blue-600' 
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                Content Generator
+              </button>
+              <button
+                onClick={() => setActiveTab('advanced-research')}
+                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === 'advanced-research' 
+                    ? 'border-purple-500 text-purple-600' 
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                Advanced Research
+              </button>
+              <button
+                onClick={() => setActiveTab('batch-generation')}
+                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === 'batch-generation' 
+                    ? 'border-green-500 text-green-600' 
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                Batch Generation
+              </button>
+              <button
+                onClick={() => setActiveTab('performance-analytics')}
+                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === 'performance-analytics' 
+                    ? 'border-orange-500 text-orange-600' 
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                Performance Analytics
+              </button>
+            </nav>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
           {/* Content Gaps Analysis */}
@@ -684,6 +734,15 @@ Return only the JSON array, no other text.`;
                         >
                           <Wand2 size={16} />
                           <span>Optimize Quality</span>
+                        </button>
+
+                        {/* Performance Analytics Button */}
+                        <button
+                          onClick={() => setActiveTab('performance-analytics')}
+                          className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center space-x-2"
+                        >
+                          <BarChart3 size={16} />
+                          <span>View Analytics</span>
                         </button>
                         
                         <button
@@ -878,6 +937,118 @@ Return only the JSON array, no other text.`;
           </div>
         )}
 
+        {/* Performance Analytics Tab */}
+        {activeTab === 'performance-analytics' && (
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold text-gray-900 flex items-center">
+                <BarChart3 className="mr-2 text-green-600" size={20} />
+                Content Performance Analytics
+              </h2>
+              <button
+                onClick={() => setShowPerformanceAnalytics(true)}
+                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center space-x-2"
+              >
+                <BarChart3 size={16} />
+                <span>View Full Analytics</span>
+              </button>
+            </div>
+            
+            {/* Performance Overview */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+              <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-6 border border-blue-200">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-blue-600 text-sm font-medium">Total Content</p>
+                    <p className="text-2xl font-bold text-blue-900">47</p>
+                    <p className="text-xs text-blue-700 mt-1">Published pieces</p>
+                  </div>
+                  <FileText className="w-8 h-8 text-blue-600" />
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-6 border border-green-200">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-green-600 text-sm font-medium">Avg Performance</p>
+                    <p className="text-2xl font-bold text-green-900">78.4</p>
+                    <p className="text-xs text-green-700 mt-1">Performance score</p>
+                  </div>
+                  <Award className="w-8 h-8 text-green-600" />
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-6 border border-orange-200">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-orange-600 text-sm font-medium">Total Views</p>
+                    <p className="text-2xl font-bold text-orange-900">124.5K</p>
+                    <p className="text-xs text-orange-700 mt-1">Last 30 days</p>
+                  </div>
+                  <Eye className="w-8 h-8 text-orange-600" />
+                </div>
+              </div>
+            </div>
+
+            {/* Top Performing Content */}
+            <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border-l-4 border-yellow-400 rounded-lg p-6 mb-6">
+              <div className="flex items-center gap-3 mb-3">
+                <Star className="w-6 h-6 text-yellow-600" />
+                <h3 className="text-lg font-semibold text-gray-900">Top Performer</h3>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="md:col-span-2">
+                  <p className="text-gray-600 text-sm">Title</p>
+                  <p className="font-medium">Complete Guide to Multi-Touch Attribution</p>
+                </div>
+                <div>
+                  <p className="text-gray-600 text-sm">Performance Score</p>
+                  <p className="font-bold text-green-600">94.2</p>
+                </div>
+                <div>
+                  <p className="text-gray-600 text-sm">Views</p>
+                  <p className="font-medium">15.4K</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Actions */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="border border-gray-200 rounded-lg p-4">
+                <h3 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5 text-blue-600" />
+                  Performance Insights
+                </h3>
+                <p className="text-sm text-gray-600 mb-3">
+                  Guide-format content shows 34% better engagement than blog posts
+                </p>
+                <button 
+                  onClick={() => setShowPerformanceAnalytics(true)}
+                  className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                >
+                  View Detailed Analysis →
+                </button>
+              </div>
+
+              <div className="border border-gray-200 rounded-lg p-4">
+                <h3 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                  <Zap className="w-5 h-5 text-green-600" />
+                  Quick Wins
+                </h3>
+                <p className="text-sm text-gray-600 mb-3">
+                  3 pieces of content show declining engagement trends
+                </p>
+                <button 
+                  onClick={() => setActiveTab('content-gaps')}
+                  className="text-green-600 hover:text-green-700 text-sm font-medium"
+                >
+                  Generate New Content →
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Help Text for non-users */}
         {!userProfile && (
           <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-lg p-6">
@@ -973,6 +1144,15 @@ Return only the JSON array, no other text.`;
               </div>
             </div>
           </div>
+        )}
+
+        {/* Content Performance Analytics Modal */}
+        {showPerformanceAnalytics && (
+          <ContentPerformanceAnalytics
+            isOpen={showPerformanceAnalytics}
+            onClose={() => setShowPerformanceAnalytics(false)}
+            contentData={contentResults}
+          />
         )}
       </div>
     </div>

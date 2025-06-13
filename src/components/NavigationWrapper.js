@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { BarChart3, Activity, TrendingUp, Search, PenTool, Target, Eye, Settings, User, Bell, Grid, LogOut, Globe, ChevronDown } from 'lucide-react';
+import { BarChart3, Activity, TrendingUp, Search, PenTool, Target, Eye, Settings, User, Bell, Grid, LogOut, Globe, ChevronDown, Calendar } from 'lucide-react';
 import { useAuth } from './auth/AuthContext';
 import UserProfile from './auth/UserProfile';
 import AttributeAILogo from './ui/AttributeAILogo';
@@ -45,6 +45,8 @@ const NavigationWrapper = ({ activeTab, setActiveTab }) => {
     { id: 'seo-enhanced', name: 'AI SEO Analysis', icon: Search, phase2: true },
     { id: 'content-clusters', name: 'Content Clusters', icon: PenTool, phase2: true },
     { id: 'content', name: 'Content Strategy', icon: PenTool },
+    { id: 'publishing', name: 'Publishing Pipeline', icon: Globe, phase2: true },
+    { id: 'scheduler', name: 'Content Scheduler', icon: Calendar, phase2: true },
     { id: 'attribution', name: 'Attribution Engine', icon: BarChart3 },
     { id: 'realtime', name: 'Real-Time Tracking', icon: Activity },
     { id: 'analytics', name: 'Journey Analytics', icon: TrendingUp },

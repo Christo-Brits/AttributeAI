@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { PenTool, FileText, Target, Eye, CheckCircle, Clock, Search, Zap, Image, ExternalLink, Brain, TrendingUp, Users, Globe, Sparkles, Video, BarChart3, PlayCircle, Award, Wand2 } from 'lucide-react';
+import { PenTool, FileText, Target, Eye, CheckCircle, Clock, Search, Zap, Image, ExternalLink, Brain, TrendingUp, Users, Globe, Sparkles, Video, BarChart3, PlayCircle, Award, Wand2, Send, Calendar, X } from 'lucide-react';
 import EnhancedContentService from '../services/EnhancedContentService';
 import ContentPolishModal from './ContentPolishModal';
 import VideoGenerationModal from './VideoGenerationModal';
@@ -8,6 +8,7 @@ import BatchContentDashboard from './BatchContentDashboard';
 import ContentQualityAnalyzer from './ContentQualityAnalyzer';
 import ContentOptimizationModal from './ContentOptimizationModal';
 import ContentGradingService from '../services/ContentGradingService';
+import PublishingPipeline from './PublishingPipeline';
 
 const SEOContentStrategist = () => {
   const [userProfile, setUserProfile] = useState(null);
@@ -33,6 +34,7 @@ const SEOContentStrategist = () => {
   const [qualityAnalysis, setQualityAnalysis] = useState(null);
   const [showOptimizationModal, setShowOptimizationModal] = useState(false);
   const [contentGrade, setContentGrade] = useState(null);
+  const [showPublishingModal, setShowPublishingModal] = useState(false);
   
   const exportMenuRef = useRef(null);
   const enhancedContentService = new EnhancedContentService();
@@ -666,6 +668,15 @@ Return only the JSON array, no other text.`;
                       </h3>
                       
                       <div className="flex items-center gap-3">
+                        {/* Publish Content Button */}
+                        <button
+                          onClick={() => setShowPublishingModal(true)}
+                          className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center space-x-2"
+                        >
+                          <Send size={16} />
+                          <span>Publish Content</span>
+                        </button>
+
                         {/* Quality Analysis Button */}
                         <button
                           onClick={() => setShowOptimizationModal(true)}
@@ -685,7 +696,7 @@ Return only the JSON array, no other text.`;
                         
                         <button
                           onClick={() => setShowPolishModal(true)}
-                          className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center space-x-2"
+                          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center space-x-2"
                         >
                           <Sparkles size={16} />
                           <span>Polish for Publication</span>
@@ -922,6 +933,46 @@ Return only the JSON array, no other text.`;
             targetKeywords={contentResults.topic ? [contentResults.topic] : []}
             onOptimizedContent={handleOptimizedContent}
           />
+        )}
+
+        {/* Publishing Pipeline Modal */}
+        {showPublishingModal && contentResults && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-xl shadow-2xl max-w-7xl w-full max-h-[95vh] overflow-hidden">
+              <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-gradient-to-r from-green-50 to-blue-50">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-1">Publish Content</h2>
+                  <p className="text-gray-600">Distribute your content across multiple platforms</p>
+                </div>
+                <button
+                  onClick={() => setShowPublishingModal(false)}
+                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                  <X className="h-6 w-6 text-gray-500" />
+                </button>
+              </div>
+              <div className="overflow-y-auto max-h-[calc(95vh-120px)]">
+                <PublishingPipeline
+                  content={{
+                    title: contentResults.metadata?.title || contentResults.topic || 'Generated Content',
+                    content: contentResults.content,
+                    excerpt: contentResults.metadata?.description || '',
+                    tags: contentResults.topic ? [contentResults.topic] : [],
+                    type: contentResults.type || 'blog-post',
+                    seoTitle: contentResults.metadata?.title,
+                    seoDescription: contentResults.metadata?.description,
+                    website: userProfile?.website
+                  }}
+                  onPublishComplete={(result) => {
+                    console.log('Published successfully:', result);
+                    setShowPublishingModal(false);
+                    // Show success message or update UI
+                  }}
+                  onClose={() => setShowPublishingModal(false)}
+                />
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </div>

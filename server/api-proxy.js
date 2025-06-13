@@ -1698,3 +1698,264 @@ app.post('/api/generate-publication-ready-content', async (req, res) => {
     });
   }
 });
+});
+
+// CMS Integration Endpoints
+app.get('/api/cms/platforms', async (req, res) => {
+    try {
+        // Mock available CMS platforms
+        const platforms = [
+            {
+                id: 'wordpress',
+                name: 'WordPress',
+                icon: '📝',
+                connected: false,
+                status: 'Available',
+                features: ['Posts', 'Pages', 'Custom Fields', 'SEO'],
+                authType: 'application_password'
+            },
+            {
+                id: 'webflow',
+                name: 'Webflow',
+                icon: '🎨',
+                connected: false,
+                status: 'Available',
+                features: ['CMS Collections', 'Custom Fields', 'SEO'],
+                authType: 'api_key'
+            },
+            {
+                id: 'ghost',
+                name: 'Ghost',
+                icon: '👻',
+                connected: false,
+                status: 'Available',
+                features: ['Posts', 'Pages', 'Tags', 'Authors'],
+                authType: 'admin_api'
+            },
+            {
+                id: 'shopify',
+                name: 'Shopify',
+                icon: '🛍️',
+                connected: false,
+                status: 'Available',
+                features: ['Blog Posts', 'Articles', 'SEO'],
+                authType: 'private_app'
+            },
+            {
+                id: 'medium',
+                name: 'Medium',
+                icon: '📰',
+                connected: false,
+                status: 'Available',
+                features: ['Articles', 'Publications'],
+                authType: 'integration_token'
+            },
+            {
+                id: 'linkedin',
+                name: 'LinkedIn',
+                icon: '💼',
+                connected: false,
+                status: 'Available',
+                features: ['Articles', 'Posts', 'Company Pages'],
+                authType: 'oauth'
+            }
+        ];
+
+        res.json(platforms);
+    } catch (error) {
+        console.error('Error fetching CMS platforms:', error);
+        res.status(500).json({ error: 'Failed to fetch CMS platforms' });
+    }
+});
+
+// Connect to CMS platform
+app.post('/api/cms/connect', async (req, res) => {
+    try {
+        const { platform, credentials } = req.body;
+        
+        console.log(`Connecting to ${platform}...`);
+        
+        // Mock connection process
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        // Simulate connection success/failure
+        const success = Math.random() > 0.2; // 80% success rate
+        
+        if (success) {
+            res.json({
+                success: true,
+                platform,
+                message: `Successfully connected to ${platform}`,
+                connectionId: `conn_${Date.now()}`,
+                features: ['publish', 'schedule', 'draft'],
+                limits: {
+                    postsPerHour: 10,
+                    postsPerDay: 100
+                }
+            });
+        } else {
+            res.status(400).json({
+                success: false,
+                platform,
+                error: 'Invalid credentials or connection failed',
+                message: 'Please check your credentials and try again'
+            });
+        }
+    } catch (error) {
+        console.error('CMS connection error:', error);
+        res.status(500).json({ error: 'Connection failed' });
+    }
+});
+
+// Publish content to CMS
+app.post('/api/cms/publish', async (req, res) => {
+    try {
+        const { platform, content, options } = req.body;
+        
+        console.log(`Publishing to ${platform}...`);
+        
+        // Validate content
+        if (!content.title || !content.body) {
+            return res.status(400).json({
+                success: false,
+                error: 'Title and body are required'
+            });
+        }
+        
+        // Mock publishing process
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        
+        // Simulate publishing success/failure
+        const success = Math.random() > 0.1; // 90% success rate
+        
+        if (success) {
+            const publishedContent = {
+                id: `post_${Date.now()}`,
+                platform,
+                title: content.title,
+                url: `https://${platform}.example.com/posts/${content.slug || 'untitled'}`,
+                status: options.schedulePublish ? 'scheduled' : 'published',
+                publishedAt: options.publishDate || new Date().toISOString(),
+                stats: {
+                    views: 0,
+                    likes: 0,
+                    shares: 0,
+                    comments: 0
+                }
+            };
+            
+            res.json({
+                success: true,
+                platform,
+                content: publishedContent,
+                message: `Successfully ${options.schedulePublish ? 'scheduled' : 'published'} to ${platform}`
+            });
+        } else {
+            res.status(400).json({
+                success: false,
+                platform,
+                error: 'Publishing failed',
+                message: 'Content could not be published. Please try again.'
+            });
+        }
+    } catch (error) {
+        console.error('Publishing error:', error);
+        res.status(500).json({ error: 'Publishing failed' });
+    }
+});
+
+// Schedule content for publishing
+app.post('/api/cms/schedule', async (req, res) => {
+    try {
+        const { content, schedule } = req.body;
+        
+        console.log('Scheduling content...');
+        
+        // Mock scheduling process
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        
+        const scheduledContent = {
+            id: `sched_${Date.now()}`,
+            title: content.title,
+            platforms: schedule.platforms,
+            publishDate: schedule.publishDate,
+            timezone: schedule.timezone,
+            status: 'scheduled',
+            createdAt: new Date().toISOString()
+        };
+        
+        res.json({
+            success: true,
+            scheduled: scheduledContent,
+            message: `Content scheduled for ${new Date(schedule.publishDate).toLocaleString()}`
+        });
+    } catch (error) {
+        console.error('Scheduling error:', error);
+        res.status(500).json({ error: 'Scheduling failed' });
+    }
+});
+
+// Get publishing analytics
+app.get('/api/cms/analytics', async (req, res) => {
+    try {
+        const { range = '30d' } = req.query;
+        
+        // Mock analytics data
+        const analytics = {
+            totalPublished: 156,
+            successRate: 94.2,
+            platforms: {
+                wordpress: { published: 67, success: 98.5, avgTime: '2.3s' },
+                webflow: { published: 34, success: 91.2, avgTime: '3.1s' },
+                ghost: { published: 28, success: 96.4, avgTime: '1.8s' },
+                medium: { published: 27, success: 88.9, avgTime: '4.2s' }
+            },
+            recentActivity: [
+                { date: '2025-06-13', published: 8, failed: 0 },
+                { date: '2025-06-12', published: 12, failed: 1 },
+                { date: '2025-06-11', published: 15, failed: 0 },
+                { date: '2025-06-10', published: 9, failed: 1 }
+            ],
+            topPerforming: [
+                { title: 'Complete SEO Guide', platform: 'WordPress', views: 2845 },
+                { title: 'Content Marketing Strategy', platform: 'Medium', views: 1923 },
+                { title: 'Digital Marketing Trends', platform: 'LinkedIn', views: 1654 }
+            ],
+            timeRange: range
+        };
+        
+        res.json(analytics);
+    } catch (error) {
+        console.error('Analytics error:', error);
+        res.status(500).json({ error: 'Failed to fetch analytics' });
+    }
+});
+
+// Sync content status across platforms
+app.post('/api/cms/sync', async (req, res) => {
+    try {
+        console.log('Syncing content status...');
+        
+        // Mock sync process
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        const syncResults = {
+            synced: 45,
+            updated: 12,
+            failed: 2,
+            platforms: ['wordpress', 'medium', 'linkedin'],
+            lastSync: new Date().toISOString()
+        };
+        
+        res.json({
+            success: true,
+            results: syncResults,
+            message: 'Content status synchronized successfully'
+        });
+    } catch (error) {
+        console.error('Sync error:', error);
+        res.status(500).json({ error: 'Sync failed' });
+    }
+});
+
+app.listen(PORT, () => {

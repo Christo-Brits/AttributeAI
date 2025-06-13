@@ -10,6 +10,8 @@ import FloatingChatButton from './components/FloatingChatButton';
 const SEOAnalysisEnhanced = lazy(() => import('./components/SEOCompetitorAnalysis.enhanced'));
 const SEOContentStrategist = lazy(() => import('./components/SEOContentStrategist.enhanced'));
 const ContentClusterStrategist = lazy(() => import('./components/ContentClusterStrategist'));
+const PublishingDashboard = lazy(() => import('./components/PublishingDashboard'));
+const ContentScheduler = lazy(() => import('./components/ContentScheduler'));
 
 // Lazy load components for better performance
 const AttributionEngine = lazy(() => import('./components/AttributionEngine'));
@@ -42,7 +44,9 @@ function AuthenticatedApp() {
       analytics: JourneyAnalytics,
       content: SEOContentStrategist,
       leadmagnet: LeadMagnetGenerator,
-      cro: CROAnalyzer
+      cro: CROAnalyzer,
+      publishing: PublishingDashboard,
+      scheduler: ContentScheduler
     };
 
     const Component = components[activeTab] || (() => <UnifiedDashboard websiteAnalysis={websiteAnalysisResults} />);

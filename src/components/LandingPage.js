@@ -29,15 +29,20 @@ const LandingPage = ({ onGetStarted, onFreeTrial }) => {
   };
 
   const handleFreeTrial = async (planKey = selectedPlan) => {
+    console.log('🚀 Starting checkout for plan:', planKey);
     setIsLoading(true);
     try {
       const priceId = pricingPlans[planKey];
+      console.log('💳 Price ID:', priceId);
+      
       if (!priceId) {
+        console.error('❌ No price ID found for plan:', planKey);
         alert('Invalid plan selected!');
         setIsLoading(false);
         return;
       }
 
+      console.log('🌐 Making request to:', '/api/create-checkout-session');
       const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
         headers: {
@@ -49,13 +54,27 @@ const LandingPage = ({ onGetStarted, onFreeTrial }) => {
         }),
       });
       
+      console.log('📡 Response status:', response.status);
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('❌ API Error:', errorText);
+        throw new Error(`API Error: ${response.status} - ${errorText}`);
+      }
+      
       const session = await response.json();
+      console.log('✅ Session response:', session);
       
       if (session.url) {
+        console.log('🔄 Redirecting to:', session.url);
         window.location.href = session.url;
+      } else {
+        console.error('❌ No URL in response:', session);
+        alert('Failed to create checkout session. Please try again.');
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error('💥 Checkout error:', error);
+      alert('Error creating checkout session: ' + error.message);
       // Fallback to demo mode
       onGetStarted();
     } finally {

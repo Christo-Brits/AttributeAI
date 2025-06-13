@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { PenTool, FileText, Target, Eye, CheckCircle, Clock, Search, Zap, Image, ExternalLink, Brain, TrendingUp, Users, Globe, Sparkles, Video, BarChart3, PlayCircle, Award, Wand2, Send, Calendar, X, Star } from 'lucide-react';
+import { PenTool, FileText, Target, Eye, CheckCircle, Clock, Search, Zap, Image, ExternalLink, Brain, TrendingUp, Users, Globe, Sparkles, Video, BarChart3, PlayCircle, Award, Wand2, Send, Calendar, X, Star, DollarSign } from 'lucide-react';
 import EnhancedContentService from '../services/EnhancedContentService';
 import ContentPolishModal from './ContentPolishModal';
 import VideoGenerationModal from './VideoGenerationModal';
@@ -10,6 +10,7 @@ import ContentOptimizationModal from './ContentOptimizationModal';
 import ContentGradingService from '../services/ContentGradingService';
 import PublishingPipeline from './PublishingPipeline';
 import ContentPerformanceAnalytics from './ContentPerformanceAnalytics';
+import AttributionIntegrationDashboard from './AttributionIntegrationDashboard';
 
 const SEOContentStrategist = () => {
   const [userProfile, setUserProfile] = useState(null);
@@ -37,6 +38,7 @@ const SEOContentStrategist = () => {
   const [contentGrade, setContentGrade] = useState(null);
   const [showPublishingModal, setShowPublishingModal] = useState(false);
   const [showPerformanceAnalytics, setShowPerformanceAnalytics] = useState(false);
+  const [showAttributionIntegration, setShowAttributionIntegration] = useState(false);
   
   const exportMenuRef = useRef(null);
   const enhancedContentService = new EnhancedContentService();
@@ -545,6 +547,16 @@ Return only the JSON array, no other text.`;
               >
                 Performance Analytics
               </button>
+              <button
+                onClick={() => setActiveTab('attribution-integration')}
+                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === 'attribution-integration' 
+                    ? 'border-red-500 text-red-600' 
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                Attribution Integration
+              </button>
             </nav>
           </div>
         </div>
@@ -744,6 +756,15 @@ Return only the JSON array, no other text.`;
                           <BarChart3 size={16} />
                           <span>View Analytics</span>
                         </button>
+
+                        {/* Attribution Integration Button */}
+                        <button
+                          onClick={() => setActiveTab('attribution-integration')}
+                          className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 flex items-center space-x-2"
+                        >
+                          <TrendingUp size={16} />
+                          <span>Attribution</span>
+                        </button>
                         
                         <button
                           onClick={() => setShowVideoModal(true)}
@@ -937,8 +958,125 @@ Return only the JSON array, no other text.`;
           </div>
         )}
 
-        {/* Performance Analytics Tab */}
-        {activeTab === 'performance-analytics' && (
+        {/* Attribution Integration Tab */}
+        {activeTab === 'attribution-integration' && (
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold text-gray-900 flex items-center">
+                <TrendingUp className="mr-2 text-red-600" size={20} />
+                Attribution Integration
+              </h2>
+              <button
+                onClick={() => setShowAttributionIntegration(true)}
+                className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 flex items-center space-x-2"
+              >
+                <TrendingUp size={16} />
+                <span>View Attribution Analysis</span>
+              </button>
+            </div>
+            
+            {/* Attribution Overview */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+              <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-lg p-6 border border-red-200">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-red-600 text-sm font-medium">Revenue Attribution</p>
+                    <p className="text-2xl font-bold text-red-900">$8,200</p>
+                    <p className="text-xs text-red-700 mt-1">From content touchpoints</p>
+                  </div>
+                  <DollarSign className="w-8 h-8 text-red-600" />
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-lg p-6 border border-indigo-200">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-indigo-600 text-sm font-medium">Customer Journeys</p>
+                    <p className="text-2xl font-bold text-indigo-900">3</p>
+                    <p className="text-xs text-indigo-700 mt-1">Multi-touch journeys</p>
+                  </div>
+                  <Users className="w-8 h-8 text-indigo-600" />
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-6 border border-purple-200">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-purple-600 text-sm font-medium">Attribution Models</p>
+                    <p className="text-2xl font-bold text-purple-900">5</p>
+                    <p className="text-xs text-purple-700 mt-1">Analysis models</p>
+                  </div>
+                  <BarChart3 className="w-8 h-8 text-purple-600" />
+                </div>
+              </div>
+            </div>
+
+            {/* Attribution Model Preview */}
+            <div className="bg-gradient-to-r from-indigo-50 to-purple-50 border-l-4 border-indigo-400 rounded-lg p-6 mb-6">
+              <div className="flex items-center gap-3 mb-3">
+                <TrendingUp className="w-6 h-6 text-indigo-600" />
+                <h3 className="text-lg font-semibold text-gray-900">Multi-Touch Attribution Analysis</h3>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+                <div className="text-center">
+                  <p className="text-gray-600 text-sm">First-Touch</p>
+                  <p className="font-bold text-indigo-600">$2,400</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-gray-600 text-sm">Last-Touch</p>
+                  <p className="font-bold text-green-600">$8,200</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-gray-600 text-sm">Linear</p>
+                  <p className="font-bold text-blue-600">$2,733</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-gray-600 text-sm">Time-Decay</p>
+                  <p className="font-bold text-orange-600">$4,280</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-gray-600 text-sm">Position-Based</p>
+                  <p className="font-bold text-purple-600">$3,456</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Key Insights */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="border border-gray-200 rounded-lg p-4">
+                <h3 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                  <Award className="w-5 h-5 text-yellow-600" />
+                  Top Performing Content
+                </h3>
+                <p className="text-sm text-gray-600 mb-3">
+                  "Complete Guide to Multi-Touch Attribution" leads with $4,800 in attributed revenue
+                </p>
+                <button 
+                  onClick={() => setShowAttributionIntegration(true)}
+                  className="text-red-600 hover:text-red-700 text-sm font-medium"
+                >
+                  View Full Attribution Analysis →
+                </button>
+              </div>
+
+              <div className="border border-gray-200 rounded-lg p-4">
+                <h3 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                  <Zap className="w-5 h-5 text-blue-600" />
+                  Journey Insights
+                </h3>
+                <p className="text-sm text-gray-600 mb-3">
+                  Average customer journey involves 4.2 touchpoints with content playing key roles
+                </p>
+                <button 
+                  onClick={() => setActiveTab('performance-analytics')}
+                  className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                >
+                  View Performance Analytics →
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
           <div className="bg-white rounded-lg shadow-sm p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold text-gray-900 flex items-center">
@@ -1152,6 +1290,14 @@ Return only the JSON array, no other text.`;
             isOpen={showPerformanceAnalytics}
             onClose={() => setShowPerformanceAnalytics(false)}
             contentData={contentResults}
+          />
+        )}
+
+        {/* Attribution Integration Modal */}
+        {showAttributionIntegration && (
+          <AttributionIntegrationDashboard
+            isOpen={showAttributionIntegration}
+            onClose={() => setShowAttributionIntegration(false)}
           />
         )}
       </div>

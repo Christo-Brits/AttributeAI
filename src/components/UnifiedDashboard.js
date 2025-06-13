@@ -1,17 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { BarChart3, TrendingUp, Target, Zap, AlertCircle, CheckCircle, Clock, Users, Globe, Brain, MessageCircle } from 'lucide-react';
+import { BarChart3, TrendingUp, Target, Zap, AlertCircle, CheckCircle, Clock, Users, Globe, Brain, MessageCircle, Search, Eye } from 'lucide-react';
 import { Card, Button } from './ui/DesignSystem';
 import { useDataBridge } from '../utils/DataBridge';
 import { useAuth } from './auth/AuthContext';
 import AIChatInterface from './AIChatInterface';
 import AttributeAILogo from './ui/AttributeAILogo';
 
-const UnifiedDashboard = ({ websiteAnalysis }) => {
+const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
   const { user } = useAuth();
   const { data, generateUnifiedInsights } = useDataBridge();
   const [insights, setInsights] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isChatOpen, setIsChatOpen] = useState(false);
+
+  // Handle navigation to keyword intelligence
+  const handleKeywordIntelligenceClick = () => {
+    if (onNavigateToTab) {
+      onNavigateToTab('keyword-intelligence');
+    } else {
+      // Fallback: try to find and click the navigation tab
+      const navButton = document.querySelector('[data-tab="keyword-intelligence"]');
+      if (navButton) {
+        navButton.click();
+      }
+    }
+  };
 
   useEffect(() => {
     // Generate unified insights when data changes
@@ -132,6 +145,71 @@ const UnifiedDashboard = ({ websiteAnalysis }) => {
             </div>
           </Card>
         </div>
+
+        {/* NEW: Keyword Intelligence Engine Feature Callout */}
+        <Card className="bg-gradient-to-r from-blue-50 via-purple-50 to-blue-50 border-2 border-blue-200">
+          <div className="text-center p-6">
+            <div className="flex justify-center mb-4">
+              <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-3 rounded-full">
+                <Brain className="h-8 w-8 text-white" />
+              </div>
+            </div>
+            
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              🚀 NEW: AI Keyword Intelligence Engine
+            </h2>
+            
+            <p className="text-lg text-gray-700 mb-4 max-w-3xl mx-auto">
+              Surpass Keywords Everywhere with unlimited AI-powered keyword research. 
+              Multi-model analysis from Claude, GPT-4, and Gemini with attribution-connected insights.
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div className="text-center p-4 bg-white rounded-lg border border-blue-100">
+                <Zap className="h-6 w-6 text-blue-600 mx-auto mb-2" />
+                <div className="font-semibold text-gray-900">Unlimited Research</div>
+                <div className="text-sm text-gray-600">No credit limits like Keywords Everywhere</div>
+              </div>
+              
+              <div className="text-center p-4 bg-white rounded-lg border border-purple-100">
+                <Brain className="h-6 w-6 text-purple-600 mx-auto mb-2" />
+                <div className="font-semibold text-gray-900">Multi-AI Analysis</div>
+                <div className="text-sm text-gray-600">Claude + GPT-4 + Gemini intelligence</div>
+              </div>
+              
+              <div className="text-center p-4 bg-white rounded-lg border border-green-100">
+                <Target className="h-6 w-6 text-green-600 mx-auto mb-2" />
+                <div className="font-semibold text-gray-900">Attribution Connected</div>
+                <div className="text-sm text-gray-600">Link keywords to actual conversions</div>
+              </div>
+            </div>
+            
+            <div className="flex justify-center space-x-4">
+              <Button 
+                onClick={handleKeywordIntelligenceClick}
+                className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-3 text-lg font-semibold hover:from-blue-600 hover:to-purple-600 transition-all duration-200 transform hover:scale-105"
+              >
+                <Search className="w-5 h-5 mr-2" />
+                Try Keyword Intelligence
+              </Button>
+              
+              <Button 
+                variant="secondary"
+                className="border-2 border-blue-200 text-blue-700 hover:bg-blue-50"
+                onClick={() => alert('Demo coming soon! Click "Try Keyword Intelligence" to access the full feature.')}
+              >
+                <Eye className="w-4 h-4 mr-2" />
+                View Demo
+              </Button>
+            </div>
+            
+            <div className="mt-4 text-sm text-gray-600">
+              <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium animate-pulse">
+                ✨ 10x better value than Keywords Everywhere
+              </span>
+            </div>
+          </div>
+        </Card>
 
         {/* Website Analysis Summary */}
         {websiteAnalysis && (

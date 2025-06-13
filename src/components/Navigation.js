@@ -5,6 +5,7 @@ const Navigation = ({ activeTab, setActiveTab }) => {
   const [showProfile, setShowProfile] = useState(false);
   const tabs = [
     { id: 'dashboard', name: 'Unified Dashboard', icon: Grid },
+    { id: 'keyword-intelligence', name: 'Keyword Intelligence', icon: Search, new: true, featured: true },
     { id: 'seo-enhanced', name: 'AI SEO Analysis', icon: Search, phase2: true },
     { id: 'content', name: 'Content Strategy', icon: PenTool },
     { id: 'attribution', name: 'Attribution Engine', icon: BarChart3 },
@@ -36,15 +37,24 @@ const Navigation = ({ activeTab, setActiveTab }) => {
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors relative ${
                     activeTab === tab.id
-                      ? tab.phase2 
-                        ? 'bg-purple-100 text-purple-700' 
-                        : 'bg-blue-100 text-blue-700'
-                      : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+                      ? tab.featured
+                        ? 'bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 border border-blue-200'
+                        : tab.phase2 
+                          ? 'bg-purple-100 text-purple-700' 
+                          : 'bg-blue-100 text-blue-700'
+                      : tab.featured
+                        ? 'text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 border border-transparent hover:border-blue-200'
+                        : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
                   }`}
                 >
                   <Icon className="h-4 w-4" />
                   <span>{tab.name}</span>
-                  {tab.phase2 && (
+                  {tab.new && (
+                    <span className="absolute -top-1 -right-1 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs px-2 py-0.5 rounded-full animate-pulse">
+                      NEW
+                    </span>
+                  )}
+                  {tab.phase2 && !tab.new && (
                     <span className="absolute -top-1 -right-1 bg-purple-500 text-white text-xs px-1 rounded-full">
                       AI
                     </span>

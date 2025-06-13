@@ -10,6 +10,9 @@ import AccountPage from './components/AccountPage';
 import SuccessPage from './components/SuccessPage';
 import FloatingChatButton from './components/FloatingChatButton';
 
+// NEW: Keyword Intelligence Engine
+const KeywordIntelligenceEngine = lazy(() => import('./components/KeywordIntelligenceEngine'));
+
 // Phase 2: Enhanced components with Claude AI  
 const SEOAnalysisEnhanced = lazy(() => import('./components/SEOCompetitorAnalysis.enhanced'));
 const SEOContentStrategist = lazy(() => import('./components/SEOContentStrategist.enhanced'));
@@ -59,7 +62,11 @@ function AuthenticatedApp() {
 
     // Regular dashboard components
     const components = {
-      dashboard: () => <UnifiedDashboard websiteAnalysis={websiteAnalysisResults} />,
+      dashboard: () => <UnifiedDashboard 
+        websiteAnalysis={websiteAnalysisResults} 
+        onNavigateToTab={setActiveTab}
+      />,
+      'keyword-intelligence': KeywordIntelligenceEngine,
       'seo-enhanced': SEOAnalysisEnhanced,
       'content-clusters': ContentClusterStrategist,
       attribution: AttributionEngine,

@@ -1,6 +1,7 @@
 import React, { lazy, Suspense, useState } from 'react';
 import './App.css';
 import { AuthProvider, useAuth } from './components/auth/AuthContext';
+import { HelmetProvider } from 'react-helmet-async';
 import NavigationWrapper from './components/NavigationWrapper';
 import UnifiedDashboard from './components/UnifiedDashboard';
 import LoginPage from './components/LoginPage';
@@ -113,9 +114,11 @@ function AuthenticatedApp() {
 
 function App() {
   return (
-    <AuthProvider>
-      <AppRouter />
-    </AuthProvider>
+    <HelmetProvider>
+      <AuthProvider>
+        <AppRouter />
+      </AuthProvider>
+    </HelmetProvider>
   );
 }
 

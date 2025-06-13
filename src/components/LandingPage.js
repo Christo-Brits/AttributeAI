@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { 
   Brain, 
   Zap, 
@@ -130,7 +131,31 @@ const LandingPage = ({ onGetStarted, onFreeTrial }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <>
+      <Helmet>
+        <title>AttributeAI - AI-Powered Multi-Touch Marketing Attribution Platform | 14-Day Free Trial</title>
+        <meta name="description" content="Revolutionary AI-powered marketing attribution platform. Track every customer touchpoint, predict performance with 94% accuracy, and create content that converts. Start your 14-day free trial today." />
+        <meta name="keywords" content="marketing attribution, AI marketing tools, multi-touch attribution, customer journey analytics, predictive marketing, content marketing AI, marketing intelligence, ROI tracking, customer journey mapping, marketing analytics platform, attribution software, AI content generation" />
+        <link rel="canonical" href="https://attributeai.app/" />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content="AttributeAI - AI-Powered Marketing Attribution Platform | 14-Day Free Trial" />
+        <meta property="og:description" content="Revolutionary AI-powered marketing attribution platform. Track every customer touchpoint, predict performance with 94% accuracy, and create content that converts." />
+        <meta property="og:url" content="https://attributeai.app/" />
+        <meta property="og:type" content="website" />
+        
+        {/* Twitter */}
+        <meta name="twitter:title" content="AttributeAI - AI-Powered Marketing Attribution Platform" />
+        <meta name="twitter:description" content="Revolutionary AI-powered marketing attribution platform. Track every customer touchpoint, predict performance with 94% accuracy. Start your 14-day free trial today." />
+        
+        {/* Additional SEO */}
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+        <meta name="language" content="English" />
+        <meta name="geo.region" content="US" />
+        <meta name="geo.placename" content="United States" />
+      </Helmet>
+      
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-black/20 backdrop-blur-lg border-b border-white/10 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -175,12 +200,12 @@ const LandingPage = ({ onGetStarted, onFreeTrial }) => {
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
               The Future of
               <span className="block bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Marketing Attribution
+                AI Marketing Attribution
               </span>
             </h1>
             
             <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
-              Track every customer touchpoint, predict performance with 94% accuracy, and create content that converts using advanced multi-model AI.
+              Revolutionary multi-touch attribution platform powered by advanced AI. Track every customer touchpoint, predict performance with 94% accuracy, and create content that converts using Claude, GPT-4, and Gemini AI.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
@@ -225,10 +250,10 @@ const LandingPage = ({ onGetStarted, onFreeTrial }) => {
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
               Everything You Need to 
-              <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"> Win at Marketing</span>
+              <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"> Win at Marketing Attribution</span>
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Combine the power of Claude, GPT-4, and Gemini AI models with real-time attribution tracking and predictive analytics.
+              Combine the power of Claude, GPT-4, and Gemini AI models with real-time multi-touch attribution tracking, predictive analytics, and customer journey mapping.
             </p>
           </div>
           
@@ -536,6 +561,7 @@ const LandingPage = ({ onGetStarted, onFreeTrial }) => {
         </div>
       </footer>
     </div>
+    </>
   );
 };
 

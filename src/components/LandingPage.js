@@ -16,18 +16,36 @@ import {
 
 const LandingPage = ({ onGetStarted, onFreeTrial }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState('growth-monthly');
 
-  const handleFreeTrial = async () => {
+  // 💳 REAL STRIPE PRICE IDs:
+  const pricingPlans = {
+    'starter-monthly': 'price_1RZSDxFQSzigm7ZhwhKIhvYa',
+    'starter-annual': 'price_1RZUYrFQSzigm7Zh85fcpAjO', 
+    'growth-monthly': 'price_1RZSJIFQSzigm7ZhMBm0esKc',
+    'growth-annual': 'price_1RZUZeFQSzigm7ZhULegNiEF',
+    'scale-monthly': 'price_1RZSNiFQSzigm7ZhjVtqnhMo',
+    'scale-annual': 'price_1RZUayFQSzigm7ZhA6CBroqF'
+  };
+
+  const handleFreeTrial = async (planKey = selectedPlan) => {
     setIsLoading(true);
     try {
+      const priceId = pricingPlans[planKey];
+      if (!priceId) {
+        alert('Invalid plan selected!');
+        setIsLoading(false);
+        return;
+      }
+
       const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          priceId: 'price_1234567890', // Replace with actual Stripe price ID
-          plan: 'pro'
+          priceId: priceId,
+          plan: planKey
         }),
       });
       
@@ -217,7 +235,167 @@ const LandingPage = ({ onGetStarted, onFreeTrial }) => {
         </div>
       </section>
 
-      {/* Simple CTA Footer */}
+      {/* Pricing Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-black/20">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
+              Choose Your Plan
+            </h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Start with our free trial, then choose the plan that scales with your business needs.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {/* Starter Plan */}
+            <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bold text-white mb-2">Starter</h3>
+                <div className="mb-4">
+                  <span className="text-4xl font-bold text-white">$29</span>
+                  <span className="text-gray-300 ml-2">/month</span>
+                </div>
+                <p className="text-gray-300">Perfect for small businesses</p>
+              </div>
+              
+              <ul className="space-y-4 mb-8">
+                <li className="flex items-center text-gray-300">
+                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
+                  Up to 10 content pieces per month
+                </li>
+                <li className="flex items-center text-gray-300">
+                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
+                  Basic attribution tracking
+                </li>
+                <li className="flex items-center text-gray-300">
+                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
+                  AI content generation
+                </li>
+                <li className="flex items-center text-gray-300">
+                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
+                  Email support
+                </li>
+              </ul>
+              
+              <button 
+                onClick={() => handleFreeTrial('starter-monthly')}
+                disabled={isLoading}
+                className="w-full border border-white/20 text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/5 transition-all duration-200"
+              >
+                Start Free Trial
+              </button>
+            </div>
+            
+            {/* Growth Plan - Most Popular */}
+            <div className="bg-gradient-to-br from-blue-900/50 to-purple-900/50 p-8 rounded-2xl border-2 border-blue-500/50 backdrop-blur-sm relative">
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                <span className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-2 rounded-full text-sm font-bold">
+                  Most Popular
+                </span>
+              </div>
+              
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bold text-white mb-2">Growth</h3>
+                <div className="mb-4">
+                  <span className="text-4xl font-bold text-white">$97</span>
+                  <span className="text-gray-300 ml-2">/month</span>
+                </div>
+                <p className="text-gray-300">For growing marketing teams</p>
+              </div>
+              
+              <ul className="space-y-4 mb-8">
+                <li className="flex items-center text-gray-300">
+                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
+                  Unlimited content generation
+                </li>
+                <li className="flex items-center text-gray-300">
+                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
+                  Advanced multi-touch attribution
+                </li>
+                <li className="flex items-center text-gray-300">
+                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
+                  Multi-model AI (Claude + GPT-4 + Gemini)
+                </li>
+                <li className="flex items-center text-gray-300">
+                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
+                  Predictive analytics
+                </li>
+                <li className="flex items-center text-gray-300">
+                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
+                  Priority support
+                </li>
+                <li className="flex items-center text-gray-300">
+                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
+                  Team collaboration (up to 5 users)
+                </li>
+              </ul>
+              
+              <button 
+                onClick={() => handleFreeTrial('growth-monthly')}
+                disabled={isLoading}
+                className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-200 disabled:opacity-50"
+              >
+                {isLoading ? 'Processing...' : 'Start Free Trial'}
+              </button>
+            </div>
+            
+            {/* Scale Plan */}
+            <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bold text-white mb-2">Scale</h3>
+                <div className="mb-4">
+                  <span className="text-4xl font-bold text-white">$297</span>
+                  <span className="text-gray-300 ml-2">/month</span>
+                </div>
+                <p className="text-gray-300">For large organizations</p>
+              </div>
+              
+              <ul className="space-y-4 mb-8">
+                <li className="flex items-center text-gray-300">
+                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
+                  Everything in Growth
+                </li>
+                <li className="flex items-center text-gray-300">
+                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
+                  Unlimited team members
+                </li>
+                <li className="flex items-center text-gray-300">
+                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
+                  Custom AI model training
+                </li>
+                <li className="flex items-center text-gray-300">
+                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
+                  White-label options
+                </li>
+                <li className="flex items-center text-gray-300">
+                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
+                  Dedicated account manager
+                </li>
+                <li className="flex items-center text-gray-300">
+                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
+                  SLA guarantee
+                </li>
+              </ul>
+              
+              <button 
+                onClick={() => handleFreeTrial('scale-monthly')}
+                disabled={isLoading}
+                className="w-full border border-white/20 text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/5 transition-all duration-200"
+              >
+                Start Free Trial
+              </button>
+            </div>
+          </div>
+          
+          <div className="text-center mt-12">
+            <p className="text-gray-400 mb-4">✨ All plans include 14-day free trial • No credit card required</p>
+            <p className="text-sm text-gray-500">Save 20% with annual billing</p>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">

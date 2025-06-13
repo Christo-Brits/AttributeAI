@@ -1,10 +1,12 @@
 [build]
-  command = "npm run build"
+  command = "npm ci && npm run build"
   publish = "build"
 
 [build.environment]
   CI = "false"
   GENERATE_SOURCEMAP = "false"
+  NODE_VERSION = "18.20.3"
+  NPM_FLAGS = "--legacy-peer-deps"
 
 [[redirects]]
   from = "/*"
@@ -12,7 +14,13 @@
   status = 200
 
 [context.production.environment]
-  NODE_VERSION = "18"
+  NODE_VERSION = "18.20.3"
+  CI = "false"
 
 [context.deploy-preview.environment]
-  NODE_VERSION = "18"
+  NODE_VERSION = "18.20.3"
+  CI = "false"
+
+[context.branch-deploy.environment]
+  NODE_VERSION = "18.20.3"
+  CI = "false"

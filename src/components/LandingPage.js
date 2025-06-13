@@ -17,6 +17,7 @@ import {
 const LandingPage = ({ onGetStarted, onFreeTrial }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState('growth-monthly');
+  const [isAnnual, setIsAnnual] = useState(false);
 
   // 💳 REAL STRIPE PRICE IDs:
   const pricingPlans = {
@@ -26,6 +27,48 @@ const LandingPage = ({ onGetStarted, onFreeTrial }) => {
     'growth-annual': 'price_1RZUZeFQSzigm7ZhULegNiEF',
     'scale-monthly': 'price_1RZSNiFQSzigm7ZhjVtqnhMo',
     'scale-annual': 'price_1RZUayFQSzigm7ZhA6CBroqF'
+  };
+
+  // Pricing data with monthly/annual options
+  const pricing = {
+    starter: {
+      name: 'Starter',
+      monthly: { price: 29, yearlyPrice: 29 * 12 },
+      annual: { price: Math.round(29 * 12 * 0.84), yearlyPrice: 29 * 12, monthlyEquivalent: Math.round(29 * 0.84) },
+      features: [
+        'Up to 10 content pieces per month',
+        'Basic attribution tracking',
+        'AI content generation',
+        'Email support'
+      ]
+    },
+    growth: {
+      name: 'Growth',
+      monthly: { price: 97, yearlyPrice: 97 * 12 },
+      annual: { price: Math.round(97 * 12 * 0.84), yearlyPrice: 97 * 12, monthlyEquivalent: Math.round(97 * 0.84) },
+      popular: true,
+      features: [
+        'Unlimited content generation',
+        'Advanced multi-touch attribution',
+        'Multi-model AI (Claude + GPT-4 + Gemini)',
+        'Predictive analytics',
+        'Priority support',
+        'Team collaboration (up to 5 users)'
+      ]
+    },
+    scale: {
+      name: 'Scale',
+      monthly: { price: 297, yearlyPrice: 297 * 12 },
+      annual: { price: Math.round(297 * 12 * 0.84), yearlyPrice: 297 * 12, monthlyEquivalent: Math.round(297 * 0.84) },
+      features: [
+        'Everything in Growth',
+        'Unlimited team members',
+        'Custom AI model training',
+        'White-label options',
+        'Dedicated account manager',
+        'SLA guarantee'
+      ]
+    }
   };
 
   const handleFreeTrial = async (planKey = selectedPlan) => {
@@ -261,44 +304,80 @@ const LandingPage = ({ onGetStarted, onFreeTrial }) => {
             <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
               Choose Your Plan
             </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
               Start with our free trial, then choose the plan that scales with your business needs.
             </p>
+            
+            {/* Monthly/Annual Toggle */}
+            <div className="flex items-center justify-center mb-8">
+              <div className="bg-slate-800/50 p-1 rounded-xl border border-white/10 backdrop-blur-sm">
+                <div className="flex items-center space-x-1">
+                  <button
+                    onClick={() => setIsAnnual(false)}
+                    className={`px-6 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
+                      !isAnnual 
+                        ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg' 
+                        : 'text-gray-300 hover:text-white'
+                    }`}
+                  >
+                    Monthly
+                  </button>
+                  <button
+                    onClick={() => setIsAnnual(true)}
+                    className={`px-6 py-3 rounded-lg text-sm font-medium transition-all duration-200 relative ${
+                      isAnnual 
+                        ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg' 
+                        : 'text-gray-300 hover:text-white'
+                    }`}
+                  >
+                    Annual
+                    <span className="absolute -top-2 -right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
+                      Save 16%
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {/* Starter Plan */}
             <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
               <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold text-white mb-2">Starter</h3>
+                <h3 className="text-2xl font-bold text-white mb-2">{pricing.starter.name}</h3>
                 <div className="mb-4">
-                  <span className="text-4xl font-bold text-white">$29</span>
-                  <span className="text-gray-300 ml-2">/month</span>
+                  {isAnnual ? (
+                    <div>
+                      <span className="text-4xl font-bold text-white">${pricing.starter.annual.monthlyEquivalent}</span>
+                      <span className="text-gray-300 ml-2">/month</span>
+                      <div className="text-sm text-gray-400 mt-1">
+                        ${pricing.starter.annual.price} billed annually
+                      </div>
+                      <div className="text-green-400 text-sm font-medium">
+                        Save ${pricing.starter.monthly.yearlyPrice - pricing.starter.annual.price}/year
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <span className="text-4xl font-bold text-white">${pricing.starter.monthly.price}</span>
+                      <span className="text-gray-300 ml-2">/month</span>
+                    </div>
+                  )}
                 </div>
                 <p className="text-gray-300">Perfect for small businesses</p>
               </div>
               
               <ul className="space-y-4 mb-8">
-                <li className="flex items-center text-gray-300">
-                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
-                  Up to 10 content pieces per month
-                </li>
-                <li className="flex items-center text-gray-300">
-                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
-                  Basic attribution tracking
-                </li>
-                <li className="flex items-center text-gray-300">
-                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
-                  AI content generation
-                </li>
-                <li className="flex items-center text-gray-300">
-                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
-                  Email support
-                </li>
+                {pricing.starter.features.map((feature, index) => (
+                  <li key={index} className="flex items-center text-gray-300">
+                    <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
+                    {feature}
+                  </li>
+                ))}
               </ul>
               
               <button 
-                onClick={() => handleFreeTrial('starter-monthly')}
+                onClick={() => handleFreeTrial(isAnnual ? 'starter-annual' : 'starter-monthly')}
                 disabled={isLoading}
                 className="w-full border border-white/20 text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/5 transition-all duration-200"
               >
@@ -315,43 +394,40 @@ const LandingPage = ({ onGetStarted, onFreeTrial }) => {
               </div>
               
               <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold text-white mb-2">Growth</h3>
+                <h3 className="text-2xl font-bold text-white mb-2">{pricing.growth.name}</h3>
                 <div className="mb-4">
-                  <span className="text-4xl font-bold text-white">$97</span>
-                  <span className="text-gray-300 ml-2">/month</span>
+                  {isAnnual ? (
+                    <div>
+                      <span className="text-4xl font-bold text-white">${pricing.growth.annual.monthlyEquivalent}</span>
+                      <span className="text-gray-300 ml-2">/month</span>
+                      <div className="text-sm text-gray-400 mt-1">
+                        ${pricing.growth.annual.price} billed annually
+                      </div>
+                      <div className="text-green-400 text-sm font-medium">
+                        Save ${pricing.growth.monthly.yearlyPrice - pricing.growth.annual.price}/year
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <span className="text-4xl font-bold text-white">${pricing.growth.monthly.price}</span>
+                      <span className="text-gray-300 ml-2">/month</span>
+                    </div>
+                  )}
                 </div>
                 <p className="text-gray-300">For growing marketing teams</p>
               </div>
               
               <ul className="space-y-4 mb-8">
-                <li className="flex items-center text-gray-300">
-                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
-                  Unlimited content generation
-                </li>
-                <li className="flex items-center text-gray-300">
-                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
-                  Advanced multi-touch attribution
-                </li>
-                <li className="flex items-center text-gray-300">
-                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
-                  Multi-model AI (Claude + GPT-4 + Gemini)
-                </li>
-                <li className="flex items-center text-gray-300">
-                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
-                  Predictive analytics
-                </li>
-                <li className="flex items-center text-gray-300">
-                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
-                  Priority support
-                </li>
-                <li className="flex items-center text-gray-300">
-                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
-                  Team collaboration (up to 5 users)
-                </li>
+                {pricing.growth.features.map((feature, index) => (
+                  <li key={index} className="flex items-center text-gray-300">
+                    <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
+                    {feature}
+                  </li>
+                ))}
               </ul>
               
               <button 
-                onClick={() => handleFreeTrial('growth-monthly')}
+                onClick={() => handleFreeTrial(isAnnual ? 'growth-annual' : 'growth-monthly')}
                 disabled={isLoading}
                 className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-200 disabled:opacity-50"
               >
@@ -362,43 +438,40 @@ const LandingPage = ({ onGetStarted, onFreeTrial }) => {
             {/* Scale Plan */}
             <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
               <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold text-white mb-2">Scale</h3>
+                <h3 className="text-2xl font-bold text-white mb-2">{pricing.scale.name}</h3>
                 <div className="mb-4">
-                  <span className="text-4xl font-bold text-white">$297</span>
-                  <span className="text-gray-300 ml-2">/month</span>
+                  {isAnnual ? (
+                    <div>
+                      <span className="text-4xl font-bold text-white">${pricing.scale.annual.monthlyEquivalent}</span>
+                      <span className="text-gray-300 ml-2">/month</span>
+                      <div className="text-sm text-gray-400 mt-1">
+                        ${pricing.scale.annual.price} billed annually
+                      </div>
+                      <div className="text-green-400 text-sm font-medium">
+                        Save ${pricing.scale.monthly.yearlyPrice - pricing.scale.annual.price}/year
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <span className="text-4xl font-bold text-white">${pricing.scale.monthly.price}</span>
+                      <span className="text-gray-300 ml-2">/month</span>
+                    </div>
+                  )}
                 </div>
                 <p className="text-gray-300">For large organizations</p>
               </div>
               
               <ul className="space-y-4 mb-8">
-                <li className="flex items-center text-gray-300">
-                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
-                  Everything in Growth
-                </li>
-                <li className="flex items-center text-gray-300">
-                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
-                  Unlimited team members
-                </li>
-                <li className="flex items-center text-gray-300">
-                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
-                  Custom AI model training
-                </li>
-                <li className="flex items-center text-gray-300">
-                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
-                  White-label options
-                </li>
-                <li className="flex items-center text-gray-300">
-                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
-                  Dedicated account manager
-                </li>
-                <li className="flex items-center text-gray-300">
-                  <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
-                  SLA guarantee
-                </li>
+                {pricing.scale.features.map((feature, index) => (
+                  <li key={index} className="flex items-center text-gray-300">
+                    <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
+                    {feature}
+                  </li>
+                ))}
               </ul>
               
               <button 
-                onClick={() => handleFreeTrial('scale-monthly')}
+                onClick={() => handleFreeTrial(isAnnual ? 'scale-annual' : 'scale-monthly')}
                 disabled={isLoading}
                 className="w-full border border-white/20 text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/5 transition-all duration-200"
               >
@@ -409,7 +482,15 @@ const LandingPage = ({ onGetStarted, onFreeTrial }) => {
           
           <div className="text-center mt-12">
             <p className="text-gray-400 mb-4">✨ All plans include 14-day free trial • No credit card required</p>
-            <p className="text-sm text-gray-500">Save 20% with annual billing</p>
+            {isAnnual ? (
+              <p className="text-sm text-green-400 font-medium">
+                🎉 Save 16% with annual billing • Cancel anytime
+              </p>
+            ) : (
+              <p className="text-sm text-gray-500">
+                Save 16% with annual billing • Cancel anytime
+              </p>
+            )}
           </div>
         </div>
       </section>

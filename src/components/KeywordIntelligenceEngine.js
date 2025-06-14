@@ -7,11 +7,13 @@ import {
 } from 'lucide-react';
 import { Card, Button, ProgressIndicator } from './ui/DesignSystem';
 import { useAuth } from './auth/AuthContext';
+import { useAnalytics } from '../hooks/useAnalytics';
 import supabaseKeywordService from '../services/SupabaseKeywordService';
 import { isSupabaseConfigured } from '../lib/supabase';
 
 const KeywordIntelligenceEngine = () => {
   const { user, checkQuotaStatus, incrementKeywordUsage } = useAuth();
+  const { trackPage, trackKeywords, trackTool, trackExport, trackCompetitor } = useAnalytics();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -23,6 +25,10 @@ const KeywordIntelligenceEngine = () => {
   const [isSupabaseConnected, setIsSupabaseConnected] = useState(false);
 
   useEffect(() => {
+    // Track page view for competitive advantage
+    trackPage('Keyword Intelligence Engine', 'competitive_advantage');
+    trackCompetitor('keywords_everywhere', 'unlimited_research', 'viewed');
+
     // Check quota status
     if (user) {
       const quota = checkQuotaStatus();
@@ -31,15 +37,25 @@ const KeywordIntelligenceEngine = () => {
 
     // Check Supabase connection
     setIsSupabaseConnected(isSupabaseConfigured());
-  }, [user, checkQuotaStatus]);
+  }, [user, checkQuotaStatus, trackPage, trackCompetitor]);
 
   // Enhanced AI-powered keyword analysis with Supabase
   const analyzeKeywords = async () => {
     if (!query.trim()) return;
     
+    // Track keyword research start
+    const startTime = Date.now();
+    trackKeywords(1, analysisType, true);
+    trackTool('keyword_intelligence', 'analysis_started', { 
+      keyword: query, 
+      model: selectedModel, 
+      analysis_type: analysisType 
+    });
+    
     // Check quota before analysis
     if (quotaStatus && !quotaStatus.hasQuota) {
       alert(`Keyword quota exceeded! You have used ${quotaStatus.used}/${quotaStatus.quota} keywords this month. Upgrade your plan for unlimited research.`);
+      trackTool('keyword_intelligence', 'quota_exceeded', { used: quotaStatus.used, quota: quotaStatus.quota });
       return;
     }
     

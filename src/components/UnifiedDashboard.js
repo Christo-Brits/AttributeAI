@@ -3,15 +3,20 @@ import { BarChart3, TrendingUp, Target, Zap, AlertCircle, CheckCircle, Clock, Us
 import { Card, Button } from './ui/DesignSystem';
 import { useDataBridge } from '../utils/DataBridge';
 import { useAuth } from './auth/AuthContext';
+import { useAnalytics } from '../hooks/useAnalytics';
 import AttributeAILogo from './ui/AttributeAILogo';
 
 const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
   const { user } = useAuth();
   const { data, generateUnifiedInsights } = useDataBridge();
+  const { trackPage, trackTool, trackFeature } = useAnalytics();
   const [insights, setInsights] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const handleKeywordIntelligenceClick = () => {
+    trackTool('keyword_intelligence', 'navigate_from_dashboard', { source: 'featured_callout' });
+    trackFeature('keyword_intelligence', true);
+    
     if (onNavigateToTab) {
       onNavigateToTab('keyword-intelligence');
     } else {
@@ -20,11 +25,20 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
   };
 
   useEffect(() => {
+    // Track dashboard page view
+    trackPage('Unified Dashboard', 'core_platform');
+    
     const loadInsights = async () => {
       setIsLoading(true);
       try {
         const unifiedData = generateUnifiedInsights();
         setInsights(unifiedData);
+        
+        // Track dashboard data loading
+        trackTool('unified_dashboard', 'insights_loaded', {
+          data_sources: Object.keys(data).length,
+          has_insights: !!unifiedData
+        });
       } catch (error) {
         console.error('Error generating insights:', error);
       } finally {

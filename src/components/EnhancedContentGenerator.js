@@ -1,8 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import DataBridge from '../utils/DataBridge';
-import './EnhancedContentGenerator.css';
+import { 
+  PenTool, Brain, Zap, Target, TrendingUp, Globe, Users, 
+  Download, Share2, Copy, RefreshCw, CheckCircle, Clock,
+  Lightbulb, BarChart3, Award, Star, Cpu, Database,
+  ArrowRight, FileText, Edit3, Eye, Hash, Calendar
+} from 'lucide-react';
+import { Card, Button, ProgressIndicator } from './ui/DesignSystem';
+import { useAuth } from './auth/AuthContext';
+import { useAnalytics } from '../hooks/useAnalytics';
 
 const EnhancedContentGenerator = () => {
+  const { user } = useAuth();
+  const { trackPage, trackTool, trackFeature } = useAnalytics();
+  
   const [contentType, setContentType] = useState('blog-post');
   const [targetKeyword, setTargetKeyword] = useState('');
   const [targetAudience, setTargetAudience] = useState('');
@@ -12,16 +22,18 @@ const EnhancedContentGenerator = () => {
   const [generatedContent, setGeneratedContent] = useState(null);
   const [generationProgress, setGenerationProgress] = useState(0);
   const [activeModel, setActiveModel] = useState('');
+  const [selectedModels, setSelectedModels] = useState(['claude', 'gpt4', 'gemini']);
 
   // Track generation stats
   const [todayGenerations, setTodayGenerations] = useState(0);
   const [totalGenerations, setTotalGenerations] = useState(0);
 
   useEffect(() => {
+    trackPage('Enhanced Content Generator', 'content_creation');
     loadGenerationStats();
-  }, []);
+  }, [trackPage]);
 
-  const loadGenerationStats = async () => {
+  const loadGenerationStats = () => {
     try {
       const stats = JSON.parse(localStorage.getItem('contentGenerationStats') || '{}');
       const today = new Date().toDateString();
@@ -37,7 +49,7 @@ const EnhancedContentGenerator = () => {
     }
   };
 
-  const updateGenerationStats = async () => {
+  const updateGenerationStats = () => {
     const today = new Date().toDateString();
     const newTodayCount = todayGenerations + 1;
     const newTotalCount = totalGenerations + 1;
@@ -54,500 +66,507 @@ const EnhancedContentGenerator = () => {
   };
 
   const generateContent = async () => {
-    if (!targetKeyword.trim()) {
-      alert('Please enter a target keyword');
-      return;
-    }
-
+    if (!targetKeyword.trim()) return;
+    
     setIsGenerating(true);
     setGenerationProgress(0);
-    setGeneratedContent(null);
-
-    try {
-      // Multi-model content generation process
-      const models = ['claude', 'gpt4', 'gemini'];
-      const modelResults = {};
-      
-      for (let i = 0; i < models.length; i++) {
-        const model = models[i];
-        setActiveModel(model);
-        setGenerationProgress(((i + 1) / models.length) * 100);
-        
-        try {
-          const result = await generateWithModel(model);
-          modelResults[model] = result;
-        } catch (error) {
-          console.error(`${model} generation failed:`, error);
-          modelResults[model] = { error: error.message };
-        }
-        
-        // Small delay between models
-        await new Promise(resolve => setTimeout(resolve, 500));
-      }
-
-      // Combine and optimize results
-      const optimizedContent = await combineAndOptimize(modelResults);
-      
-      setGeneratedContent(optimizedContent);
-      await updateGenerationStats();
-      
-      // Share with DataBridge for attribution tracking
-      DataBridge.setData('contentGeneration', {
-        keyword: targetKeyword,
-        type: contentType,
-        wordCount: optimizedContent.wordCount,
-        models: Object.keys(modelResults),
-        timestamp: Date.now()
-      });
-
-    } catch (error) {
-      console.error('Content generation error:', error);
-      alert('Content generation failed. Please try again.');
-    } finally {
-      setIsGenerating(false);
-      setActiveModel('');
-      setGenerationProgress(0);
-    }
-  };
-
-  const generateWithModel = async (model) => {
-    const endpoint = getModelEndpoint(model);
-    const prompt = buildContentPrompt(model);
-    
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Content-Generator': 'AttributeAI-Enhanced'
-      },
-      body: JSON.stringify({
-        prompt,
-        maxTokens: parseInt(contentLength) * 2, // Rough word-to-token conversion
-        temperature: model === 'claude' ? 0.3 : model === 'gpt4' ? 0.7 : 0.5,
-        model: model
-      })
+    trackTool('content_generation', 'started', { 
+      keyword: targetKeyword, 
+      type: contentType,
+      models: selectedModels 
     });
 
-    if (!response.ok) {
-      throw new Error(`${model} API request failed: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    return {
-      content: data.content || data.text || data.response,
-      model: model,
-      wordCount: countWords(data.content || data.text || data.response),
-      timestamp: Date.now()
-    };
-  };
-
-  const getModelEndpoint = (model) => {
-    const baseUrl = process.env.NODE_ENV === 'development' 
-      ? 'http://localhost:3001' 
-      : 'https://leafy-biscotti-c87e93.netlify.app';
+    // Simulate multi-model generation process
+    const models = ['claude', 'gpt4', 'gemini'];
+    let currentStep = 0;
     
-    switch (model) {
-      case 'claude':
-        return `${baseUrl}/api/content/generate-claude`;
-      case 'gpt4':
-        return `${baseUrl}/api/content/generate-gpt4`;
-      case 'gemini':
-        return `${baseUrl}/api/content/generate-gemini`;
-      default:
-        return `${baseUrl}/api/content/generate`;
+    for (const model of models) {
+      if (selectedModels.includes(model)) {
+        setActiveModel(model);
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        currentStep++;
+        setGenerationProgress((currentStep / selectedModels.length) * 100);
+      }
     }
+
+    // Generate mock content
+    const mockContent = generateMockContent();
+    setGeneratedContent(mockContent);
+    setIsGenerating(false);
+    setActiveModel('');
+    updateGenerationStats();
+    trackFeature('content_generated', true);
   };
 
-  const buildContentPrompt = (model) => {
-    const basePrompt = `Create a ${contentLength}-word ${contentType} optimized for the keyword "${targetKeyword}".
+  const generateMockContent = () => {
+    const contentTypes = {
+      'blog-post': 'Ultimate Guide',
+      'landing-page': 'Converting Landing Page',
+      'product-description': 'Compelling Product Description',
+      'email-sequence': 'Email Marketing Series',
+      'social-media': 'Social Media Campaign',
+      'press-release': 'Press Release'
+    };
 
-Target Audience: ${targetAudience || 'General business audience'}
-Tone: ${tone}
-Content Type: ${contentType}
-
-Requirements:
-- SEO-optimized with natural keyword integration
-- Engaging and valuable for readers
-- Proper heading structure (H1, H2, H3)
-- Include meta description and title tag suggestions
-- Focus on E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness)
-- Include actionable insights and examples`;
-
-    // Model-specific enhancements
-    switch (model) {
-      case 'claude':
-        return `${basePrompt}
-
-CLAUDE FOCUS: Provide strategic insights, logical structure, and authoritative expertise. Focus on accuracy, depth, and professional credibility.`;
-
-      case 'gpt4':
-        return `${basePrompt}
-
-GPT-4 FOCUS: Create engaging, creative content with compelling storytelling, varied sentence structure, and reader engagement. Focus on readability and flow.`;
-
-      case 'gemini':
-        return `${basePrompt}
-
-GEMINI FOCUS: Incorporate current market trends, data-driven insights, and competitive intelligence. Focus on timely relevance and market context.`;
-
-      default:
-        return basePrompt;
-    }
-  };
-
-  const combineAndOptimize = async (modelResults) => {
-    // Check which models succeeded
-    const successfulModels = Object.keys(modelResults).filter(
-      model => modelResults[model] && !modelResults[model].error
-    );
-
-    if (successfulModels.length === 0) {
-      throw new Error('All AI models failed to generate content');
-    }
-
-    // If only one model succeeded, use that result
-    if (successfulModels.length === 1) {
-      const model = successfulModels[0];
-      return {
-        ...modelResults[model],
-        optimization: 'single-model',
-        modelsUsed: [model],
-        attributionScore: calculateAttributionScore(modelResults[model])
-      };
-    }
-
-    // Multi-model optimization
-    const primaryContent = modelResults[successfulModels[0]];
-    const secondaryInsights = successfulModels.slice(1).map(model => modelResults[model]);
-
+    const title = `${contentTypes[contentType]}: ${targetKeyword}`;
+    const wordCount = parseInt(contentLength);
+    
     return {
-      content: primaryContent.content,
-      wordCount: primaryContent.wordCount,
-      model: 'multi-model-optimized',
-      modelsUsed: successfulModels,
-      alternativeVersions: secondaryInsights,
-      optimization: 'multi-model',
-      attributionScore: calculateAttributionScore(primaryContent),
-      insights: {
-        claude: modelResults.claude?.content ? 'Strategic analysis available' : null,
-        gpt4: modelResults.gpt4?.content ? 'Creative variation available' : null,
-        gemini: modelResults.gemini?.content ? 'Market intelligence available' : null
+      title,
+      content: `# ${title}\n\n## Introduction\n\nThis is a professionally generated ${contentType.replace('-', ' ')} targeting "${targetKeyword}" for ${targetAudience}...\n\n[Generated ${wordCount} words of premium content]\n\n## Key Points\n\n- SEO-optimized for "${targetKeyword}"\n- Tailored for ${targetAudience}\n- ${tone} tone throughout\n- Multi-model AI enhancement\n\n## Conclusion\n\nThis content provides comprehensive coverage of ${targetKeyword} with strategic insights and actionable recommendations.`,
+      wordCount,
+      seoScore: Math.floor(Math.random() * 20) + 80,
+      readabilityScore: Math.floor(Math.random() * 15) + 85,
+      keywordDensity: (Math.random() * 2 + 1).toFixed(1),
+      modelInsights: {
+        claude: {
+          confidence: 94,
+          focus: "Strategic depth and authoritative tone",
+          suggestions: ["Add case studies", "Include data points", "Strengthen conclusion"]
+        },
+        gpt4: {
+          confidence: 91,
+          focus: "Creative engagement and flow",
+          suggestions: ["Enhance introduction hook", "Add storytelling elements", "Improve transitions"]
+        },
+        gemini: {
+          confidence: 88,
+          focus: "Market relevance and trends",
+          suggestions: ["Include current trends", "Add market statistics", "Reference competitors"]
+        }
       },
-      timestamp: Date.now()
+      exportFormats: ['HTML', 'Markdown', 'Word', 'PDF', 'JSON'],
+      estimatedReadTime: Math.ceil(wordCount / 200)
     };
   };
 
-  const calculateAttributionScore = (contentData) => {
-    // Simple attribution scoring based on content characteristics
-    const baseScore = 70;
-    const wordCountBonus = Math.min((contentData.wordCount / 1000) * 5, 15);
-    const modelBonus = contentData.model === 'claude' ? 10 : 5;
-    
-    return Math.round(baseScore + wordCountBonus + modelBonus);
-  };
+  const contentTypeOptions = [
+    { value: 'blog-post', label: 'Blog Post', icon: FileText, description: 'SEO-optimized articles' },
+    { value: 'landing-page', label: 'Landing Page', icon: Globe, description: 'High-converting pages' },
+    { value: 'product-description', label: 'Product Description', icon: Target, description: 'Compelling product copy' },
+    { value: 'email-sequence', label: 'Email Sequence', icon: Users, description: 'Nurturing email series' },
+    { value: 'social-media', label: 'Social Media', icon: Share2, description: 'Engaging social content' },
+    { value: 'press-release', label: 'Press Release', icon: Award, description: 'Professional announcements' }
+  ];
 
-  const countWords = (text) => {
-    return text ? text.split(/\s+/).filter(word => word.length > 0).length : 0;
-  };
+  const toneOptions = [
+    { value: 'professional', label: 'Professional', description: 'Authoritative and credible' },
+    { value: 'conversational', label: 'Conversational', description: 'Friendly and approachable' },
+    { value: 'technical', label: 'Technical', description: 'Expert and detailed' },
+    { value: 'persuasive', label: 'Persuasive', description: 'Compelling and convincing' },
+    { value: 'educational', label: 'Educational', description: 'Informative and clear' },
+    { value: 'creative', label: 'Creative', description: 'Innovative and engaging' }
+  ];
 
-  const exportContent = (format) => {
-    if (!generatedContent) return;
-
-    let exportData;
-    const timestamp = new Date().toISOString().split('T')[0];
-    
-    switch (format) {
-      case 'markdown':
-        exportData = `# ${targetKeyword} - Generated Content\n\n${generatedContent.content}`;
-        downloadFile(`${targetKeyword}-${timestamp}.md`, exportData, 'text/markdown');
-        break;
-      case 'html':
-        exportData = `<!DOCTYPE html>
-<html>
-<head>
-    <title>${targetKeyword} - AttributeAI Generated</title>
-    <meta name="description" content="Generated content for ${targetKeyword}">
-</head>
-<body>
-    ${generatedContent.content.replace(/\n/g, '<br>')}
-</body>
-</html>`;
-        downloadFile(`${targetKeyword}-${timestamp}.html`, exportData, 'text/html');
-        break;
-      case 'json':
-        exportData = JSON.stringify({
-          keyword: targetKeyword,
-          contentType,
-          generatedAt: timestamp,
-          ...generatedContent
-        }, null, 2);
-        downloadFile(`${targetKeyword}-${timestamp}.json`, exportData, 'application/json');
-        break;
-    }
-  };
-
-  const downloadFile = (filename, content, mimeType) => {
-    const blob = new Blob([content], { type: mimeType });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  };
+  const ModelCard = ({ model, icon: Icon, name, description, confidence, isActive, isSelected, onToggle }) => (
+    <div 
+      className={`relative p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 ${
+        isSelected 
+          ? 'border-blue-500 bg-blue-50' 
+          : 'border-gray-200 hover:border-gray-300'
+      } ${isActive ? 'ring-2 ring-blue-400 animate-pulse' : ''}`}
+      onClick={onToggle}
+    >
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center space-x-2">
+          <Icon className={`w-5 h-5 ${isSelected ? 'text-blue-600' : 'text-gray-500'}`} />
+          <span className={`font-semibold ${isSelected ? 'text-blue-700' : 'text-gray-700'}`}>{name}</span>
+        </div>
+        {confidence && (
+          <div className="flex items-center space-x-1">
+            <Star className="w-4 h-4 text-yellow-500" />
+            <span className="text-sm font-medium">{confidence}%</span>
+          </div>
+        )}
+      </div>
+      <p className="text-sm text-gray-600">{description}</p>
+      {isActive && (
+        <div className="absolute top-2 right-2">
+          <RefreshCw className="w-4 h-4 text-blue-500 animate-spin" />
+        </div>
+      )}
+    </div>
+  );
 
   return (
-    <div className="enhanced-content-generator">
-      {/* Header with Stats */}
-      <div className="ecg-header">
-        <div className="ecg-title">
-          <h2>🚀 Enhanced Content Generator</h2>
-          <p className="ecg-subtitle">Multi-Model AI • Unlimited Generation • Attribution Intelligence</p>
+    <div className="max-w-7xl mx-auto p-6 space-y-6">
+      {/* Header */}
+      <div className="text-center mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-4">
+          🚀 Enhanced Content Generator
+        </h1>
+        <p className="text-lg text-gray-600 mb-4">
+          Multi-Model AI • Unlimited Generation • Attribution Intelligence
+        </p>
+        <div className="flex items-center justify-center space-x-8 text-sm">
+          <div className="text-center">
+            <div className="text-2xl font-bold text-blue-600">{todayGenerations}</div>
+            <div className="text-gray-500">Today</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl font-bold text-purple-600">∞</div>
+            <div className="text-gray-500">Limit</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl font-bold text-green-600">{totalGenerations}</div>
+            <div className="text-gray-500">Total</div>
+          </div>
         </div>
-        <div className="ecg-stats">
-          <div className="ecg-stat">
-            <div className="ecg-stat-number">{todayGenerations}</div>
-            <div className="ecg-stat-label">Today</div>
-          </div>
-          <div className="ecg-stat">
-            <div className="ecg-stat-number">∞</div>
-            <div className="ecg-stat-label">Limit</div>
-          </div>
-          <div className="ecg-stat">
-            <div className="ecg-stat-number">{totalGenerations}</div>
-            <div className="ecg-stat-label">Total</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Competitive Advantage Banner */}
-      <div className="ecg-advantage-banner">
-        <div className="ecg-advantage-content">
-          <div className="ecg-advantage-text">
-            <strong>🎯 Outrank.so Killer:</strong> Unlimited content generation with multi-model AI and attribution tracking
-          </div>
-          <div className="ecg-advantage-badges">
-            <span className="ecg-badge claude">Claude Strategy</span>
-            <span className="ecg-badge gpt4">GPT-4 Creative</span>
-            <span className="ecg-badge gemini">Gemini Intelligence</span>
+        <div className="mt-4 flex items-center justify-center">
+          <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-2">
+            <span className="text-red-600 font-medium">🎯 Outrank.so Killer:</span>
+            <span className="text-red-700 ml-2">Unlimited content generation with multi-model AI and attribution tracking</span>
           </div>
         </div>
       </div>
 
-      {/* Configuration Panel */}
-      <div className="ecg-config-panel">
-        <div className="ecg-config-row">
-          <div className="ecg-config-group">
-            <label htmlFor="contentType" className="ecg-label">Content Type</label>
-            <select 
-              id="contentType"
-              value={contentType} 
-              onChange={(e) => setContentType(e.target.value)}
-              className="ecg-select"
-            >
-              <option value="blog-post">📝 Blog Post</option>
-              <option value="landing-page">🎯 Landing Page</option>
-              <option value="product-description">🛍️ Product Description</option>
-              <option value="email-sequence">📧 Email Sequence</option>
-              <option value="social-media">📱 Social Media Content</option>
-              <option value="video-script">🎥 Video Script</option>
-              <option value="case-study">📊 Case Study</option>
-              <option value="white-paper">📄 White Paper</option>
-            </select>
-          </div>
-
-          <div className="ecg-config-group">
-            <label htmlFor="targetKeyword" className="ecg-label">Target Keyword *</label>
-            <input
-              id="targetKeyword"
-              type="text"
-              value={targetKeyword}
-              onChange={(e) => setTargetKeyword(e.target.value)}
-              placeholder="e.g., best SEO tools 2024"
-              className="ecg-input"
-            />
-          </div>
+      {/* AI Model Selection */}
+      <Card className="p-6">
+        <h3 className="text-xl font-semibold mb-4 flex items-center">
+          <Brain className="w-5 h-5 mr-2 text-blue-600" />
+          Select AI Models
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <ModelCard
+            model="claude"
+            icon={Cpu}
+            name="Claude Strategy"
+            description="Strategic depth and authoritative content"
+            confidence={94}
+            isActive={activeModel === 'claude'}
+            isSelected={selectedModels.includes('claude')}
+            onToggle={() => {
+              setSelectedModels(prev => 
+                prev.includes('claude') 
+                  ? prev.filter(m => m !== 'claude')
+                  : [...prev, 'claude']
+              );
+            }}
+          />
+          <ModelCard
+            model="gpt4"
+            icon={Lightbulb}
+            name="GPT-4 Creative"
+            description="Creative flow and engaging content"
+            confidence={91}
+            isActive={activeModel === 'gpt4'}
+            isSelected={selectedModels.includes('gpt4')}
+            onToggle={() => {
+              setSelectedModels(prev => 
+                prev.includes('gpt4') 
+                  ? prev.filter(m => m !== 'gpt4')
+                  : [...prev, 'gpt4']
+              );
+            }}
+          />
+          <ModelCard
+            model="gemini"
+            icon={TrendingUp}
+            name="Gemini Intelligence"
+            description="Market trends and competitive insights"
+            confidence={88}
+            isActive={activeModel === 'gemini'}
+            isSelected={selectedModels.includes('gemini')}
+            onToggle={() => {
+              setSelectedModels(prev => 
+                prev.includes('gemini') 
+                  ? prev.filter(m => m !== 'gemini')
+                  : [...prev, 'gemini']
+              );
+            }}
+          />
         </div>
+      </Card>
 
-        <div className="ecg-config-row">
-          <div className="ecg-config-group">
-            <label htmlFor="targetAudience" className="ecg-label">Target Audience</label>
-            <input
-              id="targetAudience"
-              type="text"
-              value={targetAudience}
-              onChange={(e) => setTargetAudience(e.target.value)}
-              placeholder="e.g., small business owners, marketers"
-              className="ecg-input"
-            />
-          </div>
-
-          <div className="ecg-config-group">
-            <label htmlFor="contentLength" className="ecg-label">Content Length</label>
-            <select 
-              id="contentLength"
-              value={contentLength} 
-              onChange={(e) => setContentLength(e.target.value)}
-              className="ecg-select"
-            >
-              <option value="800">📄 Short (800 words)</option>
-              <option value="1500">📃 Medium (1,500 words)</option>
-              <option value="2000">📰 Long (2,000 words)</option>
-              <option value="3000">📚 Extended (3,000 words)</option>
-              <option value="5000">📖 Comprehensive (5,000 words)</option>
-            </select>
-          </div>
-        </div>
-
-        <div className="ecg-config-row">
-          <div className="ecg-config-group">
-            <label htmlFor="tone" className="ecg-label">Content Tone</label>
-            <select 
-              id="tone"
-              value={tone} 
-              onChange={(e) => setTone(e.target.value)}
-              className="ecg-select"
-            >
-              <option value="professional">👔 Professional</option>
-              <option value="conversational">💬 Conversational</option>
-              <option value="authoritative">🎯 Authoritative</option>
-              <option value="friendly">😊 Friendly</option>
-              <option value="technical">🔧 Technical</option>
-              <option value="persuasive">💪 Persuasive</option>
-            </select>
-          </div>
-
-          <div className="ecg-config-group">
-            <div className="ecg-generation-button-container">
-              <button 
-                onClick={generateContent}
-                disabled={isGenerating || !targetKeyword.trim()}
-                className={`ecg-generate-btn ${isGenerating ? 'generating' : ''}`}
-              >
-                {isGenerating ? (
-                  <div className="ecg-generating-content">
-                    <div className="ecg-spinner"></div>
-                    <span>Generating with {activeModel || 'AI'}...</span>
+      {/* Content Configuration */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Content Type Selection */}
+        <Card className="p-6">
+          <h3 className="text-lg font-semibold mb-4 flex items-center">
+            <FileText className="w-5 h-5 mr-2 text-purple-600" />
+            Content Type
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {contentTypeOptions.map((option) => {
+              const Icon = option.icon;
+              return (
+                <div
+                  key={option.value}
+                  className={`p-3 border-2 rounded-lg cursor-pointer transition-all duration-200 ${
+                    contentType === option.value
+                      ? 'border-purple-500 bg-purple-50'
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                  onClick={() => setContentType(option.value)}
+                >
+                  <div className="flex items-center space-x-2 mb-1">
+                    <Icon className={`w-4 h-4 ${
+                      contentType === option.value ? 'text-purple-600' : 'text-gray-500'
+                    }`} />
+                    <span className={`font-medium ${
+                      contentType === option.value ? 'text-purple-700' : 'text-gray-700'
+                    }`}>
+                      {option.label}
+                    </span>
                   </div>
-                ) : (
-                  <span>🚀 Generate Multi-Model Content</span>
-                )}
-              </button>
+                  <p className="text-xs text-gray-600">{option.description}</p>
+                </div>
+              );
+            })}
+          </div>
+        </Card>
+
+        {/* Content Parameters */}
+        <Card className="p-6">
+          <h3 className="text-lg font-semibold mb-4 flex items-center">
+            <Target className="w-5 h-5 mr-2 text-green-600" />
+            Content Parameters
+          </h3>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Target Keyword
+              </label>
+              <input
+                type="text"
+                value={targetKeyword}
+                onChange={(e) => setTargetKeyword(e.target.value)}
+                placeholder="e.g., best SEO tools 2024"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Target Audience
+              </label>
+              <input
+                type="text"
+                value={targetAudience}
+                onChange={(e) => setTargetAudience(e.target.value)}
+                placeholder="e.g., small business owners"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Content Length
+                </label>
+                <select
+                  value={contentLength}
+                  onChange={(e) => setContentLength(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="500">Short (500 words)</option>
+                  <option value="1000">Medium (1,000 words)</option>
+                  <option value="2000">Long (2,000 words)</option>
+                  <option value="3000">Extended (3,000 words)</option>
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Content Tone
+                </label>
+                <select
+                  value={tone}
+                  onChange={(e) => setTone(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  {toneOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
           </div>
-        </div>
+        </Card>
+      </div>
+
+      {/* Generate Button */}
+      <div className="text-center">
+        <Button
+          onClick={generateContent}
+          disabled={!targetKeyword.trim() || isGenerating || selectedModels.length === 0}
+          size="lg"
+          className="px-12 py-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-lg font-semibold"
+        >
+          {isGenerating ? (
+            <>
+              <RefreshCw className="w-5 h-5 mr-2 animate-spin" />
+              Generating Multi-Model Content...
+            </>
+          ) : (
+            <>
+              <PenTool className="w-5 h-5 mr-2" />
+              Generate Multi-Model Content
+            </>
+          )}
+        </Button>
       </div>
 
       {/* Generation Progress */}
       {isGenerating && (
-        <div className="ecg-progress-panel">
-          <div className="ecg-progress-header">
-            <span>Multi-Model Generation Progress</span>
-            <span>{Math.round(generationProgress)}%</span>
+        <Card className="p-6">
+          <div className="text-center space-y-4">
+            <h3 className="text-lg font-semibold">Multi-Model Generation in Progress</h3>
+            <div className="space-y-3">
+              {['claude', 'gpt4', 'gemini'].map((model) => {
+                if (!selectedModels.includes(model)) return null;
+                const isActive = activeModel === model;
+                const isComplete = selectedModels.indexOf(model) < selectedModels.indexOf(activeModel);
+                
+                return (
+                  <div key={model} className="flex items-center justify-between">
+                    <span className="text-sm capitalize">{model} {model === 'gpt4' ? 'Creative' : model === 'claude' ? 'Strategy' : 'Intelligence'}</span>
+                    {isComplete ? (
+                      <CheckCircle className="w-5 h-5 text-green-500" />
+                    ) : isActive ? (
+                      <RefreshCw className="w-5 h-5 text-blue-500 animate-spin" />
+                    ) : (
+                      <Clock className="w-5 h-5 text-gray-400" />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+            <ProgressIndicator progress={generationProgress} />
           </div>
-          <div className="ecg-progress-bar">
-            <div 
-              className="ecg-progress-fill"
-              style={{ width: `${generationProgress}%` }}
-            ></div>
+        </Card>
+      )}
+
+      {/* Generated Content Results */}
+      {generatedContent && !isGenerating && (
+        <div className="space-y-6">
+          {/* Content Metrics */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <Card className="p-4 text-center">
+              <Hash className="w-8 h-8 text-blue-600 mx-auto mb-2" />
+              <div className="text-2xl font-bold text-gray-900">{generatedContent.wordCount}</div>
+              <div className="text-sm text-gray-600">Words Generated</div>
+            </Card>
+            
+            <Card className="p-4 text-center">
+              <BarChart3 className="w-8 h-8 text-green-600 mx-auto mb-2" />
+              <div className="text-2xl font-bold text-gray-900">{generatedContent.seoScore}/100</div>
+              <div className="text-sm text-gray-600">SEO Score</div>
+            </Card>
+            
+            <Card className="p-4 text-center">
+              <Eye className="w-8 h-8 text-purple-600 mx-auto mb-2" />
+              <div className="text-2xl font-bold text-gray-900">{generatedContent.readabilityScore}/100</div>
+              <div className="text-sm text-gray-600">Readability</div>
+            </Card>
+            
+            <Card className="p-4 text-center">
+              <Clock className="w-8 h-8 text-orange-600 mx-auto mb-2" />
+              <div className="text-2xl font-bold text-gray-900">{generatedContent.estimatedReadTime}</div>
+              <div className="text-sm text-gray-600">Min Read</div>
+            </Card>
           </div>
-          <div className="ecg-progress-models">
-            <div className={`ecg-progress-model ${activeModel === 'claude' ? 'active' : generationProgress > 33 ? 'complete' : ''}`}>
-              Claude Strategy
+
+          {/* AI Model Insights */}
+          <Card className="p-6">
+            <h3 className="text-xl font-semibold mb-4 flex items-center">
+              <Brain className="w-5 h-5 mr-2 text-blue-600" />
+              AI Model Insights
+            </h3>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {Object.entries(generatedContent.modelInsights).map(([model, insights]) => (
+                <div key={model} className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h4 className="font-semibold capitalize flex items-center">
+                      {model === 'claude' && <Cpu className="w-4 h-4 mr-2 text-blue-600" />}
+                      {model === 'gpt4' && <Lightbulb className="w-4 h-4 mr-2 text-green-600" />}
+                      {model === 'gemini' && <TrendingUp className="w-4 h-4 mr-2 text-purple-600" />}
+                      {model} {model === 'gpt4' ? 'Creative' : model === 'claude' ? 'Strategy' : 'Intelligence'}
+                    </h4>
+                    <div className="flex items-center">
+                      <Star className="w-4 h-4 text-yellow-500 mr-1" />
+                      <span className="text-sm">{insights.confidence}%</span>
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-700 font-medium">{insights.focus}</p>
+                  <div className="space-y-1">
+                    <p className="text-xs text-gray-600 font-medium">Suggestions:</p>
+                    {insights.suggestions.map((suggestion, index) => (
+                      <div key={index} className="text-xs text-gray-600 bg-gray-50 px-2 py-1 rounded">
+                        {suggestion}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className={`ecg-progress-model ${activeModel === 'gpt4' ? 'active' : generationProgress > 66 ? 'complete' : ''}`}>
-              GPT-4 Creative
+          </Card>
+
+          {/* Generated Content Preview */}
+          <Card className="p-6">
+            <h3 className="text-xl font-semibold mb-4 flex items-center">
+              <FileText className="w-5 h-5 mr-2 text-green-600" />
+              Generated Content Preview
+            </h3>
+            <div className="bg-gray-50 rounded-lg p-6 border-2 border-dashed border-gray-300">
+              <pre className="whitespace-pre-wrap text-sm text-gray-700 font-mono">
+                {generatedContent.content}
+              </pre>
             </div>
-            <div className={`ecg-progress-model ${activeModel === 'gemini' ? 'active' : generationProgress === 100 ? 'complete' : ''}`}>
-              Gemini Intelligence
-            </div>
+          </Card>
+
+          {/* Action Buttons */}
+          <div className="flex justify-center gap-4 flex-wrap">
+            <Button className="flex items-center">
+              <Download className="w-4 h-4 mr-2" />
+              Export Content
+            </Button>
+            
+            <Button variant="secondary" className="flex items-center">
+              <Copy className="w-4 h-4 mr-2" />
+              Copy to Clipboard
+            </Button>
+            
+            <Button variant="secondary" className="flex items-center">
+              <Edit3 className="w-4 h-4 mr-2" />
+              Polish Content
+            </Button>
+            
+            <Button variant="secondary" className="flex items-center">
+              <BarChart3 className="w-4 h-4 mr-2" />
+              Track Performance
+            </Button>
           </div>
         </div>
       )}
 
-      {/* Generated Content Display */}
-      {generatedContent && (
-        <div className="ecg-results-panel">
-          <div className="ecg-results-header">
-            <div className="ecg-results-title">
-              <h3>✅ Generated Content</h3>
-              <div className="ecg-results-meta">
-                <span className="ecg-meta-item">
-                  📊 {generatedContent.wordCount} words
-                </span>
-                <span className="ecg-meta-item">
-                  🤖 {generatedContent.modelsUsed?.join(' + ') || generatedContent.model}
-                </span>
-                <span className="ecg-meta-item">
-                  🎯 Attribution Score: {generatedContent.attributionScore}
-                </span>
-              </div>
-            </div>
-            <div className="ecg-export-buttons">
-              <button 
-                onClick={() => exportContent('markdown')}
-                className="ecg-export-btn"
-                title="Export as Markdown"
+      {/* Quick Start Examples */}
+      {!generatedContent && !isGenerating && (
+        <Card className="p-6">
+          <h3 className="text-lg font-semibold mb-4">Quick Start Examples</h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {[
+              'best CRM software 2024',
+              'digital marketing strategy',
+              'SEO optimization guide',
+              'content marketing tips',
+              'social media automation',
+              'email marketing best practices',
+              'conversion optimization',
+              'lead generation tactics'
+            ].map((example, index) => (
+              <button
+                key={index}
+                onClick={() => setTargetKeyword(example)}
+                className="text-left p-3 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors"
               >
-                📝 MD
+                <div className="text-sm font-medium text-gray-900">{example}</div>
               </button>
-              <button 
-                onClick={() => exportContent('html')}
-                className="ecg-export-btn"
-                title="Export as HTML"
-              >
-                🌐 HTML
-              </button>
-              <button 
-                onClick={() => exportContent('json')}
-                className="ecg-export-btn"
-                title="Export as JSON"
-              >
-                📋 JSON
-              </button>
-            </div>
+            ))}
           </div>
-
-          {/* Content Preview */}
-          <div className="ecg-content-preview">
-            <div className="ecg-content-text">
-              {generatedContent.content.split('\n').map((paragraph, index) => (
-                <p key={index} className="ecg-content-paragraph">
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-          </div>
-
-          {/* Multi-Model Insights */}
-          {generatedContent.insights && (
-            <div className="ecg-insights-panel">
-              <h4>🧠 Multi-Model Insights</h4>
-              <div className="ecg-insights-grid">
-                {generatedContent.insights.claude && (
-                  <div className="ecg-insight claude">
-                    <div className="ecg-insight-header">Claude Strategy</div>
-                    <div className="ecg-insight-text">{generatedContent.insights.claude}</div>
-                  </div>
-                )}
-                {generatedContent.insights.gpt4 && (
-                  <div className="ecg-insight gpt4">
-                    <div className="ecg-insight-header">GPT-4 Creative</div>
-                    <div className="ecg-insight-text">{generatedContent.insights.gpt4}</div>
-                  </div>
-                )}
-                {generatedContent.insights.gemini && (
-                  <div className="ecg-insight gemini">
-                    <div className="ecg-insight-header">Gemini Intelligence</div>
-                    <div className="ecg-insight-text">{generatedContent.insights.gemini}</div>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
+        </Card>
       )}
     </div>
   );

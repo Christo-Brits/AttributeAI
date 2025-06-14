@@ -1,26 +1,27 @@
 import React, { useState } from 'react';
-import { Brain, Mail, Lock, Globe, User, ArrowRight } from 'lucide-react';
+import { Mail, Lock, Globe, User, ArrowRight, Check } from 'lucide-react';
 import { useAuth } from './auth/AuthContext';
 import AttributeAILogo from './ui/AttributeAILogo';
 
-const LoginPage = () => {
+const LoginPage = ({ onLogin }) => {
   const { login, signup } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     website: '',
     businessName: '',
-    industry: ''
+    industry: '',
+    rememberMe: false
   });
   const [isSignUp, setIsSignUp] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: type === 'checkbox' ? checked : value
     }));
   };
 
@@ -32,15 +33,49 @@ const LoginPage = () => {
     try {
       const result = isSignUp ? await signup(formData) : await login(formData);
       
-      if (!result.success) {
+      if (result.success) {
+        // Call the parent callback with user data
+        if (onLogin) {
+          const userData = {
+            email: formData.email,
+            businessName: formData.businessName,
+            industry: formData.industry,
+            website: formData.website,
+            userProfile: {
+              firstName: formData.businessName?.split(' ')[0] || 'Demo',
+              lastName: formData.businessName?.split(' ')[1] || 'User',
+              company: formData.businessName || 'Demo Company',
+              industry: formData.industry || 'Professional Services',
+              websiteUrl: formData.website || '',
+              email: formData.email
+            }
+          };
+          onLogin(userData);
+        }
+      } else {
         setError(result.error || 'Authentication failed');
       }
-      // On success, the AuthContext will handle the redirect
     } catch (err) {
       setError('Something went wrong. Please try again.');
+      console.error('Login error:', err);
     }
     
     setIsLoading(false);
+  };
+
+  // Demo login for testing
+  const handleDemoLogin = () => {
+    const demoData = {
+      email: 'demo@attributeai.app',
+      password: 'demo123',
+      businessName: 'Demo Marketing Agency',
+      industry: 'Professional Services',
+      website: 'https://demo-agency.com',
+      rememberMe: true
+    };
+    setFormData(demoData);
+    // Auto-submit with demo data
+    setTimeout(() => handleSubmit({ preventDefault: () => {} }), 100);
   };
 
   return (
@@ -61,6 +96,30 @@ const LoginPage = () => {
           </p>
         </div>
 
+        {/* Demo Login Button */}
+        <div className="mb-6">
+          <button
+            type="button"
+            onClick={handleDemoLogin}
+            className="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 rounded-lg hover:from-green-600 hover:to-emerald-600 transition-all duration-200 font-medium flex items-center justify-center space-x-2"
+          >
+            <Check className="h-5 w-5" />
+            <span>Quick Demo Login</span>
+          </button>
+          <p className="text-xs text-gray-500 text-center mt-2">
+            Skip the form and try the platform instantly
+          </p>
+        </div>
+
+        <div className="relative mb-6">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-300" />
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="px-2 bg-white text-gray-500">or continue with your account</span>
+          </div>
+        </div>
+
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-3">
@@ -79,7 +138,7 @@ const LoginPage = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="your@email.com"
                 required
               />
@@ -97,7 +156,7 @@ const LoginPage = () => {
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
-                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Enter password"
                 required
               />
@@ -117,7 +176,7 @@ const LoginPage = () => {
                     name="businessName"
                     value={formData.businessName}
                     onChange={handleInputChange}
-                    className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Your Business Name"
                     required
                   />
@@ -135,7 +194,7 @@ const LoginPage = () => {
                     name="website"
                     value={formData.website}
                     onChange={handleInputChange}
-                    className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="https://yourwebsite.com"
                     required
                   />
@@ -150,53 +209,77 @@ const LoginPage = () => {
                   name="industry"
                   value={formData.industry}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   required
                 >
-                  <option value="">Select Industry</option>
+                  <option value="">Select your industry</option>
                   <option value="Home Services">Home Services</option>
                   <option value="E-commerce">E-commerce</option>
-                  <option value="SaaS">SaaS & Technology</option>
+                  <option value="SaaS & Technology">SaaS & Technology</option>
                   <option value="Professional Services">Professional Services</option>
                   <option value="Healthcare">Healthcare</option>
                   <option value="Real Estate">Real Estate</option>
+                  <option value="Finance">Finance</option>
+                  <option value="Education">Education</option>
+                  <option value="Travel & Hospitality">Travel & Hospitality</option>
+                  <option value="Manufacturing">Manufacturing</option>
+                  <option value="Retail">Retail</option>
+                  <option value="Non-profit">Non-profit</option>
                   <option value="Other">Other</option>
                 </select>
               </div>
             </>
           )}
 
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                name="rememberMe"
+                checked={formData.rememberMe}
+                onChange={handleInputChange}
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              />
+              <label className="ml-2 block text-sm text-gray-700">
+                Remember me
+              </label>
+            </div>
+            {!isSignUp && (
+              <a href="#" className="text-sm text-blue-600 hover:text-blue-800">
+                Forgot password?
+              </a>
+            )}
+          </div>
+
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 px-4 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 flex items-center justify-center space-x-2"
+            className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? (
-              <>
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                <span>{isSignUp ? 'Starting Analysis...' : 'Signing In...'}</span>
-              </>
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
             ) : (
               <>
-                <span>{isSignUp ? 'Start Free Analysis' : 'Sign In'}</span>
+                <span>{isSignUp ? 'Create Account' : 'Sign In'}</span>
                 <ArrowRight className="h-5 w-5" />
               </>
             )}
           </button>
-
-          <div className="text-center">
-            <button
-              type="button"
-              onClick={() => setIsSignUp(!isSignUp)}
-              className="text-blue-600 hover:text-blue-700 font-medium"
-            >
-              {isSignUp 
-                ? 'Already have an account? Sign In' 
-                : 'New to AttributeAI? Start Free Analysis'
-              }
-            </button>
-          </div>
         </form>
+
+        <div className="mt-6 text-center">
+          <button
+            type="button"
+            onClick={() => setIsSignUp(!isSignUp)}
+            className="text-blue-600 hover:text-blue-800 font-medium"
+          >
+            {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
+          </button>
+        </div>
+
+        <div className="mt-8 text-center text-xs text-gray-500">
+          <p>By continuing, you agree to our Terms of Service and Privacy Policy</p>
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BarChart3, TrendingUp, Target, Zap, AlertCircle, CheckCircle, Clock, Users, Globe, Brain, MessageCircle, Search, Eye, PenTool } from 'lucide-react';
+import { BarChart3, TrendingUp, Target, Zap, AlertCircle, CheckCircle, Clock, Users, Globe, Brain, MessageCircle, Search, Eye, PenTool, Edit3 } from 'lucide-react';
 import { Card, Button } from './ui/DesignSystem';
 import { useDataBridge } from '../utils/DataBridge';
 import { useAuth } from './auth/AuthContext';
@@ -33,6 +33,19 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
     } else {
       // Fallback: try to find and click the navigation tab
       const navButton = document.querySelector('[data-tab="enhanced-content"]');
+      if (navButton) {
+        navButton.click();
+      }
+    }
+  };
+
+  // Handle navigation to content optimization engine
+  const handleContentOptimizationClick = () => {
+    if (onNavigateToTab) {
+      onNavigateToTab('content-optimization');
+    } else {
+      // Fallback: try to find and click the navigation tab
+      const navButton = document.querySelector('[data-tab="content-optimization"]');
       if (navButton) {
         navButton.click();
       }
@@ -284,6 +297,71 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
             <div className="mt-4 text-sm text-gray-600">
               <span className="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs font-medium animate-pulse">
                 🎯 Outrank.so Killer - Better features, lower cost
+              </span>
+            </div>
+          </div>
+        </Card>
+
+        {/* NEW: Content Intelligence Engine Feature Callout */}
+        <Card className="bg-gradient-to-r from-orange-50 via-red-50 to-orange-50 border-2 border-orange-200">
+          <div className="text-center p-6">
+            <div className="flex justify-center mb-4">
+              <div className="bg-gradient-to-r from-orange-500 to-red-500 p-3 rounded-full">
+                <Edit3 className="h-8 w-8 text-white" />
+              </div>
+            </div>
+            
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              ⚡ NEW: Content Intelligence Engine
+            </h2>
+            
+            <p className="text-lg text-gray-700 mb-4 max-w-3xl mx-auto">
+              Crush Outranking.io with unlimited content optimization. Multi-model AI analysis with 
+              attribution intelligence and revenue tracking. No credit limits, better insights.
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div className="text-center p-4 bg-white rounded-lg border border-orange-100">
+                <Zap className="h-6 w-6 text-orange-600 mx-auto mb-2" />
+                <div className="font-semibold text-gray-900">Unlimited Optimization</div>
+                <div className="text-sm text-gray-600">No document credits like Outranking.io</div>
+              </div>
+              
+              <div className="text-center p-4 bg-white rounded-lg border border-red-100">
+                <Brain className="h-6 w-6 text-red-600 mx-auto mb-2" />
+                <div className="font-semibold text-gray-900">Multi-Model Analysis</div>
+                <div className="text-sm text-gray-600">Claude + GPT-4 + Gemini consensus</div>
+              </div>
+              
+              <div className="text-center p-4 bg-white rounded-lg border border-orange-100">
+                <Target className="h-6 w-6 text-orange-600 mx-auto mb-2" />
+                <div className="font-semibold text-gray-900">Revenue Attribution</div>
+                <div className="text-sm text-gray-600">Track content performance → conversions</div>
+              </div>
+            </div>
+            
+            <div className="flex justify-center space-x-4">
+              <Button 
+                onClick={handleContentOptimizationClick}
+                className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 text-lg font-semibold hover:from-orange-600 hover:to-red-600 transition-all duration-200 transform hover:scale-105"
+              >
+                <Edit3 className="w-5 h-5 mr-2" />
+                Try Content Intelligence
+              </Button>
+              
+              <Button 
+                variant="secondary"
+                className="border-2 border-orange-200 text-orange-700 hover:bg-orange-50"
+                onClick={() => alert('Content optimization engine ready! Unlimited analysis vs Outranking.io credit limits.')}
+              >
+                <Eye className="w-4 h-4 mr-2" />
+                View Demo
+              </Button>
+            </div>
+            
+            <div className="mt-4 text-sm text-gray-600">
+              <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium animate-pulse">
+                🚀 Outranking.io Killer - $47/month unlimited vs their $79+ with limits
               </span>
             </div>
           </div>

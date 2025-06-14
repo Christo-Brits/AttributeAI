@@ -13,6 +13,9 @@ import FloatingChatButton from './components/FloatingChatButton';
 // NEW: Enhanced Content Generator (Outrank.so killer)
 const EnhancedContentGenerator = lazy(() => import('./components/EnhancedContentGenerator'));
 
+// NEW: Content Optimization Engine (Outranking.io killer)
+const ContentOptimizationEngine = lazy(() => import('./components/ContentOptimizationEngine'));
+
 // NEW: Keyword Intelligence Engine
 const KeywordIntelligenceEngine = lazy(() => import('./components/KeywordIntelligenceEngine'));
 
@@ -70,6 +73,7 @@ function AuthenticatedApp() {
         onNavigateToTab={setActiveTab}
       />,
       'keyword-intelligence': KeywordIntelligenceEngine,
+      'content-optimization': ContentOptimizationEngine, // NEW: Outranking.io killer
       'enhanced-content': EnhancedContentGenerator, // NEW: Outrank.so killer
       'seo-enhanced': SEOAnalysisEnhanced,
       'content-clusters': ContentClusterStrategist,

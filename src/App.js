@@ -205,8 +205,8 @@ function AppRouter() {
 
   if (appView === 'landing' && !isAuthenticated) {
     return <LandingPage 
-      onGetStarted={handleGetStarted} 
-      onFreeTrial={() => setAppView('login')} 
+      onGetStarted={() => setAppView('login')} 
+      onSignIn={() => setAppView('login')} 
     />;
   }
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BarChart3, Activity, TrendingUp, Search, PenTool, Target, Eye, Settings, User, Bell, Grid, LogOut, Globe, Edit3, Shield } from 'lucide-react';
+import AttributeAILogo from './ui/AttributeAILogo';
 
 const Navigation = ({ activeTab, setActiveTab }) => {
   const [showProfile, setShowProfile] = useState(false);
@@ -23,9 +24,17 @@ const Navigation = ({ activeTab, setActiveTab }) => {
         <div className="flex items-center justify-between h-16">
           {/* Logo and Brand */}
           <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <h1 className="text-xl font-bold text-gray-900">AttributeAI</h1>
-              <p className="text-xs text-gray-500">Weather Intelligence Attribution</p>
+            <div className="flex items-center space-x-3">
+              <AttributeAILogo 
+                width={40} 
+                height={40} 
+                variant="icon-only"
+                className="text-blue-600"
+              />
+              <div className="flex flex-col">
+                <h1 className="text-xl font-bold text-gray-900">AttributeAI</h1>
+                <p className="text-xs text-blue-600 font-medium">Marketing Intelligence Platform</p>
+              </div>
             </div>
           </div>
 

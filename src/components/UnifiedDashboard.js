@@ -116,13 +116,14 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
           
           {/* AI Chat Button */}
           <div className="mt-4">
-            {/* Test Button */}
-            <button
-              onClick={() => alert('Test button works!')}
-              className="bg-red-500 text-white px-4 py-2 rounded mb-2 mr-2"
+            <Button 
+              onClick={() => setIsChatOpen(true)}
+              className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-3 text-lg font-semibold hover:from-blue-600 hover:to-purple-600 transition-all duration-200 transform hover:scale-105"
             >
-              TEST BUTTON
-            </button>
+              <MessageCircle className="w-5 h-5 mr-2" />
+              Start AI Marketing Analysis
+            </Button>
+          </div>
             
             <button
               onClick={() => {
@@ -235,10 +236,10 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
               <Button 
                 variant="secondary"
                 className="border-2 border-blue-200 text-blue-700 hover:bg-blue-50"
-                onClick={() => alert('Demo coming soon! Click "Try Keyword Intelligence" to access the full feature.')}
+                onClick={() => alert('Explore unlimited keyword research capabilities! Click "Try Keyword Intelligence" to begin analysis.')}
               >
                 <Eye className="w-4 h-4 mr-2" />
-                View Demo
+                View Features
               </Button>
             </div>
             
@@ -368,7 +369,7 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
                 onClick={() => alert('Content optimization engine ready! Unlimited analysis vs Outranking.io credit limits.')}
               >
                 <Eye className="w-4 h-4 mr-2" />
-                View Demo
+                View Features
               </Button>
             </div>
             

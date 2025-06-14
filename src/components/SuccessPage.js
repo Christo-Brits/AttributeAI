@@ -192,10 +192,10 @@ const SuccessPage = ({ onGetStarted, onGoToAccount }) => {
             <a href="mailto:support@attributeai.app" className="text-blue-400 hover:text-blue-300 transition-colors">
               Email Support
             </a>
-            <a href="#" className="text-blue-400 hover:text-blue-300 transition-colors">
+            <a href="https://support.attributeai.app" className="text-blue-400 hover:text-blue-300 transition-colors">
               Live Chat
             </a>
-            <a href="#" className="text-blue-400 hover:text-blue-300 transition-colors">
+            <a href="https://help.attributeai.app" className="text-blue-400 hover:text-blue-300 transition-colors">
               Help Center
             </a>
           </div>

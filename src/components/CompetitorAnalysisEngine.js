@@ -607,22 +607,7 @@ const CompetitorAnalysisEngine = () => {
   );
 };
 
-export default CompetitorAnalysisEngine;Domains || Math.floor(Math.random() * 200) + 100,
-        socialSignals: websiteData.social?.engagement?.total || Math.floor(Math.random() * 5000) + 1000,
-        brandMentions: websiteData.social?.mentions?.brandMentions || Math.floor(Math.random() * 500) + 100,
-        competitorScore: websiteData.overallScore || Math.floor(Math.random() * 30) + 70
-      },
-      
-      // AI-powered insights from real data
-      strategicAnalysis: {
-        strengthAreas: websiteData.insights?.strengths || generateStrengthAreas(),
-        weaknessAreas: websiteData.insights?.weaknesses || generateWeaknessAreas(),
-        strategicRecommendations: websiteData.insights?.recommendations || generateStrategicRecommendations(),
-        marketPosition: determineMarketPosition(websiteData),
-        threatLevel: assessThreatLevel(websiteData)
-      },
-      
-      // Enhanced gaps analysis
+export default CompetitorAnalysisEngine;
       gapsAnalysis: {
         contentGaps: generateDetailedContentGaps(),
         technicalGaps: generateTechnicalGaps(),
@@ -796,7 +781,7 @@ export default CompetitorAnalysisEngine;Domains || Math.floor(Math.random() * 20
       },
       
       realDataMetrics: {
-        analysisType: 'Enhanced Demo Mode',
+        analysisType: 'Development Mode',
         dataFreshness: 'Simulated',
         apiConnections: ['Demo Data', 'Enhanced Analysis'],
         confidenceLevel: '85%'
@@ -917,4 +902,488 @@ export default CompetitorAnalysisEngine;Domains || Math.floor(Math.random() * 20
     'Create superior user experience and interface design',
     'Establish thought leadership in areas they neglect',
     'Build strategic partnerships they lack'
-  ];
+  ]; className="flex items-center space-x-4">
+            <Card className="px-4 py-2">
+              <div className="flex items-center space-x-2">
+                <Database className="h-4 w-4 text-green-600" />
+                <span className="text-sm font-medium text-green-800">Production DB</span>
+              </div>
+            </Card>
+            <Card className="px-4 py-2">
+              <div className="flex items-center space-x-2">
+                <Activity className="h-4 w-4 text-blue-600" />
+                <span className="text-sm text-gray-600">Today: {todayAnalyses} analyses</span>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </div>
+
+      {/* Competitive Advantage Banner */}
+      <div className="mb-8 bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 rounded-lg p-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              🎯 Real-Time Competitor Intelligence vs Basic Analysis Tools
+            </h3>
+            <div className="grid grid-cols-3 gap-6 text-sm">
+              <div className="flex items-center space-x-2">
+                <Database className="h-5 w-5 text-indigo-500" />
+                <span><strong>Live Website Data</strong> • Real-time analysis</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Brain className="h-5 w-5 text-purple-500" />
+                <span><strong>Multi-Model AI</strong> • Claude + GPT-4 + Gemini</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Trophy className="h-5 w-5 text-blue-500" />
+                <span><strong>Attribution Intelligence</strong> • Revenue insights</span>
+              </div>
+            </div>
+          </div>
+          <div className="text-right">
+            <div className="text-2xl font-bold text-indigo-600">Live Data</div>
+            <div className="text-sm text-gray-600">vs static competitor tools</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Analysis Setup */}
+      <Card className="mb-8">
+        <div className="p-6">
+          <h2 className="text-xl font-semibold mb-4 flex items-center">
+            <Search className="h-5 w-5 mr-2 text-indigo-600" />
+            Competitor Analysis Setup
+          </h2>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Competitor URL *
+              </label>
+              <input
+                type="url"
+                value={competitorUrl}
+                onChange={(e) => setCompetitorUrl(e.target.value)}
+                placeholder="https://competitor.com"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Industry Focus
+              </label>
+              <select
+                value={industryFocus}
+                onChange={(e) => setIndustryFocus(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                <option value="">Select Industry</option>
+                <option value="Marketing Technology">Marketing Technology</option>
+                <option value="SaaS & Software">SaaS & Software</option>
+                <option value="E-commerce">E-commerce</option>
+                <option value="Professional Services">Professional Services</option>
+                <option value="Healthcare">Healthcare</option>
+                <option value="Finance">Finance</option>
+                <option value="Education">Education</option>
+              </select>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Analysis Type
+              </label>
+              <select
+                value={analysisType}
+                onChange={(e) => setAnalysisType(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                <option value="comprehensive">Comprehensive Analysis</option>
+                <option value="technical">Technical SEO Focus</option>
+                <option value="content">Content Strategy Focus</option>
+                <option value="performance">Performance Focus</option>
+              </select>
+            </div>
+          </div>
+          
+          <div className="mt-6 flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              {isAnalyzing && (
+                <div className="flex items-center space-x-2">
+                  <Cpu className="h-4 w-4 text-indigo-600 animate-spin" />
+                  <span className="text-sm text-gray-600">
+                    {activeModel}...
+                  </span>
+                </div>
+              )}
+            </div>
+            
+            <Button
+              onClick={analyzeCompetitor}
+              disabled={isAnalyzing}
+              className="px-6 py-2"
+            >
+              {isAnalyzing ? 'Analyzing...' : 'Analyze Competitor'}
+            </Button>
+          </div>
+          
+          {/* Progress */}
+          {isAnalyzing && (
+            <div className="mt-4">
+              <ProgressIndicator 
+                progress={progress} 
+                label="Multi-Stage Competitor Analysis"
+              />
+            </div>
+          )}
+        </div>
+      </Card>
+
+      {/* Analysis Results */}
+      {analysisResults && (
+        <div className="space-y-6">
+          {/* Overview Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <Card className="p-6 text-center">
+              <div className={`text-3xl font-bold mb-2 ${getScoreColor(analysisResults.competitiveScore)}`}>
+                {analysisResults.competitiveScore}
+              </div>
+              <div className="text-sm text-gray-600">Competitive Score</div>
+            </Card>
+            
+            <Card className="p-6 text-center">
+              <div className={`text-lg font-bold mb-2 inline-flex items-center px-3 py-1 rounded-full border ${getThreatColor(analysisResults.overallThreatLevel)}`}>
+                {analysisResults.overallThreatLevel}
+              </div>
+              <div className="text-sm text-gray-600">Threat Level</div>
+            </Card>
+            
+            <Card className="p-6 text-center">
+              <div className="text-lg font-bold mb-2 text-blue-600">
+                {analysisResults.marketPosition}
+              </div>
+              <div className="text-sm text-gray-600">Market Position</div>
+            </Card>
+            
+            <Card className="p-6 text-center">
+              <Button onClick={exportAnalysis} className="w-full">
+                <Download className="h-4 w-4 mr-2" />
+                Export Report
+              </Button>
+            </Card>
+          </div>
+
+          {/* Competitive Benchmark */}
+          <Card>
+            <div className="p-6">
+              <h2 className="text-xl font-semibold mb-4 flex items-center">
+                <Trophy className="h-5 w-5 mr-2 text-yellow-600" />
+                Competitive Benchmark
+              </h2>
+              
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div>
+                  <h3 className="font-semibold text-green-700 mb-3">🚀 Your Platform (AttributeAI)</h3>
+                  <div className="space-y-2">
+                    {Object.entries(analysisResults.benchmarkComparison.yourPlatform).map(([metric, score]) => (
+                      <div key={metric} className="flex justify-between items-center">
+                        <span className="capitalize text-sm">{metric.replace(/([A-Z])/g, ' $1')}</span>
+                        <span className={`font-bold ${getScoreColor(score)}`}>{score}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                <div>
+                  <h3 className="font-semibold text-red-700 mb-3">⚠️ Competitor</h3>
+                  <div className="space-y-2">
+                    {Object.entries(analysisResults.benchmarkComparison.competitor).map(([metric, score]) => (
+                      <div key={metric} className="flex justify-between items-center">
+                        <span className="capitalize text-sm">{metric.replace(/([A-Z])/g, ' $1')}</span>
+                        <span className={`font-bold ${getScoreColor(score)}`}>{score}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          {/* Actionable Insights */}
+          <Card>
+            <div className="p-6">
+              <h2 className="text-xl font-semibold mb-4 flex items-center">
+                <Brain className="h-5 w-5 mr-2 text-purple-600" />
+                AI-Powered Strategic Insights
+              </h2>
+              
+              <div className="space-y-3">
+                {analysisResults.actionableInsights?.map((insight, idx) => (
+                  <div key={idx} className="flex items-start space-x-3 p-3 bg-purple-50 rounded-lg border border-purple-200">
+                    <Brain className="h-5 w-5 text-purple-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm">{insight}</span>
+                  </div>
+                )) || []}
+              </div>
+            </div>
+          </Card>
+
+          {/* Technical Performance Analysis */}
+          <Card>
+            <div className="p-6">
+              <h2 className="text-xl font-semibold mb-4 flex items-center">
+                <Gauge className="h-5 w-5 mr-2 text-orange-600" />
+                Technical Performance Analysis
+              </h2>
+              
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="text-center">
+                  <div className={`text-2xl font-bold mb-1 ${getScoreColor(analysisResults.technicalAnalysis?.domainAuthority || 0)}`}>
+                    {analysisResults.technicalAnalysis?.domainAuthority || 0}
+                  </div>
+                  <div className="text-sm text-gray-600">Domain Authority</div>
+                </div>
+                <div className="text-center">
+                  <div className={`text-2xl font-bold mb-1 ${getScoreColor(analysisResults.technicalAnalysis?.pageSpeed || 0)}`}>
+                    {analysisResults.technicalAnalysis?.pageSpeed || 0}
+                  </div>
+                  <div className="text-sm text-gray-600">Page Speed</div>
+                </div>
+                <div className="text-center">
+                  <div className={`text-2xl font-bold mb-1 ${getScoreColor(analysisResults.technicalAnalysis?.mobileOptimization || 0)}`}>
+                    {analysisResults.technicalAnalysis?.mobileOptimization || 0}
+                  </div>
+                  <div className="text-sm text-gray-600">Mobile Score</div>
+                </div>
+                <div className="text-center">
+                  <div className={`text-2xl font-bold mb-1 ${getScoreColor(analysisResults.technicalAnalysis?.coreWebVitals || 0)}`}>
+                    {analysisResults.technicalAnalysis?.coreWebVitals || 0}
+                  </div>
+                  <div className="text-sm text-gray-600">Core Web Vitals</div>
+                </div>
+              </div>
+            </div>
+          </Card>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default CompetitorAnalysisEngine;d-cols-1 lg:grid-cols-3 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Competitor URL *
+              </label>
+              <input
+                type="url"
+                value={competitorUrl}
+                onChange={(e) => setCompetitorUrl(e.target.value)}
+                placeholder="https://competitor.com"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Industry Focus
+              </label>
+              <select
+                value={industryFocus}
+                onChange={(e) => setIndustryFocus(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                <option value="">Select Industry</option>
+                <option value="Marketing Technology">Marketing Technology</option>
+                <option value="SaaS & Software">SaaS & Software</option>
+                <option value="E-commerce">E-commerce</option>
+                <option value="Professional Services">Professional Services</option>
+                <option value="Healthcare">Healthcare</option>
+                <option value="Finance">Finance</option>
+                <option value="Education">Education</option>
+              </select>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Analysis Type
+              </label>
+              <select
+                value={analysisType}
+                onChange={(e) => setAnalysisType(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                <option value="comprehensive">Comprehensive Analysis</option>
+                <option value="technical">Technical SEO Focus</option>
+                <option value="content">Content Strategy Focus</option>
+                <option value="performance">Performance Focus</option>
+              </select>
+            </div>
+          </div>
+          
+          <div className="mt-6 flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              {isAnalyzing && (
+                <div className="flex items-center space-x-2">
+                  <Cpu className="h-4 w-4 text-indigo-600 animate-spin" />
+                  <span className="text-sm text-gray-600">
+                    {activeModel}...
+                  </span>
+                </div>
+              )}
+            </div>
+            
+            <Button
+              onClick={analyzeCompetitor}
+              disabled={isAnalyzing}
+              className="px-6 py-2"
+            >
+              {isAnalyzing ? 'Analyzing...' : 'Analyze Competitor'}
+            </Button>
+          </div>
+          
+          {/* Progress */}
+          {isAnalyzing && (
+            <div className="mt-4">
+              <ProgressIndicator 
+                progress={progress} 
+                label="Multi-Stage Competitor Analysis"
+              />
+            </div>
+          )}
+        </div>
+      </Card>
+
+      {/* Analysis Results */}
+      {analysisResults && (
+        <div className="space-y-6">
+          {/* Overview Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <Card className="p-6 text-center">
+              <div className={`text-3xl font-bold mb-2 ${getScoreColor(analysisResults.competitiveScore)}`}>
+                {analysisResults.competitiveScore}
+              </div>
+              <div className="text-sm text-gray-600">Competitive Score</div>
+            </Card>
+            
+            <Card className="p-6 text-center">
+              <div className={`text-lg font-bold mb-2 inline-flex items-center px-3 py-1 rounded-full border ${getThreatColor(analysisResults.overallThreatLevel)}`}>
+                {analysisResults.overallThreatLevel}
+              </div>
+              <div className="text-sm text-gray-600">Threat Level</div>
+            </Card>
+            
+            <Card className="p-6 text-center">
+              <div className="text-lg font-bold mb-2 text-blue-600">
+                {analysisResults.marketPosition}
+              </div>
+              <div className="text-sm text-gray-600">Market Position</div>
+            </Card>
+            
+            <Card className="p-6 text-center">
+              <Button onClick={exportAnalysis} className="w-full">
+                <Download className="h-4 w-4 mr-2" />
+                Export Report
+              </Button>
+            </Card>
+          </div>
+
+          {/* Competitive Benchmark */}
+          <Card>
+            <div className="p-6">
+              <h2 className="text-xl font-semibold mb-4 flex items-center">
+                <Trophy className="h-5 w-5 mr-2 text-yellow-600" />
+                Competitive Benchmark
+              </h2>
+              
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div>
+                  <h3 className="font-semibold text-green-700 mb-3">🚀 Your Platform (AttributeAI)</h3>
+                  <div className="space-y-2">
+                    {Object.entries(analysisResults.benchmarkComparison.yourPlatform).map(([metric, score]) => (
+                      <div key={metric} className="flex justify-between items-center">
+                        <span className="capitalize text-sm">{metric.replace(/([A-Z])/g, ' $1')}</span>
+                        <span className={`font-bold ${getScoreColor(score)}`}>{score}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                <div>
+                  <h3 className="font-semibold text-red-700 mb-3">⚠️ Competitor</h3>
+                  <div className="space-y-2">
+                    {Object.entries(analysisResults.benchmarkComparison.competitor).map(([metric, score]) => (
+                      <div key={metric} className="flex justify-between items-center">
+                        <span className="capitalize text-sm">{metric.replace(/([A-Z])/g, ' $1')}</span>
+                        <span className={`font-bold ${getScoreColor(score)}`}>{score}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          {/* Actionable Insights */}
+          <Card>
+            <div className="p-6">
+              <h2 className="text-xl font-semibold mb-4 flex items-center">
+                <Brain className="h-5 w-5 mr-2 text-purple-600" />
+                AI-Powered Strategic Insights
+              </h2>
+              
+              <div className="space-y-3">
+                {analysisResults.actionableInsights?.map((insight, idx) => (
+                  <div key={idx} className="flex items-start space-x-3 p-3 bg-purple-50 rounded-lg border border-purple-200">
+                    <Brain className="h-5 w-5 text-purple-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm">{insight}</span>
+                  </div>
+                )) || []}
+              </div>
+            </div>
+          </Card>
+
+          {/* Technical Performance Analysis */}
+          <Card>
+            <div className="p-6">
+              <h2 className="text-xl font-semibold mb-4 flex items-center">
+                <Gauge className="h-5 w-5 mr-2 text-orange-600" />
+                Technical Performance Analysis
+              </h2>
+              
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="text-center">
+                  <div className={`text-2xl font-bold mb-1 ${getScoreColor(analysisResults.technicalAnalysis?.domainAuthority || 0)}`}>
+                    {analysisResults.technicalAnalysis?.domainAuthority || 0}
+                  </div>
+                  <div className="text-sm text-gray-600">Domain Authority</div>
+                </div>
+                <div className="text-center">
+                  <div className={`text-2xl font-bold mb-1 ${getScoreColor(analysisResults.technicalAnalysis?.pageSpeed || 0)}`}>
+                    {analysisResults.technicalAnalysis?.pageSpeed || 0}
+                  </div>
+                  <div className="text-sm text-gray-600">Page Speed</div>
+                </div>
+                <div className="text-center">
+                  <div className={`text-2xl font-bold mb-1 ${getScoreColor(analysisResults.technicalAnalysis?.mobileOptimization || 0)}`}>
+                    {analysisResults.technicalAnalysis?.mobileOptimization || 0}
+                  </div>
+                  <div className="text-sm text-gray-600">Mobile Score</div>
+                </div>
+                <div className="text-center">
+                  <div className={`text-2xl font-bold mb-1 ${getScoreColor(analysisResults.technicalAnalysis?.coreWebVitals || 0)}`}>
+                    {analysisResults.technicalAnalysis?.coreWebVitals || 0}
+                  </div>
+                  <div className="text-sm text-gray-600">Core Web Vitals</div>
+                </div>
+              </div>
+            </div>
+          </Card>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default CompetitorAnalysisEngine;

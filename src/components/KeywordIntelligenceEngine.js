@@ -298,7 +298,7 @@ const KeywordIntelligenceEngine = () => {
             ) : (
               <div className="flex items-center gap-1 bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">
                 <WifiOff className="w-3 h-3" />
-                <span>Demo Mode</span>
+                <span>Development Mode</span>
               </div>
             )}
           </div>

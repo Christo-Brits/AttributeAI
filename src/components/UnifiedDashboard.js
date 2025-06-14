@@ -24,30 +24,53 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
     }
   };
 
+  // Navigation handlers for action buttons
+  const handleSEOAnalysisClick = () => {
+    trackTool('seo_analysis', 'navigate_from_dashboard', { source: 'no_insights_section' });
+    if (onNavigateToTab) {
+      onNavigateToTab('seo-enhanced');
+    } else {
+      console.log('Navigate to SEO analysis');
+    }
+  };
+
+  const handleGenerateContentClick = () => {
+    trackTool('content_generation', 'navigate_from_dashboard', { source: 'no_insights_section' });
+    if (onNavigateToTab) {
+      onNavigateToTab('enhanced-content');
+    } else {
+      console.log('Navigate to content generation');
+    }
+  };
+
+  const handleCROAnalysisClick = () => {
+    trackTool('cro_analysis', 'navigate_from_dashboard', { source: 'no_insights_section' });
+    if (onNavigateToTab) {
+      onNavigateToTab('cro');
+    } else {
+      console.log('Navigate to CRO analysis');
+    }
+  };
+
   useEffect(() => {
     // Track dashboard page view
     trackPage('Unified Dashboard', 'core_platform');
     
+    // Generate insights from available data
     const loadInsights = async () => {
       setIsLoading(true);
       try {
-        const unifiedData = generateUnifiedInsights();
-        setInsights(unifiedData);
-        
-        // Track dashboard data loading
-        trackTool('unified_dashboard', 'insights_loaded', {
-          data_sources: Object.keys(data).length,
-          has_insights: !!unifiedData
-        });
+        const unifiedInsights = await generateUnifiedInsights();
+        setInsights(unifiedInsights);
       } catch (error) {
-        console.error('Error generating insights:', error);
-      } finally {
-        setIsLoading(false);
+        console.error('Failed to load insights:', error);
+        setInsights(null);
       }
+      setIsLoading(false);
     };
 
     loadInsights();
-  }, [data, generateUnifiedInsights]);
+  }, [data]);
 
   return (
     <div className="p-6">
@@ -190,13 +213,31 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
               Run analysis in any of the marketing intelligence tools to see unified insights here.
             </p>
             <div className="flex justify-center space-x-3">
-              <Button variant="outline" size="sm">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={handleSEOAnalysisClick}
+                className="hover:bg-blue-50 hover:border-blue-300 transition-colors duration-200"
+              >
+                <Search className="w-4 h-4 mr-2" />
                 Run SEO Analysis
               </Button>
-              <Button variant="outline" size="sm">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={handleGenerateContentClick}
+                className="hover:bg-green-50 hover:border-green-300 transition-colors duration-200"
+              >
+                <PenTool className="w-4 h-4 mr-2" />
                 Generate Content
               </Button>
-              <Button variant="outline" size="sm">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={handleCROAnalysisClick}
+                className="hover:bg-purple-50 hover:border-purple-300 transition-colors duration-200"
+              >
+                <TrendingUp className="w-4 h-4 mr-2" />
                 Analyze CRO
               </Button>
             </div>

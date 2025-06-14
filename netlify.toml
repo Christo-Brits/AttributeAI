@@ -1,5 +1,5 @@
 [build]
-  command = "chmod +x build-netlify.sh && ./build-netlify.sh"
+  command = "npm install --legacy-peer-deps && npm run build"
   publish = "build"
   ignore = "server/"
 

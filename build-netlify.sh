@@ -1,11 +1,7 @@
 #!/bin/bash
 
-# Netlify Build Script with Enhanced Error Handling and Dependency Resolution
+# Simplified Netlify Build Script - No Overrides
 echo "🚀 Starting AttributeAI build process..."
-
-# Set Node.js version and npm configuration
-export NODE_VERSION="18.20.3"
-export NPM_VERSION="9.6.7"
 
 # Clear npm cache to prevent conflicts
 echo "🧹 Clearing npm cache..."
@@ -23,11 +19,7 @@ if [ -f "package-lock.json" ]; then
     rm package-lock.json
 fi
 
-# Install core dependencies first to resolve conflicts
-echo "📦 Installing core dependencies..."
-npm install ajv@^8.12.0 ajv-keywords@^5.1.0 react-bootstrap@^2.10.4 bootstrap@^5.3.3 --legacy-peer-deps --no-optional
-
-# Install all dependencies with legacy peer deps
+# Install all dependencies with legacy peer deps (no pre-install to avoid conflicts)
 echo "📦 Installing all dependencies with legacy peer deps..."
 npm install --legacy-peer-deps --no-optional --no-audit --no-fund
 
@@ -35,44 +27,14 @@ npm install --legacy-peer-deps --no-optional --no-audit --no-fund
 if [ $? -eq 0 ]; then
     echo "✅ Dependencies installed successfully"
 else
-    echo "❌ Dependency installation failed"
-    
-    # Fallback: try with different npm settings
-    echo "🔄 Trying fallback installation..."
-    npm install --force --legacy-peer-deps
+    echo "❌ Dependency installation failed, trying with force..."
+    npm install --force --legacy-peer-deps --no-optional
     
     if [ $? -ne 0 ]; then
-        echo "❌ Fallback installation also failed"
+        echo "❌ Force installation also failed"
         exit 1
     fi
 fi
-
-# Verify critical dependencies and install if missing
-echo "🔍 Verifying critical dependencies..."
-REQUIRED_DEPS=("ajv" "react-scripts" "react" "react-dom" "react-bootstrap" "bootstrap")
-
-for dep in "${REQUIRED_DEPS[@]}"; do
-    if [ ! -d "node_modules/$dep" ]; then
-        echo "⚠️ $dep not found, installing manually..."
-        case $dep in
-            "ajv")
-                npm install ajv@^8.12.0 --force
-                ;;
-            "react-bootstrap")
-                npm install react-bootstrap@^2.10.4 --force
-                ;;
-            "bootstrap")
-                npm install bootstrap@^5.3.3 --force
-                ;;
-            "react-scripts")
-                npm install react-scripts@^5.0.1 --force
-                ;;
-            *)
-                npm install $dep --force
-                ;;
-        esac
-    fi
-done
 
 # Build the project with error handling
 echo "🏗️ Building AttributeAI..."
@@ -97,16 +59,7 @@ if [ $? -eq 0 ]; then
     fi
 else
     echo "❌ Build failed"
-    
-    # Try alternative build approach
-    echo "🔄 Attempting build with CI=true..."
-    export CI=true
-    npm run build
-    
-    if [ $? -ne 0 ]; then
-        echo "❌ Alternative build also failed"
-        exit 1
-    fi
+    exit 1
 fi
 
 echo "🎉 AttributeAI deployment ready!"

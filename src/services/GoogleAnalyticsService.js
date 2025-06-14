@@ -23,7 +23,7 @@ class GoogleAnalyticsService {
     if (!this.isInitialized) return;
 
     // Get measurement ID from environment
-    const measurementId = process.env.REACT_APP_GA4_MEASUREMENT_ID || 'G-XXXXXXXXXX';
+    const measurementId = process.env.REACT_APP_GA4_MEASUREMENT_ID || 'G-BDZZKFKYDV';
 
     // Get user data from localStorage
     const userProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
@@ -159,7 +159,7 @@ class GoogleAnalyticsService {
 
     // Track as conversion for optimization
     if (['signup', 'upgrade'].includes(eventType)) {
-      const measurementId = process.env.REACT_APP_GA4_MEASUREMENT_ID || 'G-XXXXXXXXXX';
+      const measurementId = process.env.REACT_APP_GA4_MEASUREMENT_ID || 'G-BDZZKFKYDV';
       window.gtag('event', 'conversion', {
         send_to: `${measurementId}/subscription_conversion`,
         value: value,
@@ -250,7 +250,7 @@ class GoogleAnalyticsService {
   setUserId(userId, subscriptionTier = 'free') {
     if (!this.isInitialized) return;
 
-    const measurementId = process.env.REACT_APP_GA4_MEASUREMENT_ID || 'G-XXXXXXXXXX';
+    const measurementId = process.env.REACT_APP_GA4_MEASUREMENT_ID || 'G-BDZZKFKYDV';
     this.userId = userId;
     this.subscriptionTier = subscriptionTier;
 

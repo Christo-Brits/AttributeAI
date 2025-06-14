@@ -90,7 +90,6 @@ const SidebarNavigation = ({ activeTab, setActiveTab, onViewChange, user: authUs
           competitive: 'Outrank.so killer'
         },
         { id: 'seo-enhanced', name: 'AI SEO Analysis', icon: TrendingUp, phase2: true, description: 'Advanced SEO insights' },
-        { id: 'content-clusters', name: 'Content Clusters', icon: Target, phase2: true, description: 'Topic organization' },
         { id: 'content', name: 'Content Strategy', icon: PenTool, description: 'Strategic planning' },
         { id: 'publishing', name: 'Publishing Pipeline', icon: Globe, phase2: true, description: 'Automated publishing' },
         { id: 'scheduler', name: 'Content Scheduler', icon: Calendar, phase2: true, description: 'Strategic timing' }

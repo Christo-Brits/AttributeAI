@@ -25,7 +25,6 @@ const KeywordIntelligenceEngine = lazy(() => import('./components/KeywordIntelli
 // Phase 2: Enhanced components with Claude AI  
 const SEOAnalysisEnhanced = lazy(() => import('./components/SEOCompetitorAnalysis.enhanced'));
 const SEOContentStrategist = lazy(() => import('./components/SEOContentStrategist.enhanced'));
-const ContentClusterStrategist = lazy(() => import('./components/ContentClusterStrategist'));
 const PublishingDashboard = lazy(() => import('./components/PublishingDashboard'));
 const ContentScheduler = lazy(() => import('./components/ContentScheduler'));
 
@@ -80,7 +79,6 @@ function AuthenticatedApp() {
       'competitor-analysis': CompetitorAnalysisEngine, // NEW: Competitor Analysis Engine
       'enhanced-content': EnhancedContentGenerator, // NEW: Outrank.so killer
       'seo-enhanced': SEOAnalysisEnhanced,
-      'content-clusters': ContentClusterStrategist,
       attribution: AttributionEngine,
       realtime: RealTimeJourneyTracker,
       analytics: JourneyAnalytics,

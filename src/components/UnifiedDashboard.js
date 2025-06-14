@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BarChart3, TrendingUp, Target, Zap, AlertCircle, CheckCircle, Clock, Users, Globe, Brain, MessageCircle, Search, Eye, PenTool, Edit3 } from 'lucide-react';
+import { BarChart3, TrendingUp, Target, Zap, AlertCircle, CheckCircle, Clock, Users, Globe, Brain, MessageCircle, Search, Eye, PenTool, Edit3, Shield } from 'lucide-react';
 import { Card, Button } from './ui/DesignSystem';
 import { useDataBridge } from '../utils/DataBridge';
 import { useAuth } from './auth/AuthContext';
@@ -46,6 +46,19 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
     } else {
       // Fallback: try to find and click the navigation tab
       const navButton = document.querySelector('[data-tab="content-optimization"]');
+      if (navButton) {
+        navButton.click();
+      }
+    }
+  };
+
+  // Handle navigation to competitor analysis engine
+  const handleCompetitorAnalysisClick = () => {
+    if (onNavigateToTab) {
+      onNavigateToTab('competitor-analysis');
+    } else {
+      // Fallback: try to find and click the navigation tab
+      const navButton = document.querySelector('[data-tab="competitor-analysis"]');
       if (navButton) {
         navButton.click();
       }
@@ -362,6 +375,71 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
             <div className="mt-4 text-sm text-gray-600">
               <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium animate-pulse">
                 🚀 Outranking.io Killer - $47/month unlimited vs their $79+ with limits
+              </span>
+            </div>
+          </div>
+        </Card>
+
+        {/* NEW: Competitor Analysis Engine Feature Callout */}
+        <Card className="bg-gradient-to-r from-slate-50 via-gray-50 to-slate-50 border-2 border-slate-200">
+          <div className="text-center p-6">
+            <div className="flex justify-center mb-4">
+              <div className="bg-gradient-to-r from-slate-500 to-gray-600 p-3 rounded-full">
+                <Shield className="h-8 w-8 text-white" />
+              </div>
+            </div>
+            
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              🛡️ NEW: Competitor Analysis Engine
+            </h2>
+            
+            <p className="text-lg text-gray-700 mb-4 max-w-3xl mx-auto">
+              Advanced competitor intelligence with multi-model AI analysis. Strategic insights, 
+              market positioning, and actionable opportunities to outperform any competitor.
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div className="text-center p-4 bg-white rounded-lg border border-slate-100">
+                <Brain className="h-6 w-6 text-slate-600 mx-auto mb-2" />
+                <div className="font-semibold text-gray-900">Multi-Model AI</div>
+                <div className="text-sm text-gray-600">Claude + GPT-4 + Gemini intelligence</div>
+              </div>
+              
+              <div className="text-center p-4 bg-white rounded-lg border border-gray-100">
+                <Target className="h-6 w-6 text-gray-600 mx-auto mb-2" />
+                <div className="font-semibold text-gray-900">Strategic Gaps</div>
+                <div className="text-sm text-gray-600">Actionable competitive opportunities</div>
+              </div>
+              
+              <div className="text-center p-4 bg-white rounded-lg border border-slate-100">
+                <Shield className="h-6 w-6 text-slate-600 mx-auto mb-2" />
+                <div className="font-semibold text-gray-900">Threat Assessment</div>
+                <div className="text-sm text-gray-600">Market positioning & defense strategy</div>
+              </div>
+            </div>
+            
+            <div className="flex justify-center space-x-4">
+              <Button 
+                onClick={handleCompetitorAnalysisClick}
+                className="bg-gradient-to-r from-slate-500 to-gray-600 text-white px-6 py-3 text-lg font-semibold hover:from-slate-600 hover:to-gray-700 transition-all duration-200 transform hover:scale-105"
+              >
+                <Shield className="w-5 h-5 mr-2" />
+                Analyze Competitors
+              </Button>
+              
+              <Button 
+                variant="secondary"
+                className="border-2 border-slate-200 text-slate-700 hover:bg-slate-50"
+                onClick={() => alert('Competitor analysis engine ready! Multi-model AI intelligence for strategic advantage.')}
+              >
+                <Eye className="w-4 h-4 mr-2" />
+                View Features
+              </Button>
+            </div>
+            
+            <div className="mt-4 text-sm text-gray-600">
+              <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium animate-pulse">
+                🎯 All-in-One Intelligence - Complete competitor analysis vs fragmented tools
               </span>
             </div>
           </div>

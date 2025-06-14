@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BarChart3, Activity, TrendingUp, Search, PenTool, Target, Eye, Settings, User, Bell, Grid, LogOut, Globe, Edit3 } from 'lucide-react';
+import { BarChart3, Activity, TrendingUp, Search, PenTool, Target, Eye, Settings, User, Bell, Grid, LogOut, Globe, Edit3, Shield } from 'lucide-react';
 
 const Navigation = ({ activeTab, setActiveTab }) => {
   const [showProfile, setShowProfile] = useState(false);
@@ -7,6 +7,7 @@ const Navigation = ({ activeTab, setActiveTab }) => {
     { id: 'dashboard', name: 'Unified Dashboard', icon: Grid },
     { id: 'keyword-intelligence', name: 'Keyword Intelligence', icon: Search, new: true, featured: true },
     { id: 'content-optimization', name: 'Content Intelligence', icon: Edit3, new: true, featured: true },
+    { id: 'competitor-analysis', name: 'Competitor Analysis', icon: Shield, new: true, featured: true },
     { id: 'seo-enhanced', name: 'AI SEO Analysis', icon: Search, phase2: true },
     { id: 'content', name: 'Content Strategy', icon: PenTool },
     { id: 'attribution', name: 'Attribution Engine', icon: BarChart3 },

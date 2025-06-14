@@ -1,77 +1,15 @@
 {
   "name": "attributeai",
-  "version": "1.0.0",
-  "description": "Advanced Multi-Touch Attribution Platform with AI Intelligence",
   "private": true,
-  "dependencies": {
-    "@stripe/stripe-js": "^4.1.0",
-    "@supabase/supabase-js": "^2.43.4",
-    "@testing-library/jest-dom": "^6.4.6",
-    "@testing-library/react": "^16.0.0",
-    "@testing-library/user-event": "^14.5.2",
-    "@testing-library/dom": "^10.4.0",
-    "@types/aria-query": "^5.0.4",
-    "dom-accessibility-api": "^0.5.16",
-    "lz-string": "^1.5.0",
-    "typescript": "^4.9.5",
-    "axios": "^1.7.2",
-    "date-fns": "^3.6.0",
-    "lucide-react": "^0.400.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-helmet-async": "^2.0.5",
-    "react-router-dom": "^6.24.1",
-    "react-scripts": "^5.0.1",
-    "recharts": "^2.12.7",
-    "uuid": "^10.0.0",
-    "web-vitals": "^4.2.1"
-  },
-  "devDependencies": {
-    "@types/node": "^20.14.9",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
-    "@types/uuid": "^10.0.0"
-  },
-  "proxy": "http://localhost:3001",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "pre-check": "npm run build",
-    "deploy-check": "npm run pre-check && echo Ready for deployment!",
-    "clean": "rm -rf node_modules package-lock.json && npm install",
-    "update-deps": "npm update && npm audit fix"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "resolutions": {
-    "@babel/plugin-proposal-private-methods": "^7.18.6",
-    "@babel/plugin-proposal-numeric-separator": "^7.18.6", 
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
-    "@babel/plugin-proposal-optional-chaining": "^7.21.0",
-    "@babel/plugin-proposal-class-properties": "^7.18.6",
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
-  },
-  "overrides": {
-    "eslint": "^8.57.0",
-    "glob": "^10.4.2",
-    "rimraf": "^5.0.7"
+    "dev": "pnpm --filter web dev",
+    "dev:ext": "pnpm --filter extension dev",
+    "build": "pnpm -r --parallel build",
+    "lint": "pnpm -r lint",
+    "test": "vitest run --no-colors",
+    "test:watch": "vitest"
   }
 }

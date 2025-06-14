@@ -16,6 +16,9 @@ const EnhancedContentGenerator = lazy(() => import('./components/EnhancedContent
 // NEW: Content Optimization Engine (Outranking.io killer)
 const ContentOptimizationEngine = lazy(() => import('./components/ContentOptimizationEngine'));
 
+// NEW: Competitor Analysis Engine
+const CompetitorAnalysisEngine = lazy(() => import('./components/CompetitorAnalysisEngine'));
+
 // NEW: Keyword Intelligence Engine
 const KeywordIntelligenceEngine = lazy(() => import('./components/KeywordIntelligenceEngine'));
 
@@ -74,6 +77,7 @@ function AuthenticatedApp() {
       />,
       'keyword-intelligence': KeywordIntelligenceEngine,
       'content-optimization': ContentOptimizationEngine, // NEW: Outranking.io killer
+      'competitor-analysis': CompetitorAnalysisEngine, // NEW: Competitor Analysis Engine
       'enhanced-content': EnhancedContentGenerator, // NEW: Outrank.so killer
       'seo-enhanced': SEOAnalysisEnhanced,
       'content-clusters': ContentClusterStrategist,

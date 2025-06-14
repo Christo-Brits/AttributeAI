@@ -915,6 +915,72 @@ const ContentClusterStrategist = () => {
       </Card>
     </div>
   );
+
+  // Content Calendar Tab
+  const renderContentCalendar = () => (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900">Content Calendar</h2>
+          <p className="text-gray-600 mt-1">Strategic content scheduling and publishing workflow</p>
+        </div>
+        <div className="flex items-center space-x-3">
+          <Button variant="outline">
+            <Filter className="w-4 h-4 mr-2" />
+            Filter
+          </Button>
+          <Button variant="outline">
+            <Settings className="w-4 h-4 mr-2" />
+            Calendar Settings
+          </Button>
+          <Button className="bg-gradient-to-r from-purple-600 to-blue-600">
+            <Plus className="w-4 h-4 mr-2" />
+            Schedule Content
+          </Button>
+        </div>
+      </div>
+
+      {/* Calendar Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <Card className="p-6 text-center">
+          <CalendarDays className="w-8 h-8 text-blue-600 mx-auto mb-2" />
+          <div className="text-2xl font-bold text-gray-900">12</div>
+          <div className="text-sm text-gray-600">Scheduled This Month</div>
+        </Card>
+
+        <Card className="p-6 text-center">
+          <Clock className="w-8 h-8 text-green-600 mx-auto mb-2" />
+          <div className="text-2xl font-bold text-gray-900">3</div>
+          <div className="text-sm text-gray-600">Publishing This Week</div>
+        </Card>
+
+        <Card className="p-6 text-center">
+          <FileText className="w-8 h-8 text-purple-600 mx-auto mb-2" />
+          <div className="text-2xl font-bold text-gray-900">7</div>
+          <div className="text-sm text-gray-600">In Review</div>
+        </Card>
+
+        <Card className="p-6 text-center">
+          <Timer className="w-8 h-8 text-orange-600 mx-auto mb-2" />
+          <div className="text-2xl font-bold text-gray-900">5</div>
+          <div className="text-sm text-gray-600">Overdue</div>
+        </Card>
+      </div>
+
+      {/* Content Performance Forecast */}
+      <Card className="p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Content Performance Forecast</h3>
+        <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-lg">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-blue-600 mb-2">+45%</div>
+              <div className="text-sm text-gray-600">Projected Traffic Increase</div>
+              <div className="text-xs text-gray-500 mt-1">Next 3 months</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-purple-600 mb-2">12k</div>
+              <div className="text-sm text-gray-600">Additional Monthly Visitors</div>
               <div className="text-xs text-gray-500 mt-1">From scheduled content</div>
             </div>
             <div className="text-center">

@@ -14,7 +14,15 @@ const SidebarNavigation = ({ activeTab, setActiveTab, onViewChange, user: authUs
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [logoutSuccess, setLogoutSuccess] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  
+  // Initialize sidebar state based on screen size
+  const [sidebarOpen, setSidebarOpen] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth >= 768; // Open by default on desktop, closed on mobile
+    }
+    return true;
+  });
+  
   const [expandedSections, setExpandedSections] = useState({
     marketing: true,
     content: true,
@@ -24,6 +32,20 @@ const SidebarNavigation = ({ activeTab, setActiveTab, onViewChange, user: authUs
 
   // Use authUser if passed, otherwise use context user
   const currentUser = authUser || user;
+
+  // Handle window resize to auto-adjust sidebar
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth >= 768) {
+        setSidebarOpen(true); // Always open on desktop
+      } else {
+        setSidebarOpen(false); // Always closed on mobile initially
+      }
+    }
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -123,9 +145,29 @@ const SidebarNavigation = ({ activeTab, setActiveTab, onViewChange, user: authUs
 
   return (
     <div className="flex h-screen bg-gray-50">
+      {/* Mobile Hamburger Button - Only visible on mobile */}
+      <button
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        className="md:hidden fixed top-4 left-4 z-50 p-3 bg-white rounded-lg shadow-lg hover:bg-gray-50 transition-colors"
+      >
+        {sidebarOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+      </button>
+
+      {/* Mobile Overlay - Only visible when sidebar is open on mobile */}
+      {sidebarOpen && (
+        <div 
+          className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-30"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <div className={`bg-white shadow-lg transition-all duration-300 flex flex-col ${
-        sidebarOpen ? 'w-80' : 'w-16'
+      <div className={`bg-white shadow-lg transition-all duration-300 flex flex-col z-40 ${
+        // Desktop: normal sidebar behavior
+        // Mobile: fixed positioned sidebar that slides in from left
+        sidebarOpen 
+          ? 'w-80 md:relative fixed left-0 top-0 h-full' 
+          : 'w-0 md:w-16 -translate-x-full md:translate-x-0'
       }`}>
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200">
@@ -138,9 +180,11 @@ const SidebarNavigation = ({ activeTab, setActiveTab, onViewChange, user: authUs
               variant="horizontal"
             />
           )}
+          
+          {/* Desktop toggle button */}
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="hidden md:block p-2 hover:bg-gray-100 rounded-lg transition-colors"
           >
             {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -185,16 +229,25 @@ const SidebarNavigation = ({ activeTab, setActiveTab, onViewChange, user: authUs
                     return (
                       <button
                         key={item.id}
-                        onClick={() => !isDisabled && setActiveTab(item.id)}
+                        onClick={() => {
+                          if (!isDisabled) {
+                            setActiveTab(item.id);
+                            // Auto-close sidebar on mobile after selection
+                            const isMobile = window.matchMedia('(max-width: 767px)').matches;
+                            if (isMobile) {
+                              setSidebarOpen(false);
+                            }
+                          }
+                        }}
                         disabled={isDisabled}
-                        className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-left transition-all duration-200 relative ${
+                        className={`w-full flex items-center space-x-3 px-3 py-3 md:py-2.5 rounded-lg text-left transition-all duration-200 relative touch-manipulation ${
                           isActive
                             ? item.phase2 
                               ? 'bg-purple-100 text-purple-700 shadow-sm' 
                               : 'bg-blue-100 text-blue-700 shadow-sm'
                             : isDisabled
                               ? 'text-gray-400 cursor-not-allowed opacity-50'
-                              : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                              : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 active:bg-gray-100'
                         }`}
                         title={!sidebarOpen ? item.name : ''}
                       >

@@ -73,47 +73,49 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
   }, [data]);
 
   return (
-    <div className="p-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900/20 to-purple-900/20 p-6">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">Marketing Intelligence Dashboard</h1>
-          <p className="text-lg text-gray-600">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
+            Marketing Intelligence Dashboard
+          </h1>
+          <p className="text-lg text-gray-400">
             Unified insights from all your marketing analysis tools
           </p>
         </div>
 
         {/* Featured Tool Callout */}
-        <div className="bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-200 rounded-lg p-6 mb-8">
+        <div className="bg-gradient-to-r from-gray-800/80 to-gray-700/80 backdrop-blur-sm border border-gray-600/50 rounded-xl p-6 mb-8 shadow-2xl">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              <h3 className="text-xl font-semibold text-white mb-2">
                 🚀 New: Keyword Intelligence Engine
               </h3>
               <div className="grid grid-cols-3 gap-6 text-sm">
                 <div className="flex items-center space-x-2">
-                  <Zap className="h-5 w-5 text-purple-500" />
-                  <span><strong>Unlimited Research</strong> • No credit limits</span>
+                  <Zap className="h-5 w-5 text-blue-400" />
+                  <span className="text-gray-300"><strong className="text-white">Unlimited Research</strong> • No credit limits</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Brain className="h-5 w-5 text-indigo-500" />
-                  <span><strong>Multi-AI Analysis</strong> • Claude + GPT-4 + Gemini</span>
+                  <Brain className="h-5 w-5 text-purple-400" />
+                  <span className="text-gray-300"><strong className="text-white">Multi-AI Analysis</strong> • Claude + GPT-4 + Gemini</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Target className="h-5 w-5 text-blue-500" />
-                  <span><strong>Attribution Intelligence</strong> • Conversion insights</span>
+                  <Target className="h-5 w-5 text-pink-400" />
+                  <span className="text-gray-300"><strong className="text-white">Attribution Intelligence</strong> • Conversion insights</span>
                 </div>
               </div>
             </div>
             <div className="text-right">
-              <div className="text-2xl font-bold text-purple-600">10x Better Value</div>
-              <div className="text-sm text-gray-600">vs Keywords Everywhere</div>
+              <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">10x Better Value</div>
+              <div className="text-sm text-gray-400">vs Keywords Everywhere</div>
             </div>
           </div>
           <div className="mt-4 flex justify-center">
             <Button 
               onClick={handleKeywordIntelligenceClick}
-              className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-8 py-3 text-lg font-semibold hover:from-purple-600 hover:to-indigo-600 transition-all duration-200 transform hover:scale-105"
+              className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white px-8 py-3 text-lg font-semibold hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 transition-all duration-200 transform hover:scale-105 shadow-lg"
             >
               <Search className="w-5 h-5 mr-2" />
               Try Keyword Intelligence
@@ -123,34 +125,34 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
 
         {/* Performance Overview */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="text-center">
-            <BarChart3 className="h-8 w-8 text-blue-600 mx-auto mb-2" />
-            <div className="text-2xl font-bold text-gray-900">
+          <Card className="text-center group hover:scale-105 transition-all duration-300">
+            <BarChart3 className="h-8 w-8 text-blue-400 mx-auto mb-2 group-hover:scale-110 transition-transform" />
+            <div className="text-2xl font-bold text-white">
               {insights?.performanceScore || 85}
             </div>
-            <div className="text-sm text-gray-600">Overall Performance</div>
-            <div className="text-xs text-green-600 mt-1">
+            <div className="text-sm text-gray-400">Overall Performance</div>
+            <div className="text-xs text-green-400 mt-1">
               {insights?.performanceScore > 70 ? '↗ Excellent' : 
                insights?.performanceScore > 50 ? '→ Good' : '↘ Needs Work'}
             </div>
           </Card>
 
-          <Card className="text-center">
-            <Target className="h-8 w-8 text-green-600 mx-auto mb-2" />
-            <div className="text-2xl font-bold text-gray-900">
+          <Card className="text-center group hover:scale-105 transition-all duration-300">
+            <Target className="h-8 w-8 text-purple-400 mx-auto mb-2 group-hover:scale-110 transition-transform" />
+            <div className="text-2xl font-bold text-white">
               {insights?.topOpportunities?.length || 0}
             </div>
-            <div className="text-sm text-gray-600">Top Opportunities</div>
-            <div className="text-xs text-blue-600 mt-1">Ready to implement</div>
+            <div className="text-sm text-gray-400">Top Opportunities</div>
+            <div className="text-xs text-blue-400 mt-1">Ready to implement</div>
           </Card>
 
-          <Card className="text-center">
-            <Zap className="h-8 w-8 text-purple-600 mx-auto mb-2" />
-            <div className="text-2xl font-bold text-gray-900">
+          <Card className="text-center group hover:scale-105 transition-all duration-300">
+            <Zap className="h-8 w-8 text-pink-400 mx-auto mb-2 group-hover:scale-110 transition-transform" />
+            <div className="text-2xl font-bold text-white">
               {insights?.quickWins?.length || 0}
             </div>
-            <div className="text-sm text-gray-600">Quick Wins</div>
-            <div className="text-xs text-orange-600 mt-1">Low effort, high impact</div>
+            <div className="text-sm text-gray-400">Quick Wins</div>
+            <div className="text-xs text-orange-400 mt-1">Low effort, high impact</div>
           </Card>
         </div>
 

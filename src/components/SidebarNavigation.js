@@ -144,38 +144,50 @@ const SidebarNavigation = ({ activeTab, setActiveTab, onViewChange, user: authUs
   ];
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen" style={{ background: 'var(--bg-primary)' }}>
       {/* Mobile Hamburger Button - Only visible on mobile */}
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="md:hidden fixed top-4 left-4 z-50 p-3 bg-white rounded-lg shadow-lg hover:bg-gray-50 transition-colors"
+        className="md:hidden fixed top-4 left-4 z-50 p-3 glass-effect hover-glow-blue rounded-xl shadow-lg hover:shadow-blue-500/25 transition-all duration-300"
+        style={{ 
+          background: 'rgba(26, 27, 35, 0.9)',
+          backdropFilter: 'blur(20px)',
+          border: '1px solid rgba(55, 65, 81, 0.3)'
+        }}
       >
-        {sidebarOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        {sidebarOpen ? <X className="h-6 w-6 text-white" /> : <Menu className="h-6 w-6 text-white" />}
       </button>
 
       {/* Mobile Overlay - Only visible when sidebar is open on mobile */}
       {sidebarOpen && (
         <div 
-          className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-30"
+          className="md:hidden fixed inset-0 bg-black bg-opacity-60 z-30 backdrop-blur-sm"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
-      <div className={`bg-white shadow-lg transition-all duration-300 flex flex-col z-40 ${
+      <div className={`shadow-2xl transition-all duration-300 flex flex-col z-40 ${
         // Desktop: normal sidebar behavior
         // Mobile: fixed positioned sidebar that slides in from left
         sidebarOpen 
           ? 'w-80 md:relative fixed left-0 top-0 h-full' 
           : 'w-0 md:w-16 -translate-x-full md:translate-x-0'
-      }`}>
+      }`} style={{ 
+        background: 'linear-gradient(180deg, rgba(26, 27, 35, 0.95) 0%, rgba(37, 39, 48, 0.95) 100%)',
+        backdropFilter: 'blur(20px)',
+        borderRight: '1px solid rgba(55, 65, 81, 0.3)'
+      }}>
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200">
+        <div className="flex items-center justify-between p-4" style={{ 
+          borderBottom: '1px solid rgba(55, 65, 81, 0.3)',
+          background: 'rgba(37, 39, 48, 0.5)'
+        }}>
           {sidebarOpen && (
             <AttributeAILogo 
               width={180} 
               height={32} 
-              className="text-gray-900"
+              className="text-white"
               showText={true}
               variant="horizontal"
             />
@@ -184,7 +196,7 @@ const SidebarNavigation = ({ activeTab, setActiveTab, onViewChange, user: authUs
           {/* Desktop toggle button */}
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="hidden md:block p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="hidden md:block p-2 text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-all duration-200"
           >
             {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -200,8 +212,10 @@ const SidebarNavigation = ({ activeTab, setActiveTab, onViewChange, user: authUs
                   {section.expandable ? (
                     <button
                       onClick={() => toggleSection(section.id)}
-                      className={`flex items-center justify-between w-full text-xs font-semibold uppercase tracking-wider text-gray-500 hover:text-gray-700 transition-colors ${
-                        section.disabled ? 'opacity-50 cursor-not-allowed' : ''
+                      className={`flex items-center justify-between w-full text-xs font-semibold uppercase tracking-wider transition-colors ${
+                        section.disabled 
+                          ? 'opacity-50 cursor-not-allowed text-gray-500' 
+                          : 'text-gray-400 hover:text-gray-200'
                       }`}
                       disabled={section.disabled}
                     >
@@ -211,7 +225,7 @@ const SidebarNavigation = ({ activeTab, setActiveTab, onViewChange, user: authUs
                       }`} />
                     </button>
                   ) : (
-                    <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                    <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-400">
                       {section.title}
                     </h3>
                   )}
@@ -240,20 +254,20 @@ const SidebarNavigation = ({ activeTab, setActiveTab, onViewChange, user: authUs
                           }
                         }}
                         disabled={isDisabled}
-                        className={`w-full flex items-center space-x-3 px-3 py-3 md:py-2.5 rounded-lg text-left transition-all duration-200 relative touch-manipulation ${
+                        className={`w-full flex items-center space-x-3 px-3 py-3 md:py-2.5 rounded-lg text-left transition-all duration-200 relative touch-manipulation group ${
                           isActive
                             ? item.phase2 
-                              ? 'bg-purple-100 text-purple-700 shadow-sm' 
-                              : 'bg-blue-100 text-blue-700 shadow-sm'
+                              ? 'bg-gradient-to-r from-purple-600/20 to-pink-600/20 text-purple-300 border border-purple-500/30 shadow-lg shadow-purple-500/10' 
+                              : 'bg-gradient-to-r from-blue-600/20 to-cyan-600/20 text-blue-300 border border-blue-500/30 shadow-lg shadow-blue-500/10'
                             : isDisabled
-                              ? 'text-gray-400 cursor-not-allowed opacity-50'
-                              : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 active:bg-gray-100'
-                        }`}
+                              ? 'text-gray-500 cursor-not-allowed opacity-50'
+                              : 'text-gray-300 hover:text-white hover:bg-gray-800/50 active:bg-gray-700/50 hover:shadow-md'
+                        } ${!isActive && !isDisabled ? 'hover:border hover:border-gray-600/30' : ''}`}
                         title={!sidebarOpen ? item.name : ''}
                       >
-                        <Icon className={`h-5 w-5 flex-shrink-0 ${
-                          isActive && item.phase2 ? 'text-purple-600' : 
-                          isActive ? 'text-blue-600' : ''
+                        <Icon className={`h-5 w-5 flex-shrink-0 transition-colors ${
+                          isActive && item.phase2 ? 'text-purple-400' : 
+                          isActive ? 'text-blue-400' : 'group-hover:text-white'
                         }`} />
                         
                         {sidebarOpen && (
@@ -262,24 +276,24 @@ const SidebarNavigation = ({ activeTab, setActiveTab, onViewChange, user: authUs
                               <span className="font-medium truncate">{item.name}</span>
                               <div className="flex items-center space-x-1">
                                 {item.new && (
-                                  <span className="bg-green-500 text-white text-xs px-2 py-0.5 rounded-full font-medium">
+                                  <span className="bg-gradient-to-r from-pink-600 to-purple-600 text-white text-xs px-2 py-0.5 rounded-full font-medium shadow-lg shadow-pink-500/25 animate-pulse">
                                     NEW
                                   </span>
                                 )}
                                 {item.phase2 && (
-                                  <span className="bg-purple-500 text-white text-xs px-2 py-0.5 rounded-full font-medium">
+                                  <span className="bg-gradient-to-r from-purple-600/80 to-pink-600/80 text-white text-xs px-2 py-0.5 rounded-full font-medium shadow-lg shadow-purple-500/25">
                                     AI
                                   </span>
                                 )}
                               </div>
                             </div>
                             {item.description && (
-                              <p className="text-xs text-gray-500 mt-0.5 truncate">
+                              <p className="text-xs text-gray-400 mt-0.5 truncate group-hover:text-gray-300">
                                 {item.description}
                               </p>
                             )}
                             {item.competitive && (
-                              <p className="text-xs text-green-600 mt-0.5 font-medium">
+                              <p className="text-xs text-green-400 mt-0.5 font-medium">
                                 {item.competitive}
                               </p>
                             )}
@@ -302,12 +316,20 @@ const SidebarNavigation = ({ activeTab, setActiveTab, onViewChange, user: authUs
         </div>
 
         {/* User Profile Section */}
-        <div className="border-t border-gray-200 p-4">
+        <div style={{ 
+          borderTop: '1px solid rgba(55, 65, 81, 0.3)',
+          background: 'rgba(37, 39, 48, 0.5)',
+          padding: '1rem'
+        }}>
           {/* Website Badge */}
           {sidebarOpen && currentUser?.websiteUrl && (
-            <div className="mb-3 flex items-center space-x-2 bg-green-50 px-3 py-2 rounded-lg border border-green-200">
-              <Globe className="h-4 w-4 text-green-600 flex-shrink-0" />
-              <span className="text-sm text-green-800 truncate">
+            <div className="mb-3 flex items-center space-x-2 rounded-lg border" style={{
+              background: 'rgba(16, 185, 129, 0.1)',
+              borderColor: 'rgba(16, 185, 129, 0.3)',
+              padding: '0.5rem 0.75rem'
+            }}>
+              <Globe className="h-4 w-4 text-green-400 flex-shrink-0" />
+              <span className="text-sm text-green-300 truncate">
                 {(() => {
                   try {
                     return new URL(currentUser.websiteUrl).hostname;
@@ -345,7 +367,7 @@ const SidebarNavigation = ({ activeTab, setActiveTab, onViewChange, user: authUs
 
             {/* User Dropdown Menu */}
             {showUserDropdown && (
-              <div className="absolute bottom-full right-0 mb-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+              <div className="absolute bottom-full right-0 mb-2 w-48 bg-gray-800/95 backdrop-blur-sm rounded-xl shadow-2xl border border-gray-700/50 py-2 z-50">
                 <button
                   onClick={() => {
                     if (onViewChange) {
@@ -353,7 +375,7 @@ const SidebarNavigation = ({ activeTab, setActiveTab, onViewChange, user: authUs
                     }
                     setShowUserDropdown(false);
                   }}
-                  className="flex items-center space-x-2 w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 transition-colors"
+                  className="flex items-center space-x-2 w-full px-4 py-2 text-left text-gray-300 hover:bg-gradient-to-r hover:from-blue-600/20 hover:to-purple-600/20 hover:text-white transition-all duration-200 rounded-lg"
                 >
                   <User className="h-4 w-4" />
                   <span>Account Settings</span>
@@ -363,7 +385,7 @@ const SidebarNavigation = ({ activeTab, setActiveTab, onViewChange, user: authUs
                     setShowProfile(true);
                     setShowUserDropdown(false);
                   }}
-                  className="flex items-center space-x-2 w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 transition-colors"
+                  className="flex items-center space-x-2 w-full px-4 py-2 text-left text-gray-300 hover:bg-gradient-to-r hover:from-blue-600/20 hover:to-purple-600/20 hover:text-white transition-all duration-200 rounded-lg"
                 >
                   <User className="h-4 w-4" />
                   <span>Edit Profile</span>
@@ -373,15 +395,15 @@ const SidebarNavigation = ({ activeTab, setActiveTab, onViewChange, user: authUs
                     setShowUserDropdown(false);
                     // Add settings functionality later
                   }}
-                  className="flex items-center space-x-2 w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 transition-colors"
+                  className="flex items-center space-x-2 w-full px-4 py-2 text-left text-gray-300 hover:bg-gradient-to-r hover:from-blue-600/20 hover:to-purple-600/20 hover:text-white transition-all duration-200 rounded-lg"
                 >
                   <Settings className="h-4 w-4" />
                   <span>Settings</span>
                 </button>
-                <hr className="my-1" />
+                <hr className="my-1 border-gray-700/50" />
                 <button
                   onClick={handleLogout}
-                  className="flex items-center space-x-2 w-full px-4 py-2 text-left text-red-600 hover:bg-red-50 transition-colors"
+                  className="flex items-center space-x-2 w-full px-4 py-2 text-left text-gray-300 hover:bg-gradient-to-r hover:from-red-500/20 hover:to-pink-500/20 hover:text-white transition-all duration-200 rounded-lg"
                 >
                   <LogOut className="h-4 w-4" />
                   <span>Sign Out</span>

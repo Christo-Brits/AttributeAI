@@ -104,7 +104,7 @@ function AuthenticatedApp() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-900" style={{ background: 'linear-gradient(135deg, #0a0b0f 0%, #111218 100%)' }}>
       {/* Sidebar Navigation - Always visible for dashboard */}
       {currentView === 'dashboard' && (
         <SidebarNavigation 
@@ -119,7 +119,7 @@ function AuthenticatedApp() {
       <main className={`
         flex-1 transition-all duration-300 ease-in-out
         ${currentView === 'dashboard' ? 'md:ml-0 pt-16 md:pt-0' : 'ml-0'}
-      `}>
+      `} style={{ background: 'var(--bg-primary)' }}>
         {renderActiveComponent()}
         
         {/* Floating Chat Button - Available on dashboard pages only */}

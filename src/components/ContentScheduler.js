@@ -95,75 +95,78 @@ const ContentScheduler = ({ onScheduleComplete, userProfile }) => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'published': return 'text-green-600 bg-green-100';
-      case 'scheduled': return 'text-blue-600 bg-blue-100';
-      case 'draft': return 'text-gray-600 bg-gray-100';
-      case 'failed': return 'text-red-600 bg-red-100';
-      default: return 'text-gray-600 bg-gray-100';
+      case 'published': return 'text-green-400 bg-green-900/30 border-green-500/50';
+      case 'scheduled': return 'text-blue-400 bg-blue-900/30 border-blue-500/50';
+      case 'draft': return 'text-gray-400 bg-gray-800/50 border-gray-600/50';
+      case 'failed': return 'text-red-400 bg-red-900/30 border-red-500/50';
+      default: return 'text-gray-400 bg-gray-800/50 border-gray-600/50';
     }
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-6 space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Content Scheduler</h1>
-          <p className="text-gray-600">Plan and manage your content publishing calendar</p>
-        </div>
-        <div className="flex items-center space-x-3">
-          <button className="flex items-center px-4 py-2 text-blue-600 hover:text-blue-800">
-            <Zap className="h-4 w-4 mr-2" />
-            Auto-Schedule
-          </button>
-          <button
-            onClick={() => console.log('Schedule content')}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Schedule Content
-          </button>
-        </div>
-      </div>
-
-      {/* Publishing Goals */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-6">Publishing Goals</h3>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="text-center">
-            <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
-              <BarChart3 className="h-8 w-8 text-blue-600" />
-            </div>
-            <h4 className="font-semibold text-gray-900 mb-1">Weekly Goal</h4>
-            <p className="text-2xl font-bold text-blue-600 mb-1">{publishingGoals.weekly}</p>
-            <p className="text-sm text-gray-600">posts per week</p>
-            <div className="mt-2 bg-gray-200 rounded-full h-2">
-              <div className="bg-blue-600 h-2 rounded-full" style={{ width: '70%' }}></div>
-            </div>
-            <p className="text-xs text-gray-500 mt-1">2/3 this week</p>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900/20 to-purple-900/20">
+      <div className="max-w-7xl mx-auto p-6 space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-2">
+              Content Scheduler
+            </h1>
+            <p className="text-gray-400">Plan and manage your content publishing calendar</p>
           </div>
+          <div className="flex items-center space-x-3">
+            <button className="flex items-center px-4 py-2 text-blue-400 hover:text-blue-300 hover:bg-blue-500/20 rounded-lg transition-colors">
+              <Zap className="h-4 w-4 mr-2" />
+              Auto-Schedule
+            </button>
+            <button
+              onClick={() => console.log('Schedule content')}
+              className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 rounded-xl hover:from-blue-600 hover:to-purple-600 flex items-center transition-all duration-200 shadow-lg"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Schedule Content
+            </button>
+          </div>
+        </div>
 
-          <div className="text-center">
-            <div className="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
-              <Target className="h-8 w-8 text-green-600" />
+        {/* Publishing Goals */}
+        <div className="bg-gray-800/80 backdrop-blur-sm border border-gray-600/50 rounded-xl p-6 shadow-2xl">
+          <h3 className="text-lg font-semibold text-white mb-6">Publishing Goals</h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="text-center">
+              <div className="bg-blue-500/20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
+                <BarChart3 className="h-8 w-8 text-blue-400" />
+              </div>
+              <h4 className="font-semibold text-white mb-1">Weekly Goal</h4>
+              <p className="text-2xl font-bold text-blue-400 mb-1">{publishingGoals.weekly}</p>
+              <p className="text-sm text-gray-400">posts per week</p>
+              <div className="mt-2 bg-gray-700 rounded-full h-2">
+                <div className="bg-blue-500 h-2 rounded-full" style={{ width: '70%' }}></div>
+              </div>
+              <p className="text-xs text-gray-500 mt-1">2/3 this week</p>
             </div>
-            <h4 className="font-semibold text-gray-900 mb-1">Monthly Goal</h4>
-            <p className="text-2xl font-bold text-green-600 mb-1">{publishingGoals.monthly}</p>
-            <p className="text-sm text-gray-600">posts per month</p>
-            <div className="mt-2 bg-gray-200 rounded-full h-2">
-              <div className="bg-green-600 h-2 rounded-full" style={{ width: '45%' }}></div>
+
+            <div className="text-center">
+              <div className="bg-green-500/20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
+                <Target className="h-8 w-8 text-green-400" />
+              </div>
+            <h4 className="font-semibold text-white mb-1">Monthly Goal</h4>
+            <p className="text-2xl font-bold text-green-400 mb-1">{publishingGoals.monthly}</p>
+            <p className="text-sm text-gray-400">posts per month</p>
+            <div className="mt-2 bg-gray-700 rounded-full h-2">
+              <div className="bg-green-500 h-2 rounded-full" style={{ width: '45%' }}></div>
             </div>
             <p className="text-xs text-gray-500 mt-1">5/12 this month</p>
           </div>
 
           <div className="text-center">
-            <div className="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
-              <Globe className="h-8 w-8 text-purple-600" />
+            <div className="bg-purple-500/20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
+              <Globe className="h-8 w-8 text-purple-400" />
             </div>
-            <h4 className="font-semibold text-gray-900 mb-1">Platforms</h4>
-            <p className="text-2xl font-bold text-purple-600 mb-1">{publishingGoals.platforms.length}</p>
-            <p className="text-sm text-gray-600">active platforms</p>
+            <h4 className="font-semibold text-white mb-1">Platforms</h4>
+            <p className="text-2xl font-bold text-purple-400 mb-1">{publishingGoals.platforms.length}</p>
+            <p className="text-sm text-gray-400">active platforms</p>
             <div className="mt-2 flex justify-center space-x-1">
               {publishingGoals.platforms.map((platform) => (
                 <span key={platform} className="text-sm">
@@ -175,7 +178,7 @@ const ContentScheduler = ({ onScheduleComplete, userProfile }) => {
         </div>
 
         <div className="mt-6 flex justify-center">
-          <button className="flex items-center px-4 py-2 text-blue-600 hover:text-blue-800">
+          <button className="flex items-center px-4 py-2 text-blue-400 hover:text-blue-300 hover:bg-blue-500/20 rounded-lg transition-colors">
             <Settings className="h-4 w-4 mr-2" />
             Adjust Goals
           </button>
@@ -183,38 +186,38 @@ const ContentScheduler = ({ onScheduleComplete, userProfile }) => {
       </div>
 
       {/* Scheduled Content List */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <div className="bg-gray-800/80 backdrop-blur-sm border border-gray-600/50 rounded-xl p-6 shadow-2xl">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-semibold text-gray-900">Scheduled Content</h3>
+          <h3 className="text-lg font-semibold text-white">Scheduled Content</h3>
           <div className="flex items-center space-x-2">
-            <select className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-              <option value="all">All Status</option>
-              <option value="scheduled">Scheduled</option>
-              <option value="draft">Draft</option>
-              <option value="published">Published</option>
+            <select className="px-3 py-2 bg-gray-700/50 border border-gray-600/50 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 backdrop-blur-sm">
+              <option value="all" className="bg-gray-800">All Status</option>
+              <option value="scheduled" className="bg-gray-800">Scheduled</option>
+              <option value="draft" className="bg-gray-800">Draft</option>
+              <option value="published" className="bg-gray-800">Published</option>
             </select>
-            <select className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-              <option value="all">All Platforms</option>
-              <option value="wordpress">WordPress</option>
-              <option value="medium">Medium</option>
-              <option value="linkedin">LinkedIn</option>
+            <select className="px-3 py-2 bg-gray-700/50 border border-gray-600/50 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 backdrop-blur-sm">
+              <option value="all" className="bg-gray-800">All Platforms</option>
+              <option value="wordpress" className="bg-gray-800">WordPress</option>
+              <option value="medium" className="bg-gray-800">Medium</option>
+              <option value="linkedin" className="bg-gray-800">LinkedIn</option>
             </select>
           </div>
         </div>
 
         <div className="space-y-4">
           {scheduledContent.map((item) => (
-            <div key={item.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+            <div key={item.id} className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-4 hover:bg-gray-700/70 transition-all duration-200">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center space-x-3 mb-2">
-                    <h4 className="font-semibold text-gray-900">{item.title}</h4>
-                    <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(item.status)}`}>
+                    <h4 className="font-semibold text-white">{item.title}</h4>
+                    <span className={`px-2 py-1 rounded-full text-xs border ${getStatusColor(item.status)}`}>
                       {item.status}
                     </span>
                   </div>
                   
-                  <div className="flex items-center space-x-4 text-sm text-gray-600 mb-3">
+                  <div className="flex items-center space-x-4 text-sm text-gray-400 mb-3">
                     <div className="flex items-center">
                       <Calendar className="h-4 w-4 mr-1" />
                       {new Date(`${item.date}T${item.time}`).toLocaleDateString()} at {item.time}
@@ -314,6 +317,7 @@ const ContentScheduler = ({ onScheduleComplete, userProfile }) => {
             </div>
           ))}
         </div>
+      </div>
       </div>
     </div>
   );

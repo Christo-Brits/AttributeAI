@@ -104,7 +104,6 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
   }
 
   return (
-    <>
     <div className="p-6">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
@@ -721,14 +720,6 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
         )}
       </div>
     </div>
-    
-    {/* AI Chat Interface */}
-    <AIChatInterface 
-      websiteAnalysis={websiteAnalysis}
-      isOpen={isChatOpen}
-      onClose={() => setIsChatOpen(false)}
-    />
-    </>
   );
 };
 

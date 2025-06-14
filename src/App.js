@@ -2,7 +2,7 @@ import React, { lazy, Suspense, useState } from 'react';
 import './App.css';
 import { AuthProvider, useAuth } from './components/auth/AuthContext';
 import { HelmetProvider } from 'react-helmet-async';
-import NavigationWrapper from './components/NavigationWrapper';
+import SidebarNavigation from './components/SidebarNavigation';
 import UnifiedDashboard from './components/UnifiedDashboard';
 import LoginPage from './components/LoginPage';
 import LandingPage from './components/LandingPage';
@@ -106,10 +106,10 @@ function AuthenticatedApp() {
   };
 
   return (
-    <div className="App">
-      {/* Only show navigation for regular dashboard views */}
+    <div className="flex min-h-screen bg-gray-50">
+      {/* Sidebar Navigation - Always visible for dashboard */}
       {currentView === 'dashboard' && (
-        <NavigationWrapper 
+        <SidebarNavigation 
           activeTab={activeTab} 
           setActiveTab={setActiveTab}
           onViewChange={setCurrentView}
@@ -117,7 +117,11 @@ function AuthenticatedApp() {
         />
       )}
       
-      <main className={currentView === 'dashboard' ? 'min-h-screen bg-gray-50' : ''}>
+      {/* Main Content Area */}
+      <main className={`
+        flex-1 transition-all duration-300 ease-in-out
+        ${currentView === 'dashboard' ? '' : 'ml-0'}
+      `}>
         {renderActiveComponent()}
         
         {/* Floating Chat Button - Available on dashboard pages only */}

@@ -1,5 +1,5 @@
 [build]
-  command = "npm install --legacy-peer-deps --no-optional && npm run build"
+  command = "chmod +x build-netlify.sh && ./build-netlify.sh"
   publish = "build"
   ignore = "server/"
 
@@ -7,9 +7,13 @@
   CI = "false"
   GENERATE_SOURCEMAP = "false"
   NODE_VERSION = "18.20.3"
+  NPM_VERSION = "9.6.7"
   NPM_CONFIG_FUND = "false"
   NPM_CONFIG_AUDIT = "false"
+  NPM_CONFIG_UPDATE_NOTIFIER = "false"
   SKIP_PREFLIGHT_CHECK = "true"
+  DISABLE_ESLINT_PLUGIN = "true"
+  NPM_CONFIG_CACHE = "/tmp/.npm"
 
 [[redirects]]
   from = "/*"
@@ -18,14 +22,4 @@
 
 [context.production.environment]
   NODE_VERSION = "18.20.3"
-  CI = "false"
-  NPM_CONFIG_FUND = "false"
-  NPM_CONFIG_AUDIT = "false"
-
-[context.deploy-preview.environment]
-  NODE_VERSION = "18.20.3"
-  CI = "false"
-
-[context.branch-deploy.environment]
-  NODE_VERSION = "18.20.3"
-  CI = "false"
+  NPM_VERSION = "9.6.7"

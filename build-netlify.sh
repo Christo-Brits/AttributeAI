@@ -23,9 +23,9 @@ if [ -f "package-lock.json" ]; then
     rm package-lock.json
 fi
 
-# Install core dependencies first to resolve ajv conflict
+# Install core dependencies first to resolve conflicts
 echo "📦 Installing core dependencies..."
-npm install ajv@^8.12.0 ajv-keywords@^5.1.0 --legacy-peer-deps --no-optional
+npm install ajv@^8.12.0 ajv-keywords@^5.1.0 react-bootstrap@^2.10.4 bootstrap@^5.3.3 --legacy-peer-deps --no-optional
 
 # Install all dependencies with legacy peer deps
 echo "📦 Installing all dependencies with legacy peer deps..."
@@ -47,17 +47,32 @@ else
     fi
 fi
 
-# Verify critical dependencies
+# Verify critical dependencies and install if missing
 echo "🔍 Verifying critical dependencies..."
-if [ ! -d "node_modules/ajv" ]; then
-    echo "⚠️ AJV not found, installing manually..."
-    npm install ajv@^8.12.0 --force
-fi
+REQUIRED_DEPS=("ajv" "react-scripts" "react" "react-dom" "react-bootstrap" "bootstrap")
 
-if [ ! -d "node_modules/react-scripts" ]; then
-    echo "⚠️ React Scripts not found, installing manually..."
-    npm install react-scripts@^5.0.1 --force
-fi
+for dep in "${REQUIRED_DEPS[@]}"; do
+    if [ ! -d "node_modules/$dep" ]; then
+        echo "⚠️ $dep not found, installing manually..."
+        case $dep in
+            "ajv")
+                npm install ajv@^8.12.0 --force
+                ;;
+            "react-bootstrap")
+                npm install react-bootstrap@^2.10.4 --force
+                ;;
+            "bootstrap")
+                npm install bootstrap@^5.3.3 --force
+                ;;
+            "react-scripts")
+                npm install react-scripts@^5.0.1 --force
+                ;;
+            *)
+                npm install $dep --force
+                ;;
+        esac
+    fi
+done
 
 # Build the project with error handling
 echo "🏗️ Building AttributeAI..."

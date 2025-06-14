@@ -1,49 +1,22 @@
 // Phase 2 - Claude AI Integration Service
-// Real-time AI analysis for all AttributeAI tools
-
-import Anthropic from '@anthropic-ai/sdk';
+// Frontend API client for AttributeAI AI features
+// Communicates with backend API instead of direct SDK usage
 
 class ClaudeService {
   constructor() {
-    this.client = null;
-    this.initialized = false;
+    this.initialized = true; // Always ready for API calls
     this.analysisCache = new Map();
     this.cacheTimeout = 5 * 60 * 1000; // 5 minutes
+    this.apiBaseUrl = process.env.REACT_APP_API_URL || 'http://localhost:3001';
   }
 
-  // Initialize with API key from environment
-  initialize() {
-    const apiKey = process.env.REACT_APP_ANTHROPIC_API_KEY;
-    
-    if (!apiKey) {
-      console.warn('Claude API key not found in environment');
-      return false;
-    }
-    
-    try {
-      this.client = new Anthropic({
-        apiKey: apiKey,
-        dangerouslyAllowBrowser: true
-      });
-      this.initialized = true;
-      console.log('✅ Claude AI service initialized');
-      return true;
-    } catch (error) {
-      console.error('❌ Claude initialization failed:', error);
-      return false;
-    }
-  }
-
+  // Check if service is ready (always true for API client)
   isReady() {
-    return this.initialized && this.client !== null;
+    return this.initialized;
   }
 
-  // Core AI analysis method with caching
+  // Core AI analysis method with caching - calls backend API
   async analyzeData(analysisType, data, context = {}) {
-    if (!this.isReady()) {
-      throw new Error('Claude service not initialized. Please check your API key.');
-    }
-
     // Check cache first
     const cacheKey = this.getCacheKey(analysisType, data, context);
     const cached = this.getFromCache(cacheKey);
@@ -51,30 +24,42 @@ class ClaudeService {
       return cached;
     }
 
-    const prompt = this.buildPrompt(analysisType, data, context);
-    
     try {
-      const response = await this.client.messages.create({
-        model: 'claude-3-sonnet-20240229',
-        max_tokens: 4000,
-        temperature: 0.1,
-        messages: [{
-          role: 'user',
-          content: prompt
-        }]
+      const response = await fetch(`${this.apiBaseUrl}/api/claude-chat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: this.buildPrompt(analysisType, data, context),
+          analysisType: analysisType,
+          context: context
+        })
       });
 
-      const result = this.parseResponse(response.content[0].text, analysisType);
+      if (!response.ok) {
+        throw new Error(`API request failed: ${response.status}`);
+      }
+
+      const result = await response.json();
+      
+      if (result.error) {
+        throw new Error(result.error);
+      }
+
+      const parsedResult = this.parseResponse(result.response || result.content, analysisType);
       
       // Cache the result
-      this.setCache(cacheKey, result);
+      this.setCache(cacheKey, parsedResult);
       
-      return result;
+      return parsedResult;
     } catch (error) {
       console.error('Claude API error:', error);
       throw new Error(`AI analysis failed: ${error.message}`);
     }
-  }  // Specialized prompts for each AttributeAI tool
+  }
+
+  // Specialized prompts for each AttributeAI tool
   buildPrompt(analysisType, data, context) {
     const baseContext = `
 You are an expert marketing attribution analyst for AttributeAI.
@@ -109,6 +94,7 @@ Return JSON with:
   "performancePredictions": {"expectedTraffic": number, "timeframe": "string"},
   "summary": "string"
 }`,
+
       lead_magnet_optimization: `${baseContext}
 Optimize lead magnet strategy:
 ${JSON.stringify(data)}
@@ -153,6 +139,7 @@ Return JSON with:
 Analyze this data: ${JSON.stringify(data)}
 Provide actionable insights in JSON format.`;
   }
+
   // Parse and validate AI responses
   parseResponse(responseText, analysisType) {
     try {
@@ -170,7 +157,7 @@ Provide actionable insights in JSON format.`;
         analysisType,
         timestamp: new Date().toISOString(),
         confidence: this.calculateConfidence(parsed),
-        source: 'claude-ai'
+        source: 'claude-ai-api'
       };
     } catch (error) {
       console.error('Response parsing error:', error);
@@ -219,12 +206,62 @@ Provide actionable insights in JSON format.`;
       timestamp: Date.now()
     });
   }
+
+  // Enhanced Content Generation API calls
+  async generateContent(contentType, targetKeyword, options = {}) {
+    try {
+      const response = await fetch(`${this.apiBaseUrl}/api/content/generate-multi-model`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          prompt: `Create ${contentType} content optimized for "${targetKeyword}"`,
+          targetKeyword,
+          contentType,
+          ...options
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Content generation failed: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Content generation error:', error);
+      throw new Error(`Content generation failed: ${error.message}`);
+    }
+  }
+
+  // Keyword Intelligence API calls
+  async analyzeKeywords(keywords, options = {}) {
+    try {
+      const response = await fetch(`${this.apiBaseUrl}/api/keyword-intelligence/analyze`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          keywords: Array.isArray(keywords) ? keywords : [keywords],
+          ...options
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Keyword analysis failed: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Keyword analysis error:', error);
+      throw new Error(`Keyword analysis failed: ${error.message}`);
+    }
+  }
 }
+
 // Create singleton instance
 const claudeService = new ClaudeService();
-
-// Auto-initialize on import
-claudeService.initialize();
 
 export default claudeService;
 

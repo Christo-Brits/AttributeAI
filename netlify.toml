@@ -1,12 +1,13 @@
 [build]
-  command = "npm ci && npm run build"
+  command = "npm ci --only=production && npm run build"
   publish = "build"
+  ignore = "server/"
 
 [build.environment]
   CI = "false"
   GENERATE_SOURCEMAP = "false"
   NODE_VERSION = "18.20.3"
-  NPM_FLAGS = "--legacy-peer-deps"
+  NPM_FLAGS = "--legacy-peer-deps --only=production"
 
 [[redirects]]
   from = "/*"
@@ -24,3 +25,7 @@
 [context.branch-deploy.environment]
   NODE_VERSION = "18.20.3"
   CI = "false"
+
+# Ignore server directory completely during Netlify builds
+[[plugins]]
+  package = "@netlify/plugin-local-install-core"

@@ -1,3 +1,39 @@
+// Enhanced Keyword Intelligence Service with Supabase Integration
+// Provides persistent storage and advanced analytics capabilities
+
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
+
+class SupabaseKeywordService {
+  constructor() {
+    this.initialized = false;
+    this.fallbackMode = false;
+    this.quotaLimits = {
+      free: 1000,
+      professional: 10000,
+      enterprise: 100000,
+      agency: 1000000
+    };
+  }
+
+  // Initialize service and check Supabase connection
+  async initialize() {
+    try {
+      this.initialized = true;
+      if (!isSupabaseConfigured()) {
+        console.log('📝 Keyword service running in localStorage mode');
+        this.fallbackMode = true;
+      } else {
+        console.log('✅ Keyword service connected to Supabase');
+        this.fallbackMode = false;
+      }
+      return true;
+    } catch (error) {
+      console.error('❌ Keyword service initialization failed:', error);
+      this.fallbackMode = true;
+      return false;
+    }
+  }
+
   /**
    * Get user's keyword analysis history
    */
@@ -18,20 +54,15 @@
 
       let query = supabase
         .from('keyword_analyses')
-        .select(`
-          *,
-          related_keywords(keyword, search_volume, difficulty, intent),
-          content_opportunities(content_type, title, potential, status)
-        `)
+        .select('*')
         .eq('user_id', userId)
         .order(sortBy, { ascending: sortOrder === 'asc' })
         .range(offset, offset + limit - 1);
 
-      // Add filters
       if (search) {
-        query = query.ilike('normalized_keyword', `%${search.toLowerCase()}%`);
+        query = query.ilike('keyword', `%${search}%`);
       }
-      
+
       if (intent) {
         query = query.eq('intent', intent);
       }
@@ -39,518 +70,417 @@
       const { data, error } = await query;
 
       if (error) {
-        console.error('Get user keywords error:', error);
+        console.error('Database error:', error);
         return this.fallbackToLocalStorage('getUserKeywords', { userId, options });
       }
 
       return {
-        keywords: data || [],
+        success: true,
+        data: data || [],
         total: data?.length || 0,
-        source: 'supabase'
+        hasMore: data?.length === limit
       };
 
     } catch (error) {
-      console.error('Get user keywords error:', error);
+      console.error('Error fetching user keywords:', error);
       return this.fallbackToLocalStorage('getUserKeywords', { userId, options });
     }
   }
 
   /**
-   * Bulk analyze keywords with quota management
+   * Store keyword analysis result
    */
-  async bulkAnalyzeKeywords(userId, keywords, analysisType = 'basic') {
+  async storeKeywordAnalysis(userId, analysisData) {
     try {
       if (!isSupabaseConfigured()) {
-        return this.fallbackToLocalStorage('bulkAnalyzeKeywords', { keywords, analysisType });
+        return this.fallbackToLocalStorage('storeKeywordAnalysis', { userId, analysisData });
       }
 
-      // Check if user has enough quota
-      const quotaCheck = await this.checkUserQuota(userId, keywords.length);
-      if (!quotaCheck.allowed) {
-        throw new Error(`Bulk analysis would exceed quota. ${quotaCheck.message}`);
-      }
-
-      const results = [];
-      const batchSize = 10; // Process in batches to avoid overwhelming the database
-
-      for (let i = 0; i < keywords.length; i += batchSize) {
-        const batch = keywords.slice(i, i + batchSize);
-        const batchPromises = batch.map(async (keyword) => {
-          try {
-            // Generate basic analysis for each keyword
-            const analysisData = {
-              primaryKeyword: keyword.trim(),
-              normalizedKeyword: keyword.toLowerCase().trim(),
-              metrics: {
-                searchVolume: this.generateSearchVolume(keyword),
-                difficulty: this.generateDifficulty(keyword),
-                cpc: this.generateCPC(keyword),
-                competition: this.generateCompetition(),
-                intent: this.determineIntent(keyword)
-              },
-              analysisType,
-              timestamp: new Date().toISOString()
-            };
-
-            return {
-              keyword: keyword.trim(),
-              ...analysisData.metrics,
-              success: true
-            };
-          } catch (error) {
-            return {
-              keyword: keyword.trim(),
-              error: error.message,
-              success: false
-            };
-          }
-        });
-
-        const batchResults = await Promise.all(batchPromises);
-        results.push(...batchResults);
-      }
-
-      // Store bulk analysis session
-      await this.createResearchSession(userId, {
-        session_name: `Bulk Analysis - ${new Date().toLocaleDateString()}`,
-        keywords_analyzed: keywords,
-        total_keywords: keywords.length,
-        analysis_type: analysisType,
-        session_data: { results }
-      });
-
-      // Increment usage
-      await this.incrementKeywordUsage(userId, keywords.length);
-
-      // Track activity
-      await this.trackUserActivity(userId, 'bulk_analysis', {
-        keywords_count: keywords.length,
-        analysis_type: analysisType
-      });
-
-      return {
-        results,
-        totalProcessed: results.length,
-        successful: results.filter(r => r.success).length,
-        failed: results.filter(r => !r.success).length,
-        source: 'supabase'
+      const { keyword, analysis } = analysisData;
+      
+      const dbRecord = {
+        user_id: userId,
+        keyword: keyword,
+        search_volume: analysis.searchVolume,
+        difficulty: analysis.difficulty,
+        cpc: parseFloat(analysis.cpc),
+        competition: analysis.competition,
+        intent: analysis.intent,
+        claude_insights: analysis.claudeInsights,
+        gpt4_insights: analysis.gpt4Insights,
+        gemini_insights: analysis.geminiInsights,
+        attribution_potential: analysis.attributionPotential,
+        content_opportunities: analysis.contentOpportunities,
+        created_at: new Date().toISOString()
       };
-
-    } catch (error) {
-      console.error('Bulk analysis error:', error);
-      return this.fallbackToLocalStorage('bulkAnalyzeKeywords', { keywords, analysisType });
-    }
-  }
-
-  /**
-   * Store competitor analysis
-   */
-  async storeCompetitorAnalysis(userId, domain, analysisData) {
-    try {
-      if (!isSupabaseConfigured()) {
-        return this.fallbackToLocalStorage('storeCompetitorAnalysis', { domain, analysisData });
-      }
 
       const { data, error } = await supabase
-        .from('competitor_analyses')
-        .upsert({
-          user_id: userId,
-          domain,
-          analysis_data: analysisData.analysis,
-          top_keywords: analysisData.analysis?.topKeywords || [],
-          keyword_gaps: analysisData.analysis?.keywordGaps || [],
-          content_gaps: analysisData.analysis?.contentGaps || [],
-          authority_score: analysisData.analysis?.authorityScore || 0,
-          estimated_traffic: analysisData.analysis?.estimatedTraffic || 0,
-          total_keywords: analysisData.analysis?.totalKeywords || 0,
-          opportunity_score: analysisData.analysis?.opportunityScore || 0
-        }, {
-          onConflict: 'user_id,domain'
-        })
-        .select()
-        .single();
-
-      if (error) {
-        console.error('Competitor analysis storage error:', error);
-        return this.fallbackToLocalStorage('storeCompetitorAnalysis', { domain, analysisData });
-      }
-
-      await this.trackUserActivity(userId, 'competitor_analysis', {
-        domain,
-        opportunity_score: analysisData.analysis?.opportunityScore
-      });
-
-      return {
-        ...analysisData,
-        id: data.id,
-        stored: true,
-        source: 'supabase'
-      };
-
-    } catch (error) {
-      console.error('Competitor analysis error:', error);
-      return this.fallbackToLocalStorage('storeCompetitorAnalysis', { domain, analysisData });
-    }
-  }
-
-  /**
-   * Check user keyword quota
-   */
-  async checkUserQuota(userId, keywordCount = 1) {
-    try {
-      if (!isSupabaseConfigured()) {
-        return { allowed: true, message: 'Unlimited (localStorage mode)' };
-      }
-
-      const { data: user, error } = await supabase
-        .from('users')
-        .select('subscription_tier, monthly_keyword_quota, keywords_used_this_month, quota_reset_date')
-        .eq('id', userId)
-        .single();
-
-      if (error) {
-        console.error('Quota check error:', error);
-        return { allowed: true, message: 'Quota check failed, allowing request' };
-      }
-
-      // Check if quota needs reset (new month)
-      const today = new Date();
-      const resetDate = new Date(user.quota_reset_date);
-      if (today >= resetDate) {
-        await supabase.rpc('reset_monthly_keyword_usage');
-        user.keywords_used_this_month = 0;
-      }
-
-      const remainingQuota = user.monthly_keyword_quota - user.keywords_used_this_month;
-      const allowed = remainingQuota >= keywordCount;
-
-      return {
-        allowed,
-        remaining: Math.max(0, remainingQuota),
-        used: user.keywords_used_this_month,
-        quota: user.monthly_keyword_quota,
-        tier: user.subscription_tier,
-        message: allowed 
-          ? `${remainingQuota} keywords remaining this month`
-          : `Quota exceeded. ${remainingQuota} remaining, ${keywordCount} requested`
-      };
-
-    } catch (error) {
-      console.error('Quota check error:', error);
-      return { allowed: true, message: 'Quota check failed, allowing request' };
-    }
-  }
-
-  /**
-   * Get user analytics and usage stats
-   */
-  async getUserAnalytics(userId) {
-    try {
-      if (!isSupabaseConfigured()) {
-        return this.fallbackToLocalStorage('getUserAnalytics', { userId });
-      }
-
-      const { data, error } = await supabase
-        .from('user_analytics')
-        .select('*')
-        .eq('id', userId)
-        .single();
-
-      if (error) {
-        console.error('User analytics error:', error);
-        return this.fallbackToLocalStorage('getUserAnalytics', { userId });
-      }
-
-      // Get recent activity
-      const { data: recentActivity } = await supabase
-        .from('user_activity')
-        .select('activity_type, created_at, activity_data')
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false })
-        .limit(10);
-
-      return {
-        ...data,
-        recent_activity: recentActivity || [],
-        source: 'supabase'
-      };
-
-    } catch (error) {
-      console.error('User analytics error:', error);
-      return this.fallbackToLocalStorage('getUserAnalytics', { userId });
-    }
-  }
-
-  /**
-   * Track keyword performance over time
-   */
-  async trackKeywordPerformance(userId, keywordId, performanceData) {
-    try {
-      if (!isSupabaseConfigured()) {
-        return this.fallbackToLocalStorage('trackKeywordPerformance', { keywordId, performanceData });
-      }
-
-      const { data, error } = await supabase
-        .from('keyword_performance')
-        .upsert({
-          keyword_analysis_id: keywordId,
-          user_id: userId,
-          current_ranking: performanceData.currentRanking,
-          previous_ranking: performanceData.previousRanking,
-          ranking_change: performanceData.rankingChange,
-          traffic_estimate: performanceData.trafficEstimate,
-          click_through_rate: performanceData.clickThroughRate,
-          conversion_rate: performanceData.conversionRate,
-          attributed_conversions: performanceData.attributedConversions || 0,
-          attributed_revenue: performanceData.attributedRevenue || 0,
-          tracked_date: new Date().toISOString().split('T')[0]
-        }, {
-          onConflict: 'keyword_analysis_id,tracked_date'
-        })
-        .select()
-        .single();
-
-      if (error) {
-        console.error('Performance tracking error:', error);
-        return this.fallbackToLocalStorage('trackKeywordPerformance', { keywordId, performanceData });
-      }
-
-      return {
-        ...performanceData,
-        id: data.id,
-        stored: true,
-        source: 'supabase'
-      };
-
-    } catch (error) {
-      console.error('Performance tracking error:', error);
-      return this.fallbackToLocalStorage('trackKeywordPerformance', { keywordId, performanceData });
-    }
-  }
-
-  /**
-   * Export user data in various formats
-   */
-  async exportUserData(userId, options = {}) {
-    try {
-      if (!isSupabaseConfigured()) {
-        return this.fallbackToLocalStorage('exportUserData', { userId, options });
-      }
-
-      const { format = 'csv', includeRelated = true, dateRange } = options;
-
-      let query = supabase
         .from('keyword_analyses')
-        .select(`
-          *,
-          ${includeRelated ? 'related_keywords(*), content_opportunities(*)' : ''}
-        `)
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false });
-
-      if (dateRange) {
-        query = query.gte('created_at', dateRange.start).lte('created_at', dateRange.end);
-      }
-
-      const { data, error } = await query;
+        .insert([dbRecord])
+        .select();
 
       if (error) {
-        console.error('Export data error:', error);
-        throw new Error(handleSupabaseError(error));
+        console.error('Database error:', error);
+        return this.fallbackToLocalStorage('storeKeywordAnalysis', { userId, analysisData });
       }
 
-      // Track export activity
-      await this.trackUserActivity(userId, 'export', {
-        format,
-        records_count: data?.length || 0,
-        include_related: includeRelated
-      });
-
       return {
-        data: data || [],
-        count: data?.length || 0,
-        format,
-        exported_at: new Date().toISOString(),
-        source: 'supabase'
+        success: true,
+        data: data[0],
+        message: 'Keyword analysis stored successfully'
       };
 
     } catch (error) {
-      console.error('Export error:', error);
-      return this.fallbackToLocalStorage('exportUserData', { userId, options });
+      console.error('Error storing keyword analysis:', error);
+      return this.fallbackToLocalStorage('storeKeywordAnalysis', { userId, analysisData });
     }
   }
 
-  // Helper Methods
-
-  async storeRelatedKeywords(parentKeywordId, userId, relatedKeywords) {
+  /**
+   * Update user's monthly quota usage
+   */
+  async updateQuotaUsage(userId, amount = 1) {
     try {
-      const relatedData = relatedKeywords.map(keyword => ({
-        parent_keyword_id: parentKeywordId,
+      if (!isSupabaseConfigured()) {
+        return this.fallbackToLocalStorage('updateQuotaUsage', { userId, amount });
+      }
+
+      const currentMonth = new Date().toISOString().slice(0, 7); // YYYY-MM
+
+      // Try to update existing quota record
+      const { data: existingQuota, error: fetchError } = await supabase
+        .from('user_quotas')
+        .select('*')
+        .eq('user_id', userId)
+        .eq('month', currentMonth)
+        .single();
+
+      if (fetchError && fetchError.code !== 'PGRST116') { // PGRST116 = no rows returned
+        console.error('Error fetching quota:', fetchError);
+        return this.fallbackToLocalStorage('updateQuotaUsage', { userId, amount });
+      }
+
+      if (existingQuota) {
+        // Update existing quota
+        const { data, error } = await supabase
+          .from('user_quotas')
+          .update({ 
+            usage: existingQuota.usage + amount,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', existingQuota.id)
+          .select();
+
+        if (error) {
+          console.error('Error updating quota:', error);
+          return this.fallbackToLocalStorage('updateQuotaUsage', { userId, amount });
+        }
+
+        return {
+          success: true,
+          data: data[0],
+          message: 'Quota updated successfully'
+        };
+      } else {
+        // Create new quota record
+        const { data, error } = await supabase
+          .from('user_quotas')
+          .insert([{
+            user_id: userId,
+            month: currentMonth,
+            usage: amount,
+            limit: this.quotaLimits.free, // Default to free tier
+            created_at: new Date().toISOString()
+          }])
+          .select();
+
+        if (error) {
+          console.error('Error creating quota:', error);
+          return this.fallbackToLocalStorage('updateQuotaUsage', { userId, amount });
+        }
+
+        return {
+          success: true,
+          data: data[0],
+          message: 'Quota record created successfully'
+        };
+      }
+
+    } catch (error) {
+      console.error('Error updating quota usage:', error);
+      return this.fallbackToLocalStorage('updateQuotaUsage', { userId, amount });
+    }
+  }
+
+  /**
+   * Get user's current quota status
+   */
+  async getQuotaStatus(userId) {
+    try {
+      if (!isSupabaseConfigured()) {
+        return this.fallbackToLocalStorage('getQuotaStatus', { userId });
+      }
+
+      const currentMonth = new Date().toISOString().slice(0, 7);
+
+      const { data, error } = await supabase
+        .from('user_quotas')
+        .select('*')
+        .eq('user_id', userId)
+        .eq('month', currentMonth)
+        .single();
+
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error fetching quota status:', error);
+        return this.fallbackToLocalStorage('getQuotaStatus', { userId });
+      }
+
+      if (!data) {
+        // No quota record exists, create default
+        return {
+          success: true,
+          data: {
+            usage: 0,
+            limit: this.quotaLimits.free,
+            remaining: this.quotaLimits.free,
+            percentage: 0,
+            isNearLimit: false,
+            isOverLimit: false
+          }
+        };
+      }
+
+      const remaining = Math.max(0, data.limit - data.usage);
+      const percentage = Math.round((data.usage / data.limit) * 100);
+
+      return {
+        success: true,
+        data: {
+          usage: data.usage,
+          limit: data.limit,
+          remaining: remaining,
+          percentage: percentage,
+          isNearLimit: percentage >= 80,
+          isOverLimit: percentage >= 100,
+          resetDate: new Date(data.month + '-01').toLocaleDateString()
+        }
+      };
+
+    } catch (error) {
+      console.error('Error getting quota status:', error);
+      return this.fallbackToLocalStorage('getQuotaStatus', { userId });
+    }
+  }
+
+  /**
+   * Store related keywords for a main keyword
+   */
+  async storeRelatedKeywords(userId, mainKeyword, relatedKeywords) {
+    try {
+      if (!isSupabaseConfigured()) {
+        return this.fallbackToLocalStorage('storeRelatedKeywords', { userId, mainKeyword, relatedKeywords });
+      }
+
+      const records = relatedKeywords.map(related => ({
         user_id: userId,
-        keyword: keyword.keyword,
-        search_volume: keyword.volume,
-        difficulty: keyword.difficulty,
-        cpc: keyword.cpc,
-        competition: keyword.competition,
-        intent: keyword.intent,
-        relationship_type: 'related',
-        similarity_score: 0.8
+        main_keyword: mainKeyword,
+        related_keyword: related.keyword,
+        relevance_score: related.relevance || 85,
+        search_volume: related.searchVolume || 0,
+        difficulty: related.difficulty || 50,
+        created_at: new Date().toISOString()
       }));
 
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('related_keywords')
-        .upsert(relatedData);
+        .insert(records)
+        .select();
 
       if (error) {
-        console.error('Related keywords storage error:', error);
+        console.error('Database error:', error);
+        return this.fallbackToLocalStorage('storeRelatedKeywords', { userId, mainKeyword, relatedKeywords });
       }
+
+      return {
+        success: true,
+        data: data,
+        message: 'Related keywords stored successfully'
+      };
+
     } catch (error) {
-      console.error('Related keywords error:', error);
+      console.error('Error storing related keywords:', error);
+      return this.fallbackToLocalStorage('storeRelatedKeywords', { userId, mainKeyword, relatedKeywords });
     }
   }
 
-  async storeContentOpportunities(keywordAnalysisId, userId, contentOpportunities) {
+  /**
+   * Get analytics data for user's keyword research
+   */
+  async getKeywordAnalytics(userId, timeRange = '30days') {
     try {
-      const contentData = contentOpportunities.map(opportunity => ({
-        keyword_analysis_id: keywordAnalysisId,
-        user_id: userId,
-        content_type: opportunity.type,
-        title: opportunity.title,
-        description: opportunity.description || '',
-        target_keywords: opportunity.targetKeywords || [],
-        difficulty: opportunity.difficulty,
-        potential: opportunity.potential,
-        priority_score: this.calculatePriorityScore(opportunity),
-        estimated_traffic: opportunity.estimatedTraffic || 0,
-        status: 'suggested'
+      if (!isSupabaseConfigured()) {
+        return this.fallbackToLocalStorage('getKeywordAnalytics', { userId, timeRange });
+      }
+
+      const daysAgo = timeRange === '7days' ? 7 : timeRange === '30days' ? 30 : 90;
+      const startDate = new Date();
+      startDate.setDate(startDate.getDate() - daysAgo);
+
+      const { data, error } = await supabase
+        .from('keyword_analyses')
+        .select('*')
+        .eq('user_id', userId)
+        .gte('created_at', startDate.toISOString());
+
+      if (error) {
+        console.error('Database error:', error);
+        return this.fallbackToLocalStorage('getKeywordAnalytics', { userId, timeRange });
+      }
+
+      // Process analytics
+      const analytics = this.processKeywordAnalytics(data || []);
+
+      return {
+        success: true,
+        data: analytics,
+        timeRange: timeRange
+      };
+
+    } catch (error) {
+      console.error('Error getting keyword analytics:', error);
+      return this.fallbackToLocalStorage('getKeywordAnalytics', { userId, timeRange });
+    }
+  }
+
+  /**
+   * Process raw keyword data into analytics insights
+   */
+  processKeywordAnalytics(keywordData) {
+    if (!keywordData || keywordData.length === 0) {
+      return {
+        totalKeywords: 0,
+        avgSearchVolume: 0,
+        avgDifficulty: 0,
+        intentDistribution: {},
+        topOpportunities: [],
+        performanceMetrics: {}
+      };
+    }
+
+    const totalKeywords = keywordData.length;
+    const avgSearchVolume = Math.round(
+      keywordData.reduce((sum, k) => sum + (k.search_volume || 0), 0) / totalKeywords
+    );
+    const avgDifficulty = Math.round(
+      keywordData.reduce((sum, k) => sum + (k.difficulty || 0), 0) / totalKeywords
+    );
+
+    // Intent distribution
+    const intentDistribution = keywordData.reduce((acc, k) => {
+      acc[k.intent] = (acc[k.intent] || 0) + 1;
+      return acc;
+    }, {});
+
+    // Top opportunities (high volume, low difficulty)
+    const topOpportunities = keywordData
+      .filter(k => k.search_volume > avgSearchVolume && k.difficulty < avgDifficulty)
+      .sort((a, b) => (b.search_volume - b.difficulty) - (a.search_volume - a.difficulty))
+      .slice(0, 10)
+      .map(k => ({
+        keyword: k.keyword,
+        searchVolume: k.search_volume,
+        difficulty: k.difficulty,
+        opportunityScore: Math.round(k.search_volume / k.difficulty)
       }));
 
-      const { error } = await supabase
-        .from('content_opportunities')
-        .upsert(contentData);
-
-      if (error) {
-        console.error('Content opportunities storage error:', error);
+    return {
+      totalKeywords,
+      avgSearchVolume,
+      avgDifficulty,
+      intentDistribution,
+      topOpportunities,
+      performanceMetrics: {
+        highVolumeKeywords: keywordData.filter(k => k.search_volume > 10000).length,
+        lowDifficultyKeywords: keywordData.filter(k => k.difficulty < 30).length,
+        commercialKeywords: keywordData.filter(k => k.intent === 'Commercial').length
       }
-    } catch (error) {
-      console.error('Content opportunities error:', error);
-    }
-  }
-
-  async createResearchSession(userId, sessionData) {
-    try {
-      const { error } = await supabase
-        .from('keyword_research_sessions')
-        .insert({
-          user_id: userId,
-          ...sessionData
-        });
-
-      if (error) {
-        console.error('Research session creation error:', error);
-      }
-    } catch (error) {
-      console.error('Research session error:', error);
-    }
-  }
-
-  async incrementKeywordUsage(userId, count = 1) {
-    try {
-      await supabase.rpc('increment_keyword_usage', {
-        user_uuid: userId,
-        keyword_count: count
-      });
-    } catch (error) {
-      console.error('Increment usage error:', error);
-    }
-  }
-
-  async trackUserActivity(userId, activityType, activityData = {}) {
-    try {
-      const { error } = await supabase
-        .from('user_activity')
-        .insert({
-          user_id: userId,
-          activity_type: activityType,
-          activity_data: activityData,
-          keywords_analyzed: activityData.keywords_count || 1,
-          session_id: this.generateSessionId(),
-          created_at: new Date().toISOString()
-        });
-
-      if (error) {
-        console.error('Activity tracking error:', error);
-      }
-    } catch (error) {
-      console.error('Activity tracking error:', error);
-    }
-  }
-
-  calculatePriorityScore(opportunity) {
-    let score = 0;
-    
-    if (opportunity.potential === 'Very High') score += 40;
-    else if (opportunity.potential === 'High') score += 30;
-    else if (opportunity.potential === 'Medium') score += 20;
-    else score += 10;
-
-    if (opportunity.difficulty === 'Low') score += 30;
-    else if (opportunity.difficulty === 'Medium') score += 20;
-    else score += 10;
-
-    if (opportunity.estimatedTraffic) {
-      score += Math.min(30, opportunity.estimatedTraffic / 100);
-    }
-
-    return Math.min(100, score);
-  }
-
-  generateSessionId() {
-    return `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-  }
-
-  // Fallback methods for localStorage when Supabase not configured
-  fallbackToLocalStorage(method, data) {
-    console.log(`📦 Using localStorage fallback for ${method}`);
-    
-    const fallbackData = {
-      ...data,
-      source: 'localStorage',
-      fallback: true,
-      timestamp: new Date().toISOString()
     };
+  }
 
-    switch (method) {
-      case 'analyzeKeyword':
-        return {
-          ...data,
-          stored: false,
-          source: 'localStorage'
-        };
-      
-      case 'getUserKeywords':
-        const stored = localStorage.getItem('attributeai_keywords') || '[]';
-        return {
-          keywords: JSON.parse(stored),
-          total: JSON.parse(stored).length,
-          source: 'localStorage'
-        };
-      
-      case 'bulkAnalyzeKeywords':
-        return {
-          results: data.keywords.map(keyword => ({
-            keyword,
+  /**
+   * Fallback to localStorage when Supabase is not available
+   */
+  fallbackToLocalStorage(method, params) {
+    console.log(`📝 Using localStorage fallback for ${method}`);
+    
+    const storageKey = `attributeai_${method}_${params.userId || 'default'}`;
+    
+    try {
+      switch (method) {
+        case 'getUserKeywords':
+          const storedKeywords = localStorage.getItem(storageKey) || '[]';
+          const keywords = JSON.parse(storedKeywords);
+          return {
             success: true,
+            data: keywords,
+            total: keywords.length,
             source: 'localStorage'
-          })),
-          totalProcessed: data.keywords.length,
-          successful: data.keywords.length,
-          failed: 0,
-          source: 'localStorage'
-        };
-      
-      default:
-        return fallbackData;
+          };
+
+        case 'storeKeywordAnalysis':
+          const existing = JSON.parse(localStorage.getItem(storageKey) || '[]');
+          existing.push({
+            ...params.analysisData,
+            id: Date.now(),
+            created_at: new Date().toISOString()
+          });
+          localStorage.setItem(storageKey, JSON.stringify(existing));
+          return {
+            success: true,
+            data: existing[existing.length - 1],
+            source: 'localStorage'
+          };
+
+        case 'getQuotaStatus':
+          const quotaKey = `attributeai_quota_${params.userId}`;
+          const quotaData = JSON.parse(localStorage.getItem(quotaKey) || '{"usage": 0, "limit": 1000}');
+          return {
+            success: true,
+            data: {
+              ...quotaData,
+              remaining: Math.max(0, quotaData.limit - quotaData.usage),
+              percentage: Math.round((quotaData.usage / quotaData.limit) * 100),
+              isNearLimit: (quotaData.usage / quotaData.limit) >= 0.8,
+              isOverLimit: (quotaData.usage / quotaData.limit) >= 1.0
+            },
+            source: 'localStorage'
+          };
+
+        case 'updateQuotaUsage':
+          const currentQuotaKey = `attributeai_quota_${params.userId}`;
+          const currentQuota = JSON.parse(localStorage.getItem(currentQuotaKey) || '{"usage": 0, "limit": 1000}');
+          currentQuota.usage += params.amount;
+          localStorage.setItem(currentQuotaKey, JSON.stringify(currentQuota));
+          return {
+            success: true,
+            data: currentQuota,
+            source: 'localStorage'
+          };
+
+        default:
+          return {
+            success: false,
+            error: `Method ${method} not implemented in localStorage fallback`,
+            source: 'localStorage'
+          };
+      }
+    } catch (error) {
+      console.error(`localStorage fallback error for ${method}:`, error);
+      return {
+        success: false,
+        error: error.message,
+        source: 'localStorage'
+      };
     }
   }
 

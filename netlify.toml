@@ -1,5 +1,5 @@
 [build]
-  command = "npm install --legacy-peer-deps && npm run build"
+  command = "npm install --legacy-peer-deps --no-optional && npm run build"
   publish = "build"
   ignore = "server/"
 
@@ -7,6 +7,9 @@
   CI = "false"
   GENERATE_SOURCEMAP = "false"
   NODE_VERSION = "18.20.3"
+  NPM_CONFIG_FUND = "false"
+  NPM_CONFIG_AUDIT = "false"
+  SKIP_PREFLIGHT_CHECK = "true"
 
 [[redirects]]
   from = "/*"
@@ -16,6 +19,8 @@
 [context.production.environment]
   NODE_VERSION = "18.20.3"
   CI = "false"
+  NPM_CONFIG_FUND = "false"
+  NPM_CONFIG_AUDIT = "false"
 
 [context.deploy-preview.environment]
   NODE_VERSION = "18.20.3"

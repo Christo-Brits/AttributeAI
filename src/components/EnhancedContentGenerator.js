@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DataBridge } from '../utils/DataBridge';
+import DataBridge from '../utils/DataBridge';
 import './EnhancedContentGenerator.css';
 
 const EnhancedContentGenerator = () => {
@@ -92,7 +92,7 @@ const EnhancedContentGenerator = () => {
       await updateGenerationStats();
       
       // Share with DataBridge for attribution tracking
-      DataBridge.shareData('contentGeneration', {
+      DataBridge.setData('contentGeneration', {
         keyword: targetKeyword,
         type: contentType,
         wordCount: optimizedContent.wordCount,

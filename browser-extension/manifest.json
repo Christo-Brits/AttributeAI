@@ -82,6 +82,21 @@
         "content/search-styles.css"
       ],
       "run_at": "document_end"
+    },
+    {
+      "matches": [
+        "https://mail.google.com/*",
+        "https://outlook.live.com/*",
+        "https://outlook.office.com/*",
+        "https://outlook.office365.com/*"
+      ],
+      "js": [
+        "content/email-tracking.js"
+      ],
+      "css": [
+        "content/email-tracking.css"
+      ],
+      "run_at": "document_end"
     }
   ],
   

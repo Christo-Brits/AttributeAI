@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Plus, Mail, Phone, Building, User, Star, Activity, Eye, Edit, Trash2, Download, Upload, CheckCircle } from 'lucide-react';
 import { Button, Card, Badge } from '../ui/DesignSystem';
+import OneToOneEmail from '../email/OneToOneEmail';
 
 const ContactManager = () => {
     const [contacts, setContacts] = useState([]);
@@ -8,6 +9,8 @@ const ContactManager = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedContact, setSelectedContact] = useState(null);
     const [showContactModal, setShowContactModal] = useState(false);
+    const [showEmailModal, setShowEmailModal] = useState(false);
+    const [emailContact, setEmailContact] = useState(null);
     const [filters, setFilters] = useState({
         lifecycle_stage: 'all'
     });
@@ -370,12 +373,36 @@ const ContactManager = () => {
                                                     <button
                                                         className="text-blue-400 hover:text-blue-300 p-1 rounded transition-colors"
                                                         title="View Details"
+                                                        onClick={() => setSelectedContact(contact)}
                                                     >
                                                         <Eye size={16} />
                                                     </button>
                                                     <button
+                                                        className="text-green-400 hover:text-green-300 p-1 rounded transition-colors"
+                                                        title="Send Email"
+                                                        onClick={() => {
+                                                            setEmailContact(contact);
+                                                            setShowEmailModal(true);
+                                                        }}
+                                                    >
+                                                        <Mail size={16} />
+                                                    </button>
+                                                    <button
                                                         className="text-gray-400 hover:text-gray-300 p-1 rounded transition-colors"
                                                         title="Edit Contact"
+                                                        onClick={() => {
+                                                            setContactForm({
+                                                                first_name: contact.first_name || '',
+                                                                last_name: contact.last_name || '',
+                                                                email: contact.email || '',
+                                                                phone: contact.phone || '',
+                                                                job_title: contact.job_title || '',
+                                                                lifecycle_stage: contact.lifecycle_stage || 'lead',
+                                                                lead_source: contact.lead_source || '',
+                                                                notes: contact.notes || ''
+                                                            });
+                                                            setShowContactModal(true);
+                                                        }}
                                                     >
                                                         <Edit size={16} />
                                                     </button>
@@ -389,6 +416,23 @@ const ContactManager = () => {
                     </div>
                 )}
             </Card>
+            
+            {/* One-to-One Email Modal */}
+            {showEmailModal && emailContact && (
+                <OneToOneEmail
+                    contact={emailContact}
+                    onClose={() => {
+                        setShowEmailModal(false);
+                        setEmailContact(null);
+                    }}
+                    onSend={(emailData) => {
+                        console.log('Email sent:', emailData);
+                        // Here you would send the email via API
+                        // and log the activity to the contact timeline
+                        alert(`Email sent to ${emailContact.first_name} ${emailContact.last_name}!`);
+                    }}
+                />
+            )}
         </div>
     );
 };

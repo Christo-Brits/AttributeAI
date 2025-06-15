@@ -41,6 +41,10 @@ const ContactManager = lazy(() => import('./components/crm/ContactManager'));
 const DealPipeline = lazy(() => import('./components/crm/DealPipeline'));
 const RevenueAttribution = lazy(() => import('./components/crm/RevenueAttribution'));
 
+// Email Components
+const EmailSequenceBuilder = lazy(() => import('./components/email/EmailSequenceBuilder'));
+const EmailAnalytics = lazy(() => import('./components/email/EmailAnalytics'));
+
 // Loading component
 const ComponentLoader = () => (
   <div className="flex items-center justify-center min-h-screen">
@@ -97,7 +101,10 @@ function AuthenticatedApp() {
       'crm-dashboard': CRMDashboard,
       'crm-contacts': ContactManager,
       'crm-pipeline': DealPipeline,
-      'crm-attribution': RevenueAttribution
+      'crm-attribution': RevenueAttribution,
+      // Email Marketing Components
+      'email-sequences': EmailSequenceBuilder,
+      'email-analytics': EmailAnalytics
     };
 
     const Component = components[activeTab] || (() => <UnifiedDashboard websiteAnalysis={websiteAnalysisResults} />);

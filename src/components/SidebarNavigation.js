@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { 
   BarChart3, Activity, TrendingUp, Search, PenTool, Target, Eye, Settings, 
   User, Bell, Grid, LogOut, Globe, ChevronDown, Calendar, Menu, X,
-  Users, Building, DollarSign, GitBranch, ChevronRight
+  Users, Building, DollarSign, GitBranch, ChevronRight, Mail
 } from 'lucide-react';
 import { useAuth } from './auth/AuthContext';
 import UserProfile from './auth/UserProfile';
@@ -26,6 +26,7 @@ const SidebarNavigation = ({ activeTab, setActiveTab, onViewChange, user: authUs
   const [expandedSections, setExpandedSections] = useState({
     marketing: true,
     content: true,
+    email: false,
     crm: false // Ready for future CRM implementation
   });
   const dropdownRef = useRef(null);
@@ -115,6 +116,16 @@ const SidebarNavigation = ({ activeTab, setActiveTab, onViewChange, user: authUs
         { id: 'content', name: 'Content Strategy', icon: PenTool, description: 'Strategic planning' },
         { id: 'publishing', name: 'Publishing Pipeline', icon: Globe, phase2: true, description: 'Automated publishing' },
         { id: 'scheduler', name: 'Content Scheduler', icon: Calendar, phase2: true, description: 'Strategic timing' }
+      ]
+    },
+    {
+      id: 'email',
+      title: 'Email Marketing',
+      expandable: true,
+      disabled: false,
+      items: [
+        { id: 'email-sequences', name: 'Email Sequences', icon: Mail, description: 'Automated email campaigns' },
+        { id: 'email-analytics', name: 'Email Analytics', icon: BarChart3, description: 'Performance tracking' }
       ]
     },
     {

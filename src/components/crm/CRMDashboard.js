@@ -1,4 +1,183 @@
-justify-between">
+// =============================================================================
+// CRMDashboard.js - Main CRM Dashboard Component
+// Central hub for AttributeAI's CRM functionality - The "HubSpot Killer"
+// Features: Overview, quick actions, attribution intelligence
+// =============================================================================
+
+import React, { useState, useEffect } from 'react';
+import { Users, Building, DollarSign, TrendingUp, Activity, Calendar, Target, Plus, Eye, ArrowRight, Star, CheckCircle, AlertTriangle, BarChart3 } from 'lucide-react';
+import { Button } from '../ui/DesignSystem';
+
+// Import CRM components
+import ContactManager from './ContactManager';
+import DealPipeline from './DealPipeline';
+
+const CRMDashboard = () => {
+    // State management
+    const [activeTab, setActiveTab] = useState('overview');
+    const [overviewData, setOverviewData] = useState({});
+    const [recentActivities, setRecentActivities] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [demoMode, setDemoMode] = useState(false);
+
+    // Fetch overview data
+    useEffect(() => {
+        fetchOverviewData();
+        fetchRecentActivities();
+    }, []);
+
+    const fetchOverviewData = async () => {
+        try {
+            const response = await fetch('/api/crm/overview');
+            const result = await response.json();
+            
+            if (result.success) {
+                setOverviewData(result.data);
+                setDemoMode(result.demo_mode);
+            } else {
+                console.error('Failed to fetch overview:', result.error);
+                setOverviewData(getDemoOverviewData());
+                setDemoMode(true);
+            }
+        } catch (error) {
+            console.error('Error fetching overview:', error);
+            setOverviewData(getDemoOverviewData());
+            setDemoMode(true);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchRecentActivities = async () => {
+        try {
+            const response = await fetch('/api/crm/activities?limit=10');
+            const result = await response.json();
+            
+            if (result.success) {
+                setRecentActivities(result.data);
+            } else {
+                setRecentActivities(getDemoActivities());
+            }
+        } catch (error) {
+            console.error('Error fetching activities:', error);
+            setRecentActivities(getDemoActivities());
+        }
+    };
+
+    // Demo data
+    const getDemoOverviewData = () => ({
+        total_companies: 3,
+        total_contacts: 5,
+        total_deals: 3,
+        pipeline_value: 48000,
+        closed_value: 15000,
+        activities_this_week: 12,
+        conversion_rate: 25,
+        avg_deal_size: 16000
+    });
+
+    const getDemoActivities = () => [
+        {
+            id: 'activity-1',
+            activity_type: 'call',
+            subject: 'Discovery Call with TechCorp',
+            description: 'Discussed their attribution needs and pain points',
+            contact: { first_name: 'Sarah', last_name: 'Johnson' },
+            company: { name: 'TechCorp Solutions' },
+            created_at: '2024-06-14T10:30:00Z'
+        },
+        {
+            id: 'activity-2',
+            activity_type: 'email',
+            subject: 'Proposal sent to Marketing Pro',
+            description: 'Sent detailed proposal with pricing options',
+            contact: { first_name: 'Mike', last_name: 'Chen' },
+            company: { name: 'Marketing Agency Pro' },
+            created_at: '2024-06-14T09:15:00Z'
+        },
+        {
+            id: 'activity-3',
+            activity_type: 'meeting',
+            subject: 'Demo scheduled with E-commerce Plus',
+            description: 'Product demo scheduled for next week',
+            contact: { first_name: 'Lisa', last_name: 'Rodriguez' },
+            company: { name: 'E-commerce Plus' },
+            created_at: '2024-06-13T16:45:00Z'
+        }
+    ];
+
+    // Format currency
+    const formatCurrency = (amount) => {
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }).format(amount || 0);
+    };
+
+    // Get activity icon
+    const getActivityIcon = (type) => {
+        const icons = {
+            call: '📞',
+            email: '📧',
+            meeting: '🤝',
+            demo_booked: '🎯',
+            proposal_sent: '📄',
+            note: '📝',
+            task: '✅',
+            linkedin_visit: '💼',
+            website_visit: '🌐'
+        };
+        return icons[type] || '📋';
+    };
+
+    // Render overview tab
+    const renderOverview = () => (
+        <div className="space-y-8">
+            {/* Key Metrics */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-6 rounded-xl">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <p className="text-blue-600 text-sm font-medium">Pipeline Value</p>
+                            <p className="text-2xl font-bold text-blue-900">{formatCurrency(overviewData.pipeline_value)}</p>
+                            <p className="text-xs text-blue-600 mt-1">
+                                {overviewData.total_deals || 0} open deals
+                            </p>
+                        </div>
+                        <DollarSign className="text-blue-600" size={28} />
+                    </div>
+                </div>
+                
+                <div className="bg-gradient-to-r from-green-50 to-green-100 p-6 rounded-xl">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <p className="text-green-600 text-sm font-medium">Closed Revenue</p>
+                            <p className="text-2xl font-bold text-green-900">{formatCurrency(overviewData.closed_value)}</p>
+                            <p className="text-xs text-green-600 mt-1">
+                                {overviewData.conversion_rate || 0}% conversion rate
+                            </p>
+                        </div>
+                        <TrendingUp className="text-green-600" size={28} />
+                    </div>
+                </div>
+                
+                <div className="bg-gradient-to-r from-purple-50 to-purple-100 p-6 rounded-xl">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <p className="text-purple-600 text-sm font-medium">Total Contacts</p>
+                            <p className="text-2xl font-bold text-purple-900">{overviewData.total_contacts || 0}</p>
+                            <p className="text-xs text-purple-600 mt-1">
+                                {overviewData.total_companies || 0} companies
+                            </p>
+                        </div>
+                        <Users className="text-purple-600" size={28} />
+                    </div>
+                </div>
+                
+                <div className="bg-gradient-to-r from-yellow-50 to-yellow-100 p-6 rounded-xl">
+                    <div className="flex items-center justify-between">
                         <div>
                             <p className="text-yellow-600 text-sm font-medium">Avg Deal Size</p>
                             <p className="text-2xl font-bold text-yellow-900">{formatCurrency(overviewData.avg_deal_size)}</p>

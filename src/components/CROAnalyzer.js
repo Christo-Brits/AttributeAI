@@ -196,18 +196,10 @@ const CROAnalyzer = () => {
 
   const renderInputForm = () => (
     <div className="max-w-4xl mx-auto">
-      <div className="text-center mb-8">
-        <Eye className="mx-auto h-12 w-12 text-purple-600 mb-4" />
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">CRO Page Analyzer</h2>
-        <p className="text-lg text-gray-600">
-          Upload a screenshot and get expert conversion optimization recommendations
-        </p>
-      </div>
-
       <form onSubmit={handleAnalysisSubmit} className="space-y-8">
         {/* Image Upload Section */}
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-lg font-semibold mb-4 flex items-center">
+        <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl border border-gray-700/50 p-6">
+          <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
             <Camera className="h-5 w-5 mr-2" />
             Page Screenshot
           </h3>
@@ -216,7 +208,7 @@ const CROAnalyzer = () => {
             <div>
               <div 
                 onClick={() => fileInputRef.current?.click()}
-                className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer hover:border-purple-400 transition-colors"
+                className="border-2 border-dashed border-gray-600 rounded-lg p-8 text-center cursor-pointer hover:border-purple-400 transition-colors"
               >
                 {imagePreview ? (
                   <div>
@@ -226,15 +218,15 @@ const CROAnalyzer = () => {
                       className="max-w-full h-auto rounded-lg mb-4"
                       style={{ maxHeight: '300px' }}
                     />
-                    <p className="text-sm text-gray-600">Click to change image</p>
+                    <p className="text-sm text-gray-400">Click to change image</p>
                   </div>
                 ) : (
                   <div>
                     <Upload className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-                    <p className="text-lg font-medium text-gray-900 mb-2">
+                    <p className="text-lg font-medium text-white mb-2">
                       Upload page screenshot
                     </p>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-gray-400">
                       PNG, JPG up to 10MB
                     </p>
                   </div>
@@ -251,13 +243,13 @@ const CROAnalyzer = () => {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Live Page URL *
                 </label>
                 <input
                   type="url"
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
+                  className="w-full px-3 py-2 bg-gray-800/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-400/50 focus:border-purple-400/50"
                   placeholder="https://yourwebsite.com/page"
                   value={formData.page_url}
                   onChange={(e) => setFormData({...formData, page_url: e.target.value})}
@@ -268,11 +260,11 @@ const CROAnalyzer = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Primary Conversion Goal
                 </label>
                 <select
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
+                  className="w-full px-3 py-2 bg-gray-800/50 border border-gray-600/50 rounded-lg text-white focus:ring-2 focus:ring-purple-400/50 focus:border-purple-400/50"
                   value={formData.conversion_goal}
                   onChange={(e) => setFormData({...formData, conversion_goal: e.target.value})}
                 >
@@ -290,20 +282,20 @@ const CROAnalyzer = () => {
         </div>
 
         {/* Business Context Section */}
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-lg font-semibold mb-4 flex items-center">
+        <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl border border-gray-700/50 p-6">
+          <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
             <Target className="h-5 w-5 mr-2" />
             Business Context (Optional)
           </h3>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Industry/Niche
               </label>
               <input
                 type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
+                className="w-full px-3 py-2 bg-gray-800/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-400/50 focus:border-purple-400/50"
                 placeholder="e.g., SaaS, E-commerce"
                 value={formData.industry}
                 onChange={(e) => setFormData({...formData, industry: e.target.value})}
@@ -311,12 +303,12 @@ const CROAnalyzer = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Target Audience
               </label>
               <input
                 type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
+                className="w-full px-3 py-2 bg-gray-800/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-400/50 focus:border-purple-400/50"
                 placeholder="e.g., Small business owners"
                 value={formData.audience}
                 onChange={(e) => setFormData({...formData, audience: e.target.value})}
@@ -324,12 +316,12 @@ const CROAnalyzer = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Additional Context
               </label>
               <input
                 type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
+                className="w-full px-3 py-2 bg-gray-800/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-400/50 focus:border-purple-400/50"
                 placeholder="Special considerations..."
                 value={formData.niche_info}
                 onChange={(e) => setFormData({...formData, niche_info: e.target.value})}
@@ -341,7 +333,7 @@ const CROAnalyzer = () => {
         <button
           type="submit"
           disabled={!uploadedImage || !formData.page_url}
-          className="w-full bg-purple-600 text-white py-3 px-6 rounded-lg hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors font-medium flex items-center justify-center"
+          className="w-full bg-gradient-to-r from-purple-500 to-pink-600 text-white py-3 px-6 rounded-lg hover:from-purple-600 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium flex items-center justify-center"
         >
           <Eye className="h-5 w-5 mr-2" />
           Analyze Page for CRO Opportunities
@@ -353,50 +345,75 @@ const CROAnalyzer = () => {
   const renderAnalyzing = () => (
     <div className="max-w-3xl mx-auto text-center">
       <div className="mb-8">
-        <div className="inline-flex items-center space-x-2 bg-purple-100 px-4 py-2 rounded-full mb-4">
-          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-purple-600"></div>
-          <span className="text-purple-700 font-medium">Analyzing Your Page</span>
+        <div className="inline-flex items-center space-x-2 bg-purple-900/50 px-4 py-2 rounded-full mb-4">
+          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-purple-400"></div>
+          <span className="text-purple-300 font-medium">Analyzing Your Page</span>
         </div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">CRO Analysis in Progress</h2>
-        <p className="text-gray-600">
+        <h2 className="text-2xl font-bold text-white mb-2">CRO Analysis in Progress</h2>
+        <p className="text-gray-300">
           Performing visual scan, technical audit, and competitive research...
         </p>
       </div>
 
-      <div className="bg-white rounded-lg shadow-md p-8">
+      <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl border border-gray-700/50 p-8">
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <Camera className="h-5 w-5 text-green-600 mr-3" />
-              <span>Visual screenshot analysis</span>
+              <Camera className="h-5 w-5 text-green-400 mr-3" />
+              <span className="text-white">Visual screenshot analysis</span>
             </div>
-            <CheckCircle className="h-5 w-5 text-green-600" />
+            <CheckCircle className="h-5 w-5 text-green-400" />
           </div>
           
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <Globe className="h-5 w-5 text-green-600 mr-3" />
-              <span>Live page HTML inspection</span>
+              <Globe className="h-5 w-5 text-green-400 mr-3" />
+              <span className="text-white">Live page HTML inspection</span>
             </div>
-            <CheckCircle className="h-5 w-5 text-green-600" />
+            <CheckCircle className="h-5 w-5 text-green-400" />
           </div>
           
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <Search className="h-5 w-5 text-blue-600 mr-3" />
-              <span>Competitive benchmarking</span>
+              <Search className="h-5 w-5 text-blue-400 mr-3" />
+              <span className="text-white">Competitive benchmarking</span>
             </div>
-            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-400"></div>
           </div>
           
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <FileText className="h-5 w-5 text-gray-400 mr-3" />
-              <span>Generating recommendations</span>
+              <span className="text-gray-400">Generating recommendations</span>
             </div>
-            <div className="h-4 w-4 border-2 border-gray-300 rounded-full"></div>
+            <div className="h-4 w-4 border-2 border-gray-600 rounded-full"></div>
           </div>
         </div>
+      </div>
+    </div>
+  );
+
+  // Main component return
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900/20 to-purple-900/20 p-6">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
+            CRO Page Analyzer
+          </h1>
+          <p className="text-gray-300 text-lg">Upload a screenshot and get expert conversion optimization recommendations</p>
+        </div>
+
+        {/* Conditional rendering based on current step */}
+        {currentStep === 'input' && renderInputForm()}
+        {currentStep === 'analyzing' && renderAnalyzing()}
+        {currentStep === 'results' && analysisResults && (
+          <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl border border-gray-700/50 p-6">
+            <h2 className="text-2xl font-bold text-white mb-4">Analysis Complete</h2>
+            <p className="text-gray-300">Your CRO analysis results would appear here.</p>
+          </div>
+        )}
       </div>
     </div>
   );

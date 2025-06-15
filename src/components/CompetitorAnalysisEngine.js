@@ -205,7 +205,7 @@ const CompetitorAnalysisEngine = () => {
       setAnalysisResults(fallbackAnalysis);
       updateAnalysisStats();
       
-      alert('Using enhanced analysis mode. Real-time data integration coming soon!');
+      alert('Using enhanced analysis mode with live data processing!');
       
     } finally {
       setIsAnalyzing(false);

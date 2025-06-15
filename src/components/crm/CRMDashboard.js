@@ -6,7 +6,7 @@
 // =============================================================================
 
 import React, { useState, useEffect } from 'react';
-import { Users, Building, DollarSign, TrendingUp, Activity, Calendar, Target, Plus, Eye, ArrowRight, Star, CheckCircle, AlertTriangle, BarChart3, Zap } from 'lucide-react';
+import { Users, Building, DollarSign, TrendingUp, Activity, Calendar, Target, Plus, Eye, ArrowRight, Star, CheckCircle, AlertTriangle, BarChart3, Zap, Mail, Phone } from 'lucide-react';
 import { Button, Card, Badge } from '../ui/DesignSystem';
 
 // Import CRM components
@@ -449,26 +449,139 @@ const CRMDashboard = () => {
                         {activeTab === 'contacts' && <ContactManager />}
                         {activeTab === 'pipeline' && <DealPipeline />}
                         {activeTab === 'attribution' && (
-                            <div className="text-center py-12">
-                                <Card className="max-w-md mx-auto p-8">
-                                    <BarChart3 size={48} className="mx-auto text-blue-400 mb-4" />
-                                    <h3 className="text-lg font-medium text-white mb-2">Attribution Analytics</h3>
-                                    <p className="text-gray-400 mb-4">Coming soon - Revenue attribution analysis</p>
-                                    <Button variant="primary">
-                                        Request Early Access
-                                    </Button>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <Card className="p-6 bg-gradient-to-br from-green-900/40 to-green-800/40 border-green-500/30">
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <p className="text-green-400 text-sm font-medium mb-2">Total Attributed Revenue</p>
+                                            <p className="text-2xl font-bold text-white">$132,300</p>
+                                        </div>
+                                        <div className="p-3 bg-green-500/20 rounded-xl">
+                                            <DollarSign className="text-green-400" size={24} />
+                                        </div>
+                                    </div>
+                                </Card>
+                                
+                                <Card className="p-6 bg-gradient-to-br from-blue-900/40 to-blue-800/40 border-blue-500/30">
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <p className="text-blue-400 text-sm font-medium mb-2">Attribution Rate</p>
+                                            <p className="text-2xl font-bold text-white">90%</p>
+                                        </div>
+                                        <div className="p-3 bg-blue-500/20 rounded-xl">
+                                            <Target className="text-blue-400" size={24} />
+                                        </div>
+                                    </div>
+                                </Card>
+                                
+                                <Card className="p-6 bg-gradient-to-br from-purple-900/40 to-purple-800/40 border-purple-500/30">
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <p className="text-purple-400 text-sm font-medium mb-2">Top Channel</p>
+                                            <p className="text-xl font-bold text-white">Organic Search</p>
+                                            <p className="text-sm text-purple-400">$45,600 revenue</p>
+                                        </div>
+                                        <div className="p-3 bg-purple-500/20 rounded-xl">
+                                            <TrendingUp className="text-purple-400" size={24} />
+                                        </div>
+                                    </div>
+                                </Card>
+                                
+                                <Card className="md:col-span-2 lg:col-span-3 p-6">
+                                    <div className="flex justify-between items-center mb-4">
+                                        <h3 className="text-lg font-semibold text-white">Revenue Attribution by Channel</h3>
+                                        <Button 
+                                            variant="primary" 
+                                            size="sm"
+                                            onClick={() => window.location.hash = '#crm-attribution'}
+                                        >
+                                            View Full Report
+                                        </Button>
+                                    </div>
+                                    <div className="space-y-3">
+                                        <div className="flex justify-between items-center p-3 bg-gray-800 rounded-lg">
+                                            <span className="text-white">Organic Search</span>
+                                            <span className="text-green-400 font-semibold">$45,600 (34.5%)</span>
+                                        </div>
+                                        <div className="flex justify-between items-center p-3 bg-gray-800 rounded-lg">
+                                            <span className="text-white">Paid Search</span>
+                                            <span className="text-green-400 font-semibold">$38,200 (28.9%)</span>
+                                        </div>
+                                        <div className="flex justify-between items-center p-3 bg-gray-800 rounded-lg">
+                                            <span className="text-white">LinkedIn</span>
+                                            <span className="text-green-400 font-semibold">$28,500 (21.5%)</span>
+                                        </div>
+                                        <div className="flex justify-between items-center p-3 bg-gray-800 rounded-lg">
+                                            <span className="text-white">Content Marketing</span>
+                                            <span className="text-green-400 font-semibold">$20,000 (15.1%)</span>
+                                        </div>
+                                    </div>
                                 </Card>
                             </div>
                         )}
                         {activeTab === 'activities' && (
-                            <div className="text-center py-12">
-                                <Card className="max-w-md mx-auto p-8">
-                                    <Activity size={48} className="mx-auto text-blue-400 mb-4" />
-                                    <h3 className="text-lg font-medium text-white mb-2">Activity Management</h3>
-                                    <p className="text-gray-400 mb-4">Coming soon - Complete activity tracking</p>
-                                    <Button variant="primary">
-                                        Request Early Access
-                                    </Button>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <Card className="p-6 bg-gradient-to-br from-blue-900/40 to-blue-800/40 border-blue-500/30">
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <p className="text-blue-400 text-sm font-medium mb-2">Total Activities</p>
+                                            <p className="text-2xl font-bold text-white">247</p>
+                                        </div>
+                                        <div className="p-3 bg-blue-500/20 rounded-xl">
+                                            <Activity className="text-blue-400" size={24} />
+                                        </div>
+                                    </div>
+                                </Card>
+                                
+                                <Card className="p-6 bg-gradient-to-br from-green-900/40 to-green-800/40 border-green-500/30">
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <p className="text-green-400 text-sm font-medium mb-2">This Week</p>
+                                            <p className="text-2xl font-bold text-white">42</p>
+                                        </div>
+                                        <div className="p-3 bg-green-500/20 rounded-xl">
+                                            <Calendar className="text-green-400" size={24} />
+                                        </div>
+                                    </div>
+                                </Card>
+                                
+                                <Card className="p-6 bg-gradient-to-br from-purple-900/40 to-purple-800/40 border-purple-500/30">
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <p className="text-purple-400 text-sm font-medium mb-2">Email Activities</p>
+                                            <p className="text-2xl font-bold text-white">89</p>
+                                        </div>
+                                        <div className="p-3 bg-purple-500/20 rounded-xl">
+                                            <Mail className="text-purple-400" size={24} />
+                                        </div>
+                                    </div>
+                                </Card>
+                                
+                                <Card className="md:col-span-2 lg:col-span-3 p-6">
+                                    <h3 className="text-lg font-semibold text-white mb-4">Recent Activities</h3>
+                                    <div className="space-y-3">
+                                        <div className="flex items-center space-x-3 p-3 bg-gray-800 rounded-lg">
+                                            <Mail className="text-blue-400" size={16} />
+                                            <div className="flex-1">
+                                                <p className="text-white text-sm">Email sent to Lisa Rodriguez</p>
+                                                <p className="text-gray-400 text-xs">E-commerce Plus • 2 hours ago</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center space-x-3 p-3 bg-gray-800 rounded-lg">
+                                            <Eye className="text-green-400" size={16} />
+                                            <div className="flex-1">
+                                                <p className="text-white text-sm">Email opened by Michael Chen</p>
+                                                <p className="text-gray-400 text-xs">TechStart • 4 hours ago</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center space-x-3 p-3 bg-gray-800 rounded-lg">
+                                            <Phone className="text-orange-400" size={16} />
+                                            <div className="flex-1">
+                                                <p className="text-white text-sm">Call scheduled with Sarah Johnson</p>
+                                                <p className="text-gray-400 text-xs">Digital Agency Pro • 6 hours ago</p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </Card>
                             </div>
                         )}

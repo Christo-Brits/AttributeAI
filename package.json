@@ -1,6 +1,7 @@
 {
   "name": "attributeai",
   "version": "1.0.0",
+  "homepage": "https://attributeai.app",
   "description": "Advanced Multi-Touch Attribution Platform with AI Intelligence",
   "private": true,
   "engines": {

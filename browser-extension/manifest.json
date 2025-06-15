@@ -1,31 +1,32 @@
 {
   "manifest_version": 3,
-  "name": "AttributeAI - Ultimate Keyword Intelligence",
-  "version": "1.0.0",
-  "description": "Unlimited AI-powered keyword research with attribution tracking. The superior alternative to Keywords Everywhere.",
+  "name": "AttributeAI - Complete Marketing Intelligence & CRM",
+  "version": "2.0.0",
+  "description": "The HubSpot killer: Unlimited keyword research + complete CRM with attribution intelligence. See exactly which marketing drives revenue.",
   
   "permissions": [
     "activeTab",
     "storage",
     "scripting",
-    "host_permissions"
+    "host_permissions",
+    "tabs",
+    "identity"
   ],
   
   "host_permissions": [
-    "https://*.google.com/*",
-    "https://*.youtube.com/*",
-    "https://*.amazon.com/*",
-    "https://*.ebay.com/*",
-    "https://*.etsy.com/*",
-    "https://*.pinterest.com/*",
-    "https://*.bing.com/*",
+    "https://*/*",
+    "http://*/*",
+    "https://*.linkedin.com/*",
+    "https://*.salesforce.com/*",
+    "https://*.hubspot.com/*",
+    "https://*.pipedrive.com/*",
     "https://*.attributeai.com/*",
     "https://xpyfoutwwjslivrmbflm.supabase.co/*"
   ],
   
   "action": {
     "default_popup": "popup/popup.html",
-    "default_title": "AttributeAI Keyword Intelligence",
+    "default_title": "AttributeAI - Marketing Intelligence & CRM",
     "default_icon": {
       "16": "icons/icon16.png",
       "32": "icons/icon32.png",
@@ -41,19 +42,44 @@
   "content_scripts": [
     {
       "matches": [
-        "https://*.google.com/*",
-        "https://*.youtube.com/*",
-        "https://*.amazon.com/*",
-        "https://*.ebay.com/*",
-        "https://*.etsy.com/*",
-        "https://*.pinterest.com/*",
-        "https://*.bing.com/*"
+        "https://*.linkedin.com/*"
       ],
       "js": [
-        "content/content.js"
+        "content/linkedin-integration.js"
       ],
       "css": [
-        "content/content.css"
+        "content/linkedin-styles.css"
+      ],
+      "run_at": "document_end"
+    },
+    {
+      "matches": [
+        "https://*/*",
+        "http://*/*"
+      ],
+      "js": [
+        "content/website-intelligence.js"
+      ],
+      "css": [
+        "content/website-overlay.css"
+      ],
+      "run_at": "document_end",
+      "exclude_matches": [
+        "https://*.linkedin.com/*",
+        "https://*.google.com/search*",
+        "https://*.bing.com/search*"
+      ]
+    },
+    {
+      "matches": [
+        "https://*.google.com/search*",
+        "https://*.bing.com/search*"
+      ],
+      "js": [
+        "content/search-enhancement.js"
+      ],
+      "css": [
+        "content/search-styles.css"
       ],
       "run_at": "document_end"
     }
@@ -64,16 +90,13 @@
       "resources": [
         "content/templates/*.html",
         "assets/*",
-        "icons/*"
+        "icons/*",
+        "content/crm-panel.html",
+        "content/contact-lookup.html"
       ],
       "matches": [
-        "https://*.google.com/*",
-        "https://*.youtube.com/*",
-        "https://*.amazon.com/*",
-        "https://*.ebay.com/*",
-        "https://*.etsy.com/*",
-        "https://*.pinterest.com/*",
-        "https://*.bing.com/*"
+        "https://*/*",
+        "http://*/*"
       ]
     }
   ],
@@ -101,6 +124,20 @@
         "mac": "Command+Shift+K"
       },
       "description": "Quick keyword research popup"
+    },
+    "show_crm_panel": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+C",
+        "mac": "Command+Shift+C"
+      },
+      "description": "Show CRM contact panel"
+    },
+    "quick_contact_add": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+N",
+        "mac": "Command+Shift+N"
+      },
+      "description": "Quick add contact"
     }
   }
 }

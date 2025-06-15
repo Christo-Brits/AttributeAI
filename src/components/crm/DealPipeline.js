@@ -323,7 +323,7 @@
                                                 
                                                 {deal.company && (
                                                     <div className="text-xs text-gray-600 mb-2">
-                                                        <building size={10} className="inline mr-1" />
+                                                        <Building size={10} className="inline mr-1" />
                                                         {deal.company.name}
                                                     </div>
                                                 )}

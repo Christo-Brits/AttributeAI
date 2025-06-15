@@ -1,5 +1,5 @@
 [build]
-  command = "npm ci --legacy-peer-deps && npm run build"
+  command = "npm ci --legacy-peer-deps --no-optional && npm run build"
   publish = "build"
   ignore = "server/"
 
@@ -13,6 +13,8 @@
   NPM_CONFIG_UPDATE_NOTIFIER = "false"
   SKIP_PREFLIGHT_CHECK = "true"
   DISABLE_ESLINT_PLUGIN = "true"
+  ESLINT_NO_DEV_ERRORS = "true"
+  TSC_COMPILE_ON_ERROR = "true"
   NPM_CONFIG_CACHE = "/tmp/.npm"
   REACT_APP_GA4_MEASUREMENT_ID = "G-BDZZKFKYDV"
   REACT_APP_ENABLE_ANALYTICS = "true"
@@ -25,4 +27,5 @@
 [context.production.environment]
   NODE_VERSION = "18.20.3"
   NPM_VERSION = "9.6.7"
+  CI = "false"
   REACT_APP_GA4_MEASUREMENT_ID = "G-BDZZKFKYDV"

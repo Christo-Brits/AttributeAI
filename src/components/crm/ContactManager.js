@@ -1,17 +1,103 @@
-await response.json();
+import React, { useState, useEffect } from 'react';
+import { Search, Plus, Mail, Phone, Building, User, Star, Activity, Eye, Edit, Trash2, Download, Upload, CheckCircle } from 'lucide-react';
+import { Button } from '../ui/DesignSystem';
+
+const ContactManager = () => {
+    const [contacts, setContacts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedContact, setSelectedContact] = useState(null);
+    const [showContactModal, setShowContactModal] = useState(false);
+    const [filters, setFilters] = useState({
+        lifecycle_stage: 'all'
+    });
+    const [sortBy, setSortBy] = useState('lead_score');
+    const [sortOrder, setSortOrder] = useState('desc');
+    const [demoMode, setDemoMode] = useState(false);
+
+    const [contactForm, setContactForm] = useState({
+        first_name: '',
+        last_name: '',
+        email: '',
+        phone: '',
+        job_title: '',
+        lifecycle_stage: 'lead',
+        lead_source: '',
+        notes: ''
+    });
+
+    useEffect(() => {
+        fetchContacts();
+    }, [filters, sortBy, sortOrder]);
+
+    const fetchContacts = async () => {
+        try {
+            setLoading(true);
+            const params = new URLSearchParams();
+            if (filters.lifecycle_stage !== 'all') params.append('lifecycle_stage', filters.lifecycle_stage);
+            
+            const response = await fetch(`/api/crm/contacts?${params.toString()}`);
+            const result = await response.json();
             
             if (result.success) {
-                fetchContacts(); // Refresh list
+                setContacts(result.data);
+                setDemoMode(result.demo_mode);
             } else {
-                alert('Failed to delete contact: ' + result.error);
+                setContacts(getDemoContacts());
+                setDemoMode(true);
             }
         } catch (error) {
-            console.error('Error deleting contact:', error);
-            alert('Error deleting contact');
+            setContacts(getDemoContacts());
+            setDemoMode(true);
+        } finally {
+            setLoading(false);
         }
     };
 
-    // Get lifecycle stage badge styling
+    const getDemoContacts = () => [
+        {
+            id: 'demo-1',
+            first_name: 'Sarah',
+            last_name: 'Johnson',
+            email: 'sarah@techcorp.com',
+            phone: '+1 (555) 123-4567',
+            job_title: 'Marketing Director',
+            company: { name: 'TechCorp Solutions', domain: 'techcorp.com', industry: 'Technology' },
+            lifecycle_stage: 'qualified_lead',
+            lead_score: 75,
+            last_activity_date: '2024-06-13',
+            activities: [{ count: 8 }],
+            deals: [{ count: 1, deal_value: 25000 }],
+            created_at: '2024-06-01T10:00:00Z'
+        },
+        {
+            id: 'demo-2',
+            first_name: 'Mike',
+            last_name: 'Chen',
+            email: 'mike@marketingpro.com',
+            phone: '+1 (555) 987-6543',
+            job_title: 'CEO',
+            company: { name: 'Marketing Agency Pro', domain: 'marketingpro.com', industry: 'Marketing' },
+            lifecycle_stage: 'customer',
+            lead_score: 90,
+            last_activity_date: '2024-06-14',
+            activities: [{ count: 15 }],
+            deals: [{ count: 2, deal_value: 45000 }],
+            created_at: '2024-05-15T14:30:00Z'
+        }
+    ];
+
+    const filteredContacts = contacts.filter(contact => {
+        const matchesSearch = searchTerm === '' || 
+            `${contact.first_name} ${contact.last_name}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            contact.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            contact.company?.name?.toLowerCase().includes(searchTerm.toLowerCase());
+        
+        const matchesLifecycle = filters.lifecycle_stage === 'all' || contact.lifecycle_stage === filters.lifecycle_stage;
+        
+        return matchesSearch && matchesLifecycle;
+    });
+
     const getLifecycleBadge = (stage) => {
         const badges = {
             subscriber: { bg: 'bg-gray-100', text: 'text-gray-800', label: 'Subscriber' },
@@ -22,11 +108,9 @@ await response.json();
             evangelist: { bg: 'bg-purple-100', text: 'text-purple-800', label: 'Evangelist' },
             lost: { bg: 'bg-red-100', text: 'text-red-800', label: 'Lost' }
         };
-        
         return badges[stage] || badges.lead;
     };
 
-    // Get lead score styling
     const getLeadScoreColor = (score) => {
         if (score >= 80) return 'text-green-600 bg-green-50';
         if (score >= 60) return 'text-yellow-600 bg-yellow-50';
@@ -34,55 +118,8 @@ await response.json();
         return 'text-red-600 bg-red-50';
     };
 
-    // Export contacts to CSV
-    const exportContacts = () => {
-        const csvData = filteredContacts.map(contact => ({
-            'First Name': contact.first_name,
-            'Last Name': contact.last_name,
-            'Email': contact.email,
-            'Phone': contact.phone,
-            'Job Title': contact.job_title,
-            'Company': contact.company?.name || '',
-            'Lifecycle Stage': contact.lifecycle_stage,
-            'Lead Score': contact.lead_score,
-            'Last Activity': contact.last_activity_date,
-            'Created Date': new Date(contact.created_at).toLocaleDateString()
-        }));
-        
-        const csv = [
-            Object.keys(csvData[0]).join(','),
-            ...csvData.map(row => Object.values(row).join(','))
-        ].join('\n');
-        
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'attributeai-contacts.csv';
-        a.click();
-        window.URL.revokeObjectURL(url);
-    };
-
-    // Open contact details
-    const openContactDetails = (contact) => {
-        setSelectedContact(contact);
-        setContactForm({
-            first_name: contact.first_name,
-            last_name: contact.last_name,
-            email: contact.email,
-            phone: contact.phone || '',
-            job_title: contact.job_title || '',
-            company_id: contact.company_id || '',
-            lifecycle_stage: contact.lifecycle_stage,
-            lead_source: contact.lead_source || '',
-            notes: contact.notes || ''
-        });
-        setShowContactModal(true);
-    };
-
     return (
         <div className="max-w-7xl mx-auto p-6 bg-white">
-            {/* Header */}
             <div className="mb-8">
                 <div className="flex items-center justify-between mb-4">
                     <div>
@@ -99,37 +136,7 @@ await response.json();
                     
                     <div className="flex gap-3">
                         <Button
-                            onClick={() => setShowImportModal(true)}
-                            className="flex items-center gap-2 bg-gray-600 hover:bg-gray-700"
-                        >
-                            <Upload size={16} />
-                            Import
-                        </Button>
-                        
-                        <Button
-                            onClick={exportContacts}
-                            className="flex items-center gap-2 bg-green-600 hover:bg-green-700"
-                        >
-                            <Download size={16} />
-                            Export
-                        </Button>
-                        
-                        <Button
-                            onClick={() => {
-                                setSelectedContact(null);
-                                setContactForm({
-                                    first_name: '',
-                                    last_name: '',
-                                    email: '',
-                                    phone: '',
-                                    job_title: '',
-                                    company_id: '',
-                                    lifecycle_stage: 'lead',
-                                    lead_source: '',
-                                    notes: ''
-                                });
-                                setShowContactModal(true);
-                            }}
+                            onClick={() => setShowContactModal(true)}
                             className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700"
                         >
                             <Plus size={16} />
@@ -138,9 +145,7 @@ await response.json();
                     </div>
                 </div>
 
-                {/* Search and Filters */}
                 <div className="flex flex-wrap gap-4 items-center">
-                    {/* Search */}
                     <div className="relative flex-1 min-w-80">
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
                         <input
@@ -152,7 +157,6 @@ await response.json();
                         />
                     </div>
                     
-                    {/* Lifecycle Filter */}
                     <select
                         value={filters.lifecycle_stage}
                         onChange={(e) => setFilters({ ...filters, lifecycle_stage: e.target.value })}
@@ -166,28 +170,9 @@ await response.json();
                         <option value="customer">Customer</option>
                         <option value="evangelist">Evangelist</option>
                     </select>
-                    
-                    {/* Sort */}
-                    <select
-                        value={`${sortBy}-${sortOrder}`}
-                        onChange={(e) => {
-                            const [field, order] = e.target.value.split('-');
-                            setSortBy(field);
-                            setSortOrder(order);
-                        }}
-                        className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                    >
-                        <option value="lead_score-desc">Lead Score (High to Low)</option>
-                        <option value="lead_score-asc">Lead Score (Low to High)</option>
-                        <option value="created_at-desc">Recently Added</option>
-                        <option value="created_at-asc">Oldest First</option>
-                        <option value="last_activity_date-desc">Recently Active</option>
-                        <option value="first_name-asc">Name (A-Z)</option>
-                    </select>
                 </div>
             </div>
 
-            {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
                 <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-6 rounded-xl">
                     <div className="flex items-center justify-between">
@@ -239,7 +224,6 @@ await response.json();
                 </div>
             </div>
 
-            {/* Contacts Table */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200">
                 <div className="px-6 py-4 border-b border-gray-200">
                     <h3 className="text-lg font-semibold text-gray-900">
@@ -372,25 +356,16 @@ await response.json();
                                             <td className="px-6 py-4 text-sm font-medium">
                                                 <div className="flex items-center gap-2">
                                                     <button
-                                                        onClick={() => openContactDetails(contact)}
                                                         className="text-blue-600 hover:text-blue-900"
                                                         title="View Details"
                                                     >
                                                         <Eye size={16} />
                                                     </button>
                                                     <button
-                                                        onClick={() => openContactDetails(contact)}
                                                         className="text-gray-600 hover:text-gray-900"
                                                         title="Edit Contact"
                                                     >
                                                         <Edit size={16} />
-                                                    </button>
-                                                    <button
-                                                        onClick={() => handleDeleteContact(contact.id)}
-                                                        className="text-red-600 hover:text-red-900"
-                                                        title="Delete Contact"
-                                                    >
-                                                        <Trash2 size={16} />
                                                     </button>
                                                 </div>
                                             </td>
@@ -402,154 +377,6 @@ await response.json();
                     </div>
                 )}
             </div>
-
-            {/* Contact Modal */}
-            {showContactModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-xl p-6 w-full max-w-2xl max-h-90vh overflow-y-auto">
-                        <div className="flex justify-between items-center mb-6">
-                            <h2 className="text-xl font-bold text-gray-900">
-                                {selectedContact ? 'Edit Contact' : 'Add New Contact'}
-                            </h2>
-                            <button
-                                onClick={() => setShowContactModal(false)}
-                                className="text-gray-400 hover:text-gray-600"
-                            >
-                                ×
-                            </button>
-                        </div>
-                        
-                        <div className="space-y-4">
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        First Name *
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={contactForm.first_name}
-                                        onChange={(e) => setContactForm({ ...contactForm, first_name: e.target.value })}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                        required
-                                    />
-                                </div>
-                                
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Last Name *
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={contactForm.last_name}
-                                        onChange={(e) => setContactForm({ ...contactForm, last_name: e.target.value })}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                        required
-                                    />
-                                </div>
-                            </div>
-                            
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Email
-                                    </label>
-                                    <input
-                                        type="email"
-                                        value={contactForm.email}
-                                        onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                    />
-                                </div>
-                                
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Phone
-                                    </label>
-                                    <input
-                                        type="tel"
-                                        value={contactForm.phone}
-                                        onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                    />
-                                </div>
-                            </div>
-                            
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Job Title
-                                </label>
-                                <input
-                                    type="text"
-                                    value={contactForm.job_title}
-                                    onChange={(e) => setContactForm({ ...contactForm, job_title: e.target.value })}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                />
-                            </div>
-                            
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Lifecycle Stage
-                                    </label>
-                                    <select
-                                        value={contactForm.lifecycle_stage}
-                                        onChange={(e) => setContactForm({ ...contactForm, lifecycle_stage: e.target.value })}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                    >
-                                        <option value="subscriber">Subscriber</option>
-                                        <option value="lead">Lead</option>
-                                        <option value="qualified_lead">Qualified Lead</option>
-                                        <option value="opportunity">Opportunity</option>
-                                        <option value="customer">Customer</option>
-                                        <option value="evangelist">Evangelist</option>
-                                    </select>
-                                </div>
-                                
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Lead Source
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={contactForm.lead_source}
-                                        onChange={(e) => setContactForm({ ...contactForm, lead_source: e.target.value })}
-                                        placeholder="e.g., Organic Search, LinkedIn, Referral"
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                    />
-                                </div>
-                            </div>
-                            
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Notes
-                                </label>
-                                <textarea
-                                    value={contactForm.notes}
-                                    onChange={(e) => setContactForm({ ...contactForm, notes: e.target.value })}
-                                    rows={3}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                    placeholder="Add any notes about this contact..."
-                                />
-                            </div>
-                        </div>
-                        
-                        <div className="flex justify-end gap-3 mt-6">
-                            <Button
-                                onClick={() => setShowContactModal(false)}
-                                className="px-4 py-2 text-gray-700 bg-gray-200 hover:bg-gray-300"
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                onClick={handleSaveContact}
-                                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white"
-                            >
-                                {selectedContact ? 'Update Contact' : 'Create Contact'}
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };

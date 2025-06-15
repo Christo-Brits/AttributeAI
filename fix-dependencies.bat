@@ -1,31 +1,50 @@
 @echo off
-echo 🔧 Fixing AttributeAI Dependencies for Netlify Deployment
-echo ========================================================
+echo Fixing Netlify react-scripts dependency issue
+cd "C:\Users\chris\Projects\AttributeAI"
 
-echo 🧹 Cleaning existing dependencies...
-if exist node_modules rmdir /s /q node_modules
-if exist package-lock.json del package-lock.json
-
-echo ⚡ Installing updated dependencies...
-npm install --legacy-peer-deps
-
-echo 🔒 Auditing and fixing vulnerabilities...
-npm audit fix --legacy-peer-deps
-
-echo 🏗️ Testing build process...
-npm run build
+echo Current directory:
+cd
 
 echo.
-echo ✅ Dependencies updated successfully!
-echo 🚀 Ready for Netlify deployment!
+echo Removing package-lock.json to force fresh install...
+del package-lock.json
+
 echo.
-echo 📋 Changes made:
-echo • Updated all major dependencies to latest versions
-echo • Fixed deprecated package warnings  
-echo • Added Node.js version specification
-echo • Enhanced Netlify configuration
-echo • Resolved build compatibility issues
+echo Installing dependencies with clean install...
+npm install
+
 echo.
-echo 🎯 Next: Commit and push changes to trigger new Netlify build
+echo Checking git status:
+git status --porcelain
+
+echo.
+echo Adding all dependency fixes...
+git add package.json netlify.toml .npmrc package-lock.json
+
+echo.
+echo Committing dependency fixes...
+git commit -m "Fix Netlify react-scripts dependency issue
+
+Fixes:
+- Pinned react-scripts to exact version 5.0.1
+- Updated Netlify build command to use npm ci for clean installs
+- Added .npmrc for consistent package installation
+- Regenerated package-lock.json for dependency resolution
+
+Build configuration:
+- Changed from 'npm install' to 'npm ci' for deterministic builds
+- Added npm configuration flags for consistent behavior
+- Ensured react-scripts is properly available for build command
+
+This resolves the 'Command react-scripts build not found' error
+by ensuring all dependencies are properly installed before build."
+
+echo.
+echo Pushing to GitHub to trigger new Netlify build...
+git push origin main
+
+echo.
+echo Dependency fixes committed and pushed!
+echo Netlify will automatically rebuild with fixed dependencies!
 
 pause

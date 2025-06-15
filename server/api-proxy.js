@@ -13,7 +13,6 @@ if (process.env.STRIPE_SECRET_KEY) {
 const keywordIntelligenceRoutes = require('./routes/keyword-intelligence');
 const contentGenerationRoutes = require('./routes/content-generation');
 const crmRoutes = require('./routes/crm');
-const weatherRoutes = require('./routes/weather-intelligence');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -29,7 +28,6 @@ app.use(express.json());
 app.use('/api/keyword-intelligence', keywordIntelligenceRoutes);
 app.use('/api/content', contentGenerationRoutes);
 app.use('/api/crm', crmRoutes);
-app.use('/api/weather', weatherRoutes);
 
 // Stripe Integration Routes
 app.post('/api/create-checkout-session', async (req, res) => {

@@ -1,0 +1,487 @@
+}
+
+.rec-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.rec-content h4 {
+  margin: 0 0 8px 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.rec-content p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+/* Spend Optimization */
+.spend-optimization {
+  max-width: 1200px;
+}
+
+.optimization-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.optimization-header h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 10px 0;
+}
+
+.optimization-header p {
+  font-size: 1.1rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.spend-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.summary-card {
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+  text-align: center;
+}
+
+.summary-card h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 15px 0;
+}
+
+.spend-change {
+  margin-bottom: 15px;
+}
+
+.change-amount {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.change-amount.positive {
+  color: #059669;
+}
+
+.change-amount.negative {
+  color: #dc2626;
+}
+
+.change-percentage {
+  display: block;
+  font-size: 1.1rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.confidence-score {
+  margin-bottom: 15px;
+}
+
+.score {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #3b82f6;
+  margin-bottom: 5px;
+}
+
+.score-label {
+  display: block;
+  font-size: 1.1rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* Recommendations Table */
+.recommendations-table {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+  margin-bottom: 40px;
+}
+
+.recommendations-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.recommendations-table th {
+  background: #f8fafc;
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  color: #1e293b;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.recommendations-table td {
+  padding: 15px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.recommendations-table tr:hover {
+  background: #f8fafc;
+}
+
+.day-cell {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.weather-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.weather-icon {
+  font-size: 1.2rem;
+}
+
+.weather-condition {
+  font-weight: 500;
+}
+
+.recommended-spend {
+  font-weight: 600;
+  color: #3b82f6;
+}
+
+.spend-change.positive {
+  color: #059669;
+  font-weight: 600;
+}
+
+.spend-change.negative {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.confidence-indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.confidence-bar {
+  width: 60px;
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.confidence-fill {
+  height: 100%;
+  background: #3b82f6;
+  transition: width 0.3s ease;
+}
+
+.confidence-text {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.reason-cell {
+  font-size: 0.9rem;
+  color: #64748b;
+  max-width: 200px;
+  line-height: 1.4;
+}
+
+/* Automation Controls */
+.automation-controls {
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+}
+
+.automation-controls h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 20px 0;
+}
+
+.automation-options {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.automation-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #1e293b;
+}
+
+.automation-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+.checkmark {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #d1d5db;
+  border-radius: 4px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.automation-checkbox input[type="checkbox"]:checked + .checkmark {
+  background: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.automation-checkbox input[type="checkbox"]:checked + .checkmark::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* Weather Forecast */
+.weather-forecast {
+  max-width: 1400px;
+}
+
+.forecast-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.forecast-header h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 10px 0;
+}
+
+.forecast-header p {
+  font-size: 1.1rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.forecast-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 25px;
+}
+
+.forecast-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+  transition: transform 0.3s ease;
+}
+
+.forecast-card:hover {
+  transform: translateY(-5px);
+}
+
+.forecast-day {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  padding: 25px;
+  text-align: center;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.forecast-day h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 15px 0;
+}
+
+.weather-icon-large {
+  font-size: 3rem;
+  margin: 10px 0;
+}
+
+.temperature-range {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 15px 0;
+}
+
+.high {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #dc2626;
+}
+
+.low {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #3b82f6;
+}
+
+.condition {
+  font-size: 1.1rem;
+  color: #64748b;
+  margin: 10px 0;
+}
+
+.precipitation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.precip-icon {
+  font-size: 1rem;
+}
+
+.marketing-impact {
+  padding: 25px;
+}
+
+.marketing-impact h4 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 15px 0;
+}
+
+.impact-indicators {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.impact-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.impact-label {
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.impact-value {
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.impact-value.positive {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.impact-value.negative {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.impact-value.neutral {
+  background: #f1f5f9;
+  color: #1e293b;
+}
+
+.recommendations h5 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 10px 0;
+}
+
+.recommendations ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.recommendations li {
+  font-size: 0.9rem;
+  color: #64748b;
+  line-height: 1.4;
+  margin-bottom: 5px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .weather-intelligence {
+    padding: 15px;
+  }
+
+  .weather-intelligence-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+  }
+
+  .header-stats {
+    justify-content: center;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .forecast-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .spend-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .recommendations-table {
+    overflow-x: auto;
+  }
+
+  .temperature-range {
+    gap: 10px;
+  }
+
+  .high,
+  .low {
+    font-size: 1.5rem;
+  }
+}

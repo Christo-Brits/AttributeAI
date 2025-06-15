@@ -123,6 +123,43 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
           </div>
         </div>
 
+        {/* Weather Intelligence Feature Callout */}
+        <div className="bg-gradient-to-r from-cyan-800/80 to-blue-800/80 backdrop-blur-sm border border-cyan-600/50 rounded-xl p-6 mb-8 shadow-2xl">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-xl font-semibold text-white mb-2">
+                🌤️ NEW: Weather Intelligence
+              </h3>
+              <div className="grid grid-cols-3 gap-6 text-sm">
+                <div className="flex items-center space-x-2">
+                  <Zap className="h-5 w-5 text-cyan-400" />
+                  <span className="text-gray-300"><strong className="text-white">Smart Spend Optimization</strong> • Weather-based budgets</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Target className="h-5 w-5 text-blue-400" />
+                  <span className="text-gray-300"><strong className="text-white">Predictive Analytics</strong> • 94% accuracy</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <BarChart3 className="h-5 w-5 text-purple-400" />
+                  <span className="text-gray-300"><strong className="text-white">Industry-Specific</strong> • Retail, travel, restaurants</span>
+                </div>
+              </div>
+            </div>
+            <div className="text-right">
+              <div className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">First-of-its-Kind</div>
+              <div className="text-sm text-gray-400">Weather marketing optimization</div>
+            </div>
+          </div>
+          <div className="mt-4 flex justify-center">
+            <Button 
+              onClick={() => onNavigateToTab('weather-intelligence')}
+              className="bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 text-white px-8 py-3 text-lg font-semibold hover:from-cyan-600 hover:via-blue-600 hover:to-purple-600 transition-all duration-200 transform hover:scale-105 shadow-lg"
+            >
+              🌤️ Try Weather Intelligence
+            </Button>
+          </div>
+        </div>
+
         {/* Performance Overview */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="text-center group hover:scale-105 transition-all duration-300">

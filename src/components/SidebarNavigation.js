@@ -137,7 +137,15 @@ const SidebarNavigation = ({ activeTab, setActiveTab, onViewChange, user: authUs
         { id: 'realtime', name: 'Real-Time Tracking', icon: Activity, description: 'Live performance' },
         { id: 'analytics', name: 'Journey Analytics', icon: TrendingUp, description: 'Customer journeys' },
         { id: 'leadmagnet', name: 'Lead Magnet Generator', icon: Target, description: 'Conversion tools' },
-        { id: 'cro', name: 'CRO Analyzer', icon: Eye, description: 'Optimization insights' }
+        { id: 'cro', name: 'CRO Analyzer', icon: Eye, description: 'Optimization insights' },
+        { 
+          id: 'weather-intelligence', 
+          name: 'Weather Intelligence', 
+          icon: '🌤️', 
+          new: true, 
+          description: 'Weather-based spend optimization',
+          competitive: 'First-of-its-kind'
+        }
       ]
     },
     {

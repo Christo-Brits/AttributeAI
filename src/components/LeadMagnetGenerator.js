@@ -176,16 +176,16 @@ const LeadMagnetGenerator = () => {
   const renderInputForm = () => (
     <div className="max-w-2xl mx-auto">
       <div className="text-center mb-8">
-        <Target className="mx-auto h-12 w-12 text-blue-600 mb-4" />
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">Lead Magnet Generator</h2>
-        <p className="text-lg text-gray-600">
+        <Target className="mx-auto h-12 w-12 text-blue-400 mb-4" />
+        <h2 className="text-3xl font-bold text-white mb-4">Lead Magnet Generator</h2>
+        <p className="text-lg text-gray-300">
           Create high-converting web app lead magnets tailored to your niche
         </p>
       </div>
 
       <form onSubmit={handleInputSubmit} className="space-y-6">
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-lg font-semibold mb-4">Business Information</h3>
+        <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl border border-gray-700/50 p-6">
+          <h3 className="text-lg font-semibold text-white mb-4">Business Information</h3>
           
           <div className="space-y-4">
             <div>
@@ -562,12 +562,14 @@ const LeadMagnetGenerator = () => {
   );
 
   return (
-    <div className="p-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900/20 to-purple-900/20 p-6">
       <div className="mb-8">
         <div className="flex items-center justify-between mb-4">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Lead Magnet Generator</h1>
-            <p className="text-gray-600">Create high-converting web app lead magnets for your business</p>
+          <div className="text-center w-full">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
+              Lead Magnet Generator
+            </h1>
+            <p className="text-gray-300 text-lg">Create high-converting web app lead magnets for your business</p>
           </div>
           
           {/* Progress indicator using new design system */}

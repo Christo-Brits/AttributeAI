@@ -198,23 +198,25 @@ const AttributionEngine = () => {
 
   const colors = ['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#0088fe'];
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900/20 to-purple-900/20 p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Advanced Attribution Engine</h1>
-          <p className="text-gray-600">Multi-touch attribution with weather intelligence correlation</p>
+        <div className="mb-8 text-center">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
+            Advanced Attribution Engine
+          </h1>
+          <p className="text-gray-300 text-lg">Multi-touch attribution with weather intelligence correlation</p>
         </div>
 
         {/* Controls */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+        <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl border border-gray-700/50 p-6 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Attribution Model</label>
+              <label className="block text-sm font-medium text-gray-300 mb-2">Attribution Model</label>
               <select 
                 value={selectedModel} 
                 onChange={(e) => setSelectedModel(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full p-2 bg-gray-800/50 border border-gray-600/50 rounded-lg text-white focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50"
               >
                 <option value="first-click">First Click Attribution</option>
                 <option value="last-click">Last Click Attribution</option>
@@ -224,11 +226,11 @@ const AttributionEngine = () => {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Time Range</label>
+              <label className="block text-sm font-medium text-gray-300 mb-2">Time Range</label>
               <select 
                 value={timeRange} 
                 onChange={(e) => setTimeRange(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full p-2 bg-gray-800/50 border border-gray-600/50 rounded-lg text-white focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50"
               >
                 <option value="7d">Last 7 Days</option>
                 <option value="30d">Last 30 Days</option>
@@ -236,11 +238,11 @@ const AttributionEngine = () => {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Weather Filter</label>
+              <label className="block text-sm font-medium text-gray-300 mb-2">Weather Filter</label>
               <select 
                 value={weatherFilter} 
                 onChange={(e) => setWeatherFilter(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full p-2 bg-gray-800/50 border border-gray-600/50 rounded-lg text-white focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50"
               >
                 <option value="all">All Weather</option>
                 <option value="stormy">Stormy Weather</option>
@@ -251,16 +253,16 @@ const AttributionEngine = () => {
           </div>
         </div>
         {/* Attribution Model Explanation */}
-        <div className="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
+        <div className="bg-blue-900/20 border-l-4 border-blue-400 p-4 mb-6 rounded-lg">
           <div className="flex">
             <div className="flex-shrink-0">
               <Eye className="h-5 w-5 text-blue-400" />
             </div>
             <div className="ml-3">
-              <h3 className="text-sm font-medium text-blue-800">
+              <h3 className="text-sm font-medium text-blue-300">
                 {selectedModel.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())} Model
               </h3>
-              <div className="mt-2 text-sm text-blue-700">
+              <div className="mt-2 text-sm text-blue-200">
                 {selectedModel === 'first-click' && "Gives 100% credit to the first touchpoint in the customer journey."}
                 {selectedModel === 'last-click' && "Gives 100% credit to the final touchpoint before conversion."}
                 {selectedModel === 'linear' && "Distributes conversion credit equally across all touchpoints."}
@@ -273,28 +275,28 @@ const AttributionEngine = () => {
 
         {/* KPI Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow-sm p-6">
+          <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl border border-gray-700/50 p-6">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <DollarSign className="h-8 w-8 text-green-600" />
+                <DollarSign className="h-8 w-8 text-green-400" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Total Revenue</p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-sm font-medium text-gray-400">Total Revenue</p>
+                <p className="text-2xl font-bold text-white">
                   ${(channelArray && channelArray.length > 0 ? channelArray.reduce((sum, ch) => sum + (ch.attribution || 0), 0) : 0).toLocaleString()}
                 </p>
               </div>
             </div>
           </div>
           
-          <div className="bg-white rounded-lg shadow-sm p-6">
+          <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl border border-gray-700/50 p-6">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <TrendingUp className="h-8 w-8 text-blue-600" />
+                <TrendingUp className="h-8 w-8 text-blue-400" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Average ROAS</p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-sm font-medium text-gray-400">Average ROAS</p>
+                <p className="text-2xl font-bold text-white">
                   {channelArray && channelArray.length > 0 
                     ? (channelArray.reduce((sum, ch) => sum + parseFloat(ch.roas || 0), 0) / channelArray.length).toFixed(2)
                     : '0.00'}x
@@ -302,28 +304,28 @@ const AttributionEngine = () => {
               </div>
             </div>
           </div>          
-          <div className="bg-white rounded-lg shadow-sm p-6">
+          <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl border border-gray-700/50 p-6">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <MapPin className="h-8 w-8 text-purple-600" />
+                <MapPin className="h-8 w-8 text-purple-400" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Total Touchpoints</p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-sm font-medium text-gray-400">Total Touchpoints</p>
+                <p className="text-2xl font-bold text-white">
                   {channelArray && channelArray.length > 0 ? channelArray.reduce((sum, ch) => sum + (ch.touchpoints || 0), 0) : 0}
                 </p>
               </div>
             </div>
           </div>
           
-          <div className="bg-white rounded-lg shadow-sm p-6">
+          <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl border border-gray-700/50 p-6">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <Cloud className="h-8 w-8 text-orange-600" />
+                <Cloud className="h-8 w-8 text-orange-400" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Weather Events</p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-sm font-medium text-gray-400">Weather Events</p>
+                <p className="text-2xl font-bold text-white">
                   {weatherArray.length}
                 </p>
               </div>
@@ -340,12 +342,12 @@ const AttributionEngine = () => {
         {/* Charts Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           {/* Channel Attribution */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Channel Attribution</h3>
+          <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl border border-gray-700/50 p-6">
+            <h3 className="text-lg font-semibold text-white mb-4">Channel Attribution</h3>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={channelArray}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="channel" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                <XAxis dataKey="channel" stroke="#9CA3AF" />
                 <YAxis />
                 <Tooltip formatter={(value) => [`$${value.toLocaleString()}`, 'Attribution']} />
                 <Bar dataKey="attribution" fill="#8884d8" />
@@ -376,35 +378,41 @@ const AttributionEngine = () => {
           </div>
         </div>
         {/* Attribution Model Comparison */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Attribution Model Comparison</h3>
+        <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl border border-gray-700/50 p-6 mb-8">
+          <h3 className="text-lg font-semibold text-white mb-4">Attribution Model Comparison</h3>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={modelComparison}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="model" />
-              <YAxis />
+              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+              <XAxis dataKey="model" stroke="#9CA3AF" />
+              <YAxis stroke="#9CA3AF" />
               <Tooltip 
                 formatter={(value, name) => [
                   name === 'value' ? `$${value.toLocaleString()}` : `${value}x`,
                   name === 'value' ? 'Total Attribution' : 'ROAS'
-                ]} 
+                ]}
+                contentStyle={{
+                  backgroundColor: '#1F2937',
+                  border: '1px solid #374151',
+                  borderRadius: '0.5rem',
+                  color: '#F3F4F6'
+                }}
               />
-              <Bar dataKey="value" fill="#82ca9d" name="value" />
+              <Bar dataKey="value" fill="#10B981" name="value" />
             </BarChart>
           </ResponsiveContainer>
         </div>
 
         {/* Customer Journey Visualization */}
-        <div className="bg-white rounded-lg shadow-sm p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Customer Journey Analysis</h3>
+        <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl border border-gray-700/50 p-6">
+          <h3 className="text-lg font-semibold text-white mb-4">Customer Journey Analysis</h3>
           <div className="space-y-6">
             {processedJourneys.map((journey, index) => (
               <div key={journey.customerId} className="border-l-4 border-blue-400 pl-4">
-                <h4 className="font-medium text-gray-900 mb-2">Customer {journey.customerId}</h4>
+                <h4 className="font-medium text-white mb-2">Customer {journey.customerId}</h4>
                 <div className="flex flex-wrap items-center gap-2 mb-2">
                   {journey.attributedTouchpoints.map((tp, tpIndex) => (
                     <div key={tpIndex} className="flex items-center">
-                      <div className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+                      <div className="bg-blue-900/50 text-blue-300 px-3 py-1 rounded-full text-sm border border-blue-700/50">
                         {tp.channel}
                         <span className="ml-1 text-xs">
                           (${tp.attribution.toFixed(0)})
@@ -415,11 +423,11 @@ const AttributionEngine = () => {
                       )}
                     </div>
                   ))}
-                  <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                  <div className="bg-green-900/50 text-green-300 px-3 py-1 rounded-full text-sm font-medium border border-green-700/50">
                     Conversion: ${journey.conversion.value}
                   </div>
                 </div>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-400">
                   Journey Length: {journey.touchpoints.length} touchpoints | 
                   Total Attribution: ${journey.attributedTouchpoints.reduce((sum, tp) => sum + tp.attribution, 0).toFixed(0)}
                 </p>

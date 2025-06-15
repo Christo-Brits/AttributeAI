@@ -189,36 +189,37 @@ const EnhancedContentGenerator = () => {
   );
 
   return (
-    <div className="max-w-7xl mx-auto p-6 space-y-6">
-      {/* Header */}
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">
-          🚀 Enhanced Content Generator
-        </h1>
-        <p className="text-lg text-gray-600 mb-4">
-          Multi-Model AI • Unlimited Generation • Attribution Intelligence
-        </p>
-        <div className="flex items-center justify-center space-x-8 text-sm">
-          <div className="text-center">
-            <div className="text-2xl font-bold text-blue-600">{todayGenerations}</div>
-            <div className="text-gray-500">Today</div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900/20 to-purple-900/20">
+      <div className="max-w-7xl mx-auto p-6 space-y-6">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
+            🚀 Enhanced Content Generator
+          </h1>
+          <p className="text-lg text-gray-400 mb-4">
+            Multi-Model AI • Unlimited Generation • Attribution Intelligence
+          </p>
+          <div className="flex items-center justify-center space-x-8 text-sm">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-blue-400">{todayGenerations}</div>
+              <div className="text-gray-500">Today</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-purple-400">∞</div>
+              <div className="text-gray-500">Limit</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-green-400">{totalGenerations}</div>
+              <div className="text-gray-500">Total</div>
+            </div>
           </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-purple-600">∞</div>
-            <div className="text-gray-500">Limit</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-green-600">{totalGenerations}</div>
-            <div className="text-gray-500">Total</div>
+          <div className="mt-4 flex items-center justify-center">
+            <div className="bg-gradient-to-r from-red-500/20 to-pink-500/20 border border-red-500/50 rounded-lg px-4 py-2 backdrop-blur-sm">
+              <span className="text-red-400 font-medium">🎯 Outrank.so Killer:</span>
+              <span className="text-red-300 ml-2">Unlimited content generation with multi-model AI and attribution tracking</span>
+            </div>
           </div>
         </div>
-        <div className="mt-4 flex items-center justify-center">
-          <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-2">
-            <span className="text-red-600 font-medium">🎯 Outrank.so Killer:</span>
-            <span className="text-red-700 ml-2">Unlimited content generation with multi-model AI and attribution tracking</span>
-          </div>
-        </div>
-      </div>
 
       {/* AI Model Selection */}
       <Card className="p-6">
@@ -568,6 +569,7 @@ const EnhancedContentGenerator = () => {
           </div>
         </Card>
       )}
+      </div>
     </div>
   );
 };

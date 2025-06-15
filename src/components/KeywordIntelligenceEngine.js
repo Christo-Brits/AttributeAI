@@ -88,30 +88,31 @@ const KeywordIntelligenceEngine = () => {
   );
 
   return (
-    <div className="max-w-7xl mx-auto p-6 space-y-6">
-      {/* Header */}
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">
-          🚀 Keyword Intelligence Engine
-        </h1>
-        <p className="text-lg text-gray-600 mb-4">
-          Unlimited AI-powered keyword research with multi-model analysis
-        </p>
-        <div className="flex items-center justify-center space-x-6 text-sm">
-          <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-            <span className="text-green-700 font-medium">Production Database Connected</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Zap className="w-4 h-4 text-purple-500" />
-            <span className="text-purple-700">Unlimited Research</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Brain className="w-4 h-4 text-blue-500" />
-            <span className="text-blue-700">Multi-AI Analysis</span>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900/20 to-purple-900/20">
+      <div className="max-w-7xl mx-auto p-6 space-y-6">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
+            🚀 Keyword Intelligence Engine
+          </h1>
+          <p className="text-lg text-gray-400 mb-4">
+            Unlimited AI-powered keyword research with multi-model analysis
+          </p>
+          <div className="flex items-center justify-center space-x-6 text-sm">
+            <div className="flex items-center space-x-2">
+              <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+              <span className="text-green-300 font-medium">Production Database Connected</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Zap className="w-4 h-4 text-purple-400" />
+              <span className="text-purple-300">Unlimited Research</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Brain className="w-4 h-4 text-blue-400" />
+              <span className="text-blue-300">Multi-AI Analysis</span>
+            </div>
           </div>
         </div>
-      </div>
 
       {/* Search Interface */}
       <Card className="p-6">
@@ -353,6 +354,7 @@ const KeywordIntelligenceEngine = () => {
           </div>
         </Card>
       )}
+      </div>
     </div>
   );
 };

@@ -101,22 +101,24 @@ const JourneyAnalytics = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900/20 to-purple-900/20 p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Journey Analytics</h1>
-          <p className="text-gray-600">Deep insights into customer behavior and conversion paths</p>
+        <div className="mb-8 text-center">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
+            Journey Analytics
+          </h1>
+          <p className="text-gray-300 text-lg">Deep insights into customer behavior and conversion paths with weather-intelligent attribution</p>
         </div>
         {/* Filters */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+        <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl border border-gray-700/50 p-6 mb-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <Filter className="h-5 w-5 text-gray-400" />
               <select 
                 value={timeFilter} 
                 onChange={(e) => setTimeFilter(e.target.value)}
-                className="p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                className="p-2 bg-gray-800/50 border border-gray-600/50 rounded-lg text-white focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50"
               >
                 <option value="24h">Last 24 Hours</option>
                 <option value="7d">Last 7 Days</option>
@@ -125,7 +127,7 @@ const JourneyAnalytics = () => {
               <select 
                 value={deviceFilter} 
                 onChange={(e) => setDeviceFilter(e.target.value)}
-                className="p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                className="p-2 bg-gray-800/50 border border-gray-600/50 rounded-lg text-white focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50"
               >
                 <option value="all">All Devices</option>
                 <option value="desktop">Desktop</option>
@@ -133,7 +135,7 @@ const JourneyAnalytics = () => {
                 <option value="tablet">Tablet</option>
               </select>
             </div>
-            <button className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+            <button className="flex items-center space-x-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all">
               <Download className="h-4 w-4" />
               <span>Export Report</span>
             </button>
@@ -142,54 +144,54 @@ const JourneyAnalytics = () => {
 
         {/* KPI Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow-sm p-6">
+          <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl border border-gray-700/50 p-6">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <Users className="h-8 w-8 text-blue-600" />
+                <Users className="h-8 w-8 text-blue-400" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Total Sessions</p>
-                <p className="text-2xl font-bold text-gray-900">{totalSessions.toLocaleString()}</p>
-                <p className="text-xs text-green-600">↑ 12% vs yesterday</p>
+                <p className="text-sm font-medium text-gray-400">Total Sessions</p>
+                <p className="text-2xl font-bold text-white">{totalSessions.toLocaleString()}</p>
+                <p className="text-xs text-green-400">↑ 12% vs yesterday</p>
               </div>
             </div>
           </div>
           
-          <div className="bg-white rounded-lg shadow-sm p-6">
+          <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl border border-gray-700/50 p-6">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <Target className="h-8 w-8 text-green-600" />
+                <Target className="h-8 w-8 text-green-400" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Conversion Rate</p>
-                <p className="text-2xl font-bold text-gray-900">{overallConversionRate}%</p>
-                <p className="text-xs text-blue-600">Weather correlated</p>
+                <p className="text-sm font-medium text-gray-400">Conversion Rate</p>
+                <p className="text-2xl font-bold text-white">{overallConversionRate}%</p>
+                <p className="text-xs text-blue-400">Weather correlated</p>
               </div>
             </div>
           </div>
           
-          <div className="bg-white rounded-lg shadow-sm p-6">
+          <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl border border-gray-700/50 p-6">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <Clock className="h-8 w-8 text-purple-600" />
+                <Clock className="h-8 w-8 text-purple-400" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Avg Journey Length</p>
-                <p className="text-2xl font-bold text-gray-900">{avgJourneyLength}</p>
-                <p className="text-xs text-gray-600">touchpoints</p>
+                <p className="text-sm font-medium text-gray-400">Avg Journey Length</p>
+                <p className="text-2xl font-bold text-white">{avgJourneyLength}</p>
+                <p className="text-xs text-gray-500">touchpoints</p>
               </div>
             </div>
           </div>
           
-          <div className="bg-white rounded-lg shadow-sm p-6">
+          <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl border border-gray-700/50 p-6">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <TrendingUp className="h-8 w-8 text-orange-600" />
+                <TrendingUp className="h-8 w-8 text-orange-400" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Total Conversions</p>
-                <p className="text-2xl font-bold text-gray-900">{totalConversions}</p>
-                <p className="text-xs text-green-600">↑ 8% vs yesterday</p>
+                <p className="text-sm font-medium text-gray-400">Total Conversions</p>
+                <p className="text-2xl font-bold text-white">{totalConversions}</p>
+                <p className="text-xs text-green-400">↑ 8% vs yesterday</p>
               </div>
             </div>
           </div>

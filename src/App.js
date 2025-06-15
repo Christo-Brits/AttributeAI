@@ -179,8 +179,10 @@ function AppRouter() {
       setAppView('success');
     } else if (window.location.pathname === '/pricing') {
       setAppView('landing');
+    } else if (isAuthenticated) {
+      setAppView('app');
     }
-  }, []);
+  }, [isAuthenticated]);
 
   const handleGetStarted = (plan) => {
     if (plan === 'freemium') {
@@ -228,19 +230,29 @@ function AppRouter() {
     />;
   }
 
-  if (appView === 'landing' && !isAuthenticated) {
+  // Force app view if authenticated
+  if (isAuthenticated) {
+    return <AuthenticatedApp />;
+  }
+
+  // Show landing page by default for non-authenticated users
+  if (appView === 'landing') {
     return <LandingPage 
       onGetStarted={() => setAppView('login')} 
       onSignIn={() => setAppView('login')} 
     />;
   }
 
-  if (appView === 'login' || (!isAuthenticated && appView !== 'landing')) {
+  // Show login page
+  if (appView === 'login') {
     return <LoginPage onLogin={handleLogin} />;
   }
 
-  // Show main app if authenticated
-  return <AuthenticatedApp />;
+  // Fallback to landing page to prevent blank screen
+  return <LandingPage 
+    onGetStarted={() => setAppView('login')} 
+    onSignIn={() => setAppView('login')} 
+  />;
 }
 
 export default App;

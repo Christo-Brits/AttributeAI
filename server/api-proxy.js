@@ -12,6 +12,7 @@ if (process.env.STRIPE_SECRET_KEY) {
 // Import route modules
 const keywordIntelligenceRoutes = require('./routes/keyword-intelligence');
 const contentGenerationRoutes = require('./routes/content-generation');
+const crmRoutes = require('./routes/crm');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -26,6 +27,7 @@ app.use(express.json());
 // Route Modules
 app.use('/api/keyword-intelligence', keywordIntelligenceRoutes);
 app.use('/api/content', contentGenerationRoutes);
+app.use('/api/crm', crmRoutes);
 
 // Stripe Integration Routes
 app.post('/api/create-checkout-session', async (req, res) => {

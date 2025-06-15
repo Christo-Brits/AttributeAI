@@ -35,6 +35,11 @@ const JourneyAnalytics = lazy(() => import('./components/JourneyAnalytics'));
 const LeadMagnetGenerator = lazy(() => import('./components/LeadMagnetGenerator'));
 const CROAnalyzer = lazy(() => import('./components/CROAnalyzer'));
 
+// CRM Components
+const CRMDashboard = lazy(() => import('./components/crm/CRMDashboard'));
+const ContactManager = lazy(() => import('./components/crm/ContactManager'));
+const DealPipeline = lazy(() => import('./components/crm/DealPipeline'));
+
 // Loading component
 const ComponentLoader = () => (
   <div className="flex items-center justify-center min-h-screen">
@@ -86,7 +91,15 @@ function AuthenticatedApp() {
       leadmagnet: LeadMagnetGenerator,
       cro: CROAnalyzer,
       publishing: PublishingDashboard,
-      scheduler: ContentScheduler
+      scheduler: ContentScheduler,
+      // CRM Components
+      'crm-dashboard': CRMDashboard,
+      'crm-contacts': ContactManager,
+      'crm-pipeline': DealPipeline,
+      'crm-attribution': () => <div className="text-center py-12">
+        <h3 className="text-lg font-medium text-gray-900 mb-2">Revenue Attribution</h3>
+        <p className="text-gray-600">Coming soon - Advanced revenue attribution analysis</p>
+      </div>
     };
 
     const Component = components[activeTab] || (() => <UnifiedDashboard websiteAnalysis={websiteAnalysisResults} />);

@@ -131,14 +131,14 @@ const SidebarNavigation = ({ activeTab, setActiveTab, onViewChange, user: authUs
     },
     {
       id: 'crm',
-      title: 'CRM & Revenue (Coming Soon)',
+      title: 'CRM & Revenue Intelligence',
       expandable: true,
-      disabled: true,
+      disabled: false,
       items: [
-        { id: 'contacts', name: 'Contacts', icon: Users, description: 'Contact management', disabled: true },
-        { id: 'companies', name: 'Companies', icon: Building, description: 'Company profiles', disabled: true },
-        { id: 'deals', name: 'Deal Pipeline', icon: GitBranch, description: 'Sales pipeline', disabled: true },
-        { id: 'revenue', name: 'Revenue Attribution', icon: DollarSign, description: 'Marketing ROI', disabled: true }
+        { id: 'crm-dashboard', name: 'CRM Dashboard', icon: Users, description: 'Complete CRM overview' },
+        { id: 'crm-contacts', name: 'Contacts', icon: Users, description: 'Contact management' },
+        { id: 'crm-pipeline', name: 'Deal Pipeline', icon: GitBranch, description: 'Sales pipeline' },
+        { id: 'crm-attribution', name: 'Revenue Attribution', icon: DollarSign, description: 'Marketing ROI' }
       ]
     }
   ];

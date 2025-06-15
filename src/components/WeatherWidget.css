@@ -1,0 +1,177 @@
+/* Weather Widget Styles - Minimal and Fast */
+.weather-widget {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  padding: 20px;
+  color: white;
+  margin: 20px 0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.weather-widget:hover {
+  transform: translateY(-2px);
+}
+
+.weather-widget.loading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  background: #f8fafc;
+  color: #64748b;
+}
+
+.weather-widget.offline {
+  text-align: center;
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.weather-widget.offline button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.weather-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.weather-icon {
+  font-size: 2rem;
+}
+
+.weather-info h3 {
+  margin: 0 0 5px 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.weather-info p {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 0.9rem;
+}
+
+.spend-recommendation {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.recommendation-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.recommendation-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.adjustment {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.change {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.change.positive {
+  color: #4ade80;
+}
+
+.change.negative {
+  color: #f87171;
+}
+
+.reason {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+.confidence {
+  text-align: right;
+}
+
+.confidence-label {
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+.confidence-value {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.weather-alerts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.alert {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.alert.opportunity {
+  border-left: 3px solid #4ade80;
+}
+
+.alert.warning {
+  border-left: 3px solid #fbbf24;
+}
+
+.alert.critical {
+  border-left: 3px solid #f87171;
+}
+
+.last-updated {
+  text-align: center;
+  font-size: 0.8rem;
+  opacity: 0.7;
+  margin-top: 10px;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e2e8f0;
+  border-top: 2px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.offline-icon {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}

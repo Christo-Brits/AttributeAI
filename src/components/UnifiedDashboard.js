@@ -5,6 +5,8 @@ import { useDataBridge } from '../utils/DataBridge';
 import { useAuth } from './auth/AuthContext';
 import { useAnalytics } from '../hooks/useAnalytics';
 import AttributeAILogo from './ui/AttributeAILogo';
+import WeatherWidget from './WeatherWidget';
+import './WeatherWidget.css';
 
 const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
   const { user } = useAuth();
@@ -246,6 +248,9 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
           </Card>
         )}
       </div>
+      
+      {/* Weather Intelligence Widget */}
+      <WeatherWidget />
       
       {/* Footer */}
       <footer className="mt-12 text-center text-xs text-gray-500 py-6">

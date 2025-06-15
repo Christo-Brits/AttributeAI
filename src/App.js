@@ -45,9 +45,9 @@ const RevenueAttribution = lazy(() => import('./components/crm/RevenueAttributio
 const EmailSequenceBuilder = lazy(() => import('./components/email/EmailSequenceBuilder'));
 const EmailAnalytics = lazy(() => import('./components/email/EmailAnalytics'));
 
-// Weather Intelligence Components
-const WeatherIntelligence = lazy(() => import('./components/weather/WeatherIntelligence'));
-const WeatherAnalytics = lazy(() => import('./components/weather/WeatherAnalytics'));
+// Weather Intelligence Components - TEMPORARILY DISABLED FOR DEBUGGING
+// const WeatherIntelligence = lazy(() => import('./components/weather/WeatherIntelligence'));
+// const WeatherAnalytics = lazy(() => import('./components/weather/WeatherAnalytics'));
 
 // Loading component
 const ComponentLoader = () => (
@@ -101,9 +101,9 @@ function AuthenticatedApp() {
       cro: CROAnalyzer,
       publishing: PublishingDashboard,
       scheduler: ContentScheduler,
-      // Weather Intelligence Components
-      'weather-intelligence': WeatherIntelligence,
-      'weather-analytics': WeatherAnalytics,
+      // Weather Intelligence Components - TEMPORARILY DISABLED FOR DEBUGGING
+      // 'weather-intelligence': WeatherIntelligence,
+      // 'weather-analytics': WeatherAnalytics,
       // CRM Components
       'crm-dashboard': CRMDashboard,
       'crm-contacts': ContactManager,

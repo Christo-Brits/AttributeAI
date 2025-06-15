@@ -42,6 +42,10 @@
     "@types/uuid": "^10.0.0",
     "cross-env": "7.0.3"
   },
+  "resolutions": {
+    "ajv": "^6.12.6",
+    "ajv-keywords": "^3.5.2"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "cross-env CI=false react-scripts build",

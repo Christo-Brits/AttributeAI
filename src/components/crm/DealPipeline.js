@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DollarSign, Calendar, TrendingUp, Users, Target, Plus, Edit, Eye, Building } from 'lucide-react';
-import { Button } from '../ui/DesignSystem';
+import { Button, Card, Badge } from '../ui/DesignSystem';
 
 const DealPipeline = () => {
     const [pipelineData, setPipelineData] = useState({ stages: [] });
@@ -80,70 +80,81 @@ const DealPipeline = () => {
     };
 
     return (
-        <div className="max-w-7xl mx-auto p-6 bg-white">
+        <div className="space-y-8">
             <div className="mb-8">
                 <div className="flex items-center justify-between mb-4">
                     <div>
-                        <h1 className="text-3xl font-bold text-gray-900 mb-2">Sales Pipeline</h1>
-                        <p className="text-gray-600">
+                        <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-2">Sales Pipeline</h1>
+                        <p className="text-gray-400">
                             Visual deal management with attribution intelligence
                             {demoMode && (
-                                <span className="ml-2 px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded">
+                                <Badge variant="warning" className="ml-2">
                                     Demo Mode
-                                </span>
+                                </Badge>
                             )}
                         </p>
                     </div>
                     
-                    <Button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700">
+                    <Button variant="primary" className="flex items-center gap-2">
                         <Plus size={16} />
                         Add Deal
                     </Button>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-6 rounded-xl">
+                    <Card className="p-6 bg-gradient-to-br from-blue-900/40 to-blue-800/40 border-blue-500/30 hover-glow-blue">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-blue-600 text-sm font-medium">Total Pipeline</p>
-                                <p className="text-2xl font-bold text-blue-900">{formatCurrency(metrics.totalValue)}</p>
+                                <p className="text-blue-400 text-sm font-medium mb-2">Total Pipeline</p>
+                                <p className="text-2xl font-bold text-white">{formatCurrency(metrics.totalValue)}</p>
                             </div>
-                            <DollarSign className="text-blue-600" size={24} />
+                            <div className="p-3 bg-blue-500/20 rounded-xl">
+                                <DollarSign className="text-blue-400" size={24} />
+                            </div>
                         </div>
-                    </div>
+                    </Card>
                     
-                    <div className="bg-gradient-to-r from-purple-50 to-purple-100 p-6 rounded-xl">
+                    <Card className="p-6 bg-gradient-to-br from-purple-900/40 to-purple-800/40 border-purple-500/30 hover-glow-purple">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-purple-600 text-sm font-medium">Total Deals</p>
-                                <p className="text-2xl font-bold text-purple-900">{metrics.totalDeals}</p>
+                                <p className="text-purple-400 text-sm font-medium mb-2">Total Deals</p>
+                                <p className="text-2xl font-bold text-white">{metrics.totalDeals}</p>
                             </div>
-                            <Target className="text-purple-600" size={24} />
+                            <div className="p-3 bg-purple-500/20 rounded-xl">
+                                <Target className="text-purple-400" size={24} />
+                            </div>
                         </div>
-                    </div>
+                    </Card>
                     
-                    <div className="bg-gradient-to-r from-yellow-50 to-yellow-100 p-6 rounded-xl">
+                    <Card className="p-6 bg-gradient-to-br from-yellow-900/40 to-orange-800/40 border-yellow-500/30 hover-glow-pink">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-yellow-600 text-sm font-medium">Avg Deal Size</p>
-                                <p className="text-2xl font-bold text-yellow-900">{formatCurrency(metrics.avgDealSize)}</p>
+                                <p className="text-yellow-400 text-sm font-medium mb-2">Avg Deal Size</p>
+                                <p className="text-2xl font-bold text-white">{formatCurrency(metrics.avgDealSize)}</p>
                             </div>
-                            <TrendingUp className="text-yellow-600" size={24} />
+                            <div className="p-3 bg-yellow-500/20 rounded-xl">
+                                <TrendingUp className="text-yellow-400" size={24} />
+                            </div>
                         </div>
-                    </div>
+                    </Card>
                 </div>
             </div>
 
             {loading ? (
                 <div className="flex items-center justify-center py-12">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                    <span className="ml-3 text-gray-600">Loading pipeline...</span>
+                    <div className="loading-spinner h-8 w-8"></div>
+                    <span className="ml-3 text-gray-400">Loading pipeline...</span>
                 </div>
             ) : (
                 <div className="text-center py-12">
-                    <Target size={48} className="mx-auto text-gray-400 mb-4" />
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">Deal Pipeline</h3>
-                    <p className="text-gray-600">Visual deal pipeline coming soon</p>
+                    <Card className="max-w-md mx-auto p-8">
+                        <Target size={48} className="mx-auto text-blue-400 mb-4" />
+                        <h3 className="text-lg font-medium text-white mb-2">Deal Pipeline</h3>
+                        <p className="text-gray-400 mb-4">Visual deal pipeline coming soon</p>
+                        <Button variant="primary">
+                            Request Early Access
+                        </Button>
+                    </Card>
                 </div>
             )}
         </div>

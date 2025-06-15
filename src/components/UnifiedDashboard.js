@@ -246,11 +246,12 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
           </Card>
         )}
       </div>
+      
+      {/* Footer */}
+      <footer className="mt-12 text-center text-xs text-gray-500 py-6">
+        &copy; {new Date().getFullYear()} AttributeAI &mdash; <a href="/privacy-policy.html" className="hover:underline text-blue-500">Privacy Policy</a>
+      </footer>
     </div>
-    {/* Footer */}
-    <footer className="mt-12 text-center text-xs text-gray-500 py-6">
-      &copy; {new Date().getFullYear()} AttributeAI &mdash; <a href="/privacy-policy.html" className="hover:underline text-blue-500">Privacy Policy</a>
-    </footer>
   );
 };
 

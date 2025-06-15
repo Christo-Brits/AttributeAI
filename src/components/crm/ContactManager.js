@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Plus, Mail, Phone, Building, User, Star, Activity, Eye, Edit, Trash2, Download, Upload, CheckCircle } from 'lucide-react';
-import { Button } from '../ui/DesignSystem';
+import { Button, Card, Badge } from '../ui/DesignSystem';
 
 const ContactManager = () => {
     const [contacts, setContacts] = useState([]);
@@ -112,24 +112,24 @@ const ContactManager = () => {
     };
 
     const getLeadScoreColor = (score) => {
-        if (score >= 80) return 'text-green-600 bg-green-50';
-        if (score >= 60) return 'text-yellow-600 bg-yellow-50';
-        if (score >= 40) return 'text-orange-600 bg-orange-50';
-        return 'text-red-600 bg-red-50';
+        if (score >= 80) return 'text-green-400 bg-green-900/30 border-green-500/30';
+        if (score >= 60) return 'text-yellow-400 bg-yellow-900/30 border-yellow-500/30';
+        if (score >= 40) return 'text-orange-400 bg-orange-900/30 border-orange-500/30';
+        return 'text-red-400 bg-red-900/30 border-red-500/30';
     };
 
     return (
-        <div className="max-w-7xl mx-auto p-6 bg-white">
+        <div className="space-y-8">
             <div className="mb-8">
                 <div className="flex items-center justify-between mb-4">
                     <div>
-                        <h1 className="text-3xl font-bold text-gray-900 mb-2">Contact Manager</h1>
-                        <p className="text-gray-600">
+                        <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-2">Contact Manager</h1>
+                        <p className="text-gray-400">
                             Manage your contacts with superior attribution intelligence
                             {demoMode && (
-                                <span className="ml-2 px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded">
+                                <Badge variant="warning" className="ml-2">
                                     Demo Mode
-                                </span>
+                                </Badge>
                             )}
                         </p>
                     </div>
@@ -137,7 +137,8 @@ const ContactManager = () => {
                     <div className="flex gap-3">
                         <Button
                             onClick={() => setShowContactModal(true)}
-                            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700"
+                            variant="primary"
+                            className="flex items-center gap-2"
                         >
                             <Plus size={16} />
                             Add Contact
@@ -153,14 +154,14 @@ const ContactManager = () => {
                             placeholder="Search contacts, emails, companies..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full pl-10 pr-4 py-3 bg-gray-900/80 border border-gray-700/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent backdrop-blur-sm"
                         />
                     </div>
                     
                     <select
                         value={filters.lifecycle_stage}
                         onChange={(e) => setFilters({ ...filters, lifecycle_stage: e.target.value })}
-                        className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                        className="px-4 py-3 bg-gray-900/80 border border-gray-700/50 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 backdrop-blur-sm"
                     >
                         <option value="all">All Stages</option>
                         <option value="subscriber">Subscriber</option>
@@ -174,121 +175,129 @@ const ContactManager = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-6 rounded-xl">
+                <Card className="p-6 bg-gradient-to-br from-blue-900/40 to-blue-800/40 border-blue-500/30 hover-glow-blue">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-blue-600 text-sm font-medium">Total Contacts</p>
-                            <p className="text-2xl font-bold text-blue-900">{contacts.length}</p>
+                            <p className="text-blue-400 text-sm font-medium mb-2">Total Contacts</p>
+                            <p className="text-2xl font-bold text-white">{contacts.length}</p>
                         </div>
-                        <User className="text-blue-600" size={24} />
+                        <div className="p-3 bg-blue-500/20 rounded-xl">
+                            <User className="text-blue-400" size={24} />
+                        </div>
                     </div>
-                </div>
+                </Card>
                 
-                <div className="bg-gradient-to-r from-green-50 to-green-100 p-6 rounded-xl">
+                <Card className="p-6 bg-gradient-to-br from-green-900/40 to-emerald-800/40 border-green-500/30 hover-glow-green">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-green-600 text-sm font-medium">Qualified Leads</p>
-                            <p className="text-2xl font-bold text-green-900">
+                            <p className="text-green-400 text-sm font-medium mb-2">Qualified Leads</p>
+                            <p className="text-2xl font-bold text-white">
                                 {contacts.filter(c => c.lifecycle_stage === 'qualified_lead').length}
                             </p>
                         </div>
-                        <CheckCircle className="text-green-600" size={24} />
+                        <div className="p-3 bg-green-500/20 rounded-xl">
+                            <CheckCircle className="text-green-400" size={24} />
+                        </div>
                     </div>
-                </div>
+                </Card>
                 
-                <div className="bg-gradient-to-r from-yellow-50 to-yellow-100 p-6 rounded-xl">
+                <Card className="p-6 bg-gradient-to-br from-yellow-900/40 to-orange-800/40 border-yellow-500/30 hover-glow-pink">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-yellow-600 text-sm font-medium">Average Lead Score</p>
-                            <p className="text-2xl font-bold text-yellow-900">
+                            <p className="text-yellow-400 text-sm font-medium mb-2">Average Lead Score</p>
+                            <p className="text-2xl font-bold text-white">
                                 {contacts.length > 0 ? 
                                     Math.round(contacts.reduce((sum, c) => sum + (c.lead_score || 0), 0) / contacts.length) : 
                                     0
                                 }
                             </p>
                         </div>
-                        <Star className="text-yellow-600" size={24} />
+                        <div className="p-3 bg-yellow-500/20 rounded-xl">
+                            <Star className="text-yellow-400" size={24} />
+                        </div>
                     </div>
-                </div>
+                </Card>
                 
-                <div className="bg-gradient-to-r from-purple-50 to-purple-100 p-6 rounded-xl">
+                <Card className="p-6 bg-gradient-to-br from-purple-900/40 to-purple-800/40 border-purple-500/30 hover-glow-purple">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-purple-600 text-sm font-medium">Customers</p>
-                            <p className="text-2xl font-bold text-purple-900">
+                            <p className="text-purple-400 text-sm font-medium mb-2">Customers</p>
+                            <p className="text-2xl font-bold text-white">
                                 {contacts.filter(c => c.lifecycle_stage === 'customer').length}
                             </p>
                         </div>
-                        <Building className="text-purple-600" size={24} />
+                        <div className="p-3 bg-purple-500/20 rounded-xl">
+                            <Building className="text-purple-400" size={24} />
+                        </div>
                     </div>
-                </div>
+                </Card>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200">
-                <div className="px-6 py-4 border-b border-gray-200">
-                    <h3 className="text-lg font-semibold text-gray-900">
+            <Card className="p-6">
+                <div className="border-b border-gray-700/50 pb-4 mb-6">
+                    <h3 className="text-lg font-semibold text-white">
                         Contacts ({filteredContacts.length})
                     </h3>
                 </div>
                 
                 {loading ? (
                     <div className="p-8 text-center">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-                        <p className="text-gray-500 mt-2">Loading contacts...</p>
+                        <div className="loading-spinner h-8 w-8 mx-auto"></div>
+                        <p className="text-gray-400 mt-2">Loading contacts...</p>
                     </div>
                 ) : filteredContacts.length === 0 ? (
                     <div className="p-8 text-center">
                         <User className="mx-auto h-12 w-12 text-gray-400" />
-                        <h3 className="mt-2 text-sm font-medium text-gray-900">No contacts found</h3>
-                        <p className="mt-1 text-sm text-gray-500">
+                        <h3 className="mt-2 text-sm font-medium text-white">No contacts found</h3>
+                        <p className="mt-1 text-sm text-gray-400">
                             {searchTerm ? 'Try adjusting your search or filters.' : 'Get started by adding your first contact.'}
                         </p>
                     </div>
                 ) : (
                     <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-gray-50">
+                        <table className="min-w-full divide-y divide-gray-700/50">
+                            <thead>
                                 <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                                         Contact
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                                         Company
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                                         Stage
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                                         Lead Score
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                                         Activity
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                                         Actions
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
+                            <tbody className="divide-y divide-gray-700/50">
                                 {filteredContacts.map((contact) => {
                                     const lifecycleBadge = getLifecycleBadge(contact.lifecycle_stage);
                                     
                                     return (
-                                        <tr key={contact.id} className="hover:bg-gray-50">
+                                        <tr key={contact.id} className="hover:bg-gray-800/30 transition-colors">
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center">
                                                     <div className="flex-shrink-0 h-10 w-10">
-                                                        <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
-                                                            <span className="text-blue-600 font-medium text-sm">
+                                                        <div className="h-10 w-10 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center">
+                                                            <span className="text-white font-medium text-sm">
                                                                 {contact.first_name?.[0]}{contact.last_name?.[0]}
                                                             </span>
                                                         </div>
                                                     </div>
                                                     <div className="ml-4">
-                                                        <div className="text-sm font-medium text-gray-900">
+                                                        <div className="text-sm font-medium text-white">
                                                             {contact.first_name} {contact.last_name}
                                                         </div>
-                                                        <div className="text-sm text-gray-500 flex items-center gap-4">
+                                                        <div className="text-sm text-gray-400 flex items-center gap-4">
                                                             {contact.email && (
                                                                 <span className="flex items-center gap-1">
                                                                     <Mail size={12} />
@@ -303,7 +312,7 @@ const ContactManager = () => {
                                                             )}
                                                         </div>
                                                         {contact.job_title && (
-                                                            <div className="text-xs text-gray-400">
+                                                            <div className="text-xs text-gray-500">
                                                                 {contact.job_title}
                                                             </div>
                                                         )}
@@ -314,32 +323,35 @@ const ContactManager = () => {
                                             <td className="px-6 py-4">
                                                 {contact.company ? (
                                                     <div>
-                                                        <div className="text-sm font-medium text-gray-900">
+                                                        <div className="text-sm font-medium text-white">
                                                             {contact.company.name}
                                                         </div>
-                                                        <div className="text-sm text-gray-500">
+                                                        <div className="text-sm text-gray-400">
                                                             {contact.company.industry}
                                                         </div>
                                                     </div>
                                                 ) : (
-                                                    <span className="text-gray-400 text-sm">No company</span>
+                                                    <span className="text-gray-500 text-sm">No company</span>
                                                 )}
                                             </td>
                                             
                                             <td className="px-6 py-4">
-                                                <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${lifecycleBadge.bg} ${lifecycleBadge.text}`}>
+                                                <Badge 
+                                                    className={`${lifecycleBadge.bg} ${lifecycleBadge.text} border-transparent`}
+                                                    size="sm"
+                                                >
                                                     {lifecycleBadge.label}
-                                                </span>
+                                                </Badge>
                                             </td>
                                             
                                             <td className="px-6 py-4">
-                                                <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getLeadScoreColor(contact.lead_score || 0)}`}>
+                                                <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border ${getLeadScoreColor(contact.lead_score || 0)}`}>
                                                     <Star size={12} className="mr-1" />
                                                     {contact.lead_score || 0}
                                                 </div>
                                             </td>
                                             
-                                            <td className="px-6 py-4 text-sm text-gray-500">
+                                            <td className="px-6 py-4 text-sm text-gray-400">
                                                 <div className="flex items-center gap-2">
                                                     <Activity size={12} />
                                                     <span>
@@ -347,7 +359,7 @@ const ContactManager = () => {
                                                     </span>
                                                 </div>
                                                 {contact.last_activity_date && (
-                                                    <div className="text-xs text-gray-400 mt-1">
+                                                    <div className="text-xs text-gray-500 mt-1">
                                                         Last: {new Date(contact.last_activity_date).toLocaleDateString()}
                                                     </div>
                                                 )}
@@ -356,13 +368,13 @@ const ContactManager = () => {
                                             <td className="px-6 py-4 text-sm font-medium">
                                                 <div className="flex items-center gap-2">
                                                     <button
-                                                        className="text-blue-600 hover:text-blue-900"
+                                                        className="text-blue-400 hover:text-blue-300 p-1 rounded transition-colors"
                                                         title="View Details"
                                                     >
                                                         <Eye size={16} />
                                                     </button>
                                                     <button
-                                                        className="text-gray-600 hover:text-gray-900"
+                                                        className="text-gray-400 hover:text-gray-300 p-1 rounded transition-colors"
                                                         title="Edit Contact"
                                                     >
                                                         <Edit size={16} />
@@ -376,7 +388,7 @@ const ContactManager = () => {
                         </table>
                     </div>
                 )}
-            </div>
+            </Card>
         </div>
     );
 };

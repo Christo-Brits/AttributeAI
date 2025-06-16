@@ -25,6 +25,9 @@ const CompetitorAnalysisEngine = lazy(() => import('./components/CompetitorAnaly
 // NEW: Keyword Intelligence Engine
 const KeywordIntelligenceEngine = lazy(() => import('./components/KeywordIntelligenceEngine'));
 
+// NEW: Enhanced Content Cluster Generator (n8n Integration)
+const EnhancedContentClusterGenerator = lazy(() => import('./components/EnhancedContentClusterGenerator'));
+
 // Phase 2: Enhanced components with Claude AI  
 const SEOAnalysisEnhanced = lazy(() => import('./components/SEOCompetitorAnalysis.enhanced'));
 const SEOContentStrategist = lazy(() => import('./components/SEOContentStrategist.enhanced'));
@@ -93,6 +96,7 @@ function AuthenticatedApp() {
       />,
       'user-analytics': UserAnalyticsDashboard,
       'keyword-intelligence': KeywordIntelligenceEngine,
+      'enhanced-content-cluster': EnhancedContentClusterGenerator, // NEW: n8n Content Cluster Generator
       'content-optimization': ContentOptimizationEngine, // NEW: Outranking.io killer
       'competitor-analysis': CompetitorAnalysisEngine, // NEW: Competitor Analysis Engine
       'enhanced-content': EnhancedContentGenerator, // NEW: Outrank.so killer
@@ -242,24 +246,6 @@ function AppRouter() {
   // Show landing page by default for non-authenticated users
   if (appView === 'landing') {
     return <LandingPage 
-      onGetStarted={() => setAppView('login')} 
-      onSignIn={() => setAppView('login')} 
-    />;
-  }
-
-  // Show login page
-  if (appView === 'login') {
-    return <LoginPage onLogin={handleLogin} />;
-  }
-
-  // Fallback to landing page to prevent blank screen
-  return <LandingPage 
-    onGetStarted={() => setAppView('login')} 
-    onSignIn={() => setAppView('login')} 
-  />;
-}
-
-export default App;    return <LandingPage 
       onGetStarted={() => setAppView('login')} 
       onSignIn={() => setAppView('login')} 
     />;

@@ -106,6 +106,14 @@ const SidebarNavigation = ({ activeTab, setActiveTab, onViewChange, user: authUs
           competitive: 'Keywords Everywhere killer'
         },
         { 
+          id: 'local-seo-matrix', 
+          name: 'Local SEO Matrix', 
+          icon: Globe, 
+          new: true, 
+          description: 'Local page generator',
+          competitive: 'Revolutionary local SEO'
+        },
+        { 
           id: 'enhanced-content', 
           name: 'Enhanced Content', 
           icon: PenTool, 

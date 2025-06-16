@@ -16,6 +16,7 @@ const crmRoutes = require('./routes/crm');
 const weatherSimpleRoutes = require('./routes/weather-simple');
 const weatherIntelligenceRoutes = require('./weather-intelligence-routes');
 const userAnalyticsRoutes = require('./user-analytics-routes');
+const localSEORoutes = require('./local-seo-routes'); // NEW: Local SEO Matrix Generator
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -34,6 +35,7 @@ app.use('/api/crm', crmRoutes);
 app.use('/api/weather', weatherSimpleRoutes);
 app.use('/api', weatherIntelligenceRoutes); // Weather intelligence endpoints
 app.use('/api/analytics', userAnalyticsRoutes); // User analytics and conversion tracking
+app.use('/api/local-seo', localSEORoutes); // NEW: Local SEO Matrix Generator routes
 
 // Stripe Integration Routes
 app.post('/api/create-checkout-session', async (req, res) => {

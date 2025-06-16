@@ -28,6 +28,9 @@ const KeywordIntelligenceEngine = lazy(() => import('./components/KeywordIntelli
 // NEW: Enhanced Content Cluster Generator (n8n Integration)
 const EnhancedContentClusterGenerator = lazy(() => import('./components/EnhancedContentClusterGenerator'));
 
+// NEW: Local SEO Matrix Generator (Revolutionary local page generator)
+const LocalSEOMatrixGenerator = lazy(() => import('./components/LocalSEOMatrixGenerator'));
+
 // Phase 2: Enhanced components with Claude AI  
 const SEOAnalysisEnhanced = lazy(() => import('./components/SEOCompetitorAnalysis.enhanced'));
 const SEOContentStrategist = lazy(() => import('./components/SEOContentStrategist.enhanced'));
@@ -96,6 +99,7 @@ function AuthenticatedApp() {
       />,
       'user-analytics': UserAnalyticsDashboard,
       'keyword-intelligence': KeywordIntelligenceEngine,
+      'local-seo-matrix': LocalSEOMatrixGenerator, // NEW: Revolutionary local SEO page generator
       'enhanced-content-cluster': EnhancedContentClusterGenerator, // NEW: n8n Content Cluster Generator
       'content-optimization': ContentOptimizationEngine, // NEW: Outranking.io killer
       'competitor-analysis': CompetitorAnalysisEngine, // NEW: Competitor Analysis Engine

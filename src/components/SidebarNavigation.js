@@ -88,7 +88,8 @@ const SidebarNavigation = ({ activeTab, setActiveTab, onViewChange, user: authUs
       id: 'overview',
       title: 'Overview',
       items: [
-        { id: 'dashboard', name: 'Dashboard', icon: Grid, description: 'Unified insights' }
+        { id: 'dashboard', name: 'Dashboard', icon: Grid, description: 'Unified insights' },
+        { id: 'user-analytics', name: 'User Analytics', icon: BarChart3, new: true, description: 'User behavior & conversion funnel' }
       ]
     },
     {

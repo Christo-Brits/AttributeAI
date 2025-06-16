@@ -1,0 +1,95 @@
+{
+  "name": "Weather Intelligence Test",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 3
+            }
+          ]
+        }
+      },
+      "id": "1",
+      "name": "Every 3 Hours",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://api.openweathermap.org/data/2.5/weather",
+        "options": {
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "q",
+                "value": "Auckland,NZ"
+              },
+              {
+                "name": "appid",
+                "value": "4621d4ed0b8ebe0607575eed1ffca8b7"
+              },
+              {
+                "name": "units",
+                "value": "metric"
+              }
+            ]
+          }
+        }
+      },
+      "id": "2",
+      "name": "Get Auckland Weather",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3001/api/weather-insights",
+        "requestMethod": "POST",
+        "jsonParameters": true,
+        "bodyParametersJson": "={\n  \"location\": \"Auckland, NZ\",\n  \"temperature\": {{ $json.main.temp }},\n  \"condition\": \"{{ $json.weather[0].description }}\",\n  \"humidity\": {{ $json.main.humidity }},\n  \"windSpeed\": {{ $json.wind.speed }},\n  \"pressure\": {{ $json.main.pressure }},\n  \"timestamp\": \"{{ new Date().toISOString() }}\",\n  \"source\": \"OpenWeatherMap\",\n  \"confidence\": 0.95\n}",
+        "options": {
+          "headers": {
+            "Content-Type": "application/json"
+          }
+        }
+      },
+      "id": "3",
+      "name": "Send to AttributeAI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [680, 300]
+    }
+  ],
+  "connections": {
+    "Every 3 Hours": {
+      "main": [
+        [
+          {
+            "node": "Get Auckland Weather",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Auckland Weather": {
+      "main": [
+        [
+          {
+            "node": "Send to AttributeAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

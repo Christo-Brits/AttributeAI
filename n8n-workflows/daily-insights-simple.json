@@ -1,0 +1,116 @@
+{
+  "name": "Daily Weather Insights",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 * * *"
+            }
+          ]
+        }
+      },
+      "id": "1",
+      "name": "Daily at 9 AM",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://api.openweathermap.org/data/2.5/weather",
+        "options": {
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "q",
+                "value": "Auckland,NZ"
+              },
+              {
+                "name": "appid",
+                "value": "YOUR_OPENWEATHER_API_KEY"
+              },
+              {
+                "name": "units",
+                "value": "metric"
+              }
+            ]
+          }
+        }
+      },
+      "id": "2",
+      "name": "Get Weather Data",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Generate daily weather insights for marketing\nconst weather = $input.all()[0].json;\n\n// Generate marketing recommendations\nfunction generateMarketingInsights(data) {\n  const temp = data.main.temp;\n  const condition = data.weather[0].main;\n  const humidity = data.main.humidity;\n  \n  const insights = {\n    marketingRecommendations: [],\n    contentStrategy: [],\n    customerBehavior: [],\n    advertisingTiming: []\n  };\n  \n  // Temperature-based recommendations\n  if (temp > 25) {\n    insights.marketingRecommendations.push('Increase summer product advertising by 20-30%');\n    insights.contentStrategy.push('Focus on outdoor activities, travel, and cooling products');\n    insights.customerBehavior.push('Higher online engagement during hot afternoons (2-4 PM)');\n    insights.advertisingTiming.push('Best times: 7-9 AM, 6-8 PM (avoiding peak heat)');\n  } else if (temp < 10) {\n    insights.marketingRecommendations.push('Promote indoor activities and warm products');\n    insights.contentStrategy.push('Winter clothing, hot beverages, comfort foods');\n    insights.customerBehavior.push('Increased indoor browsing, longer session times');\n    insights.advertisingTiming.push('Best times: 10 AM-2 PM, 7-9 PM (when people are indoors)');\n  } else {\n    insights.marketingRecommendations.push('Balanced approach - moderate weather conditions');\n    insights.contentStrategy.push('General lifestyle content, seasonal transitions');\n    insights.customerBehavior.push('Normal browsing patterns expected');\n    insights.advertisingTiming.push('Standard timing: 9 AM-12 PM, 3-6 PM, 7-9 PM');\n  }\n  \n  // Weather condition insights\n  if (condition === 'Rain') {\n    insights.marketingRecommendations.push('Boost indoor entertainment and delivery services');\n    insights.customerBehavior.push('20-40% increase in online shopping during rain');\n  } else if (condition === 'Clear') {\n    insights.marketingRecommendations.push('Perfect for outdoor product campaigns');\n    insights.customerBehavior.push('Higher foot traffic expected');\n  }\n  \n  return insights;\n}\n\nconst todayInsights = {\n  date: new Date().toISOString().split('T')[0],\n  weather: {\n    temperature: weather.main.temp,\n    condition: weather.weather[0].description,\n    humidity: weather.main.humidity,\n    windSpeed: weather.wind?.speed || 0\n  },\n  insights: generateMarketingInsights(weather),\n  confidence: 0.85,\n  timestamp: new Date().toISOString()\n};\n\nreturn [{ json: todayInsights }];"
+      },
+      "id": "3",
+      "name": "Generate Daily Insights",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3001/api/weather-insights",
+        "requestMethod": "POST",
+        "jsonParameters": true,
+        "bodyParametersJson": "={{ JSON.stringify($json) }}",
+        "options": {
+          "headers": {
+            "Content-Type": "application/json"
+          }
+        }
+      },
+      "id": "4",
+      "name": "Store Insights",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [900, 300]
+    }
+  ],
+  "connections": {
+    "Daily at 9 AM": {
+      "main": [
+        [
+          {
+            "node": "Get Weather Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Weather Data": {
+      "main": [
+        [
+          {
+            "node": "Generate Daily Insights",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Daily Insights": {
+      "main": [
+        [
+          {
+            "node": "Store Insights",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

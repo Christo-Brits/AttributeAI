@@ -1,0 +1,148 @@
+{
+  "name": "Daily Insights Analysis",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 * * *"
+            }
+          ]
+        }
+      },
+      "id": "2a1b3c4d-5e6f-7890-abcd-ef1234567890",
+      "name": "Daily Trigger",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "https://api.openweathermap.org/data/2.5/weather",
+        "qs": {
+          "q": "Auckland,NZ",
+          "appid": "YOUR_OPENWEATHER_API_KEY",
+          "units": "metric"
+        }
+      },
+      "id": "3b2c4d5e-6f70-8901-bcde-f23456789012",
+      "name": "Get Weather Data",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "headerAuth",
+        "requestMethod": "POST",
+        "jsonParameters": true,
+        "bodyParametersJson": "{\n  \"model\": \"claude-3-sonnet-20240229\",\n  \"max_tokens\": 1000,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Based on this weather data: {{$json.main.temp}}°C, {{$json.weather[0].description}}, humidity {{$json.main.humidity}}%, wind {{$json.wind.speed}}m/s in Auckland, NZ, provide:\n\n1. Marketing recommendations for today\n2. Content strategy suggestions\n3. Customer behavior predictions\n4. Advertising timing optimization\n\nFormat as JSON with sections: marketing_recommendations, content_strategy, customer_behavior, advertising_timing\"\n    }\n  ]\n}",
+        "options": {
+          "headers": {
+            "Content-Type": "application/json",
+            "anthropic-version": "2023-06-01"
+          }
+        },
+        "headerParametersJson": "{\"x-api-key\": \"YOUR_CLAUDE_API_KEY\"}"
+      },
+      "id": "4c3d5e6f-7890-9012-cdef-345678901234",
+      "name": "Generate AI Insights",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "id": "5d4e6f70-8901-0123-def4-456789012345",
+      "name": "Combine Data",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3001/api/weather-insights",
+        "requestMethod": "POST",
+        "jsonParameters": true,
+        "bodyParametersJson": "{\n  \"date\": \"{{new Date().toISOString()}}\",\n  \"location\": \"Auckland, NZ\",\n  \"weather\": {\n    \"temperature\": {{$('Get Weather Data').first().json.main.temp}},\n    \"description\": \"{{$('Get Weather Data').first().json.weather[0].description}}\",\n    \"humidity\": {{$('Get Weather Data').first().json.main.humidity}},\n    \"windSpeed\": {{$('Get Weather Data').first().json.wind.speed}},\n    \"pressure\": {{$('Get Weather Data').first().json.main.pressure}}\n  },\n  \"aiInsights\": {{$('Generate AI Insights').first().json.content[0].text}},\n  \"recommendations\": {\n    \"generated\": true,\n    \"timestamp\": \"{{new Date().toISOString()}}\"\n  }\n}",
+        "options": {
+          "headers": {
+            "Content-Type": "application/json"
+          }
+        }
+      },
+      "id": "6e5f7089-0123-1234-ef56-567890123456",
+      "name": "Store in AttributeAI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1120, 300]
+    }
+  ],
+  "connections": {
+    "Daily Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get Weather Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Weather Data": {
+      "main": [
+        [
+          {
+            "node": "Generate AI Insights",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Combine Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate AI Insights": {
+      "main": [
+        [
+          {
+            "node": "Combine Data",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Combine Data": {
+      "main": [
+        [
+          {
+            "node": "Store in AttributeAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-06-16T00:00:00.000Z",
+  "updatedAt": "2025-06-16T00:00:00.000Z",
+  "settings": {},
+  "staticData": null,
+  "pinData": {},
+  "versionId": "1",
+  "triggerCount": 1,
+  "tags": []
+}

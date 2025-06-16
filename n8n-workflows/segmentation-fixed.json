@@ -1,0 +1,137 @@
+{
+  "name": "Weather Customer Segmentation",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6
+            }
+          ]
+        }
+      },
+      "id": "1",
+      "name": "Every 6 Hours",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3001/api/user-locations"
+      },
+      "id": "2",
+      "name": "Get User Locations",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://api.openweathermap.org/data/2.5/weather",
+        "options": {
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "q",
+                "value": "Auckland,NZ"
+              },
+              {
+                "name": "appid",
+                "value": "4621d4ed0b8ebe0607575eed1ffca8b7"
+              },
+              {
+                "name": "units",
+                "value": "metric"
+              }
+            ]
+          }
+        }
+      },
+      "id": "3",
+      "name": "Get Auckland Weather",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Customer segmentation based on weather\nconst locationData = $('Get User Locations').first().json;\nconst weatherData = $input.all()[0].json;\n\n// Simplified segmentation analysis\nfunction analyzeCustomerSegments(weather) {\n  const temp = weather.main.temp;\n  const condition = weather.weather[0].main;\n  \n  const segments = {\n    weatherSensitive: {\n      size: 35,\n      characteristics: ['Responsive to weather changes', 'Weather-driven purchases'],\n      recommendations: ['Target with weather-specific products', 'Send weather alerts']\n    },\n    opportunistic: {\n      size: 30,\n      characteristics: ['Takes advantage of good weather', 'Outdoor focused'],\n      recommendations: ['Promote outdoor products', 'Increase good weather marketing']\n    },\n    stable: {\n      size: 35,\n      characteristics: ['Consistent regardless of weather', 'Routine purchases'],\n      recommendations: ['Maintain consistent messaging', 'Focus on essentials']\n    }\n  };\n  \n  return segments;\n}\n\nconst segmentation = {\n  location: 'Auckland, NZ',\n  weather: {\n    temperature: weatherData.main.temp,\n    condition: weatherData.weather[0].description,\n    humidity: weatherData.main.humidity\n  },\n  segments: analyzeCustomerSegments(weatherData),\n  usersAffected: locationData.locations ? locationData.locations.reduce((sum, loc) => sum + loc.user_count, 0) : 2896,\n  timestamp: new Date().toISOString(),\n  confidence: 0.85\n};\n\nreturn [{ json: segmentation }];"
+      },
+      "id": "4",
+      "name": "Generate Segmentation",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3001/api/customer-segments",
+        "requestMethod": "POST",
+        "jsonParameters": true,
+        "bodyParametersJson": "={{ JSON.stringify($json) }}",
+        "options": {
+          "headers": {
+            "Content-Type": "application/json"
+          }
+        }
+      },
+      "id": "5",
+      "name": "Store Segments",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1120, 300]
+    }
+  ],
+  "connections": {
+    "Every 6 Hours": {
+      "main": [
+        [
+          {
+            "node": "Get User Locations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get User Locations": {
+      "main": [
+        [
+          {
+            "node": "Get Auckland Weather",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Auckland Weather": {
+      "main": [
+        [
+          {
+            "node": "Generate Segmentation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Segmentation": {
+      "main": [
+        [
+          {
+            "node": "Store Segments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

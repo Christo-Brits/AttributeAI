@@ -14,6 +14,8 @@ const keywordIntelligenceRoutes = require('./routes/keyword-intelligence');
 const contentGenerationRoutes = require('./routes/content-generation');
 const crmRoutes = require('./routes/crm');
 const weatherSimpleRoutes = require('./routes/weather-simple');
+const weatherIntelligenceRoutes = require('./weather-intelligence-routes');
+const userAnalyticsRoutes = require('./user-analytics-routes');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -30,6 +32,8 @@ app.use('/api/keyword-intelligence', keywordIntelligenceRoutes);
 app.use('/api/content', contentGenerationRoutes);
 app.use('/api/crm', crmRoutes);
 app.use('/api/weather', weatherSimpleRoutes);
+app.use('/api', weatherIntelligenceRoutes); // Weather intelligence endpoints
+app.use('/api/analytics', userAnalyticsRoutes); // User analytics and conversion tracking
 
 // Stripe Integration Routes
 app.post('/api/create-checkout-session', async (req, res) => {

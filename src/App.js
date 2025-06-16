@@ -10,6 +10,9 @@ import AccountPage from './components/AccountPage';
 import SuccessPage from './components/SuccessPage';
 import FloatingChatButton from './components/FloatingChatButton';
 
+// NEW: User Analytics Dashboard
+const UserAnalyticsDashboard = lazy(() => import('./components/UserAnalyticsDashboard'));
+
 // NEW: Enhanced Content Generator (Outrank.so killer)
 const EnhancedContentGenerator = lazy(() => import('./components/EnhancedContentGenerator'));
 
@@ -88,6 +91,7 @@ function AuthenticatedApp() {
         websiteAnalysis={websiteAnalysisResults} 
         onNavigateToTab={setActiveTab}
       />,
+      'user-analytics': UserAnalyticsDashboard,
       'keyword-intelligence': KeywordIntelligenceEngine,
       'content-optimization': ContentOptimizationEngine, // NEW: Outranking.io killer
       'competitor-analysis': CompetitorAnalysisEngine, // NEW: Competitor Analysis Engine
@@ -238,6 +242,24 @@ function AppRouter() {
   // Show landing page by default for non-authenticated users
   if (appView === 'landing') {
     return <LandingPage 
+      onGetStarted={() => setAppView('login')} 
+      onSignIn={() => setAppView('login')} 
+    />;
+  }
+
+  // Show login page
+  if (appView === 'login') {
+    return <LoginPage onLogin={handleLogin} />;
+  }
+
+  // Fallback to landing page to prevent blank screen
+  return <LandingPage 
+    onGetStarted={() => setAppView('login')} 
+    onSignIn={() => setAppView('login')} 
+  />;
+}
+
+export default App;    return <LandingPage 
       onGetStarted={() => setAppView('login')} 
       onSignIn={() => setAppView('login')} 
     />;

@@ -1,12 +1,230 @@
-                  {activeStep === 5 && 'Setting Up Attribution'}
-                </h2>
-                <p className="text-gray-400">
-                  {activeStep === 2 && 'Researching your topic with Tavily and Perplexity APIs...'}
-                  {activeStep === 3 && 'Creating pillar content and supporting articles with n8n workflows...'}
-                  {activeStep === 4 && 'Generating social media teasers and scheduling with automation...'}
-                  {activeStep === 5 && 'Configuring UTM tracking and attribution setup...'}
-                </p>
+import React, { useState, useEffect } from 'react';
+import { 
+  PlayCircle, Cpu, Target, Calendar, Download, RefreshCw, CheckCircle,
+  TrendingUp, Users, Globe, Zap, Brain, BarChart3
+} from 'lucide-react';
+import { Card, Button, ProgressIndicator } from './ui/DesignSystem';
+import { useAuth } from './auth/AuthContext';
+import { useAnalytics } from '../hooks/useAnalytics';
+
+const EnhancedContentClusterGenerator = () => {
+  const { user } = useAuth();
+  const { trackPage, trackFeature } = useAnalytics();
+  
+  const [activeStep, setActiveStep] = useState(1);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generatedCampaign, setGeneratedCampaign] = useState(null);
+  const [campaignData, setCampaignData] = useState({
+    pillarTopic: '',
+    targetAudience: '',
+    campaignDuration: 30,
+    contentCount: 8,
+    includeResearch: true,
+    includeSocial: true,
+    platforms: ['facebook', 'linkedin'],
+    includeImages: true,
+    includeVideos: false
+  });
+
+  useEffect(() => {
+    trackPage('Enhanced Content Cluster Generator', 'content_automation');
+  }, [trackPage]);
+
+  const generateCampaign = async () => {
+    setIsGenerating(true);
+    setActiveStep(2);
+
+    try {
+      // Simulate campaign generation with progressive steps
+      for (let step = 2; step <= 5; step++) {
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        setActiveStep(step);
+      }
+
+      // Generate mock campaign data
+      const mockCampaign = {
+        pillar: {
+          title: `The Complete Guide to ${campaignData.pillarTopic}`,
+          wordCount: '3,500',
+          readTime: '15 min',
+          researchSources: 12
+        },
+        supportingContent: Array.from({ length: campaignData.contentCount }, (_, i) => ({
+          id: i + 1,
+          title: `${campaignData.pillarTopic} Strategy ${i + 1}`,
+          type: { name: 'Blog Post' },
+          publishDate: new Date(Date.now() + (i + 1) * 3 * 24 * 60 * 60 * 1000).toLocaleDateString(),
+          socialTeasers: {
+            facebook: Math.floor(Math.random() * 500) + 100,
+            linkedin: Math.floor(Math.random() * 300) + 50
+          },
+          hasImage: campaignData.includeImages,
+          hasVideo: campaignData.includeVideos && Math.random() > 0.7
+        })),
+        socialCalendar: {
+          totalPosts: campaignData.contentCount * 4,
+          estimatedReach: '25K+'
+        },
+        neworkflows: {
+          createImage: campaignData.includeImages,
+          linkedinPost: campaignData.platforms.includes('linkedin'),
+          facelessVideo: campaignData.includeVideos
+        },
+        attribution: {
+          utmStructure: {
+            campaign: campaignData.pillarTopic.toLowerCase().replace(/\s+/g, '-')
+          },
+          expectedMetrics: {
+            socialClicks: '1,200+',
+            blogVisitors: '3,500+',
+            conversionRate: '2.5%',
+            estimatedLeads: '88'
+          }
+        }
+      };
+
+      setGeneratedCampaign(mockCampaign);
+      trackFeature('Enhanced Campaign Generation', 'campaign_generated', campaignData.pillarTopic);
+    } catch (error) {
+      console.error('Campaign generation error:', error);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen p-6" style={{ 
+      background: 'linear-gradient(135deg, #0f1419 0%, #1a1f2e 100%)' 
+    }}>
+      <div className="max-w-6xl mx-auto">
+        <Card className="p-8 bg-gray-800/50 border border-gray-700 backdrop-blur-sm">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <div className="text-6xl mb-4">🚀</div>
+            <h1 className="text-3xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+              Enhanced Content Cluster Generator
+            </h1>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              Generate complete content marketing campaigns with n8n automation, AI research, and attribution tracking
+            </p>
+          </div>
+
+          {/* Campaign Input Form */}
+          {!isGenerating && !generatedCampaign && (
+            <div className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Pillar Topic
+                  </label>
+                  <input
+                    type="text"
+                    value={campaignData.pillarTopic}
+                    onChange={(e) => setCampaignData({...campaignData, pillarTopic: e.target.value})}
+                    className="w-full px-4 py-3 bg-gray-900/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-blue-400 focus:outline-none"
+                    placeholder="e.g., Digital Marketing Strategy"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Target Audience
+                  </label>
+                  <input
+                    type="text"
+                    value={campaignData.targetAudience}
+                    onChange={(e) => setCampaignData({...campaignData, targetAudience: e.target.value})}
+                    className="w-full px-4 py-3 bg-gray-900/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-blue-400 focus:outline-none"
+                    placeholder="e.g., Small business owners"
+                  />
+                </div>
               </div>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Campaign Duration (Days)
+                  </label>
+                  <select
+                    value={campaignData.campaignDuration}
+                    onChange={(e) => setCampaignData({...campaignData, campaignDuration: parseInt(e.target.value)})}
+                    className="w-full px-4 py-3 bg-gray-900/50 border border-gray-600 rounded-lg text-white focus:border-blue-400 focus:outline-none"
+                  >
+                    <option value={15}>15 Days</option>
+                    <option value={30}>30 Days</option>
+                    <option value={60}>60 Days</option>
+                    <option value={90}>90 Days</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Content Pieces
+                  </label>
+                  <select
+                    value={campaignData.contentCount}
+                    onChange={(e) => setCampaignData({...campaignData, contentCount: parseInt(e.target.value)})}
+                    className="w-full px-4 py-3 bg-gray-900/50 border border-gray-600 rounded-lg text-white focus:border-blue-400 focus:outline-none"
+                  >
+                    <option value={5}>5 Articles</option>
+                    <option value={8}>8 Articles</option>
+                    <option value={12}>12 Articles</option>
+                    <option value={20}>20 Articles</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Platforms
+                  </label>
+                  <div className="space-y-2">
+                    {['facebook', 'linkedin', 'twitter'].map(platform => (
+                      <label key={platform} className="flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={campaignData.platforms.includes(platform)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setCampaignData({...campaignData, platforms: [...campaignData.platforms, platform]});
+                            } else {
+                              setCampaignData({...campaignData, platforms: campaignData.platforms.filter(p => p !== platform)});
+                            }
+                          }}
+                          className="mr-2"
+                        />
+                        <span className="text-gray-300 capitalize">{platform}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <Button
+                onClick={generateCampaign}
+                disabled={!campaignData.pillarTopic || !campaignData.targetAudience}
+                className="w-full px-6 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-purple-600 transition-all duration-300 shadow-lg shadow-blue-500/25"
+              >
+                <PlayCircle className="h-5 w-5 mr-2" />
+                Generate Complete Campaign
+              </Button>
+            </div>
+          )}
+
+          {/* Generation Progress */}
+          {isGenerating && (
+            <div className="text-center py-12">
+              <div className="mb-8">
+                <ProgressIndicator progress={(activeStep - 1) * 25} />
+              </div>
+              <h2 className="text-2xl font-bold mb-4 text-white">
+                {activeStep === 2 && 'Researching Topic'}
+                {activeStep === 3 && 'Creating Content Strategy'}
+                {activeStep === 4 && 'Generating Social Media'}
+                {activeStep === 5 && 'Setting Up Attribution'}
+              </h2>
+              <p className="text-gray-400">
+                {activeStep === 2 && 'Researching your topic with Tavily and Perplexity APIs...'}
+                {activeStep === 3 && 'Creating pillar content and supporting articles with n8n workflows...'}
+                {activeStep === 4 && 'Generating social media teasers and scheduling with automation...'}
+                {activeStep === 5 && 'Configuring UTM tracking and attribution setup...'}
+              </p>
             </div>
           )}
 

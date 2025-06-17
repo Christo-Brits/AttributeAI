@@ -6,13 +6,7 @@
   CI = "false"
   NODE_VERSION = "18.20.3"
 
-# Custom domain redirects
-[[redirects]]
-  from = "https://attributeai.netlify.app/*"
-  to = "https://attributeai.app/:splat"
-  status = 301
-  force = true
-
+# SPA Redirect for React Router
 [[redirects]]
   from = "/*"
   to = "/index.html"

@@ -59,11 +59,12 @@ body {
   --accent-500: #ec4899;
   --accent-600: #db2777;
 
-  /* Text Colors */
-  --text-primary: #ffffff;
-  --text-secondary: #e5e7eb;
-  --text-tertiary: #9ca3af;
-  --text-quaternary: #6b7280;
+  /* Text Colors - Improved Contrast for Accessibility */
+  --text-primary: #ffffff;        /* Pure white for primary text */
+  --text-secondary: #f3f4f6;     /* Slightly off-white for secondary text */
+  --text-tertiary: #d1d5db;      /* Light gray for tertiary text (improved from #9ca3af) */
+  --text-quaternary: #9ca3af;    /* Medium gray for quaternary text (moved darker gray here) */
+  --text-muted: #6b7280;         /* Muted text for least important content */
 
   /* Border Colors */
   --border-primary: #374151;
@@ -346,4 +347,102 @@ pre code {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* ============================================================================
+   ACCESSIBILITY & CONTRAST IMPROVEMENTS
+   ============================================================================ */
+
+/* High Contrast Text Classes */
+.text-high-contrast {
+  color: var(--text-primary) !important;
+  font-weight: 500;
+}
+
+.text-medium-contrast {
+  color: var(--text-secondary) !important;
+}
+
+.text-accessible-gray {
+  color: var(--text-tertiary) !important;
+}
+
+/* Form Input Improvements */
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-quaternary) !important;
+  opacity: 1;
+}
+
+input:focus::placeholder,
+textarea:focus::placeholder {
+  color: var(--text-tertiary) !important;
+}
+
+/* Enhanced Button Contrast */
+button {
+  font-weight: 500;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Link Contrast */
+a {
+  color: var(--primary-400);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--primary-300);
+  text-decoration: underline;
+}
+
+/* Status Text with Better Contrast */
+.status-success {
+  color: #34d399 !important;
+  font-weight: 500;
+}
+
+.status-warning {
+  color: #fbbf24 !important;
+  font-weight: 500;
+}
+
+.status-error {
+  color: #f87171 !important;
+  font-weight: 500;
+}
+
+/* Card Content Contrast */
+.card-title {
+  color: var(--text-primary) !important;
+  font-weight: 600;
+}
+
+.card-subtitle {
+  color: var(--text-secondary) !important;
+  font-weight: 500;
+}
+
+.card-description {
+  color: var(--text-tertiary) !important;
+  line-height: 1.6;
+}
+
+/* Badge Text Contrast */
+.badge-text {
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+/* Ensure minimum contrast for all text */
+.text-gray-400 {
+  color: var(--text-tertiary) !important;
+}
+
+.text-gray-500 {
+  color: var(--text-quaternary) !important;
 }

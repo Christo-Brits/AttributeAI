@@ -800,44 +800,45 @@ const ContentClusterStrategist = () => {
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Cluster Performance Comparison</h3>
         <div className="space-y-4">
           {contentClusters.map((cluster) => (
-            <div key={cluster.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+            <div key={cluster.id} className="flex items-center justify-between p-4 border border-gray-600 rounded-lg bg-gray-800">
               <div className="flex items-center space-x-4">
                 <div className={`w-4 h-4 rounded-full bg-${cluster.color}-500`}></div>
                 <div>
-                  <div className="font-medium text-gray-900">{cluster.name}</div>
-                  <div className="text-sm text-gray-600">{cluster.articles} articles • {cluster.keywords} keywords</div>
+                  <div className="font-medium text-white">{cluster.name}</div>
+                  <div className="text-sm text-gray-300">{cluster.articles} articles • {cluster.keywords} keywords</div>
                 </div>
               </div>
               <div className="flex items-center space-x-8 text-sm">
                 <div className="text-center">
-                  <div className="font-medium text-gray-900">{(cluster.traffic / 1000).toFixed(1)}k</div>
-                  <div className="text-gray-600">Traffic</div>
+                  <div className="font-medium text-white">{(cluster.traffic / 1000).toFixed(1)}k</div>
+                  <div className="text-gray-400">Traffic</div>
                 </div>
                 <div className="text-center">
-                  <div className="font-medium text-gray-900">{cluster.performance.ctr}%</div>
-                  <div className="text-gray-600">CTR</div>
+                  <div className="font-medium text-white">{cluster.performance.ctr}%</div>
+                  <div className="text-gray-400">CTR</div>
                 </div>
                 <div className="text-center">
-                  <div className="font-medium text-gray-900">{cluster.performance.avgPosition}</div>
-                  <div className="text-gray-600">Position</div>
+                  <div className="font-medium text-white">{cluster.performance.avgPosition}</div>
+                  <div className="text-gray-400">Position</div>
                 </div>
                 <div className="text-center">
-                  <div className="font-medium text-gray-900">{cluster.performance.conversions}</div>
-                  <div className="text-gray-600">Conversions</div>
+                  <div className="font-medium text-white">{cluster.performance.conversions}</div>
+                  <div className="text-gray-400">Conversions</div>
                 </div>
                 <div className="w-24">
                   <ProgressIndicator progress={cluster.completion} />
-                  <div className="text-xs text-gray-600 mt-1">{cluster.completion}% complete</div>
+                  <div className="text-xs text-gray-400 mt-1">{cluster.completion}% complete</div>
                 </div>
               </div>
             </div>
           ))}
         </div>
+        </div>
       </Card>
 
       {/* Top Performing Articles */}
       <Card className="p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Top Performing Articles</h3>
+        <h3 className="text-lg font-semibold text-white mb-4">Top Performing Articles</h3>
         <div className="space-y-3">
           {[
             { title: 'Complete SEO Optimization Guide 2024', traffic: 4200, cluster: 'SEO Optimization', ctr: 8.2 },
@@ -846,7 +847,7 @@ const ContentClusterStrategist = () => {
             { title: 'Content Marketing ROI Tracking', traffic: 2900, cluster: 'Content Marketing', ctr: 6.4 },
             { title: 'Technical SEO Audit Checklist', traffic: 2600, cluster: 'SEO Optimization', ctr: 6.2 }
           ].map((article, index) => (
-            <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <div key={index} className="flex items-center justify-between p-3 bg-gray-700 rounded-lg">
               <div className="flex items-center space-x-3">
                 <div className="text-lg font-semibold text-gray-600">#{index + 1}</div>
                 <div>

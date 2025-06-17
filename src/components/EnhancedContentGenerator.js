@@ -202,15 +202,15 @@ const EnhancedContentGenerator = () => {
           <div className="flex items-center justify-center space-x-8 text-sm">
             <div className="text-center">
               <div className="text-2xl font-bold text-blue-400">{todayGenerations}</div>
-              <div className="text-gray-500">Today</div>
+              <div className="text-gray-400">Today</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-purple-400">∞</div>
-              <div className="text-gray-500">Limit</div>
+              <div className="text-gray-400">Limit</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-green-400">{totalGenerations}</div>
-              <div className="text-gray-500">Total</div>
+              <div className="text-gray-400">Total</div>
             </div>
           </div>
           <div className="mt-4 flex items-center justify-center">
@@ -302,15 +302,15 @@ const EnhancedContentGenerator = () => {
                 >
                   <div className="flex items-center space-x-2 mb-1">
                     <Icon className={`w-4 h-4 ${
-                      contentType === option.value ? 'text-purple-600' : 'text-gray-500'
+                      contentType === option.value ? 'text-purple-400' : 'text-gray-400'
                     }`} />
                     <span className={`font-medium ${
-                      contentType === option.value ? 'text-purple-700' : 'text-gray-700'
+                      contentType === option.value ? 'text-purple-300' : 'text-gray-300'
                     }`}>
                       {option.label}
                     </span>
                   </div>
-                  <p className="text-xs text-gray-600">{option.description}</p>
+                  <p className="text-xs text-gray-400">{option.description}</p>
                 </div>
               );
             })}
@@ -319,13 +319,13 @@ const EnhancedContentGenerator = () => {
 
         {/* Content Parameters */}
         <Card className="p-6">
-          <h3 className="text-lg font-semibold mb-4 flex items-center">
-            <Target className="w-5 h-5 mr-2 text-green-600" />
+          <h3 className="text-lg font-semibold mb-4 flex items-center text-white">
+            <Target className="w-5 h-5 mr-2 text-green-400" />
             Content Parameters
           </h3>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Target Keyword
               </label>
               <input
@@ -333,12 +333,12 @@ const EnhancedContentGenerator = () => {
                 value={targetKeyword}
                 onChange={(e) => setTargetKeyword(e.target.value)}
                 placeholder="e.g., best SEO tools 2024"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Target Audience
               </label>
               <input
@@ -346,19 +346,19 @@ const EnhancedContentGenerator = () => {
                 value={targetAudience}
                 onChange={(e) => setTargetAudience(e.target.value)}
                 placeholder="e.g., small business owners"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
             
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Content Length
                 </label>
                 <select
                   value={contentLength}
                   onChange={(e) => setContentLength(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="500">Short (500 words)</option>
                   <option value="1000">Medium (1,000 words)</option>
@@ -368,13 +368,13 @@ const EnhancedContentGenerator = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Content Tone
                 </label>
                 <select
                   value={tone}
                   onChange={(e) => setTone(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
                   {toneOptions.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -446,34 +446,34 @@ const EnhancedContentGenerator = () => {
           {/* Content Metrics */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <Card className="p-4 text-center">
-              <Hash className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-gray-900">{generatedContent.wordCount}</div>
-              <div className="text-sm text-gray-600">Words Generated</div>
+              <Hash className="w-8 h-8 text-blue-400 mx-auto mb-2" />
+              <div className="text-2xl font-bold text-white">{generatedContent.wordCount}</div>
+              <div className="text-sm text-gray-400">Words Generated</div>
             </Card>
             
             <Card className="p-4 text-center">
-              <BarChart3 className="w-8 h-8 text-green-600 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-gray-900">{generatedContent.seoScore}/100</div>
-              <div className="text-sm text-gray-600">SEO Score</div>
+              <BarChart3 className="w-8 h-8 text-green-400 mx-auto mb-2" />
+              <div className="text-2xl font-bold text-white">{generatedContent.seoScore}/100</div>
+              <div className="text-sm text-gray-400">SEO Score</div>
             </Card>
             
             <Card className="p-4 text-center">
-              <Eye className="w-8 h-8 text-purple-600 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-gray-900">{generatedContent.readabilityScore}/100</div>
-              <div className="text-sm text-gray-600">Readability</div>
+              <Eye className="w-8 h-8 text-purple-400 mx-auto mb-2" />
+              <div className="text-2xl font-bold text-white">{generatedContent.readabilityScore}/100</div>
+              <div className="text-sm text-gray-400">Readability</div>
             </Card>
             
             <Card className="p-4 text-center">
-              <Clock className="w-8 h-8 text-orange-600 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-gray-900">{generatedContent.estimatedReadTime}</div>
-              <div className="text-sm text-gray-600">Min Read</div>
+              <Clock className="w-8 h-8 text-orange-400 mx-auto mb-2" />
+              <div className="text-2xl font-bold text-white">{generatedContent.estimatedReadTime}</div>
+              <div className="text-sm text-gray-400">Min Read</div>
             </Card>
           </div>
 
           {/* AI Model Insights */}
           <Card className="p-6">
-            <h3 className="text-xl font-semibold mb-4 flex items-center">
-              <Brain className="w-5 h-5 mr-2 text-blue-600" />
+            <h3 className="text-xl font-semibold mb-4 flex items-center text-white">
+              <Brain className="w-5 h-5 mr-2 text-blue-400" />
               AI Model Insights
             </h3>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -507,12 +507,12 @@ const EnhancedContentGenerator = () => {
 
           {/* Generated Content Preview */}
           <Card className="p-6">
-            <h3 className="text-xl font-semibold mb-4 flex items-center">
-              <FileText className="w-5 h-5 mr-2 text-green-600" />
+            <h3 className="text-xl font-semibold mb-4 flex items-center text-white">
+              <FileText className="w-5 h-5 mr-2 text-green-400" />
               Generated Content Preview
             </h3>
-            <div className="bg-gray-50 rounded-lg p-6 border-2 border-dashed border-gray-300">
-              <pre className="whitespace-pre-wrap text-sm text-gray-700 font-mono">
+            <div className="bg-gray-800 rounded-lg p-6 border-2 border-dashed border-gray-600">
+              <pre className="whitespace-pre-wrap text-sm text-gray-300 font-mono">
                 {generatedContent.content}
               </pre>
             </div>
@@ -546,7 +546,7 @@ const EnhancedContentGenerator = () => {
       {/* Quick Start Examples */}
       {!generatedContent && !isGenerating && (
         <Card className="p-6">
-          <h3 className="text-lg font-semibold mb-4">Quick Start Examples</h3>
+          <h3 className="text-lg font-semibold mb-4 text-white">Quick Start Examples</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
               'best CRM software 2024',
@@ -561,9 +561,9 @@ const EnhancedContentGenerator = () => {
               <button
                 key={index}
                 onClick={() => setTargetKeyword(example)}
-                className="text-left p-3 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors"
+                className="text-left p-3 border border-gray-600 rounded-lg bg-gray-700 hover:border-blue-400 hover:bg-gray-600 transition-colors"
               >
-                <div className="text-sm font-medium text-gray-900">{example}</div>
+                <div className="text-sm font-medium text-white">{example}</div>
               </button>
             ))}
           </div>

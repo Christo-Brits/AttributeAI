@@ -171,7 +171,7 @@ P.S. I noticed you recently ${contact?.last_activity || 'engaged with our conten
         }, 3000);
     };
 
-    const useTemplate = (template) => {
+    const applyTemplate = (template) => {
         setEmailData(prev => ({
             ...prev,
             subject: template.subject,
@@ -179,6 +179,10 @@ P.S. I noticed you recently ${contact?.last_activity || 'engaged with our conten
             template: template.id
         }));
         setShowTemplates(false);
+    };
+
+    const handleUseTemplate = (template) => {
+        applyTemplate(template);
     };
 
     const personalizeContent = (content) => {
@@ -462,7 +466,7 @@ P.S. I noticed you recently ${contact?.last_activity || 'engaged with our conten
                             
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {templates.map((template) => (
-                                    <Card key={template.id} className="p-4 hover:border-blue-500 transition-colors cursor-pointer" onClick={() => useTemplate(template)}>
+                                    <Card key={template.id} className="p-4 hover:border-blue-500 transition-colors cursor-pointer" onClick={() => handleUseTemplate(template)}>
                                         <h4 className="font-semibold text-white mb-2">{template.name}</h4>
                                         <p className="text-gray-400 text-sm mb-3">{personalizeContent(template.subject)}</p>
                                         <div className="text-xs text-gray-500 line-clamp-3">

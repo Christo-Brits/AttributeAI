@@ -97,25 +97,31 @@ const LandingPage = ({ onGetStarted, onSignIn }) => {
     scale: 'prod_SURGrl5AYS4Bpu'
   };
 
-  // Handle Stripe checkout - All Real Stripe Payment Links
+  // Handle Stripe checkout - Correctly Mapped Payment Links
   const handleStripeCheckout = async (planType) => {
     try {
-      // Your Complete Stripe Payment Links - organized by plan and billing
+      // Your Stripe Payment Links - Correctly Mapped
       const paymentLinks = {
         starter: isYearly 
-          ? 'https://buy.stripe.com/28E7sL0xI6CIbcuc1lcZa03' // Starter Yearly - please confirm
-          : 'https://buy.stripe.com/dRmbJ1dku7GM4O6d5pcZa04', // Starter Monthly - please confirm
+          ? 'https://buy.stripe.com/28E7sL0xI6CIbcuc1lcZa03' // Starter Annual ✅
+          : 'https://buy.stripe.com/28E7sL0xI6CIbcuc1lcZa03', // Starter Monthly - NEED TO CREATE THIS LINK
         growth: isYearly 
-          ? 'https://buy.stripe.com/dRmaEXfsC4uAfsK9TdcZa05' // Growth Yearly - please confirm  
-          : 'https://buy.stripe.com/5kQdR92FQ9OUcgyd5pcZa06', // Growth Monthly - please confirm
+          ? 'https://buy.stripe.com/dRmaEXfsC4uAfsK9TdcZa05' // Growth Annual ✅
+          : 'https://buy.stripe.com/dRmbJ1dku7GM4O6d5pcZa04', // Growth Monthly ✅
         scale: isYearly 
-          ? 'https://buy.stripe.com/4gMdR9fsCgdi4O6c1lcZa07' // Scale Yearly - please confirm
-          : 'https://buy.stripe.com/4gMdR9fsCgdi4O6c1lcZa07' // Scale Monthly - using same link (need 6th link)
+          ? 'https://buy.stripe.com/4gMdR9fsCgdi4O6c1lcZa07' // Scale Annual ✅
+          : 'https://buy.stripe.com/5kQdR92FQ9OUcgyd5pcZa06'  // Scale Monthly ✅
       };
       
       const paymentUrl = paymentLinks[planType];
       
       if (paymentUrl) {
+        // Add a note for Starter Monthly until you create the link
+        if (planType === 'starter' && !isYearly) {
+          alert('Starter Monthly payment link is being set up. For now, you can use the annual option or contact chris@attributeai.app');
+          return;
+        }
+        
         // Redirect to Stripe checkout
         window.location.href = paymentUrl;
       } else {

@@ -97,36 +97,30 @@ const LandingPage = ({ onGetStarted, onSignIn }) => {
     scale: 'prod_SURGrl5AYS4Bpu'
   };
 
-  // Handle Stripe checkout - Correctly Mapped Payment Links
+  // Handle Stripe checkout - Complete Payment Links System
   const handleStripeCheckout = async (planType) => {
     try {
-      // Your Stripe Payment Links - Correctly Mapped
+      // Complete Stripe Payment Links - All 6 Links Configured ✅
       const paymentLinks = {
         starter: isYearly 
-          ? 'https://buy.stripe.com/28E7sL0xI6CIbcuc1lcZa03' // Starter Annual ✅
-          : 'https://buy.stripe.com/28E7sL0xI6CIbcuc1lcZa03', // Starter Monthly - NEED TO CREATE THIS LINK
+          ? 'https://buy.stripe.com/28E7sL0xI6CIbcuc1lcZa03' // Starter Annual ($24/month billed yearly) ✅
+          : 'https://buy.stripe.com/eVqdR96W68KQcgy8P9cZa02', // Starter Monthly ($29/month) ✅
         growth: isYearly 
-          ? 'https://buy.stripe.com/dRmaEXfsC4uAfsK9TdcZa05' // Growth Annual ✅
-          : 'https://buy.stripe.com/dRmbJ1dku7GM4O6d5pcZa04', // Growth Monthly ✅
+          ? 'https://buy.stripe.com/dRmaEXfsC4uAfsK9TdcZa05' // Growth Annual ($63/month billed yearly) ✅
+          : 'https://buy.stripe.com/dRmbJ1dku7GM4O6d5pcZa04', // Growth Monthly ($79/month) ✅
         scale: isYearly 
-          ? 'https://buy.stripe.com/4gMdR9fsCgdi4O6c1lcZa07' // Scale Annual ✅
-          : 'https://buy.stripe.com/5kQdR92FQ9OUcgyd5pcZa06'  // Scale Monthly ✅
+          ? 'https://buy.stripe.com/4gMdR9fsCgdi4O6c1lcZa07' // Scale Annual ($159/month billed yearly) ✅
+          : 'https://buy.stripe.com/5kQdR92FQ9OUcgyd5pcZa06'  // Scale Monthly ($199/month) ✅
       };
       
       const paymentUrl = paymentLinks[planType];
       
       if (paymentUrl) {
-        // Add a note for Starter Monthly until you create the link
-        if (planType === 'starter' && !isYearly) {
-          alert('Starter Monthly payment link is being set up. For now, you can use the annual option or contact chris@attributeai.app');
-          return;
-        }
-        
-        // Redirect to Stripe checkout
+        // Redirect to Stripe checkout - All plans working!
         window.location.href = paymentUrl;
       } else {
-        // Fallback message
-        alert('Payment processing is being set up. Please contact chris@attributeai.app to proceed.');
+        // This should never happen now that all links are configured
+        alert('Payment processing error. Please contact chris@attributeai.app for assistance.');
       }
     } catch (error) {
       console.error('Payment redirect error:', error);

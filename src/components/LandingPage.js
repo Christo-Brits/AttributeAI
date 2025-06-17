@@ -48,7 +48,7 @@ const LandingPage = ({ onGetStarted, onSignIn }) => {
         "Basic attribution models"
       ]
     },
-    pro: {
+    growth: {
       monthly: 79,
       yearly: 63,
       features: [
@@ -62,7 +62,7 @@ const LandingPage = ({ onGetStarted, onSignIn }) => {
         "Advanced reporting"
       ]
     },
-    enterprise: {
+    scale: {
       monthly: 199,
       yearly: 159,
       features: [
@@ -87,6 +87,45 @@ const LandingPage = ({ onGetStarted, onSignIn }) => {
   const handleSignIn = () => {
     if (onSignIn) {
       onSignIn();
+    }
+  };
+
+  // Stripe Product IDs - your actual Stripe product IDs
+  const stripeProducts = {
+    starter: 'prod_SUR69X5aaINViN',
+    growth: 'prod_SURBKkpHySagT4', 
+    scale: 'prod_SURGrl5AYS4Bpu'
+  };
+
+  // Handle Stripe checkout
+  const handleStripeCheckout = async (planType) => {
+    const productId = stripeProducts[planType];
+    
+    try {
+      // Create checkout session via your API
+      const response = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          productId: productId,
+          planType: planType,
+          isYearly: isYearly
+        }),
+      });
+      
+      if (response.ok) {
+        const { url } = await response.json();
+        window.location.href = url;
+      } else {
+        const errorData = await response.json();
+        console.error('Failed to create checkout session:', errorData);
+        alert('Sorry, there was an error processing your request. Please try again.');
+      }
+    } catch (error) {
+      console.error('Stripe checkout error:', error);
+      alert('Sorry, there was an error processing your request. Please try again.');
     }
   };
 
@@ -265,58 +304,67 @@ const LandingPage = ({ onGetStarted, onSignIn }) => {
                   </li>
                 ))}
               </ul>
-              <Button className="w-full bg-gray-700 text-white hover:bg-gray-600 transition-colors">
+              <Button 
+                onClick={() => handleStripeCheckout('starter')}
+                className="w-full bg-gray-700 text-white hover:bg-gray-600 transition-colors"
+              >
                 Get Started
               </Button>
             </div>
 
-            {/* Pro Plan - Most Popular */}
+            {/* Growth Plan - Most Popular */}
             <div className="bg-gradient-to-b from-gray-800/90 to-gray-700/90 backdrop-blur-sm border border-purple-500/50 rounded-xl p-8 hover:scale-105 transition-all duration-300 relative">
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                 <span className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-1 rounded-full text-sm font-medium">
                   MOST POPULAR
                 </span>
               </div>
-              <h3 className="text-2xl font-bold text-white mb-2">Pro</h3>
+              <h3 className="text-2xl font-bold text-white mb-2">Growth</h3>
               <p className="text-gray-400 mb-6">Ideal for growing businesses</p>
               <div className="mb-6">
                 <span className="text-4xl font-bold text-white">
-                  ${isYearly ? pricing.pro.yearly : pricing.pro.monthly}
+                  ${isYearly ? pricing.growth.yearly : pricing.growth.monthly}
                 </span>
                 <span className="text-gray-400">/month</span>
               </div>
               <ul className="space-y-3 mb-8">
-                {pricing.pro.features.map((feature, index) => (
+                {pricing.growth.features.map((feature, index) => (
                   <li key={index} className="flex items-center space-x-3">
                     <Check className="h-4 w-4 text-blue-400 flex-shrink-0" />
                     <span className="text-gray-300">{feature}</span>
                   </li>
                 ))}
               </ul>
-              <Button className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 transition-all">
+              <Button 
+                onClick={() => handleStripeCheckout('growth')}
+                className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 transition-all"
+              >
                 Start Free Trial
               </Button>
             </div>
 
-            {/* Enterprise Plan */}
+            {/* Scale Plan */}
             <div className="bg-gray-800/60 backdrop-blur-sm border border-gray-600/50 rounded-xl p-8 hover:scale-105 transition-all duration-300">
-              <h3 className="text-2xl font-bold text-white mb-2">Enterprise</h3>
+              <h3 className="text-2xl font-bold text-white mb-2">Scale</h3>
               <p className="text-gray-400 mb-6">For large-scale organizations</p>
               <div className="mb-6">
                 <span className="text-4xl font-bold text-white">
-                  ${isYearly ? pricing.enterprise.yearly : pricing.enterprise.monthly}
+                  ${isYearly ? pricing.scale.yearly : pricing.scale.monthly}
                 </span>
                 <span className="text-gray-400">/month</span>
               </div>
               <ul className="space-y-3 mb-8">
-                {pricing.enterprise.features.map((feature, index) => (
+                {pricing.scale.features.map((feature, index) => (
                   <li key={index} className="flex items-center space-x-3">
                     <Check className="h-4 w-4 text-blue-400 flex-shrink-0" />
                     <span className="text-gray-300">{feature}</span>
                   </li>
                 ))}
               </ul>
-              <Button className="w-full bg-gray-700 text-white hover:bg-gray-600 transition-colors">
+              <Button 
+                onClick={() => handleStripeCheckout('scale')}
+                className="w-full bg-gray-700 text-white hover:bg-gray-600 transition-colors"
+              >
                 Contact Sales
               </Button>
             </div>

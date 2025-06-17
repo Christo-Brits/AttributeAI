@@ -118,6 +118,60 @@ app.post('/api/claude-chat', async (req, res) => {
     }
 });
 
+// Stripe Checkout Session Creation
+app.post('/api/create-checkout-session', async (req, res) => {
+    try {
+        if (!stripe) {
+            return res.status(500).json({ 
+                error: 'Stripe not configured. Please add STRIPE_SECRET_KEY to environment variables.' 
+            });
+        }
+
+        const { productId, planType, isYearly } = req.body;
+        
+        // Map your product IDs to the correct price IDs
+        const priceMapping = {
+            'prod_SUR69X5aaINViN': isYearly ? 'price_1RZUYrFQSzigm7Zh85fcpAjO' : 'price_1RZSDxFQSzigm7ZhwhKIhvYa', // Starter
+            'prod_SURBKkpHySagT4': isYearly ? 'price_1RZUZeFQSzigm7ZhULegNiEF' : 'price_1RZSJIFQSzigm7ZhMBm0esKc', // Growth  
+            'prod_SURGrl5AYS4Bpu': isYearly ? 'price_1RZUayFQSzigm7ZhA6CBroqF' : 'price_1RZSNiFQSzigm7ZhjVtqnhMo'  // Scale
+        };
+
+        const priceId = priceMapping[productId];
+        
+        if (!priceId) {
+            return res.status(400).json({ 
+                error: `Invalid product ID: ${productId}` 
+            });
+        }
+
+        // Create Stripe checkout session
+        const session = await stripe.checkout.sessions.create({
+            mode: 'subscription',
+            payment_method_types: ['card'],
+            line_items: [
+                {
+                    price: priceId,
+                    quantity: 1,
+                },
+            ],
+            success_url: `${process.env.CLIENT_URL || 'http://localhost:3000'}/success?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${process.env.CLIENT_URL || 'http://localhost:3000'}/pricing`,
+            allow_promotion_codes: true,
+            billing_address_collection: 'required',
+            customer_email: req.body.email || undefined,
+        });
+
+        res.json({ url: session.url });
+        
+    } catch (error) {
+        console.error('Stripe checkout error:', error);
+        res.status(500).json({ 
+            error: 'Failed to create checkout session',
+            details: error.message 
+        });
+    }
+});
+
 // Health check endpoint
 app.get('/health', (req, res) => {
     res.json({ 

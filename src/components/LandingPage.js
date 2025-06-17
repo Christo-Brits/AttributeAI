@@ -97,36 +97,31 @@ const LandingPage = ({ onGetStarted, onSignIn }) => {
     scale: 'prod_SURGrl5AYS4Bpu'
   };
 
-  // Handle Stripe checkout
+  // Handle Stripe checkout - Temporary contact redirect
   const handleStripeCheckout = async (planType) => {
-    const productId = stripeProducts[planType];
+    // Temporary solution while Stripe integration is being finalized
+    const plans = {
+      starter: { name: 'Starter', price: isYearly ? '$24' : '$29' },
+      growth: { name: 'Growth', price: isYearly ? '$63' : '$79' },
+      scale: { name: 'Scale', price: isYearly ? '$159' : '$199' }
+    };
     
-    try {
-      // Create checkout session via Netlify function
-      const response = await fetch('/.netlify/functions/create-checkout-session', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          productId: productId,
-          planType: planType,
-          isYearly: isYearly
-        }),
-      });
-      
-      if (response.ok) {
-        const { url } = await response.json();
-        window.location.href = url;
-      } else {
-        const errorData = await response.json();
-        console.error('Failed to create checkout session:', errorData);
-        alert('Sorry, there was an error processing your request. Please try again.');
-      }
-    } catch (error) {
-      console.error('Stripe checkout error:', error);
-      alert('Sorry, there was an error processing your request. Please try again.');
-    }
+    const selectedPlan = plans[planType];
+    const billing = isYearly ? 'yearly' : 'monthly';
+    
+    // Create a simple contact message
+    const message = `Hi! I'm interested in the ${selectedPlan.name} plan (${selectedPlan.price}/${billing}). Please send me payment details.`;
+    const encodedMessage = encodeURIComponent(message);
+    
+    // You can replace this with your preferred contact method:
+    // Option 1: Email (replace with your email)
+    window.location.href = `mailto:chris@attributeai.app?subject=AttributeAI ${selectedPlan.name} Plan&body=${encodedMessage}`;
+    
+    // Option 2: Contact form (uncomment and replace with your form URL)
+    // window.location.href = `https://forms.gle/your-contact-form?message=${encodedMessage}`;
+    
+    // Option 3: Show alert with instructions
+    // alert(`Thanks for your interest in the ${selectedPlan.name} plan! Please email chris@attributeai.app to get started.`);
   };
 
   return (

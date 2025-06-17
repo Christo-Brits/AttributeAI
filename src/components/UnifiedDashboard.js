@@ -4,6 +4,7 @@ import { Card, Button } from './ui/DesignSystem';
 import { useDataBridge } from '../utils/DataBridge';
 import { useAuth } from './auth/AuthContext';
 import { useAnalytics } from '../hooks/useAnalytics';
+import { useAttributeAIAnalytics } from '../hooks/useAttributeAIAnalytics';
 import AttributeAILogo from './ui/AttributeAILogo';
 import WeatherWidget from './WeatherWidget';
 import './WeatherWidget.css';
@@ -12,10 +13,24 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
   const { user } = useAuth();
   const { data, generateUnifiedInsights } = useDataBridge();
   const { trackPage, trackTool, trackFeature } = useAnalytics();
+  const { trackFeatureClick, trackToolStart } = useAttributeAIAnalytics('unified_dashboard');
   const [insights, setInsights] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const handleKeywordIntelligenceClick = () => {
+    // Enhanced analytics tracking
+    trackFeatureClick('keyword_intelligence', {
+      'source': 'featured_callout',
+      'cta_type': 'primary_feature',
+      'user_segment': user?.industry || 'unknown'
+    });
+    
+    trackToolStart('keyword_intelligence', {
+      'entry_point': 'dashboard_featured',
+      'user_type': user ? 'registered' : 'guest'
+    });
+    
+    // Legacy tracking (keep for compatibility)
     trackTool('keyword_intelligence', 'navigate_from_dashboard', { source: 'featured_callout' });
     trackFeature('keyword_intelligence', true);
     
@@ -28,6 +43,11 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
 
   // Navigation handlers for action buttons
   const handleSEOAnalysisClick = () => {
+    trackFeatureClick('seo_analysis', {
+      'source': 'no_insights_section',
+      'cta_type': 'action_button'
+    });
+    
     trackTool('seo_analysis', 'navigate_from_dashboard', { source: 'no_insights_section' });
     if (onNavigateToTab) {
       onNavigateToTab('seo-enhanced');
@@ -37,6 +57,11 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
   };
 
   const handleGenerateContentClick = () => {
+    trackFeatureClick('content_generation', {
+      'source': 'no_insights_section',
+      'cta_type': 'action_button'
+    });
+    
     trackTool('content_generation', 'navigate_from_dashboard', { source: 'no_insights_section' });
     if (onNavigateToTab) {
       onNavigateToTab('enhanced-content');
@@ -46,6 +71,11 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
   };
 
   const handleCROAnalysisClick = () => {
+    trackFeatureClick('cro_analysis', {
+      'source': 'no_insights_section',
+      'cta_type': 'action_button'
+    });
+    
     trackTool('cro_analysis', 'navigate_from_dashboard', { source: 'no_insights_section' });
     if (onNavigateToTab) {
       onNavigateToTab('cro');
@@ -243,6 +273,21 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
               >
                 <TrendingUp className="w-4 h-4 mr-2" />
                 Analyze CRO
+              </Button>
+              
+              {/* Survey System Test Button (Development) */}
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => {
+                  localStorage.removeItem('attributeai_user_metrics');
+                  window.location.reload();
+                }}
+                className="hover:bg-yellow-50 hover:border-yellow-300 transition-colors duration-200 text-xs"
+                title="Reset survey system for testing"
+              >
+                <MessageCircle className="w-4 h-4 mr-2" />
+                Test Surveys
               </Button>
             </div>
           </Card>

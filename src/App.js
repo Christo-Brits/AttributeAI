@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useState } from 'react';
+import React, { lazy, Suspense, useState, useEffect } from 'react';
 import './App.css';
 import { AuthProvider, useAuth } from './components/auth/AuthContext';
 import { HelmetProvider } from 'react-helmet-async';
@@ -9,9 +9,17 @@ import LandingPage from './components/LandingPage';
 import AccountPage from './components/AccountPage';
 import SuccessPage from './components/SuccessPage';
 import FloatingChatButton from './components/FloatingChatButton';
+import { useAttributeAIAnalytics } from './hooks/useAttributeAIAnalytics';
+
+// NEW: Survey & Discount System
+import { useSurveyManager, SurveyDisplay } from './components/surveys/SurveyIntegration';
+import UserSurveySystem from './components/surveys/UserSurveySystem';
 
 // NEW: User Analytics Dashboard
 const UserAnalyticsDashboard = lazy(() => import('./components/UserAnalyticsDashboard'));
+
+// NEW: Automated Signup Prompts
+const AutomatedSignupPrompts = lazy(() => import('./components/AutomatedSignupPrompts'));
 
 // NEW: Enhanced Content Generator (Outrank.so killer)
 const EnhancedContentGenerator = lazy(() => import('./components/EnhancedContentGenerator'));
@@ -54,6 +62,9 @@ const RevenueAttribution = lazy(() => import('./components/crm/RevenueAttributio
 const EmailSequenceBuilder = lazy(() => import('./components/email/EmailSequenceBuilder'));
 const EmailAnalytics = lazy(() => import('./components/email/EmailAnalytics'));
 
+// Analytics Dashboard
+const AnalyticsDashboard = lazy(() => import('./components/AnalyticsDashboard'));
+
 // Weather Intelligence Components - TEMPORARILY DISABLED FOR DEBUGGING
 // const WeatherIntelligence = lazy(() => import('./components/weather/WeatherIntelligence'));
 // const WeatherAnalytics = lazy(() => import('./components/weather/WeatherAnalytics'));
@@ -73,6 +84,77 @@ function AuthenticatedApp() {
   const [websiteAnalysisResults, setWebsiteAnalysisResults] = useState(null);
   const [currentView, setCurrentView] = useState('dashboard'); // dashboard, account, success
   const { user, updateUser } = useAuth();
+  
+  // Initialize analytics tracking
+  const { trackFeatureClick, trackButtonClick, analytics } = useAttributeAIAnalytics('main_app');
+
+  // NEW: Survey & Discount System Integration
+  const {
+    surveyTriggers,
+    userMetrics,
+    trackToolUsage,
+    trackSession,
+    checkSurveyTriggers,
+    completeSurvey,
+    generateDiscountCode
+  } = useSurveyManager();
+
+  // Track session initialization and user info
+  useEffect(() => {
+    // Initialize session tracking
+    if (!sessionStorage.getItem('session_initialized')) {
+      sessionStorage.setItem('session_initialized', 'true');
+      
+      // Track user type and session start
+      analytics.trackFunnelStep('app_initialized', {
+        'user_authenticated': !!user,
+        'user_type': user ? 'registered' : 'guest',
+        'initial_view': currentView,
+        'has_previous_session': !!localStorage.getItem('session_count')
+      });
+    }
+
+    // Update session count
+    const sessionCount = parseInt(localStorage.getItem('session_count') || '0') + 1;
+    localStorage.setItem('session_count', sessionCount.toString());
+
+    // NEW: Initialize survey system
+    checkSurveyTriggers();
+    trackSession();
+    
+  }, [user, currentView, analytics, checkSurveyTriggers, trackSession]);
+
+  // Track tab navigation
+  const handleTabChange = (newTab) => {
+    trackFeatureClick(newTab, {
+      'previous_tab': activeTab,
+      'navigation_method': 'sidebar_click'
+    });
+    
+    // NEW: Track tool usage for survey system
+    const toolNames = {
+      'keyword-intelligence': 'Keyword Intelligence',
+      'enhanced-content': 'Enhanced Content Generator',
+      'content-optimization': 'Content Optimization',
+      'competitor-analysis': 'Competitor Analysis',
+      'seo-enhanced': 'SEO Analysis',
+      'attribution': 'Attribution Engine',
+      'leadmagnet': 'Lead Magnet Generator',
+      'cro': 'CRO Analyzer'
+    };
+    
+    if (toolNames[newTab]) {
+      trackToolUsage(toolNames[newTab]);
+    }
+    
+    setActiveTab(newTab);
+  };
+
+  // Track view changes
+  const handleViewChange = (newView) => {
+    trackButtonClick(`view_${newView}`, 'main_navigation');
+    setCurrentView(newView);
+  };
 
   const renderActiveComponent = () => {
     // Handle special views first
@@ -80,14 +162,14 @@ function AuthenticatedApp() {
       return <AccountPage 
         user={user} 
         onUpdateUser={updateUser} 
-        onBackToApp={() => setCurrentView('dashboard')} 
+        onBackToApp={() => handleViewChange('dashboard')} 
       />;
     }
     
     if (currentView === 'success') {
       return <SuccessPage 
-        onGetStarted={() => setCurrentView('dashboard')} 
-        onGoToAccount={() => setCurrentView('account')} 
+        onGetStarted={() => handleViewChange('dashboard')} 
+        onGoToAccount={() => handleViewChange('account')} 
       />;
     }
 
@@ -95,7 +177,7 @@ function AuthenticatedApp() {
     const components = {
       dashboard: () => <UnifiedDashboard 
         websiteAnalysis={websiteAnalysisResults} 
-        onNavigateToTab={setActiveTab}
+        onNavigateToTab={handleTabChange}
       />,
       'user-analytics': UserAnalyticsDashboard,
       'keyword-intelligence': KeywordIntelligenceEngine,
@@ -108,6 +190,7 @@ function AuthenticatedApp() {
       attribution: AttributionEngine,
       realtime: RealTimeJourneyTracker,
       analytics: JourneyAnalytics,
+      'funnel-analytics': AnalyticsDashboard, // NEW: Enhanced funnel tracking dashboard
       content: SEOContentStrategist,
       leadmagnet: LeadMagnetGenerator,
       cro: CROAnalyzer,
@@ -146,8 +229,8 @@ function AuthenticatedApp() {
       {currentView === 'dashboard' && (
         <SidebarNavigation 
           activeTab={activeTab} 
-          setActiveTab={setActiveTab}
-          onViewChange={setCurrentView}
+          setActiveTab={handleTabChange}
+          onViewChange={handleViewChange}
           user={user}
         />
       )}
@@ -159,12 +242,53 @@ function AuthenticatedApp() {
       `} style={{ background: 'var(--bg-primary)' }}>
         {renderActiveComponent()}
         
+        {/* NEW: Survey & Discount System */}
+        {currentView === 'dashboard' && (
+          <>
+            <UserSurveySystem />
+            
+            {/* Survey Trigger Displays */}
+            <SurveyDisplay 
+              surveyType="first_impression"
+              isVisible={surveyTriggers.firstImpression}
+              onComplete={completeSurvey}
+              onDismiss={() => checkSurveyTriggers()}
+            />
+            
+            <SurveyDisplay 
+              surveyType="early_feedback"
+              isVisible={surveyTriggers.earlyFeedback}
+              onComplete={completeSurvey}
+              onDismiss={() => checkSurveyTriggers()}
+            />
+            
+            <SurveyDisplay 
+              surveyType="power_user"
+              isVisible={surveyTriggers.powerUser}
+              onComplete={completeSurvey}
+              onDismiss={() => checkSurveyTriggers()}
+            />
+            
+            <SurveyDisplay 
+              surveyType="pre_trial_end"
+              isVisible={surveyTriggers.preTrialEnd}
+              onComplete={completeSurvey}
+              onDismiss={() => checkSurveyTriggers()}
+            />
+          </>
+        )}
+        
         {/* Floating Chat Button - Available on dashboard pages only */}
         {currentView === 'dashboard' && (
           <FloatingChatButton 
             websiteAnalysis={websiteAnalysisResults}
           />
         )}
+        
+        {/* Automated Signup Prompts - Show across all views */}
+        <Suspense fallback={null}>
+          <AutomatedSignupPrompts />
+        </Suspense>
       </main>
     </div>
   );

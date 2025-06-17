@@ -1,3 +1,17 @@
+const express = require('express');
+const router = express.Router();
+
+// Generate export for local SEO pages
+router.post('/export', async (req, res) => {
+  try {
+    const { pages } = req.body;
+    
+    if (!pages || !Array.isArray(pages)) {
+      return res.status(400).json({ error: 'Invalid pages data' });
+    }
+    
+    const exportData = {
+      timestamp: new Date().toISOString(),
       totalPages: pages.length,
       pages: pages.map(page => ({
         filename: `${page.service.name.toLowerCase().replace(/\s+/g, '-')}-${page.area.name.toLowerCase().replace(/\s+/g, '-')}.html`,

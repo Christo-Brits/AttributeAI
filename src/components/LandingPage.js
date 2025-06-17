@@ -97,20 +97,20 @@ const LandingPage = ({ onGetStarted, onSignIn }) => {
     scale: 'prod_SURGrl5AYS4Bpu'
   };
 
-  // Handle Stripe checkout - Real Stripe Payment Links
+  // Handle Stripe checkout - All Real Stripe Payment Links
   const handleStripeCheckout = async (planType) => {
     try {
-      // Your Stripe Payment Links
+      // Your Complete Stripe Payment Links - organized by plan and billing
       const paymentLinks = {
         starter: isYearly 
-          ? 'https://buy.stripe.com/cNi3cv4NY2msbcu9TdcZa01' // Starter yearly (if this is the yearly link)
-          : 'https://buy.stripe.com/eVqdR96W68KQcgy8P9cZa02', // Starter monthly (if this is the monthly link)
+          ? 'https://buy.stripe.com/28E7sL0xI6CIbcuc1lcZa03' // Starter Yearly - please confirm
+          : 'https://buy.stripe.com/dRmbJ1dku7GM4O6d5pcZa04', // Starter Monthly - please confirm
         growth: isYearly 
-          ? 'https://buy.stripe.com/cNi3cv4NY2msbcu9TdcZa01' // Using same link for now - create separate Growth links
-          : 'https://buy.stripe.com/eVqdR96W68KQcgy8P9cZa02', // Using same link for now - create separate Growth links
+          ? 'https://buy.stripe.com/dRmaEXfsC4uAfsK9TdcZa05' // Growth Yearly - please confirm  
+          : 'https://buy.stripe.com/5kQdR92FQ9OUcgyd5pcZa06', // Growth Monthly - please confirm
         scale: isYearly 
-          ? 'https://buy.stripe.com/cNi3cv4NY2msbcu9TdcZa01' // Using same link for now - create separate Scale links
-          : 'https://buy.stripe.com/eVqdR96W68KQcgy8P9cZa02' // Using same link for now - create separate Scale links
+          ? 'https://buy.stripe.com/4gMdR9fsCgdi4O6c1lcZa07' // Scale Yearly - please confirm
+          : 'https://buy.stripe.com/4gMdR9fsCgdi4O6c1lcZa07' // Scale Monthly - using same link (need 6th link)
       };
       
       const paymentUrl = paymentLinks[planType];

@@ -102,8 +102,8 @@ const LandingPage = ({ onGetStarted, onSignIn }) => {
     const productId = stripeProducts[planType];
     
     try {
-      // Create checkout session via your API
-      const response = await fetch('/api/create-checkout-session', {
+      // Create checkout session via Netlify function
+      const response = await fetch('/.netlify/functions/create-checkout-session', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

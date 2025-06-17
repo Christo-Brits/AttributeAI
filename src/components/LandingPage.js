@@ -97,31 +97,35 @@ const LandingPage = ({ onGetStarted, onSignIn }) => {
     scale: 'prod_SURGrl5AYS4Bpu'
   };
 
-  // Handle Stripe checkout - Temporary contact redirect
+  // Handle Stripe checkout - Real Stripe Payment Links
   const handleStripeCheckout = async (planType) => {
-    // Temporary solution while Stripe integration is being finalized
-    const plans = {
-      starter: { name: 'Starter', price: isYearly ? '$24' : '$29' },
-      growth: { name: 'Growth', price: isYearly ? '$63' : '$79' },
-      scale: { name: 'Scale', price: isYearly ? '$159' : '$199' }
-    };
-    
-    const selectedPlan = plans[planType];
-    const billing = isYearly ? 'yearly' : 'monthly';
-    
-    // Create a simple contact message
-    const message = `Hi! I'm interested in the ${selectedPlan.name} plan (${selectedPlan.price}/${billing}). Please send me payment details.`;
-    const encodedMessage = encodeURIComponent(message);
-    
-    // You can replace this with your preferred contact method:
-    // Option 1: Email (replace with your email)
-    window.location.href = `mailto:chris@attributeai.app?subject=AttributeAI ${selectedPlan.name} Plan&body=${encodedMessage}`;
-    
-    // Option 2: Contact form (uncomment and replace with your form URL)
-    // window.location.href = `https://forms.gle/your-contact-form?message=${encodedMessage}`;
-    
-    // Option 3: Show alert with instructions
-    // alert(`Thanks for your interest in the ${selectedPlan.name} plan! Please email chris@attributeai.app to get started.`);
+    try {
+      // Your Stripe Payment Links
+      const paymentLinks = {
+        starter: isYearly 
+          ? 'https://buy.stripe.com/cNi3cv4NY2msbcu9TdcZa01' // Starter yearly (if this is the yearly link)
+          : 'https://buy.stripe.com/eVqdR96W68KQcgy8P9cZa02', // Starter monthly (if this is the monthly link)
+        growth: isYearly 
+          ? 'https://buy.stripe.com/cNi3cv4NY2msbcu9TdcZa01' // Using same link for now - create separate Growth links
+          : 'https://buy.stripe.com/eVqdR96W68KQcgy8P9cZa02', // Using same link for now - create separate Growth links
+        scale: isYearly 
+          ? 'https://buy.stripe.com/cNi3cv4NY2msbcu9TdcZa01' // Using same link for now - create separate Scale links
+          : 'https://buy.stripe.com/eVqdR96W68KQcgy8P9cZa02' // Using same link for now - create separate Scale links
+      };
+      
+      const paymentUrl = paymentLinks[planType];
+      
+      if (paymentUrl) {
+        // Redirect to Stripe checkout
+        window.location.href = paymentUrl;
+      } else {
+        // Fallback message
+        alert('Payment processing is being set up. Please contact chris@attributeai.app to proceed.');
+      }
+    } catch (error) {
+      console.error('Payment redirect error:', error);
+      alert('Sorry, there was an error processing your request. Please contact chris@attributeai.app for assistance.');
+    }
   };
 
   return (

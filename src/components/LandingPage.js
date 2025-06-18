@@ -191,8 +191,11 @@ const LandingPage = ({ onGetStarted, onSignIn }) => {
                 <ArrowRight className="ml-2 h-5 w-5" />
               </span>
             </Button>
-            <button className="border border-gray-600 text-white px-8 py-4 text-lg font-semibold rounded-xl hover:bg-gray-800/50 transition-all duration-200 backdrop-blur-sm">
-              Try Demo (Free)
+            <button 
+              onClick={handleGetStarted}
+              className="border border-gray-600 text-white px-8 py-4 text-lg font-semibold rounded-xl hover:bg-gray-800/50 transition-all duration-200 backdrop-blur-sm"
+            >
+              Create Free Account
             </button>
           </div>
 
@@ -200,15 +203,15 @@ const LandingPage = ({ onGetStarted, onSignIn }) => {
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-8 text-sm text-gray-400">
             <div className="flex items-center space-x-2">
               <Check className="h-4 w-4 text-green-400" />
-              <span>No credit card required</span>
+              <span>Full platform access - no credit card required</span>
             </div>
             <div className="flex items-center space-x-2">
               <Check className="h-4 w-4 text-green-400" />
-              <span>14-day money-back guarantee</span>
+              <span>Free forever plan + 14-day premium trial</span>
             </div>
             <div className="flex items-center space-x-2">
               <Check className="h-4 w-4 text-green-400" />
-              <span>Setup in under 5 minutes</span>
+              <span>Start analyzing in under 5 minutes</span>
             </div>
           </div>
         </div>

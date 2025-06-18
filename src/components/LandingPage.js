@@ -180,23 +180,39 @@ const LandingPage = ({ onGetStarted, onSignIn }) => {
             create content that converts using Claude, GPT-4, and Gemini AI.
           </p>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6 mb-12">
+          {/* Single Primary CTA - Peer Review Recommendation */}
+          <div className="flex flex-col items-center justify-center space-y-4 mb-12">
             <Button 
               onClick={handleGetStarted}
-              className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white px-8 py-4 text-lg font-semibold hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 transition-all duration-200 transform hover:scale-105 shadow-2xl"
+              className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white px-12 py-5 text-xl font-bold hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 transition-all duration-200 transform hover:scale-105 shadow-2xl rounded-2xl"
             >
               <span className="flex items-center">
-                Start 14-Day Free Trial
-                <ArrowRight className="ml-2 h-5 w-5" />
+                Create Free Account - Start Now
+                <ArrowRight className="ml-3 h-6 w-6" />
               </span>
             </Button>
+            
+            {/* Secondary Action - Less Prominent */}
             <button 
-              onClick={handleGetStarted}
-              className="border border-gray-600 text-white px-8 py-4 text-lg font-semibold rounded-xl hover:bg-gray-800/50 transition-all duration-200 backdrop-blur-sm"
+              onClick={() => window.open('mailto:support@attributeai.app?subject=Book Live Demo', '_blank')}
+              className="text-gray-400 hover:text-white transition-colors text-sm underline"
             >
-              Create Free Account
+              Book live demo instead →
             </button>
+          </div>
+
+          {/* Social Proof Badge - Peer Review Recommendation */}
+          <div className="flex items-center justify-center mb-8">
+            <div className="bg-black/20 backdrop-blur-sm rounded-full px-6 py-3 border border-gray-700">
+              <div className="flex items-center space-x-3">
+                <div className="flex text-yellow-400">
+                  {'★'.repeat(5)}
+                </div>
+                <span className="text-white font-semibold">130+ early users</span>
+                <span className="text-gray-400">•</span>
+                <span className="text-green-400">10x better value than Keywords Everywhere</span>
+              </div>
+            </div>
           </div>
 
           {/* Trust Indicators */}

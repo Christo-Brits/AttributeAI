@@ -1,6 +1,7 @@
 import React, { lazy, Suspense, useState, useEffect } from 'react';
 import './App.css';
 import { AuthProvider, useAuth } from './components/auth/AuthContext';
+import { ImprovedAuthProvider } from './components/auth/ImprovedAuthContext';
 import { HelmetProvider } from 'react-helmet-async';
 import SidebarNavigation from './components/SidebarNavigation';
 import UnifiedDashboard from './components/UnifiedDashboard';
@@ -11,6 +12,7 @@ import SuccessPage from './components/SuccessPage';
 import FloatingChatButton from './components/FloatingChatButton';
 import { useAttributeAIAnalytics } from './hooks/useAttributeAIAnalytics';
 import { ConversionManager } from './components/immediate-conversion-system';
+import ConversionTracker, { initializeFunnelTracking } from './utils/ConversionTracker';
 
 // NEW: Survey & Discount System
 import { useSurveyManager, SurveyDisplay } from './components/surveys/SurveyIntegration';
@@ -301,9 +303,11 @@ function AuthenticatedApp() {
 function App() {
   return (
     <HelmetProvider>
-      <AuthProvider>
-        <AppRouter />
-      </AuthProvider>
+      <ImprovedAuthProvider>
+        <AuthProvider>
+          <AppRouter />
+        </AuthProvider>
+      </ImprovedAuthProvider>
     </HelmetProvider>
   );
 }
@@ -311,6 +315,16 @@ function App() {
 function AppRouter() {
   const { isAuthenticated, isLoading, updateUser } = useAuth();
   const [appView, setAppView] = useState('landing'); // landing, login, app, success
+
+  // Initialize conversion tracking - Peer Review Recommendation
+  React.useEffect(() => {
+    initializeFunnelTracking();
+    
+    // Track landing page views
+    if (appView === 'landing') {
+      ConversionTracker.trackLandingPageView();
+    }
+  }, [appView]);
 
   // Check URL for success page
   React.useEffect(() => {
@@ -325,6 +339,9 @@ function AppRouter() {
   }, [isAuthenticated]);
 
   const handleGetStarted = (plan) => {
+    // Track CTA clicks - Peer Review Recommendation
+    ConversionTracker.trackCTAClick('free_account');
+    
     if (plan === 'freemium') {
       setAppView('login');
     } else if (plan === 'pro') {

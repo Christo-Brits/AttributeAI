@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   Search, TrendingUp, Target, Brain, Zap, BarChart3, 
   Globe, Users, DollarSign, Award, AlertCircle, CheckCircle,
@@ -7,11 +7,13 @@ import {
 } from 'lucide-react';
 import { Card, Button, ProgressIndicator } from './ui/DesignSystem';
 import { useAttributeAIAnalytics } from '../hooks/useAttributeAIAnalytics';
+import { ProgressSavePrompt, QuickSignupModal } from './immediate-conversion-system';
 
 const KeywordIntelligenceEngine = () => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [showSignupModal, setShowSignupModal] = useState(false);
   
   // Initialize analytics for this component
   const { 
@@ -71,6 +73,17 @@ const KeywordIntelligenceEngine = () => {
         'volume': mockResults.volume,
         'difficulty': mockResults.difficulty
       });
+      
+      // Track user activity for conversion system
+      const actions = parseInt(localStorage.getItem('attributeai_actions') || '0') + 1;
+      localStorage.setItem('attributeai_actions', actions.toString());
+      
+      // Track features used
+      const features = JSON.parse(localStorage.getItem('attributeai_features_used') || '[]');
+      if (!features.includes('keyword_intelligence')) {
+        features.push('keyword_intelligence');
+        localStorage.setItem('attributeai_features_used', JSON.stringify(features));
+      }
       
     } catch (error) {
       console.error('Analysis failed:', error);
@@ -298,7 +311,36 @@ const KeywordIntelligenceEngine = () => {
             </div>
           </Card>
         )}
+        
+        {/* Progress Save Prompt - Shows after analysis */}
+        {results && (
+          <ProgressSavePrompt
+            toolName="keyword analysis"
+            onSignup={() => setShowSignupModal(true)}
+          />
+        )}
       </div>
+      
+      {/* Quick Signup Modal */}
+      <QuickSignupModal
+        isOpen={showSignupModal}
+        onClose={() => setShowSignupModal(false)}
+        onSuccess={(userData) => {
+          console.log('User converted after keyword analysis:', userData);
+          // Track the conversion
+          if (window.gtag) {
+            window.gtag('event', 'signup_completed', {
+              event_category: 'conversion',
+              event_label: 'keyword_analysis',
+              value: 1
+            });
+          }
+          // Refresh to show authenticated state
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        }}
+      />
     </div>
   );
 };

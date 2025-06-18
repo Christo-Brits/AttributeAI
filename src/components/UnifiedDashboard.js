@@ -8,6 +8,7 @@ import { useAttributeAIAnalytics } from '../hooks/useAttributeAIAnalytics';
 import AttributeAILogo from './ui/AttributeAILogo';
 import WeatherWidget from './WeatherWidget';
 import './WeatherWidget.css';
+import { ConversionBanner, QuickSignupModal } from './immediate-conversion-system';
 
 const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
   const { user } = useAuth();
@@ -16,6 +17,7 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
   const { trackFeatureClick, trackToolStart } = useAttributeAIAnalytics('unified_dashboard');
   const [insights, setInsights] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [showSignupModal, setShowSignupModal] = useState(false);
 
   const handleKeywordIntelligenceClick = () => {
     // Enhanced analytics tracking
@@ -84,6 +86,22 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
     }
   };
 
+  const handleSignupSuccess = (userData) => {
+    console.log('New user signed up from dashboard:', userData);
+    // Track the conversion
+    if (window.gtag) {
+      window.gtag('event', 'signup_completed', {
+        event_category: 'conversion',
+        event_label: 'dashboard_banner',
+        value: 1
+      });
+    }
+    // Refresh page to show authenticated state
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
+  };
+
   useEffect(() => {
     // Track dashboard page view
     trackPage('Unified Dashboard', 'core_platform');
@@ -116,6 +134,9 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
             Unified insights from all your marketing analysis tools
           </p>
         </div>
+
+        {/* Conversion Banner */}
+        <ConversionBanner onSignup={() => setShowSignupModal(true)} />
 
         {/* Featured Tool Callout */}
         <div className="bg-gradient-to-r from-gray-800/80 to-gray-700/80 backdrop-blur-sm border border-gray-600/50 rounded-xl p-6 mb-8 shadow-2xl">
@@ -301,6 +322,13 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
       <footer className="mt-12 text-center text-xs text-gray-500 py-6">
         &copy; {new Date().getFullYear()} AttributeAI &mdash; <a href="/privacy-policy.html" className="hover:underline text-blue-500">Privacy Policy</a>
       </footer>
+      
+      {/* Quick Signup Modal */}
+      <QuickSignupModal
+        isOpen={showSignupModal}
+        onClose={() => setShowSignupModal(false)}
+        onSuccess={handleSignupSuccess}
+      />
     </div>
   );
 };

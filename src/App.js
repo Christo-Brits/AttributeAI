@@ -10,6 +10,7 @@ import AccountPage from './components/AccountPage';
 import SuccessPage from './components/SuccessPage';
 import FloatingChatButton from './components/FloatingChatButton';
 import { useAttributeAIAnalytics } from './hooks/useAttributeAIAnalytics';
+import { ConversionManager } from './components/immediate-conversion-system';
 
 // NEW: Survey & Discount System
 import { useSurveyManager, SurveyDisplay } from './components/surveys/SurveyIntegration';
@@ -275,6 +276,9 @@ function AuthenticatedApp() {
               onComplete={completeSurvey}
               onDismiss={() => checkSurveyTriggers()}
             />
+            
+            {/* NEW: Conversion Recovery System */}
+            <ConversionManager />
           </>
         )}
         

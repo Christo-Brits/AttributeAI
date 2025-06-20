@@ -1,0 +1,1139 @@
+{
+  "trialSystem": {
+    "duration": "14 days",
+    "approach": "Unified trial for all tiers",
+    "benefits": [
+      "Simple user experience",
+      "Clear conversion timeline",
+      "Focused feedback collection period",
+      "Consistent messaging"
+    ]
+  },
+  "enterpriseManagement": {
+    "totalEnterpriseAccounts": 40,
+    "averageUsersPerAccount": 6,
+    "topAccounts": [
+      {
+        "company": "Performance Marketing",
+        "users": [
+          {
+            "email": "helen.moore@performancemarketing.com",
+            "first_name": "Helen",
+            "last_name": "Moore",
+            "company": "Performance Marketing",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-05-06T23:01:19.311+00:00",
+            "keywords_used_this_month": 519,
+            "created_at": "2025-04-22T23:01:19.311+00:00"
+          },
+          {
+            "email": "thomas.torres@performancemarketing.com",
+            "first_name": "Thomas",
+            "last_name": "Torres",
+            "company": "Performance Marketing",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-04-12T23:01:19.311+00:00",
+            "keywords_used_this_month": 158,
+            "created_at": "2025-03-29T22:01:19.311+00:00"
+          },
+          {
+            "email": "jessica.baker114@outlook.com",
+            "first_name": "Jessica",
+            "last_name": "Baker",
+            "company": "Performance Marketing",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-04-07T23:01:19.312+00:00",
+            "keywords_used_this_month": 523,
+            "created_at": "2025-03-24T22:01:19.312+00:00"
+          },
+          {
+            "email": "sarah.clark@performancemarketing.com",
+            "first_name": "Sarah",
+            "last_name": "Clark",
+            "company": "Performance Marketing",
+            "subscription_tier": "enterprise",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-05-05T23:01:19.312+00:00",
+            "keywords_used_this_month": 13987,
+            "created_at": "2025-04-21T23:01:19.312+00:00"
+          },
+          {
+            "email": "thomas.thompson132@marketing.com",
+            "first_name": "Thomas",
+            "last_name": "Thompson",
+            "company": "Performance Marketing",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-02-03T22:01:19.312+00:00",
+            "keywords_used_this_month": 494,
+            "created_at": "2025-01-20T22:01:19.312+00:00"
+          },
+          {
+            "email": "linda.williams142@hotmail.com",
+            "first_name": "Linda",
+            "last_name": "Williams",
+            "company": "Performance Marketing",
+            "subscription_tier": "agency",
+            "subscription_status": "trialing",
+            "trial_ends_at": "2025-07-03T23:01:19.312+00:00",
+            "keywords_used_this_month": 55704,
+            "created_at": "2025-06-19T23:01:19.312+00:00"
+          },
+          {
+            "email": "patricia.wilson157@yahoo.com",
+            "first_name": "Patricia",
+            "last_name": "Wilson",
+            "company": "Performance Marketing",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-02-19T22:01:19.312+00:00",
+            "keywords_used_this_month": 723,
+            "created_at": "2025-02-05T22:01:19.312+00:00"
+          },
+          {
+            "email": "nancy.jones172@hotmail.com",
+            "first_name": "Nancy",
+            "last_name": "Jones",
+            "company": "Performance Marketing",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-01-30T22:01:19.312+00:00",
+            "keywords_used_this_month": 355,
+            "created_at": "2025-01-16T22:01:19.312+00:00"
+          },
+          {
+            "email": "rachel.brown@performancemarketing.com",
+            "first_name": "Rachel",
+            "last_name": "Brown",
+            "company": "Performance Marketing",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-03-20T22:01:19.312+00:00",
+            "keywords_used_this_month": 473,
+            "created_at": "2025-03-06T22:01:19.312+00:00"
+          },
+          {
+            "email": "james.hernandez@yahoo.com",
+            "first_name": "James",
+            "last_name": "Hernandez",
+            "company": "Performance Marketing",
+            "subscription_tier": "free",
+            "subscription_status": "trialing",
+            "trial_ends_at": "2025-06-26T23:01:19.311+00:00",
+            "keywords_used_this_month": 258,
+            "created_at": "2025-06-12T23:01:19.311+00:00"
+          }
+        ],
+        "primaryUser": {
+          "email": "helen.moore@performancemarketing.com",
+          "first_name": "Helen",
+          "last_name": "Moore",
+          "company": "Performance Marketing",
+          "subscription_tier": "free",
+          "subscription_status": "past_due",
+          "trial_ends_at": "2025-05-06T23:01:19.311+00:00",
+          "keywords_used_this_month": 519,
+          "created_at": "2025-04-22T23:01:19.311+00:00"
+        },
+        "userCount": 10,
+        "totalUsage": 73194,
+        "averageUsage": 7319.4
+      },
+      {
+        "company": "Marketing Intelligence",
+        "users": [
+          {
+            "email": "andrew.nguyen@yahoo.com",
+            "first_name": "Andrew",
+            "last_name": "Nguyen",
+            "company": "Marketing Intelligence",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-06-03T23:01:19.311+00:00",
+            "keywords_used_this_month": 565,
+            "created_at": "2025-05-20T23:01:19.311+00:00"
+          },
+          {
+            "email": "melissa.martinez@agency.com",
+            "first_name": "Melissa",
+            "last_name": "Martinez",
+            "company": "Marketing Intelligence",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-03-03T22:01:19.311+00:00",
+            "keywords_used_this_month": 458,
+            "created_at": "2025-02-17T22:01:19.311+00:00"
+          },
+          {
+            "email": "amanda.lewis81@business.com",
+            "first_name": "Amanda",
+            "last_name": "Lewis",
+            "company": "Marketing Intelligence",
+            "subscription_tier": "professional",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-05-01T23:01:19.311+00:00",
+            "keywords_used_this_month": 2781,
+            "created_at": "2025-04-17T23:01:19.311+00:00"
+          },
+          {
+            "email": "james.walker103@yahoo.com",
+            "first_name": "James",
+            "last_name": "Walker",
+            "company": "Marketing Intelligence",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-06-17T23:01:19.312+00:00",
+            "keywords_used_this_month": 519,
+            "created_at": "2025-06-03T23:01:19.312+00:00"
+          },
+          {
+            "email": "maria.young@marketingintelligence.com",
+            "first_name": "Maria",
+            "last_name": "Young",
+            "company": "Marketing Intelligence",
+            "subscription_tier": "agency",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-01-19T22:01:19.312+00:00",
+            "keywords_used_this_month": 41300,
+            "created_at": "2025-01-05T22:01:19.312+00:00"
+          },
+          {
+            "email": "daniel.baker133@hotmail.com",
+            "first_name": "Daniel",
+            "last_name": "Baker",
+            "company": "Marketing Intelligence",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-02-04T22:01:19.312+00:00",
+            "keywords_used_this_month": 228,
+            "created_at": "2025-01-21T22:01:19.312+00:00"
+          },
+          {
+            "email": "barbara.nguyen196@yahoo.com",
+            "first_name": "Barbara",
+            "last_name": "Nguyen",
+            "company": "Marketing Intelligence",
+            "subscription_tier": "professional",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-05-27T23:01:19.312+00:00",
+            "keywords_used_this_month": 606,
+            "created_at": "2025-05-13T23:01:19.312+00:00"
+          },
+          {
+            "email": "melissa.campbell118@yahoo.com",
+            "first_name": "Melissa",
+            "last_name": "Campbell",
+            "company": "Marketing Intelligence",
+            "subscription_tier": "professional",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-03-09T22:01:19.312+00:00",
+            "keywords_used_this_month": 960,
+            "created_at": "2025-02-23T22:01:19.312+00:00"
+          }
+        ],
+        "primaryUser": {
+          "email": "andrew.nguyen@yahoo.com",
+          "first_name": "Andrew",
+          "last_name": "Nguyen",
+          "company": "Marketing Intelligence",
+          "subscription_tier": "free",
+          "subscription_status": "past_due",
+          "trial_ends_at": "2025-06-03T23:01:19.311+00:00",
+          "keywords_used_this_month": 565,
+          "created_at": "2025-05-20T23:01:19.311+00:00"
+        },
+        "userCount": 8,
+        "totalUsage": 47417,
+        "averageUsage": 5927.125
+      },
+      {
+        "company": "Growth Engine Media",
+        "users": [
+          {
+            "email": "barbara.scott@growthenginemedia.com",
+            "first_name": "Barbara",
+            "last_name": "Scott",
+            "company": "Growth Engine Media",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-04-27T23:01:19.311+00:00",
+            "keywords_used_this_month": 48,
+            "created_at": "2025-04-13T23:01:19.311+00:00"
+          },
+          {
+            "email": "kenneth.baker@growthenginemedia.com",
+            "first_name": "Kenneth",
+            "last_name": "Baker",
+            "company": "Growth Engine Media",
+            "subscription_tier": "enterprise",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-02-06T22:01:19.311+00:00",
+            "keywords_used_this_month": 14460,
+            "created_at": "2025-01-23T22:01:19.311+00:00"
+          },
+          {
+            "email": "kenneth.wilson@marketing.com",
+            "first_name": "Kenneth",
+            "last_name": "Wilson",
+            "company": "Growth Engine Media",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-04-04T22:01:19.311+00:00",
+            "keywords_used_this_month": 261,
+            "created_at": "2025-03-21T22:01:19.311+00:00"
+          },
+          {
+            "email": "charles.hernandez106@business.com",
+            "first_name": "Charles",
+            "last_name": "Hernandez",
+            "company": "Growth Engine Media",
+            "subscription_tier": "professional",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-04-11T23:01:19.312+00:00",
+            "keywords_used_this_month": 1622,
+            "created_at": "2025-03-28T22:01:19.312+00:00"
+          },
+          {
+            "email": "melissa.lopez147@yahoo.com",
+            "first_name": "Melissa",
+            "last_name": "Lopez",
+            "company": "Growth Engine Media",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-06-09T23:01:19.312+00:00",
+            "keywords_used_this_month": 102,
+            "created_at": "2025-05-26T23:01:19.312+00:00"
+          },
+          {
+            "email": "laura.gonzalez160@growth.com",
+            "first_name": "Laura",
+            "last_name": "Gonzalez",
+            "company": "Growth Engine Media",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-03-10T22:01:19.312+00:00",
+            "keywords_used_this_month": 101,
+            "created_at": "2025-02-24T22:01:19.312+00:00"
+          },
+          {
+            "email": "matthew.robinson@growthenginemedia.com",
+            "first_name": "Matthew",
+            "last_name": "Robinson",
+            "company": "Growth Engine Media",
+            "subscription_tier": "professional",
+            "subscription_status": "trialing",
+            "trial_ends_at": "2025-06-24T23:01:19.312+00:00",
+            "keywords_used_this_month": 1767,
+            "created_at": "2025-06-10T23:01:19.312+00:00"
+          },
+          {
+            "email": "nancy.hernandez183@growth.com",
+            "first_name": "Nancy",
+            "last_name": "Hernandez",
+            "company": "Growth Engine Media",
+            "subscription_tier": "agency",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-06-05T23:01:19.312+00:00",
+            "keywords_used_this_month": 27056,
+            "created_at": "2025-05-22T23:01:19.312+00:00"
+          },
+          {
+            "email": "jessica.jones57@marketing.com",
+            "first_name": "Jessica",
+            "last_name": "Jones",
+            "company": "Growth Engine Media",
+            "subscription_tier": "free",
+            "subscription_status": "trialing",
+            "trial_ends_at": "2025-06-25T23:01:19.311+00:00",
+            "keywords_used_this_month": 50,
+            "created_at": "2025-06-11T23:01:19.311+00:00"
+          }
+        ],
+        "primaryUser": {
+          "email": "barbara.scott@growthenginemedia.com",
+          "first_name": "Barbara",
+          "last_name": "Scott",
+          "company": "Growth Engine Media",
+          "subscription_tier": "free",
+          "subscription_status": "past_due",
+          "trial_ends_at": "2025-04-27T23:01:19.311+00:00",
+          "keywords_used_this_month": 48,
+          "created_at": "2025-04-13T23:01:19.311+00:00"
+        },
+        "userCount": 9,
+        "totalUsage": 45467,
+        "averageUsage": 5051.888888888889
+      },
+      {
+        "company": "Growth Marketing Agency",
+        "users": [
+          {
+            "email": "jessica.thomas@growthmarketingagency.com",
+            "first_name": "Jessica",
+            "last_name": "Thomas",
+            "company": "Growth Marketing Agency",
+            "subscription_tier": "professional",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-05-04T23:01:19.311+00:00",
+            "keywords_used_this_month": 873,
+            "created_at": "2025-04-20T23:01:19.311+00:00"
+          },
+          {
+            "email": "brian.white224@agency.com",
+            "first_name": "Brian",
+            "last_name": "White",
+            "company": "Growth Marketing Agency",
+            "subscription_tier": "agency",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-03-19T22:01:19.312+00:00",
+            "keywords_used_this_month": 35159,
+            "created_at": "2025-03-05T22:01:19.312+00:00"
+          },
+          {
+            "email": "michael.martinez237@yahoo.com",
+            "first_name": "Michael",
+            "last_name": "Martinez",
+            "company": "Growth Marketing Agency",
+            "subscription_tier": "professional",
+            "subscription_status": "trialing",
+            "trial_ends_at": "2025-07-03T23:01:19.312+00:00",
+            "keywords_used_this_month": 2899,
+            "created_at": "2025-06-19T23:01:19.312+00:00"
+          }
+        ],
+        "primaryUser": {
+          "email": "jessica.thomas@growthmarketingagency.com",
+          "first_name": "Jessica",
+          "last_name": "Thomas",
+          "company": "Growth Marketing Agency",
+          "subscription_tier": "professional",
+          "subscription_status": "past_due",
+          "trial_ends_at": "2025-05-04T23:01:19.311+00:00",
+          "keywords_used_this_month": 873,
+          "created_at": "2025-04-20T23:01:19.311+00:00"
+        },
+        "userCount": 3,
+        "totalUsage": 38931,
+        "averageUsage": 12977
+      },
+      {
+        "company": "Traffic Generation Co",
+        "users": [
+          {
+            "email": "elizabeth.mitchell@trafficgenerationco.com",
+            "first_name": "Elizabeth",
+            "last_name": "Mitchell",
+            "company": "Traffic Generation Co",
+            "subscription_tier": "professional",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-03-03T22:01:19.311+00:00",
+            "keywords_used_this_month": 1214,
+            "created_at": "2025-02-17T22:01:19.311+00:00"
+          },
+          {
+            "email": "elizabeth.mitchell60@growth.com",
+            "first_name": "Elizabeth",
+            "last_name": "Mitchell",
+            "company": "Traffic Generation Co",
+            "subscription_tier": "enterprise",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-04-13T23:01:19.311+00:00",
+            "keywords_used_this_month": 4476,
+            "created_at": "2025-03-30T22:01:19.311+00:00"
+          },
+          {
+            "email": "donald.baker78@hotmail.com",
+            "first_name": "Donald",
+            "last_name": "Baker",
+            "company": "Traffic Generation Co",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-03-17T22:01:19.311+00:00",
+            "keywords_used_this_month": 389,
+            "created_at": "2025-03-03T22:01:19.311+00:00"
+          },
+          {
+            "email": "tom.taylor89@outlook.com",
+            "first_name": "Tom",
+            "last_name": "Taylor",
+            "company": "Traffic Generation Co",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-04-29T23:01:19.312+00:00",
+            "keywords_used_this_month": 175,
+            "created_at": "2025-04-15T23:01:19.312+00:00"
+          },
+          {
+            "email": "dorothy.robinson107@consulting.com",
+            "first_name": "Dorothy",
+            "last_name": "Robinson",
+            "company": "Traffic Generation Co",
+            "subscription_tier": "free",
+            "subscription_status": "trialing",
+            "trial_ends_at": "2025-06-26T23:01:19.312+00:00",
+            "keywords_used_this_month": 459,
+            "created_at": "2025-06-12T23:01:19.312+00:00"
+          },
+          {
+            "email": "daniel.allen166@agency.com",
+            "first_name": "Daniel",
+            "last_name": "Allen",
+            "company": "Traffic Generation Co",
+            "subscription_tier": "professional",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-05-25T23:01:19.312+00:00",
+            "keywords_used_this_month": 1487,
+            "created_at": "2025-05-11T23:01:19.312+00:00"
+          },
+          {
+            "email": "nancy.flores177@marketing.com",
+            "first_name": "Nancy",
+            "last_name": "Flores",
+            "company": "Traffic Generation Co",
+            "subscription_tier": "professional",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-01-09T22:01:19.312+00:00",
+            "keywords_used_this_month": 3474,
+            "created_at": "2024-12-26T22:01:19.312+00:00"
+          },
+          {
+            "email": "betty.ramirez214@business.com",
+            "first_name": "Betty",
+            "last_name": "Ramirez",
+            "company": "Traffic Generation Co",
+            "subscription_tier": "enterprise",
+            "subscription_status": "trialing",
+            "trial_ends_at": "2025-06-30T23:01:19.312+00:00",
+            "keywords_used_this_month": 15423,
+            "created_at": "2025-06-16T23:01:19.312+00:00"
+          },
+          {
+            "email": "kevin.nguyen190@business.com",
+            "first_name": "Kevin",
+            "last_name": "Nguyen",
+            "company": "Traffic Generation Co",
+            "subscription_tier": "professional",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-06-17T23:01:19.312+00:00",
+            "keywords_used_this_month": 3421,
+            "created_at": "2025-06-03T23:01:19.312+00:00"
+          }
+        ],
+        "primaryUser": {
+          "email": "elizabeth.mitchell@trafficgenerationco.com",
+          "first_name": "Elizabeth",
+          "last_name": "Mitchell",
+          "company": "Traffic Generation Co",
+          "subscription_tier": "professional",
+          "subscription_status": "past_due",
+          "trial_ends_at": "2025-03-03T22:01:19.311+00:00",
+          "keywords_used_this_month": 1214,
+          "created_at": "2025-02-17T22:01:19.311+00:00"
+        },
+        "userCount": 9,
+        "totalUsage": 30518,
+        "averageUsage": 3390.8888888888887
+      },
+      {
+        "company": "Digital Performance",
+        "users": [
+          {
+            "email": "deborah.baker@agency.com",
+            "first_name": "Deborah",
+            "last_name": "Baker",
+            "company": "Digital Performance",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-03-29T22:01:19.311+00:00",
+            "keywords_used_this_month": 648,
+            "created_at": "2025-03-15T22:01:19.311+00:00"
+          },
+          {
+            "email": "richard.perez@marketing.com",
+            "first_name": "Richard",
+            "last_name": "Perez",
+            "company": "Digital Performance",
+            "subscription_tier": "professional",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-04-25T23:01:19.311+00:00",
+            "keywords_used_this_month": 2468,
+            "created_at": "2025-04-11T23:01:19.311+00:00"
+          },
+          {
+            "email": "amanda.thompson148@hotmail.com",
+            "first_name": "Amanda",
+            "last_name": "Thompson",
+            "company": "Digital Performance",
+            "subscription_tier": "enterprise",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-01-27T22:01:19.312+00:00",
+            "keywords_used_this_month": 10501,
+            "created_at": "2025-01-13T22:01:19.312+00:00"
+          },
+          {
+            "email": "elizabeth.robinson173@hotmail.com",
+            "first_name": "Elizabeth",
+            "last_name": "Robinson",
+            "company": "Digital Performance",
+            "subscription_tier": "professional",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-04-25T23:01:19.312+00:00",
+            "keywords_used_this_month": 2760,
+            "created_at": "2025-04-11T23:01:19.312+00:00"
+          },
+          {
+            "email": "nancy.baker174@marketing.com",
+            "first_name": "Nancy",
+            "last_name": "Baker",
+            "company": "Digital Performance",
+            "subscription_tier": "enterprise",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-06-04T23:01:19.312+00:00",
+            "keywords_used_this_month": 10679,
+            "created_at": "2025-05-21T23:01:19.312+00:00"
+          },
+          {
+            "email": "sarah.wilson210@yahoo.com",
+            "first_name": "Sarah",
+            "last_name": "Wilson",
+            "company": "Digital Performance",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-03-24T22:01:19.312+00:00",
+            "keywords_used_this_month": 58,
+            "created_at": "2025-03-10T22:01:19.312+00:00"
+          },
+          {
+            "email": "melissa.miller211@gmail.com",
+            "first_name": "Melissa",
+            "last_name": "Miller",
+            "company": "Digital Performance",
+            "subscription_tier": "professional",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-04-22T23:01:19.312+00:00",
+            "keywords_used_this_month": 681,
+            "created_at": "2025-04-08T23:01:19.312+00:00"
+          }
+        ],
+        "primaryUser": {
+          "email": "deborah.baker@agency.com",
+          "first_name": "Deborah",
+          "last_name": "Baker",
+          "company": "Digital Performance",
+          "subscription_tier": "free",
+          "subscription_status": "past_due",
+          "trial_ends_at": "2025-03-29T22:01:19.311+00:00",
+          "keywords_used_this_month": 648,
+          "created_at": "2025-03-15T22:01:19.311+00:00"
+        },
+        "userCount": 7,
+        "totalUsage": 27795,
+        "averageUsage": 3970.714285714286
+      },
+      {
+        "company": "Revenue Growth Lab",
+        "users": [
+          {
+            "email": "anna.rodriguez74@hotmail.com",
+            "first_name": "Anna",
+            "last_name": "Rodriguez",
+            "company": "Revenue Growth Lab",
+            "subscription_tier": "agency",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-02-14T22:01:19.311+00:00",
+            "keywords_used_this_month": 25254,
+            "created_at": "2025-01-31T22:01:19.311+00:00"
+          },
+          {
+            "email": "robert.anderson109@growth.com",
+            "first_name": "Robert",
+            "last_name": "Anderson",
+            "company": "Revenue Growth Lab",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-05-22T23:01:19.312+00:00",
+            "keywords_used_this_month": 236,
+            "created_at": "2025-05-08T23:01:19.312+00:00"
+          },
+          {
+            "email": "mark.rodriguez110@gmail.com",
+            "first_name": "Mark",
+            "last_name": "Rodriguez",
+            "company": "Revenue Growth Lab",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-02-02T22:01:19.312+00:00",
+            "keywords_used_this_month": 47,
+            "created_at": "2025-01-19T22:01:19.312+00:00"
+          },
+          {
+            "email": "rachel.davis159@hotmail.com",
+            "first_name": "Rachel",
+            "last_name": "Davis",
+            "company": "Revenue Growth Lab",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-06-01T23:01:19.312+00:00",
+            "keywords_used_this_month": 734,
+            "created_at": "2025-05-18T23:01:19.312+00:00"
+          },
+          {
+            "email": "tom.wilson213@consulting.com",
+            "first_name": "Tom",
+            "last_name": "Wilson",
+            "company": "Revenue Growth Lab",
+            "subscription_tier": "free",
+            "subscription_status": "trialing",
+            "trial_ends_at": "2025-06-22T23:01:19.312+00:00",
+            "keywords_used_this_month": 356,
+            "created_at": "2025-06-08T23:01:19.312+00:00"
+          }
+        ],
+        "primaryUser": {
+          "email": "anna.rodriguez74@hotmail.com",
+          "first_name": "Anna",
+          "last_name": "Rodriguez",
+          "company": "Revenue Growth Lab",
+          "subscription_tier": "agency",
+          "subscription_status": "past_due",
+          "trial_ends_at": "2025-02-14T22:01:19.311+00:00",
+          "keywords_used_this_month": 25254,
+          "created_at": "2025-01-31T22:01:19.311+00:00"
+        },
+        "userCount": 5,
+        "totalUsage": 26627,
+        "averageUsage": 5325.4
+      },
+      {
+        "company": "Marketing Tech",
+        "users": [
+          {
+            "email": "anthony.king@hotmail.com",
+            "first_name": "Anthony",
+            "last_name": "King",
+            "company": "Marketing Tech",
+            "subscription_tier": "professional",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-04-19T23:01:19.311+00:00",
+            "keywords_used_this_month": 2443,
+            "created_at": "2025-04-05T23:01:19.311+00:00"
+          },
+          {
+            "email": "joseph.sanchez@consulting.com",
+            "first_name": "Joseph",
+            "last_name": "Sanchez",
+            "company": "Marketing Tech",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-05-06T23:01:19.311+00:00",
+            "keywords_used_this_month": 345,
+            "created_at": "2025-04-22T23:01:19.311+00:00"
+          },
+          {
+            "email": "jessica.clark51@business.com",
+            "first_name": "Jessica",
+            "last_name": "Clark",
+            "company": "Marketing Tech",
+            "subscription_tier": "professional",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-02-05T22:01:19.311+00:00",
+            "keywords_used_this_month": 1594,
+            "created_at": "2025-01-22T22:01:19.311+00:00"
+          },
+          {
+            "email": "dorothy.hernandez56@consulting.com",
+            "first_name": "Dorothy",
+            "last_name": "Hernandez",
+            "company": "Marketing Tech",
+            "subscription_tier": "professional",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-01-07T22:01:19.311+00:00",
+            "keywords_used_this_month": 1594,
+            "created_at": "2024-12-24T22:01:19.311+00:00"
+          },
+          {
+            "email": "thomas.scott@marketingtech.com",
+            "first_name": "Thomas",
+            "last_name": "Scott",
+            "company": "Marketing Tech",
+            "subscription_tier": "enterprise",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-04-22T23:01:19.311+00:00",
+            "keywords_used_this_month": 15131,
+            "created_at": "2025-04-08T23:01:19.311+00:00"
+          },
+          {
+            "email": "laura.hernandez77@growth.com",
+            "first_name": "Laura",
+            "last_name": "Hernandez",
+            "company": "Marketing Tech",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-02-10T22:01:19.311+00:00",
+            "keywords_used_this_month": 400,
+            "created_at": "2025-01-27T22:01:19.311+00:00"
+          },
+          {
+            "email": "betty.lopez85@outlook.com",
+            "first_name": "Betty",
+            "last_name": "Lopez",
+            "company": "Marketing Tech",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-05-11T23:01:19.311+00:00",
+            "keywords_used_this_month": 170,
+            "created_at": "2025-04-27T23:01:19.311+00:00"
+          },
+          {
+            "email": "jessica.brown120@marketing.com",
+            "first_name": "Jessica",
+            "last_name": "Brown",
+            "company": "Marketing Tech",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-06-16T23:01:19.312+00:00",
+            "keywords_used_this_month": 181,
+            "created_at": "2025-06-02T23:01:19.312+00:00"
+          },
+          {
+            "email": "helen.taylor95@agency.com",
+            "first_name": "Helen",
+            "last_name": "Taylor",
+            "company": "Marketing Tech",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-03-22T22:01:19.312+00:00",
+            "keywords_used_this_month": 139,
+            "created_at": "2025-03-08T22:01:19.312+00:00"
+          },
+          {
+            "email": "charles.lee188@marketing.com",
+            "first_name": "Charles",
+            "last_name": "Lee",
+            "company": "Marketing Tech",
+            "subscription_tier": "professional",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-03-04T22:01:19.312+00:00",
+            "keywords_used_this_month": 3236,
+            "created_at": "2025-02-18T22:01:19.312+00:00"
+          },
+          {
+            "email": "james.hill225@agency.com",
+            "first_name": "James",
+            "last_name": "Hill",
+            "company": "Marketing Tech",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-03-28T22:01:19.312+00:00",
+            "keywords_used_this_month": 1,
+            "created_at": "2025-03-14T22:01:19.312+00:00"
+          }
+        ],
+        "primaryUser": {
+          "email": "anthony.king@hotmail.com",
+          "first_name": "Anthony",
+          "last_name": "King",
+          "company": "Marketing Tech",
+          "subscription_tier": "professional",
+          "subscription_status": "past_due",
+          "trial_ends_at": "2025-04-19T23:01:19.311+00:00",
+          "keywords_used_this_month": 2443,
+          "created_at": "2025-04-05T23:01:19.311+00:00"
+        },
+        "userCount": 11,
+        "totalUsage": 25234,
+        "averageUsage": 2294
+      },
+      {
+        "company": "Traffic Labs",
+        "users": [
+          {
+            "email": "tom.anderson@trafficlabs.com",
+            "first_name": "Tom",
+            "last_name": "Anderson",
+            "company": "Traffic Labs",
+            "subscription_tier": "professional",
+            "subscription_status": "trialing",
+            "trial_ends_at": "2025-07-03T22:40:11.743+00:00",
+            "keywords_used_this_month": 600,
+            "created_at": "2025-06-19T22:40:11.743583+00:00"
+          },
+          {
+            "email": "robert.young@marketing.com",
+            "first_name": "Robert",
+            "last_name": "Young",
+            "company": "Traffic Labs",
+            "subscription_tier": "agency",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-05-26T23:01:19.311+00:00",
+            "keywords_used_this_month": 19397,
+            "created_at": "2025-05-12T23:01:19.311+00:00"
+          },
+          {
+            "email": "janet.taylor202@hotmail.com",
+            "first_name": "Janet",
+            "last_name": "Taylor",
+            "company": "Traffic Labs",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-01-08T22:01:19.312+00:00",
+            "keywords_used_this_month": 97,
+            "created_at": "2024-12-25T22:01:19.312+00:00"
+          },
+          {
+            "email": "anthony.martin@hotmail.com",
+            "first_name": "Anthony",
+            "last_name": "Martin",
+            "company": "Traffic Labs",
+            "subscription_tier": "professional",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-02-03T22:01:19.311+00:00",
+            "keywords_used_this_month": 700,
+            "created_at": "2025-01-20T22:01:19.311+00:00"
+          }
+        ],
+        "primaryUser": {
+          "email": "tom.anderson@trafficlabs.com",
+          "first_name": "Tom",
+          "last_name": "Anderson",
+          "company": "Traffic Labs",
+          "subscription_tier": "professional",
+          "subscription_status": "trialing",
+          "trial_ends_at": "2025-07-03T22:40:11.743+00:00",
+          "keywords_used_this_month": 600,
+          "created_at": "2025-06-19T22:40:11.743583+00:00"
+        },
+        "userCount": 4,
+        "totalUsage": 20794,
+        "averageUsage": 5198.5
+      },
+      {
+        "company": "SEO Boost Labs",
+        "users": [
+          {
+            "email": "matthew.gonzalez53@agency.com",
+            "first_name": "Matthew",
+            "last_name": "Gonzalez",
+            "company": "SEO Boost Labs",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-03-02T22:01:19.311+00:00",
+            "keywords_used_this_month": 27,
+            "created_at": "2025-02-16T22:01:19.311+00:00"
+          },
+          {
+            "email": "thomas.taylor102@growth.com",
+            "first_name": "Thomas",
+            "last_name": "Taylor",
+            "company": "SEO Boost Labs",
+            "subscription_tier": "enterprise",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-04-09T23:01:19.312+00:00",
+            "keywords_used_this_month": 14888,
+            "created_at": "2025-03-26T22:01:19.312+00:00"
+          },
+          {
+            "email": "rachel.lewis136@hotmail.com",
+            "first_name": "Rachel",
+            "last_name": "Lewis",
+            "company": "SEO Boost Labs",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-04-03T22:01:19.312+00:00",
+            "keywords_used_this_month": 326,
+            "created_at": "2025-03-20T22:01:19.312+00:00"
+          },
+          {
+            "email": "joseph.campbell143@gmail.com",
+            "first_name": "Joseph",
+            "last_name": "Campbell",
+            "company": "SEO Boost Labs",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-02-03T22:01:19.312+00:00",
+            "keywords_used_this_month": 598,
+            "created_at": "2025-01-20T22:01:19.312+00:00"
+          },
+          {
+            "email": "nancy.rivera130@business.com",
+            "first_name": "Nancy",
+            "last_name": "Rivera",
+            "company": "SEO Boost Labs",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-03-06T22:01:19.312+00:00",
+            "keywords_used_this_month": 234,
+            "created_at": "2025-02-20T22:01:19.312+00:00"
+          },
+          {
+            "email": "charles.thompson175@gmail.com",
+            "first_name": "Charles",
+            "last_name": "Thompson",
+            "company": "SEO Boost Labs",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-01-25T22:01:19.312+00:00",
+            "keywords_used_this_month": 45,
+            "created_at": "2025-01-11T22:01:19.312+00:00"
+          },
+          {
+            "email": "kate.davis189@yahoo.com",
+            "first_name": "Kate",
+            "last_name": "Davis",
+            "company": "SEO Boost Labs",
+            "subscription_tier": "free",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-03-18T22:01:19.312+00:00",
+            "keywords_used_this_month": 273,
+            "created_at": "2025-03-04T22:01:19.312+00:00"
+          },
+          {
+            "email": "james.martinez230@consulting.com",
+            "first_name": "James",
+            "last_name": "Martinez",
+            "company": "SEO Boost Labs",
+            "subscription_tier": "professional",
+            "subscription_status": "past_due",
+            "trial_ends_at": "2025-04-21T23:01:19.312+00:00",
+            "keywords_used_this_month": 2990,
+            "created_at": "2025-04-07T23:01:19.312+00:00"
+          },
+          {
+            "email": "sarah.williams@seoboostlabs.com",
+            "first_name": "Sarah",
+            "last_name": "Williams",
+            "company": "SEO Boost Labs",
+            "subscription_tier": "free",
+            "subscription_status": "trialing",
+            "trial_ends_at": "2025-06-22T23:01:19.312+00:00",
+            "keywords_used_this_month": 666,
+            "created_at": "2025-06-08T23:01:19.312+00:00"
+          }
+        ],
+        "primaryUser": {
+          "email": "matthew.gonzalez53@agency.com",
+          "first_name": "Matthew",
+          "last_name": "Gonzalez",
+          "company": "SEO Boost Labs",
+          "subscription_tier": "free",
+          "subscription_status": "past_due",
+          "trial_ends_at": "2025-03-02T22:01:19.311+00:00",
+          "keywords_used_this_month": 27,
+          "created_at": "2025-02-16T22:01:19.311+00:00"
+        },
+        "userCount": 9,
+        "totalUsage": 20047,
+        "averageUsage": 2227.4444444444443
+      }
+    ],
+    "strategy": {
+      "accountOwnership": "First user becomes primary account holder",
+      "billing": "Single billing for all team members",
+      "features": "Shared dashboards, team collaboration, admin controls",
+      "pricing": "Volume discounts for 5+ users"
+    }
+  },
+  "emailTemplates": {
+    "powerUserCampaign": {
+      "subject": "You analyzed {keywordCount}+ keywords - here's 50% off to continue! 💪",
+      "timing": "Send immediately to high-usage users",
+      "criteria": "keywords_used_this_month > 500",
+      "template": "Hi {firstName},\n\nWow! You analyzed {keywordCount}+ keywords during your AttributeAI trial. You're clearly getting serious value from unlimited keyword research.\n\n🌟 POWER USER REWARD: Complete our 2-minute feedback survey and unlock:\n• 50% off your first month ($23.50 instead of $47)\n• BONUS: Free second month (2 months for just $23.50!)\n• Priority support access\n• Early preview of new features\n\nDon't lose your competitive advantage! You were researching keywords at {usageLevel}x the rate of typical users.\n\n[Complete Survey & Get Power User Discount]\n\nThis exclusive offer expires in 48 hours.\n\nKeep dominating keyword research!\nThe AttributeAI Team",
+      "cta": "Complete Survey & Get Power User Discount",
+      "expectedConversion": "40-55%"
+    },
+    "enterpriseCampaign": {
+      "subject": "Scale {company}'s marketing team with AttributeAI - 50% off team pricing",
+      "timing": "Send to primary contact at enterprise accounts",
+      "criteria": "Multiple users from same company domain",
+      "template": "Hi {firstName},\n\nWe noticed {company} had {teamSize} team members trial AttributeAI. Your team clearly sees the value in:\n\n🏢 ENTERPRISE ADVANTAGES:\n✅ Unlimited keyword research for everyone (no per-credit fees like Keywords Everywhere)\n✅ Multi-AI insights for strategic decisions\n✅ Team collaboration and shared dashboards\n✅ Attribution intelligence connecting keywords to revenue\n\n💼 TEAM FEEDBACK OFFER: Help us improve AttributeAI for teams and get:\n• 50% off first month for up to 5 users ($97.50 instead of $195)\n• Free team onboarding session\n• Dedicated account management\n• Custom setup for {company}'s workflow\n\nPerfect for agencies managing multiple clients or growing marketing teams.\n\n[Complete Team Survey & Schedule Demo]\n\nLet's discuss how AttributeAI can scale with your team's growth.\n\nBest regards,\nThe AttributeAI Team",
+      "cta": "Complete Team Survey & Schedule Demo",
+      "expectedConversion": "30-45%"
+    },
+    "standardCampaign": {
+      "subject": "Your AttributeAI feedback = 50% off your first month! 💰",
+      "timing": "Send to standard individual users",
+      "criteria": "Individual users, moderate usage",
+      "template": "Hi {firstName},\n\nYour 14-day AttributeAI trial recently ended. We hope you discovered the power of:\n\n✅ Unlimited keyword research (finally, no more credit limits!)\n✅ Multi-AI analysis combining Claude, GPT-4 & Gemini insights\n✅ Attribution intelligence showing which keywords drive real revenue\n\n🎁 FEEDBACK REWARD: Share your experience in our 2-minute survey and get 50% off your first month.\n\nThat's just $23.50 instead of $47 for unlimited keyword research!\n\n[Complete Quick Survey & Get 50% Off]\n\nCompare that to Keywords Everywhere: $10 for just 100k credits. With AttributeAI, you get unlimited research + AI insights + attribution tracking for $23.50.\n\nThis offer expires in 7 days.\n\nQuestions? Just reply - we read every message personally.\n\nBest,\nThe AttributeAI Team",
+      "cta": "Complete Quick Survey & Get 50% Off",
+      "expectedConversion": "20-30%"
+    },
+    "helpCampaign": {
+      "subject": "Let us help you succeed with AttributeAI 🤝",
+      "timing": "Send to users with low usage",
+      "criteria": "keywords_used_this_month < 50",
+      "template": "Hi {firstName},\n\nWe noticed you didn't get to fully explore AttributeAI during your trial. That's on us - we want to make sure every user succeeds!\n\n🎯 PERSONAL SUCCESS PLAN: Tell us what held you back and get:\n• 50% off your first month ($23.50)\n• Free 30-minute personal onboarding call\n• Custom setup for your specific keyword research needs\n• Direct access to our founder for questions\n\nWe'll personally ensure you master:\n✅ Finding profitable, low-competition keywords in minutes\n✅ Using multi-AI insights to outrank competitors  \n✅ Tracking which keywords actually drive conversions\n\n[Get Personal Help + 50% Off]\n\nNo sales pressure - we genuinely want to help you win with keyword research.\n\nBest,\nThe AttributeAI Team",
+      "cta": "Get Personal Help + 50% Off",
+      "expectedConversion": "25-35%"
+    }
+  },
+  "surveyQuestions": {
+    "universal": [
+      "How would you rate your overall AttributeAI experience? (1-5 stars)",
+      "What was your favorite feature?",
+      "How does AttributeAI compare to other keyword tools you've used?",
+      "What prevented you from upgrading after your trial?",
+      "What would make AttributeAI irresistible for you?"
+    ],
+    "powerUser": [
+      "Which AI insights (Claude/GPT-4/Gemini) were most valuable?",
+      "How much time did AttributeAI save you vs other tools?",
+      "What advanced features would you want next?",
+      "Would you recommend AttributeAI to other power users?"
+    ],
+    "enterprise": [
+      "How many team members would use AttributeAI?",
+      "What team collaboration features are most important?",
+      "How do you currently manage keyword research across your team?",
+      "What's your monthly budget for keyword research tools?"
+    ],
+    "lowUsage": [
+      "What was confusing or difficult about AttributeAI?",
+      "What type of keyword research help do you need most?",
+      "What would make keyword research easier for you?",
+      "Would you prefer live training or video tutorials?"
+    ]
+  },
+  "revenueProjections": {
+    "totalExpiredUsers": 214,
+    "campaignSegments": {
+      "powerUsers": 121,
+      "enterpriseContacts": 40,
+      "standardUsers": 83,
+      "lowUsageUsers": 10
+    },
+    "projectedRevenue": {
+      "powerUsers": 1350.6625,
+      "enterprise": 1462.5,
+      "standard": 487.625,
+      "lowUsage": 70.5
+    }
+  },
+  "implementationPlan": {
+    "preparation": {
+      "day0": "Set up survey forms with discount code generation",
+      "tasks": [
+        "Create Typeform/Google Forms surveys",
+        "Set up automated discount code generation",
+        "Prepare email templates in email platform",
+        "Set up tracking pixels for conversion measurement"
+      ]
+    },
+    "execution": {
+      "day1": "Send power user campaign (highest value)",
+      "day2": "Send enterprise team campaign",
+      "day3": "Send standard user campaign",
+      "day4": "Send low usage help campaign",
+      "day7": "Send reminder to non-respondents",
+      "day14": "Final urgency campaign (offer expires)"
+    },
+    "followUp": {
+      "day30": "Analyze conversion rates by segment",
+      "day60": "Survey converted users for case studies",
+      "day90": "Optimize campaigns based on learnings"
+    }
+  }
+}

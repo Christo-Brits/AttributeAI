@@ -1,0 +1,122 @@
+email,firstName,lastName,company,keywordCount,trialEndDate,segment
+susan.scott@gmail.com,Susan,Scott,Keyword Research Pro,551,2025-02-25T22:01:19.297+00:00,powerUsers
+nancy.garcia@yahoo.com,Nancy,Garcia,Attribution Experts,886,2025-06-01T23:01:19.311+00:00,powerUsers
+john.nguyen@marketing.com,John,Nguyen,TechFlow Solutions,3073,2025-03-15T22:01:19.311+00:00,powerUsers
+robert.young@marketing.com,Robert,Young,Traffic Labs,19397,2025-05-26T23:01:19.311+00:00,powerUsers
+anthony.king@hotmail.com,Anthony,King,Marketing Tech,2443,2025-04-19T23:01:19.311+00:00,powerUsers
+andrew.nguyen@yahoo.com,Andrew,Nguyen,Marketing Intelligence,565,2025-06-03T23:01:19.311+00:00,powerUsers
+janet.lewis@outlook.com,Janet,Lewis,SEO Intelligence,2005,2025-01-05T22:01:19.311+00:00,powerUsers
+susan.walker@business.com,Susan,Walker,Performance Analytics,633,2025-03-11T22:01:19.311+00:00,powerUsers
+chris.thompson@agency.com,Chris,Thompson,Digital Attribution,742,2025-05-15T23:01:19.311+00:00,powerUsers
+melissa.garcia@growth.com,Melissa,Garcia,Lead Generation Pro,2021,2025-06-19T23:01:19.311+00:00,powerUsers
+kenneth.baker@growthenginemedia.com,Kenneth,Baker,Growth Engine Media,14460,2025-02-06T22:01:19.311+00:00,powerUsers
+elizabeth.mitchell@trafficgenerationco.com,Elizabeth,Mitchell,Traffic Generation Co,1214,2025-03-03T22:01:19.311+00:00,powerUsers
+brian.mitchell@business.com,Brian,Mitchell,Performance Intelligence,1379,2025-06-13T23:01:19.311+00:00,powerUsers
+george.lopez@hotmail.com,George,Lopez,Digital Growth Agency,553,2025-05-23T23:01:19.311+00:00,powerUsers
+anna.torres@conversionexperts.com,Anna,Torres,Conversion Experts,1672,2025-01-06T22:01:19.311+00:00,powerUsers
+helen.thomas@marketing.com,Helen,Thomas,Keyword Research Pro,766,2025-05-03T23:01:19.311+00:00,powerUsers
+deborah.baker@agency.com,Deborah,Baker,Digital Performance,648,2025-03-29T22:01:19.311+00:00,powerUsers
+richard.perez@marketing.com,Richard,Perez,Digital Performance,2468,2025-04-25T23:01:19.311+00:00,powerUsers
+andrew.robinson@growth.com,Andrew,Robinson,Conversion Optimization,789,2025-01-08T22:01:19.311+00:00,powerUsers
+nancy.harris@outlook.com,Nancy,Harris,Marketing Dynamics,723,2025-01-31T22:01:19.311+00:00,powerUsers
+helen.moore@performancemarketing.com,Helen,Moore,Performance Marketing,519,2025-05-06T23:01:19.311+00:00,powerUsers
+emma.campbell@outlook.com,Emma,Campbell,MarketPro Analytics,573,2025-03-03T22:01:19.311+00:00,powerUsers
+daniel.miller@seointelligence.com,Daniel,Miller,SEO Intelligence,513,2025-04-12T23:01:19.311+00:00,powerUsers
+christopher.torres@marketing.com,Christopher,Torres,Traffic Optimization,855,2025-03-23T22:01:19.311+00:00,powerUsers
+brian.green@growth.com,Brian,Green,Attribution Analytics,635,2025-02-18T22:01:19.311+00:00,powerUsers
+jessica.scott@outlook.com,Jessica,Scott,Growth Intelligence,2354,2025-01-23T22:01:19.311+00:00,powerUsers
+jennifer.campbell@business.com,Jennifer,Campbell,Revenue Growth Partners,773,2025-03-14T22:01:19.311+00:00,powerUsers
+jennifer.mitchell@consulting.com,Jennifer,Mitchell,Keyword Research Pro,2803,2025-06-18T23:01:19.311+00:00,powerUsers
+kenneth.thomas@marketingautomation.com,Kenneth,Thomas,Marketing Automation,2449,2025-03-28T22:01:19.311+00:00,powerUsers
+jessica.clark51@business.com,Jessica,Clark,Marketing Tech,1594,2025-02-05T22:01:19.311+00:00,powerUsers
+dorothy.hernandez56@consulting.com,Dorothy,Hernandez,Marketing Tech,1594,2025-01-07T22:01:19.311+00:00,powerUsers
+anthony.jackson58@marketing.com,Anthony,Jackson,Growth Hackers Inc,1136,2025-04-26T23:01:19.311+00:00,powerUsers
+thomas.scott@marketingtech.com,Thomas,Scott,Marketing Tech,15131,2025-04-22T23:01:19.311+00:00,powerUsers
+betty.anderson67@growth.com,Betty,Anderson,Conversion Experts,558,2025-03-07T22:01:19.311+00:00,powerUsers
+rachel.allen69@agency.com,Rachel,Allen,Growth Catalyst,16384,2025-06-15T23:01:19.311+00:00,powerUsers
+donald.lopez71@business.com,Donald,Lopez,Conversion Optimization,3443,2025-04-26T23:01:19.311+00:00,powerUsers
+anthony.ramirez73@gmail.com,Anthony,Ramirez,SEO Intelligence,773,2025-02-14T22:01:19.311+00:00,powerUsers
+anna.rodriguez74@hotmail.com,Anna,Rodriguez,Revenue Growth Lab,25254,2025-02-14T22:01:19.311+00:00,powerUsers
+linda.jones75@gmail.com,Linda,Jones,Marketing Dynamics,616,2025-03-17T22:01:19.311+00:00,powerUsers
+elizabeth.mitchell60@growth.com,Elizabeth,Mitchell,Traffic Generation Co,4476,2025-04-13T23:01:19.311+00:00,powerUsers
+anna.robinson@performanceintelligence.com,Anna,Robinson,Performance Intelligence,3417,2025-03-22T22:01:19.311+00:00,powerUsers
+charles.martin80@consulting.com,Charles,Martin,TechFlow Solutions,2959,2025-02-23T22:01:19.311+00:00,powerUsers
+amanda.lewis81@business.com,Amanda,Lewis,Marketing Intelligence,2781,2025-05-01T23:01:19.311+00:00,powerUsers
+jessica.thomas@growthmarketingagency.com,Jessica,Thomas,Growth Marketing Agency,873,2025-05-04T23:01:19.311+00:00,powerUsers
+janet.martinez86@growth.com,Janet,Martinez,Traffic Optimization,1680,2025-03-10T22:01:19.311+00:00,powerUsers
+christopher.ramirez90@outlook.com,Christopher,Ramirez,Marketing Science,673,2025-03-31T22:01:19.312+00:00,powerUsers
+christopher.johnson91@gmail.com,Christopher,Johnson,Growth Hackers Inc,541,2025-06-05T23:01:19.312+00:00,powerUsers
+charles.miller93@marketing.com,Charles,Miller,Growth Hackers Inc,1475,2025-04-24T23:01:19.312+00:00,powerUsers
+ashley.hall101@consulting.com,Ashley,Hall,Conversion Analytics,2183,2025-02-26T22:01:19.312+00:00,powerUsers
+thomas.taylor102@growth.com,Thomas,Taylor,SEO Boost Labs,14888,2025-04-09T23:01:19.312+00:00,powerUsers
+james.walker103@yahoo.com,James,Walker,Marketing Intelligence,519,2025-06-17T23:01:19.312+00:00,powerUsers
+helen.adams104@marketing.com,Helen,Adams,Growth Intelligence,730,2025-06-14T23:01:19.312+00:00,powerUsers
+david.miller105@yahoo.com,David,Miller,SEO Intelligence,575,2025-02-24T22:01:19.312+00:00,powerUsers
+charles.hernandez106@business.com,Charles,Hernandez,Growth Engine Media,1622,2025-04-11T23:01:19.312+00:00,powerUsers
+ashley.robinson108@growth.com,Ashley,Robinson,Digital Marketing Hub,651,2025-02-26T22:01:19.312+00:00,powerUsers
+maria.young@marketingintelligence.com,Maria,Young,Marketing Intelligence,41300,2025-01-19T22:01:19.312+00:00,powerUsers
+jessica.baker114@outlook.com,Jessica,Baker,Performance Marketing,523,2025-04-07T23:01:19.312+00:00,powerUsers
+anna.baker115@gmail.com,Anna,Baker,Conversion Optimization,721,2025-04-03T22:01:19.312+00:00,powerUsers
+jennifer.williams116@growth.com,Jennifer,Williams,Traffic Optimization,5646,2025-05-20T23:01:19.312+00:00,powerUsers
+sarah.clark@performancemarketing.com,Sarah,Clark,Performance Marketing,13987,2025-05-05T23:01:19.312+00:00,powerUsers
+sarah.hill@brandaccelerator.com,Sarah,Hill,Brand Accelerator,589,2025-01-25T22:01:19.312+00:00,powerUsers
+steven.martinez137@consulting.com,Steven,Martinez,Revenue Attribution,674,2025-01-25T22:01:19.312+00:00,powerUsers
+mark.hernandez138@business.com,Mark,Hernandez,Conversion Experts,729,2025-02-13T22:01:19.312+00:00,powerUsers
+nancy.perez139@agency.com,Nancy,Perez,Attribution Experts,795,2025-04-23T23:01:19.312+00:00,powerUsers
+joseph.campbell143@gmail.com,Joseph,Campbell,SEO Boost Labs,598,2025-02-03T22:01:19.312+00:00,powerUsers
+amanda.thompson148@hotmail.com,Amanda,Thompson,Digital Performance,10501,2025-01-27T22:01:19.312+00:00,powerUsers
+laura.mitchell149@hotmail.com,Laura,Mitchell,Marketing Insights,2673,2025-01-25T22:01:19.312+00:00,powerUsers
+david.williams150@outlook.com,David,Williams,Performance Analytics,793,2025-05-23T23:01:19.312+00:00,powerUsers
+john.adams153@business.com,John,Adams,Marketing Dynamics,576,2025-01-19T22:01:19.312+00:00,powerUsers
+kevin.lopez154@consulting.com,Kevin,Lopez,Performance Analytics,2758,2025-04-04T22:01:19.312+00:00,powerUsers
+janet.torres155@gmail.com,Janet,Torres,Marketing Analytics,853,2025-03-17T22:01:19.312+00:00,powerUsers
+patricia.wilson157@yahoo.com,Patricia,Wilson,Performance Marketing,723,2025-02-19T22:01:19.312+00:00,powerUsers
+john.johnson158@yahoo.com,John,Johnson,Growth Catalyst,765,2025-06-01T23:01:19.312+00:00,powerUsers
+rachel.davis159@hotmail.com,Rachel,Davis,Revenue Growth Lab,734,2025-06-01T23:01:19.312+00:00,powerUsers
+anna.miller161@marketing.com,Anna,Miller,Content Masters,552,2025-03-16T22:01:19.312+00:00,powerUsers
+daniel.allen166@agency.com,Daniel,Allen,Traffic Generation Co,1487,2025-05-25T23:01:19.312+00:00,powerUsers
+susan.taylor167@agency.com,Susan,Taylor,TechFlow Solutions,792,2025-03-12T22:01:19.312+00:00,powerUsers
+jennifer.williams170@outlook.com,Jennifer,Williams,Content Masters,733,2025-04-19T23:01:19.312+00:00,powerUsers
+brian.martinez171@yahoo.com,Brian,Martinez,Growth Intelligence,690,2025-05-09T23:01:19.312+00:00,powerUsers
+elizabeth.robinson173@hotmail.com,Elizabeth,Robinson,Digital Performance,2760,2025-04-25T23:01:19.312+00:00,powerUsers
+nancy.baker174@marketing.com,Nancy,Baker,Digital Performance,10679,2025-06-04T23:01:19.312+00:00,powerUsers
+christopher.rivera176@consulting.com,Christopher,Rivera,Marketing Analytics,621,2025-01-29T22:01:19.312+00:00,powerUsers
+nancy.flores177@marketing.com,Nancy,Flores,Traffic Generation Co,3474,2025-01-09T22:01:19.312+00:00,powerUsers
+jessica.sanchez@conversionanalytics.com,Jessica,Sanchez,Conversion Analytics,650,2025-03-19T22:01:19.312+00:00,powerUsers
+janet.lopez182@growth.com,Janet,Lopez,Marketing Insights,748,2025-04-18T23:01:19.312+00:00,powerUsers
+nancy.hernandez183@growth.com,Nancy,Hernandez,Growth Engine Media,27056,2025-06-05T23:01:19.312+00:00,powerUsers
+steven.perez165@consulting.com,Steven,Perez,TechFlow Solutions,1793,2025-04-13T23:01:19.312+00:00,powerUsers
+charles.lee188@marketing.com,Charles,Lee,Marketing Tech,3236,2025-03-04T22:01:19.312+00:00,powerUsers
+paul.ramirez191@consulting.com,Paul,Ramirez,Performance Analytics,687,2025-05-07T23:01:19.312+00:00,powerUsers
+amanda.robinson193@consulting.com,Amanda,Robinson,Marketing Science,2278,2025-01-16T22:01:19.312+00:00,powerUsers
+steven.thomas195@gmail.com,Steven,Thomas,Marketing Science,2570,2025-02-20T22:01:19.312+00:00,powerUsers
+barbara.nguyen196@yahoo.com,Barbara,Nguyen,Marketing Intelligence,606,2025-05-27T23:01:19.312+00:00,powerUsers
+nancy.johnson204@gmail.com,Nancy,Johnson,Marketing Insights,2341,2025-02-06T22:01:19.312+00:00,powerUsers
+george.white205@hotmail.com,George,White,Content Strategy Co,8237,2025-03-06T22:01:19.312+00:00,powerUsers
+janet.jackson207@gmail.com,Janet,Jackson,Digital Strategy Group,655,2025-01-09T22:01:19.312+00:00,powerUsers
+linda.lee208@outlook.com,Linda,Lee,Growth Catalyst,559,2025-02-12T22:01:19.312+00:00,powerUsers
+melissa.miller211@gmail.com,Melissa,Miller,Digital Performance,681,2025-04-22T23:01:19.312+00:00,powerUsers
+christopher.perez215@consulting.com,Christopher,Perez,Marketing Dynamics,1186,2025-02-04T22:01:19.312+00:00,powerUsers
+carolyn.brown@growthhackersinc.com,Carolyn,Brown,Growth Hackers Inc,2815,2025-05-21T23:01:19.312+00:00,powerUsers
+dorothy.thomas@growthcatalyst.com,Dorothy,Thomas,Growth Catalyst,663,2025-02-01T22:01:19.312+00:00,powerUsers
+barbara.nguyen220@growth.com,Barbara,Nguyen,Conversion Optimization,2268,2025-01-11T22:01:19.312+00:00,powerUsers
+william.robinson221@marketing.com,William,Robinson,Keyword Research Pro,3216,2025-03-09T22:01:19.312+00:00,powerUsers
+dorothy.martin223@outlook.com,Dorothy,Martin,Conversion Analytics,590,2025-06-16T23:01:19.312+00:00,powerUsers
+brian.white224@agency.com,Brian,White,Growth Marketing Agency,35159,2025-03-19T22:01:19.312+00:00,powerUsers
+james.martinez230@consulting.com,James,Martinez,SEO Boost Labs,2990,2025-04-21T23:01:19.312+00:00,powerUsers
+john.lee231@outlook.com,John,Lee,Content Masters,5486,2025-01-09T22:01:19.312+00:00,powerUsers
+dorothy.johnson233@marketing.com,Dorothy,Johnson,Conversion Analytics,778,2025-01-07T22:01:19.312+00:00,powerUsers
+anthony.martin@hotmail.com,Anthony,Martin,Traffic Labs,700,2025-02-03T22:01:19.311+00:00,powerUsers
+nancy.allen@hotmail.com,Nancy,Allen,Growth Catalyst,621,2025-03-28T22:01:19.311+00:00,powerUsers
+john.torres@marketing.com,John,Torres,Revenue Growth Partners,6071,2025-04-10T23:01:19.311+00:00,powerUsers
+barbara.williams59@yahoo.com,Barbara,Williams,MarketPro Analytics,559,2025-01-14T22:01:19.311+00:00,powerUsers
+jessica.campbell@leadgenerationpro.com,Jessica,Campbell,Lead Generation Pro,1266,2025-02-15T22:01:19.311+00:00,powerUsers
+betty.lopez87@consulting.com,Betty,Lopez,Lead Generation Pro,2429,2025-02-23T22:01:19.311+00:00,powerUsers
+maria.flores94@business.com,Maria,Flores,Marketing Automation,576,2025-04-16T23:01:19.312+00:00,powerUsers
+melissa.campbell118@yahoo.com,Melissa,Campbell,Marketing Intelligence,960,2025-03-09T22:01:19.312+00:00,powerUsers
+elizabeth.wright140@marketing.com,Elizabeth,Wright,MarketPro Analytics,2959,2025-04-02T22:01:19.312+00:00,powerUsers
+richard.brown162@business.com,Richard,Brown,Growth Intelligence,2483,2025-03-01T22:01:19.312+00:00,powerUsers
+donald.wilson168@marketing.com,Donald,Wilson,Conversion Analytics,645,2025-04-29T23:01:19.312+00:00,powerUsers
+kevin.nguyen190@business.com,Kevin,Nguyen,Traffic Generation Co,3421,2025-06-17T23:01:19.312+00:00,powerUsers
+charles.allen199@outlook.com,Charles,Allen,Marketing Science,520,2025-01-22T22:01:19.312+00:00,powerUsers
+jennifer.smith236@business.com,Jennifer,Smith,Digital Strategy Group,2722,2025-03-08T22:01:19.312+00:00,powerUsers

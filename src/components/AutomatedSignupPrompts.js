@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { X, Gift, Star, TrendingUp } from 'lucide-react';
+import { useAuth } from './auth/AuthContext';
 
 const AutomatedSignupPrompts = () => {
+  const { user } = useAuth();
   const [showPrompt, setShowPrompt] = useState(false);
   const [promptType, setPromptType] = useState('trial');
 
   useEffect(() => {
+    // Don't show prompts for authenticated users
+    if (user) return;
+    
     // Check if user has already seen prompts
     const hasSeenPrompts = localStorage.getItem('attributeai_seen_signup_prompts');
     if (hasSeenPrompts) return;
@@ -17,7 +22,7 @@ const AutomatedSignupPrompts = () => {
     }, 30000);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [user]);
 
   const handleDismiss = () => {
     setShowPrompt(false);
@@ -28,6 +33,9 @@ const AutomatedSignupPrompts = () => {
     window.location.href = '/pricing';
   };
 
+  // Don't render anything for authenticated users
+  if (user) return null;
+  
   if (!showPrompt) return null;
 
   return (

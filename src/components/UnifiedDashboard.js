@@ -135,8 +135,8 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
           </p>
         </div>
 
-        {/* Conversion Banner */}
-        <ConversionBanner onSignup={() => setShowSignupModal(true)} />
+        {/* Conversion Banner - Only show for unauthenticated users */}
+        {!user && <ConversionBanner onSignup={() => setShowSignupModal(true)} />}
 
         {/* Featured Tool Callout */}
         <div className="bg-gradient-to-r from-gray-800/80 to-gray-700/80 backdrop-blur-sm border border-gray-600/50 rounded-xl p-6 mb-8 shadow-2xl">
@@ -323,12 +323,14 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
         &copy; {new Date().getFullYear()} AttributeAI &mdash; <a href="/privacy-policy.html" className="hover:underline text-blue-500">Privacy Policy</a>
       </footer>
       
-      {/* Quick Signup Modal */}
-      <QuickSignupModal
-        isOpen={showSignupModal}
-        onClose={() => setShowSignupModal(false)}
-        onSuccess={handleSignupSuccess}
-      />
+      {/* Quick Signup Modal - Only show for unauthenticated users */}
+      {!user && (
+        <QuickSignupModal
+          isOpen={showSignupModal}
+          onClose={() => setShowSignupModal(false)}
+          onSuccess={handleSignupSuccess}
+        />
+      )}
     </div>
   );
 };

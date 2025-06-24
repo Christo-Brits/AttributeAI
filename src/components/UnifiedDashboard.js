@@ -9,6 +9,7 @@ import AttributeAILogo from './ui/AttributeAILogo';
 import WeatherWidget from './WeatherWidget';
 import './WeatherWidget.css';
 import { ConversionBanner, QuickSignupModal } from './immediate-conversion-system';
+import TrialCountdownBanner from './TrialCountdownBanner';
 
 const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
   const { user } = useAuth();
@@ -137,6 +138,9 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
 
         {/* Conversion Banner - Only show for unauthenticated users */}
         {!user && <ConversionBanner onSignup={() => setShowSignupModal(true)} />}
+
+        {/* Trial Countdown Banner - Only show for authenticated users */}
+        {user && <TrialCountdownBanner />}
 
         {/* Featured Tool Callout */}
         <div className="bg-gradient-to-r from-gray-800/80 to-gray-700/80 backdrop-blur-sm border border-gray-600/50 rounded-xl p-6 mb-8 shadow-2xl">

@@ -186,7 +186,46 @@ export const AuthProvider = ({ children }) => {
           return { user: data.user, profile };
         }
       } else {
-        // Development mode - check for existing localStorage account only
+        // Development mode fallback - allow creating test account
+        console.log('⚠️ Supabase not configured - using localStorage fallback');
+        
+        // Check if this is a signup attempt (has userData properties) 
+        if (typeof email === 'object' && email.email) {
+          // This is likely a signup call, handle it
+          const userData = email; // The "email" parameter is actually the full userData object
+          const newUser = {
+            id: `user_${Date.now()}`,
+            email: userData.email,
+            full_name: userData.full_name || `${userData.first_name} ${userData.last_name}`,
+            first_name: userData.first_name,
+            last_name: userData.last_name,
+            company: userData.company,
+            website: userData.website,
+            industry: userData.industry,
+            created_at: new Date().toISOString(),
+            subscription_tier: 'free',
+            monthly_usage: {
+              keywords_analyzed: 0,
+              content_generated: 0,
+              attribution_queries: 0,
+              last_reset: new Date().toISOString()
+            },
+            usage_limits: {
+              keywords_per_month: 100,
+              content_pieces_per_month: 5,
+              attribution_queries_per_month: 50
+            },
+            features_enabled: ['basic_keyword_analysis', 'basic_content_generation', 'basic_attribution']
+          };
+
+          localStorage.setItem('attributeai_user_profile', JSON.stringify(newUser));
+          setUser(newUser);
+          setUserProfile(newUser);
+          setIsAuthenticated(true);
+          return { user: newUser, profile: newUser };
+        }
+        
+        // Regular login attempt
         const storedUser = localStorage.getItem('attributeai_user_profile');
         if (storedUser) {
           const userData = JSON.parse(storedUser);
@@ -197,6 +236,41 @@ export const AuthProvider = ({ children }) => {
             return { user: userData, profile: userData };
           }
         }
+        
+        // If no existing account found, create a temporary one for testing
+        if (email === 'infinitebuildsolutions2024@gmail.com') {
+          const testUser = {
+            id: `user_${Date.now()}`,
+            email: email,
+            full_name: 'Test User',
+            first_name: 'Test',
+            last_name: 'User', 
+            company: 'Test Company',
+            website: '',
+            industry: 'Professional Services',
+            created_at: new Date().toISOString(),
+            subscription_tier: 'free',
+            monthly_usage: {
+              keywords_analyzed: 0,
+              content_generated: 0,
+              attribution_queries: 0,
+              last_reset: new Date().toISOString()
+            },
+            usage_limits: {
+              keywords_per_month: 100,
+              content_pieces_per_month: 5,
+              attribution_queries_per_month: 50
+            },
+            features_enabled: ['basic_keyword_analysis', 'basic_content_generation', 'basic_attribution']
+          };
+
+          localStorage.setItem('attributeai_user_profile', JSON.stringify(testUser));
+          setUser(testUser);
+          setUserProfile(testUser);
+          setIsAuthenticated(true);
+          return { user: testUser, profile: testUser };
+        }
+        
         throw new Error('Invalid email or password. Please check your credentials or sign up for a new account.');
       }
     } catch (error) {

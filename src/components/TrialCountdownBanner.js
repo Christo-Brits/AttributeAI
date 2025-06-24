@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Clock, Star, Zap, X, Calendar } from 'lucide-react';
-import { useAuth } from '../auth/AuthContext';
+import { useAuth } from './auth/AuthContext';
 
 const TrialCountdownBanner = () => {
   const { user } = useAuth();

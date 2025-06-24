@@ -131,7 +131,8 @@ const LoginPage = ({ onLoginSuccess, onSwitchToSignup }) => {
           </p>
         </div>
 
-        {/* Social Login Options */}
+        {/* Social Login Options - Temporarily Disabled */}
+        {false && (
         <div className="space-y-3 mb-6">
           <p className="text-sm text-gray-400 text-center mb-4">
             Quick sign in with your existing account
@@ -154,7 +155,10 @@ const LoginPage = ({ onLoginSuccess, onSwitchToSignup }) => {
             </button>
           ))}
         </div>
+        )}
 
+        {/* Removed divider since social login is disabled */}
+        {false && (
         <div className="relative mb-6">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-600/50" />
@@ -163,6 +167,7 @@ const LoginPage = ({ onLoginSuccess, onSwitchToSignup }) => {
             <span className="px-3 bg-gray-800 text-gray-400">or sign in with email</span>
           </div>
         </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
           {errors.general && (

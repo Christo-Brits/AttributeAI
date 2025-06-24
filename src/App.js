@@ -324,6 +324,7 @@ function AppRouter() {
   const { isAuthenticated, isLoading, updateUser } = useAuth();
   const [appView, setAppView] = useState('landing'); // landing, login, app, success
   const [authMode, setAuthMode] = useState('login'); // login, signup
+  const [currentView, setCurrentView] = useState('dashboard'); // Add missing state
 
   // Initialize conversion tracking - Peer Review Recommendation
   React.useEffect(() => {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff, User, Building, Globe, ChevronRight, AlertCircle, CheckCircle } from 'lucide-react';
 import { useAuth } from './AuthContext';
-import { signInWithProvider, socialProviders } from '../lib/supabase';
+import { signInWithProvider, socialProviders } from '../../lib/supabase';
 
 const SignupPage = ({ onSignupSuccess, onSwitchToLogin }) => {
   const { signup } = useAuth();

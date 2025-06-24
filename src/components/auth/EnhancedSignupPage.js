@@ -83,57 +83,22 @@ const SignupPage = ({ onSignupSuccess, onSwitchToLogin }) => {
     setIsLoading(true);
     
     try {
-      // Try Supabase signup first
-      try {
-        await signUpWithEmailVerification(formData.email, formData.password, {
-          full_name: `${formData.firstName} ${formData.lastName}`,
-          first_name: formData.firstName,
-          last_name: formData.lastName,
-          company: formData.company,
-          website: formData.website,
-          industry: formData.industry
-        });
-        
-        setEmailSent(true);
-        return;
-        
-      } catch (supabaseError) {
-        console.warn('Supabase signup failed, falling back to demo mode:', supabaseError.message);
-        
-        // Fall back to demo mode with localStorage
-        const result = await signup(
-          formData.email,
-          formData.password,
-          formData.firstName,
-          formData.lastName,
-          {
-            company: formData.company,
-            website: formData.website,
-            industry: formData.industry
-          }
-        );
-        
-        if (result.success) {
-          // Show success message for demo mode
-          setErrors({ 
-            general: null,
-            success: 'Account created successfully! You can now access AttributeAI with full features in demo mode.'
-          });
-          
-          // Redirect to dashboard after a short delay
-          setTimeout(() => {
-            if (onSignupSuccess) {
-              onSignupSuccess(result.user);
-            }
-          }, 2000);
-        } else {
-          throw new Error(result.error || 'Failed to create account');
-        }
-      }
+      // Only use Supabase - no fallback to demo mode
+      await signUpWithEmailVerification(formData.email, formData.password, {
+        full_name: `${formData.firstName} ${formData.lastName}`,
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        company: formData.company,
+        website: formData.website,
+        industry: formData.industry
+      });
+      
+      setEmailSent(true);
       
     } catch (error) {
+      console.error('Signup error:', error);
       setErrors({ 
-        general: error.message || 'Failed to create account. Please try again.' 
+        general: error.message || 'Failed to create account. Please check your database setup.' 
       });
     } finally {
       setIsLoading(false);
@@ -252,13 +217,6 @@ const SignupPage = ({ onSignupSuccess, onSwitchToLogin }) => {
             <div className="bg-red-900/30 border border-red-500/50 rounded-lg p-3 backdrop-blur-sm flex items-start space-x-2">
               <AlertCircle className="h-5 w-5 text-red-400 mt-0.5 flex-shrink-0" />
               <p className="text-red-300 text-sm">{errors.general}</p>
-            </div>
-          )}
-          
-          {errors.success && (
-            <div className="bg-green-900/30 border border-green-500/50 rounded-lg p-3 backdrop-blur-sm flex items-start space-x-2">
-              <CheckCircle className="h-5 w-5 text-green-400 mt-0.5 flex-shrink-0" />
-              <p className="text-green-300 text-sm">{errors.success}</p>
             </div>
           )}
           

@@ -1,0 +1,20 @@
+{
+  "current": {
+    "temperature": 72,
+    "condition": "Partly Cloudy",
+    "icon": "⛅"
+  },
+  "recommendation": {
+    "change": 15,
+    "reason": "Favorable weather conditions expected to increase engagement",
+    "confidence": 87
+  },
+  "alerts": [
+    {
+      "type": "opportunity",
+      "icon": "🎯",
+      "message": "Hot weather forecast - consider increasing cooling product ads"
+    }
+  ],
+  "timestamp": "2025-06-24T07:51:35.025Z"
+}

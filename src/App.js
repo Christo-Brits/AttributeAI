@@ -5,7 +5,8 @@ import { ImprovedAuthProvider } from './components/auth/ImprovedAuthContext';
 import { HelmetProvider } from 'react-helmet-async';
 import SidebarNavigation from './components/SidebarNavigation';
 import UnifiedDashboard from './components/UnifiedDashboard';
-import LoginPage from './components/LoginPage';
+import LoginPage from './components/auth/LoginPage';
+import SignupPage from './components/auth/EnhancedSignupPage';
 import LandingPage from './components/LandingPage';
 import AccountPage from './components/AccountPage';
 import SuccessPage from './components/SuccessPage';
@@ -322,6 +323,7 @@ function App() {
 function AppRouter() {
   const { isAuthenticated, isLoading, updateUser } = useAuth();
   const [appView, setAppView] = useState('landing'); // landing, login, app, success
+  const [authMode, setAuthMode] = useState('login'); // login, signup
 
   // Initialize conversion tracking - Peer Review Recommendation
   React.useEffect(() => {
@@ -352,6 +354,7 @@ function AppRouter() {
     // Track CTA clicks - Peer Review Recommendation
     ConversionTracker.trackCTAClick('free_account');
     
+    setAuthMode('signup'); // Always show signup for "Get Started"
     if (plan === 'freemium') {
       setAppView('login');
     } else if (plan === 'pro') {
@@ -412,13 +415,36 @@ function AppRouter() {
 
   // Show login page
   if (appView === 'login') {
-    return <LoginPage onLogin={handleLogin} />;
+    if (authMode === 'signup') {
+      return (
+        <SignupPage 
+          onSignupSuccess={() => {
+            // After successful signup, user needs to verify email
+            setAppView('landing'); // Could show a "check email" message
+          }}
+          onSwitchToLogin={() => setAuthMode('login')} 
+        />
+      );
+    } else {
+      return (
+        <LoginPage 
+          onLoginSuccess={() => setAppView('app')} 
+          onSwitchToSignup={() => setAuthMode('signup')} 
+        />
+      );
+    }
   }
 
   // Fallback to landing page to prevent blank screen
   return <LandingPage 
-    onGetStarted={() => setAppView('login')} 
-    onSignIn={() => setAppView('login')} 
+    onGetStarted={() => {
+      setAuthMode('signup');
+      setAppView('login');
+    }} 
+    onSignIn={() => {
+      setAuthMode('login');
+      setAppView('login');
+    }} 
   />;
 }
 

@@ -69,7 +69,7 @@ export const signInWithProvider = async (provider) => {
   return data;
 };
 
-// Enhanced user profile creation
+// Enhanced user profile creation with email verification
 export const createUserProfile = async (user, additionalData = {}) => {
   if (!supabase) {
     // Fallback to localStorage for demo
@@ -129,6 +129,76 @@ export const createUserProfile = async (user, additionalData = {}) => {
   }
 
   return data;
+};
+
+// Email verification and password reset functions
+export const signUpWithEmailVerification = async (email, password, additionalData = {}) => {
+  if (!supabase) {
+    throw new Error('Supabase not configured. Email verification requires Supabase.');
+  }
+
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      emailRedirectTo: `${window.location.origin}/auth/verify`,
+      data: {
+        full_name: additionalData.full_name,
+        first_name: additionalData.first_name,
+        last_name: additionalData.last_name,
+      }
+    }
+  });
+
+  if (error) throw error;
+
+  return data;
+};
+
+export const resendEmailVerification = async (email) => {
+  if (!supabase) {
+    throw new Error('Supabase not configured. Email verification requires Supabase.');
+  }
+
+  const { error } = await supabase.auth.resend({
+    type: 'signup',
+    email: email,
+    options: {
+      emailRedirectTo: `${window.location.origin}/auth/verify`
+    }
+  });
+
+  if (error) throw error;
+
+  return { message: 'Verification email sent' };
+};
+
+export const resetPassword = async (email) => {
+  if (!supabase) {
+    throw new Error('Supabase not configured. Password reset requires Supabase.');
+  }
+
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${window.location.origin}/auth/reset-password`,
+  });
+
+  if (error) throw error;
+
+  return { message: 'Password reset email sent' };
+};
+
+export const updatePassword = async (newPassword) => {
+  if (!supabase) {
+    throw new Error('Supabase not configured.');
+  }
+
+  const { error } = await supabase.auth.updateUser({
+    password: newPassword
+  });
+
+  if (error) throw error;
+
+  return { message: 'Password updated successfully' };
 };
 
 // Usage tracking helpers

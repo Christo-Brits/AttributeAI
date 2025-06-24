@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { supabase, createUserProfile, onAuthStateChange, isSupabaseConfigured } from '../lib/supabase';
 
 const AuthContext = createContext();
 
@@ -12,183 +13,279 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [userProfile, setUserProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    checkAuthStatus();
+    initializeAuth();
   }, []);
 
-  const checkAuthStatus = async () => {
+  const initializeAuth = async () => {
+    setIsLoading(true);
+    
     try {
-      // Check for stored user data (for demo/development)
-      const storedUser = localStorage.getItem('attributeai_user');
-      
-      if (storedUser) {
-        const userData = JSON.parse(storedUser);
-        setUser(userData);
-        setIsAuthenticated(true);
-      } else {
-        // Check for stored session (for production)
-        const session = localStorage.getItem('attributeai_session') || sessionStorage.getItem('attributeai_session');
-        
-        if (session) {
-          const sessionData = JSON.parse(session);
-          
-          // Check if session is expired
-          if (sessionData.expiresAt > Date.now()) {
-            // In demo mode, just use stored user data
-            const userData = JSON.parse(localStorage.getItem('attributeai_user') || '{}');
-            setUser(userData);
+      if (isSupabaseConfigured()) {
+        // Set up Supabase auth state listener
+        const unsubscribe = onAuthStateChange(async (user) => {
+          if (user) {
+            setUser(user);
             setIsAuthenticated(true);
+            
+            // Load user profile
+            try {
+              const profile = await loadUserProfile(user.id);
+              setUserProfile(profile);
+            } catch (error) {
+              console.error('Error loading user profile:', error);
+            }
           } else {
-            clearAuth();
+            setUser(null);
+            setUserProfile(null);
+            setIsAuthenticated(false);
+          }
+          setIsLoading(false);
+        });
+
+        // Check current session
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user) {
+          setUser(session.user);
+          setIsAuthenticated(true);
+          
+          try {
+            const profile = await loadUserProfile(session.user.id);
+            setUserProfile(profile);
+          } catch (error) {
+            console.error('Error loading user profile:', error);
           }
         }
+
+        return unsubscribe;
+      } else {
+        // For development without Supabase, require manual account creation
+        console.log('⚠️ Development mode: Supabase not configured');
+        // Don't auto-create demo accounts - users must register
       }
     } catch (error) {
-      console.error('Auth check error:', error);
-      clearAuth();
+      console.error('Auth initialization error:', error);
+    } finally {
+      setIsLoading(false);
     }
-    
-    setIsLoading(false);
   };
 
-  const login = async (credentials) => {
-    try {
-      // For demo/development: simulate login
-      const userData = {
-        email: credentials.email,
-        firstName: credentials.businessName?.split(' ')[0] || 'Demo',
-        lastName: credentials.businessName?.split(' ')[1] || 'User',
-        company: credentials.businessName || 'Demo Company',
-        industry: credentials.industry || 'Professional Services',
-        website: credentials.website || '',
-        websiteUrl: credentials.website || ''
-      };
-      
-      setUser(userData);
-      setIsAuthenticated(true);
-      
-      // Store session data
-      const sessionData = {
-        token: 'demo-token-' + Date.now(),
-        expiresAt: Date.now() + (credentials.rememberMe ? 30 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000)
-      };
-
-      if (credentials.rememberMe) {
-        localStorage.setItem('attributeai_session', JSON.stringify(sessionData));
-      } else {
-        sessionStorage.setItem('attributeai_session', JSON.stringify(sessionData));
-      }
-
-      localStorage.setItem('attributeai_user', JSON.stringify(userData));
-      return { success: true };
-      
-      // For production: actual API call
-      /*
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(credentials)
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setUser(data.user);
-        setIsAuthenticated(true);
-        
-        // Store session
-        const sessionData = {
-          token: data.token,
-          expiresAt: Date.now() + (credentials.rememberMe ? 30 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000)
-        };
-
-        if (credentials.rememberMe) {
-          localStorage.setItem('attributeai_session', JSON.stringify(sessionData));
-        } else {
-          sessionStorage.setItem('attributeai_session', JSON.stringify(sessionData));
-        }
-
-        localStorage.setItem('attributeai_user', JSON.stringify(data.user));
-        return { success: true };
-      } else {
-        const errorData = await response.json();
-        return { success: false, error: errorData.message };
-      }
-      */
-    } catch (error) {
-      console.error('Login error:', error);
-      return { success: false, error: 'Network error' };
+  const loadUserProfile = async (userId) => {
+    if (!isSupabaseConfigured()) {
+      const profile = JSON.parse(localStorage.getItem('attributeai_user_profile') || '{}');
+      return profile;
     }
+
+    const { data, error } = await supabase
+      .from('user_profiles')
+      .select('*')
+      .eq('id', userId)
+      .single();
+
+    if (error) {
+      throw error;
+    }
+
+    return data;
   };
 
   const signup = async (userData) => {
     try {
-      // For demo/development: simulate signup (same as login)
-      return await login(userData);
-      
-      // For production: actual API call
-      /*
-      const response = await fetch('/api/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(userData)
-      });
+      if (isSupabaseConfigured()) {
+        // Sign up with Supabase
+        const { data, error } = await supabase.auth.signUp({
+          email: userData.email,
+          password: userData.password,
+          options: {
+            data: {
+              full_name: userData.full_name,
+              first_name: userData.first_name,
+              last_name: userData.last_name,
+            }
+          }
+        });
 
-      if (response.ok) {
-        const data = await response.json();
-        setUser(data.user);
-        setIsAuthenticated(true);
-        
-        // Auto-login after signup
-        const sessionData = {
-          token: data.token,
-          expiresAt: Date.now() + (24 * 60 * 60 * 1000) // 24 hours
+        if (error) throw error;
+
+        if (data.user) {
+          // Create user profile
+          const profileData = await createUserProfile(data.user, {
+            company: userData.company,
+            website: userData.website,
+            industry: userData.industry,
+          });
+
+          setUser(data.user);
+          setUserProfile(profileData);
+          setIsAuthenticated(true);
+
+          return { user: data.user, profile: profileData };
+        }
+      } else {
+        // Fallback to localStorage for development - with proper free tier setup
+        const newUser = {
+          id: `user_${Date.now()}`,
+          email: userData.email,
+          full_name: userData.full_name || `${userData.first_name} ${userData.last_name}`,
+          first_name: userData.first_name,
+          last_name: userData.last_name,
+          company: userData.company,
+          website: userData.website,
+          industry: userData.industry,
+          created_at: new Date().toISOString(),
+          subscription_tier: 'free',
+          monthly_usage: {
+            keywords_analyzed: 0,
+            content_generated: 0,
+            attribution_queries: 0,
+            last_reset: new Date().toISOString()
+          },
+          usage_limits: {
+            keywords_per_month: 100,
+            content_pieces_per_month: 5,
+            attribution_queries_per_month: 50
+          },
+          features_enabled: ['basic_keyword_analysis', 'basic_content_generation', 'basic_attribution']
         };
 
-        sessionStorage.setItem('attributeai_session', JSON.stringify(sessionData));
-        localStorage.setItem('attributeai_user', JSON.stringify(data.user));
-        
-        return { success: true };
-      } else {
-        const errorData = await response.json();
-        return { success: false, error: errorData.message };
+        localStorage.setItem('attributeai_user_profile', JSON.stringify(newUser));
+        setUser(newUser);
+        setUserProfile(newUser);
+        setIsAuthenticated(true);
+
+        return { user: newUser, profile: newUser };
       }
-      */
     } catch (error) {
       console.error('Signup error:', error);
-      return { success: false, error: 'Network error' };
+      throw new Error(error.message || 'Failed to create account');
     }
   };
 
-  const logout = () => {
-    clearAuth();
+  const login = async (email, password, rememberMe = false) => {
+    try {
+      if (isSupabaseConfigured()) {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+        if (error) throw error;
+
+        if (data.user) {
+          setUser(data.user);
+          setIsAuthenticated(true);
+
+          // Load user profile
+          const profile = await loadUserProfile(data.user.id);
+          setUserProfile(profile);
+
+          return { user: data.user, profile };
+        }
+      } else {
+        // Development mode - check for existing localStorage account only
+        const storedUser = localStorage.getItem('attributeai_user_profile');
+        if (storedUser) {
+          const userData = JSON.parse(storedUser);
+          if (userData.email === email) {
+            setUser(userData);
+            setUserProfile(userData);
+            setIsAuthenticated(true);
+            return { user: userData, profile: userData };
+          }
+        }
+        throw new Error('Invalid email or password. Please check your credentials or sign up for a new account.');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      throw new Error(error.message || 'Failed to sign in');
+    }
   };
 
-  const clearAuth = () => {
-    setUser(null);
-    setIsAuthenticated(false);
-    localStorage.removeItem('attributeai_session');
-    sessionStorage.removeItem('attributeai_session');
-    localStorage.removeItem('attributeai_user');
+  const logout = async () => {
+    try {
+      if (isSupabaseConfigured()) {
+        const { error } = await supabase.auth.signOut();
+        if (error) throw error;
+      } else {
+        // Clear localStorage for development
+        localStorage.removeItem('attributeai_user_profile');
+      }
+
+      setUser(null);
+      setUserProfile(null);
+      setIsAuthenticated(false);
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Still clear local state even if Supabase logout fails
+      setUser(null);
+      setUserProfile(null);
+      setIsAuthenticated(false);
+    }
   };
 
-  const updateUser = (updatedData) => {
-    const newUser = { ...user, ...updatedData };
-    setUser(newUser);
-    localStorage.setItem('attributeai_user', JSON.stringify(newUser));
+  const updateProfile = async (updates) => {
+    try {
+      if (!user) throw new Error('No user logged in');
+
+      if (isSupabaseConfigured()) {
+        const { data, error } = await supabase
+          .from('user_profiles')
+          .update(updates)
+          .eq('id', user.id)
+          .select()
+          .single();
+
+        if (error) throw error;
+
+        setUserProfile(data);
+        return data;
+      } else {
+        // Update localStorage
+        const updatedProfile = { ...userProfile, ...updates };
+        localStorage.setItem('attributeai_user_profile', JSON.stringify(updatedProfile));
+        setUserProfile(updatedProfile);
+        return updatedProfile;
+      }
+    } catch (error) {
+      console.error('Profile update error:', error);
+      throw new Error(error.message || 'Failed to update profile');
+    }
+  };
+
+  const resetPassword = async (email) => {
+    try {
+      if (!isSupabaseConfigured()) {
+        throw new Error('Password reset not available in demo mode');
+      }
+
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+
+      if (error) throw error;
+
+      return { message: 'Password reset email sent' };
+    } catch (error) {
+      console.error('Password reset error:', error);
+      throw new Error(error.message || 'Failed to send password reset email');
+    }
   };
 
   const value = {
     user,
-    isAuthenticated,
+    userProfile,
     isLoading,
-    login,
+    isAuthenticated,
     signup,
+    login,
     logout,
-    updateUser,
-    checkAuthStatus
+    updateProfile,
+    resetPassword,
+    isSupabaseConfigured: isSupabaseConfigured()
   };
 
   return (

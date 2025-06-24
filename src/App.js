@@ -9,6 +9,7 @@ import LoginPage from './components/LoginPage';
 import LandingPage from './components/LandingPage';
 import AccountPage from './components/AccountPage';
 import SuccessPage from './components/SuccessPage';
+import UpgradePage from './components/UpgradePage';
 import FloatingChatButton from './components/FloatingChatButton';
 import { useAttributeAIAnalytics } from './hooks/useAttributeAIAnalytics';
 import { ConversionManager } from './components/immediate-conversion-system';
@@ -175,6 +176,12 @@ function AuthenticatedApp() {
         onGoToAccount={() => handleViewChange('account')} 
       />;
     }
+    
+    if (currentView === 'upgrade') {
+      return <UpgradePage 
+        onBack={() => handleViewChange('dashboard')} 
+      />;
+    }
 
     // Regular dashboard components
     const components = {
@@ -333,6 +340,9 @@ function AppRouter() {
       setAppView('success');
     } else if (window.location.pathname === '/pricing') {
       setAppView('landing');
+    } else if (window.location.pathname === '/upgrade') {
+      setAppView('app');
+      setCurrentView('upgrade');
     } else if (isAuthenticated) {
       setAppView('app');
     }

@@ -3,17 +3,26 @@ import {
   Search, TrendingUp, Target, Brain, Zap, BarChart3, 
   Globe, Users, DollarSign, Award, AlertCircle, CheckCircle,
   Download, Filter, RefreshCw, Lightbulb, ArrowRight,
-  Cpu, Eye, Clock, Star, Database, Wifi, WifiOff
+  Cpu, Eye, Clock, Star, Database, Wifi, WifiOff, Crown
 } from 'lucide-react';
 import { Card, Button, ProgressIndicator } from './ui/DesignSystem';
 import { useAttributeAIAnalytics } from '../hooks/useAttributeAIAnalytics';
 import { ProgressSavePrompt, QuickSignupModal } from './immediate-conversion-system';
+import { useUsageLimits } from '../hooks/useUsageLimits';
+import { useAuth } from './auth/AuthContext';
+import UsageLimitModal from './ui/UsageLimitModal';
 
 const KeywordIntelligenceEngine = () => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
+  const [showLimitModal, setShowLimitModal] = useState(false);
+  const [limitReached, setLimitReached] = useState(null);
+  
+  // Usage limits and authentication
+  const { user, isAuthenticated } = useAuth();
+  const { checkLimit, incrementUsage, subscriptionTier, getUpgradeRecommendation } = useUsageLimits();
   
   // Initialize analytics for this component
   const { 
@@ -24,14 +33,35 @@ const KeywordIntelligenceEngine = () => {
     trackExport 
   } = useAttributeAIAnalytics('keyword_intelligence');
 
-  // Simulate keyword analysis (in production, this would call your backend API)
+  // Enhanced keyword analysis with usage limits
   const analyzeKeyword = async (keyword) => {
     if (!keyword.trim()) return;
+    
+    // Check if user is authenticated
+    if (!isAuthenticated) {
+      setShowSignupModal(true);
+      return;
+    }
+    
+    // Check usage limits before starting analysis
+    const keywordLimit = checkLimit('keywords_analyzed');
+    if (!keywordLimit.allowed) {
+      setLimitReached({
+        type: 'keywords_analyzed',
+        current: keywordLimit.current,
+        limit: keywordLimit.limit
+      });
+      setShowLimitModal(true);
+      return;
+    }
     
     setIsAnalyzing(true);
     trackToolStart();
     
     try {
+      // Increment usage before performing analysis
+      await incrementUsage('keywords_analyzed', 1);
+      
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 3000));
       
@@ -123,6 +153,50 @@ const KeywordIntelligenceEngine = () => {
               </div>
             </div>
           </div>
+          
+          {/* Usage Status */}
+          {isAuthenticated && (
+            <div className="flex items-center justify-between bg-gray-800 border border-gray-700 rounded-lg p-4 mb-6">
+              <div className="flex items-center space-x-4">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+                  {subscriptionTier === 'free' ? <Zap className="w-5 h-5 text-white" /> : <Crown className="w-5 h-5 text-white" />}
+                </div>
+                <div>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-white font-medium capitalize">{subscriptionTier} Plan</span>
+                    {subscriptionTier === 'free' && (
+                      <span className="text-xs bg-blue-500 text-white px-2 py-1 rounded-full">Limited</span>
+                    )}
+                  </div>
+                  <div className="text-sm text-gray-400">
+                    {(() => {
+                      const limit = checkLimit('keywords_analyzed');
+                      return subscriptionTier === 'free' ? 
+                        `${limit.current}/${limit.limit} keyword analyses this month` :
+                        'Unlimited keyword analyses';
+                    })()}
+                  </div>
+                </div>
+              </div>
+              
+              {subscriptionTier === 'free' && (
+                <div className="text-right">
+                  <div className="text-sm text-gray-400 mb-1">
+                    {(() => {
+                      const limit = checkLimit('keywords_analyzed');
+                      return `${limit.remaining} remaining`;
+                    })()}
+                  </div>
+                  <button
+                    onClick={() => window.location.href = '/upgrade'}
+                    className="text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors"
+                  >
+                    Upgrade for Unlimited →
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Search Interface */}
@@ -341,6 +415,22 @@ const KeywordIntelligenceEngine = () => {
           }, 2000);
         }}
       />
+      
+      {/* Usage Limit Modal */}
+      {showLimitModal && limitReached && (
+        <UsageLimitModal
+          isOpen={showLimitModal}
+          onClose={() => setShowLimitModal(false)}
+          limitType={limitReached.type}
+          currentUsage={limitReached.current}
+          limit={limitReached.limit}
+          subscriptionTier={subscriptionTier}
+          onUpgrade={() => {
+            // Navigate to upgrade page
+            window.location.href = '/upgrade';
+          }}
+        />
+      )}
     </div>
   );
 };

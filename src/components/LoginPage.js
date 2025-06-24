@@ -64,20 +64,7 @@ const LoginPage = ({ onLogin }) => {
     setIsLoading(false);
   };
 
-  // Demo login for testing
-  const handleDemoLogin = () => {
-    const demoData = {
-      email: 'demo@attributeai.app',
-      password: 'demo123',
-      businessName: 'Demo Marketing Agency',
-      industry: 'Professional Services',
-      website: 'https://demo-agency.com',
-      rememberMe: true
-    };
-    setFormData(demoData);
-    // Auto-submit with demo data
-    setTimeout(() => handleSubmit({ preventDefault: () => {} }), 100);
-  };
+  // Removed demo login - all users must register properly
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900/20 to-purple-900/20 flex items-center justify-center p-4">
@@ -95,19 +82,20 @@ const LoginPage = ({ onLogin }) => {
           </p>
         </div>
 
-        {/* Demo Login Button */}
+        {/* Enhanced Login with Free Tier */}
         <div className="mb-6">
-          <button
-            type="button"
-            onClick={handleDemoLogin}
-            className="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 rounded-xl hover:from-green-600 hover:to-emerald-600 transition-all duration-200 font-medium flex items-center justify-center space-x-2 shadow-lg hover:scale-105 transform"
-          >
-            <Check className="h-5 w-5" />
-            <span>Quick Demo Login</span>
-          </button>
-          <p className="text-xs text-gray-400 text-center mt-2">
-            Skip the form and try the platform instantly
-          </p>
+          <div className="bg-gradient-to-r from-green-500/10 to-blue-500/10 border border-green-500/20 rounded-xl p-4 backdrop-blur-sm">
+            <div className="flex items-center space-x-2 mb-2">
+              <Check className="h-5 w-5 text-green-400" />
+              <span className="text-green-400 font-medium">Free Tier Included</span>
+            </div>
+            <p className="text-gray-300 text-sm">
+              100 keyword analyses • 5 content pieces • 50 attribution queries per month
+            </p>
+            <p className="text-xs text-gray-400 mt-1">
+              No credit card required • Upgrade anytime
+            </p>
+          </div>
         </div>
 
         <div className="relative mb-6">
@@ -115,7 +103,7 @@ const LoginPage = ({ onLogin }) => {
             <div className="w-full border-t border-gray-600/50" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-3 bg-gray-800 text-gray-400">or continue with your account</span>
+            <span className="px-3 bg-gray-800 text-gray-400">Enter your account details</span>
           </div>
         </div>
 

@@ -174,12 +174,14 @@ const LandingPage = ({ onGetStarted, onSignIn }) => {
             <span className="text-blue-300 text-sm font-medium">Multi-Model AI Powered Attribution Platform</span>
           </div>
 
-          {/* Main Heading */}
+          {/* Main Heading - Updated based on copywriter feedback */}
           <h1 className="text-5xl md:text-7xl font-bold mb-6">
-            <span className="text-white">The Future of</span>
+            <span className="text-white">Track Every Touch.</span>
+            <br />
+            <span className="text-white">Predict Every Outcome.</span>
             <br />
             <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-              AI Marketing Attribution
+              Prove Every Dollar.
             </span>
           </h1>
 

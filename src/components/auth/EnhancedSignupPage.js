@@ -3,6 +3,7 @@ import { Mail, Lock, User, Globe, Eye, EyeOff, ChevronRight, AlertCircle, CheckC
 import { useAuth } from './AuthContext';
 import { signInWithProvider, socialProviders, signUpWithEmailVerification } from '../../lib/supabase';
 import GoogleAdsTracking from '../../utils/GoogleAdsTracking';
+import EmailVerificationPage from './EmailVerificationPage';
 
 const SignupPage = ({ onSignupSuccess, onSwitchToLogin }) => {
   const { signup } = useAuth();
@@ -130,32 +131,13 @@ const SignupPage = ({ onSignupSuccess, onSwitchToLogin }) => {
 
   if (emailSent) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900/20 to-purple-900/20 flex items-center justify-center p-4">
-        <div className="max-w-md mx-auto bg-gray-800/90 backdrop-blur-sm border border-gray-600/50 rounded-xl shadow-2xl p-8 text-center">
-          <div className="mx-auto w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center mb-6">
-            <CheckCircle className="w-8 h-8 text-white" />
-          </div>
-          
-          <h1 className="text-2xl font-bold text-white mb-4">Check Your Email</h1>
-          <p className="text-gray-300 mb-6">
-            We've sent a verification link to <strong>{formData.email}</strong>. 
-            Click the link in the email to activate your account.
-          </p>
-          
-          <div className="bg-blue-900/30 border border-blue-500/50 rounded-lg p-4 mb-6">
-            <p className="text-blue-300 text-sm">
-              <strong>Important:</strong> Check your spam folder if you don't see the email within a few minutes.
-            </p>
-          </div>
-          
-          <button
-            onClick={onSwitchToLogin}
-            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 font-medium"
-          >
-            Back to Login
-          </button>
-        </div>
-      </div>
+      <EmailVerificationPage
+        email={formData.email}
+        onBackToSignup={() => setEmailSent(false)}
+        onResendSuccess={() => {
+          console.log('✅ Verification email resent to:', formData.email);
+        }}
+      />
     );
   }
 

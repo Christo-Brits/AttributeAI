@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Mail, Lock, User, Globe, Eye, EyeOff, ChevronRight, AlertCircle, CheckCircle } from 'lucide-react';
 import { useAuth } from './AuthContext';
 import { signInWithProvider, socialProviders, signUpWithEmailVerification } from '../../lib/supabase';
+import GoogleAdsTracking from '../../utils/GoogleAdsTracking';
 
 const SignupPage = ({ onSignupSuccess, onSwitchToLogin }) => {
   const { signup } = useAuth();
@@ -94,6 +95,12 @@ const SignupPage = ({ onSignupSuccess, onSwitchToLogin }) => {
       });
       
       setEmailSent(true);
+      
+      // Track signup conversion in Google Ads
+      GoogleAdsTracking.trackSignup('freemium', 0);
+      
+      // Track trial start (14-day free trial)
+      GoogleAdsTracking.trackTrialStart('growth');
       
     } catch (error) {
       console.error('Signup error:', error);

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowRight, Check, Zap, Brain, Target, BarChart3, Users, Shield, Star, Play, TrendingUp, Globe, Sparkles } from 'lucide-react';
 import { Button } from './ui/DesignSystem';
 import AttributeAILogo from './ui/AttributeAILogo';
+import GoogleAdsTracking from '../utils/GoogleAdsTracking';
 
 const LandingPage = ({ onGetStarted, onSignIn }) => {
   const [isYearly, setIsYearly] = useState(false);
@@ -79,12 +80,21 @@ const LandingPage = ({ onGetStarted, onSignIn }) => {
   };
 
   const handleGetStarted = () => {
+    // Track conversion in Google Ads
+    GoogleAdsTracking.trackLead('cta_click', 15);
+    
     if (onGetStarted) {
       onGetStarted();
     }
   };
 
   const handleSignIn = () => {
+    // Track existing user returning
+    GoogleAdsTracking.trackCustomConversion('returning_user', 5, {
+      'user_type': 'returning',
+      'action': 'sign_in_attempt'
+    });
+    
     if (onSignIn) {
       onSignIn();
     }

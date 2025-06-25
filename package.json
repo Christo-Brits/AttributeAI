@@ -10,19 +10,12 @@
   "dependencies": {
     "@stripe/stripe-js": "^4.1.0",
     "@supabase/supabase-js": "2.50.0",
-    "@testing-library/dom": "^10.4.0",
-    "@testing-library/jest-dom": "^6.4.6",
-    "@testing-library/react": "^16.0.0",
-    "@testing-library/user-event": "^14.5.2",
-    "@types/aria-query": "^5.0.4",
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
     "date-fns": "^3.6.0",
-    "dom-accessibility-api": "^0.5.16",
     "lodash": "4.17.21",
     "lucide-react": "^0.400.0",
     "lz-string": "^1.5.0",
-    "puppeteer": "24.10.2",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.4",
     "react-dom": "^18.3.1",
@@ -32,18 +25,26 @@
     "recharts": "^2.12.7",
     "stripe": "^14.0.0",
     "styled-components": "^6.1.19",
-    "typescript": "^4.9.5",
     "uuid": "^10.0.0",
     "web-vitals": "^4.2.1"
   },
   "devDependencies": {
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.4.6",
+    "@testing-library/react": "^16.0.0",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/aria-query": "^5.0.4",
     "@types/lodash": "4.17.17",
     "@types/node": "^20.14.9",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@types/uuid": "^10.0.0",
     "concurrently": "^8.2.2",
-    "cross-env": "7.0.3"
+    "cross-env": "7.0.3",
+    "dom-accessibility-api": "^0.5.16",
+    "source-map-explorer": "2.5.3",
+    "typescript": "^4.9.5",
+    "webpack-bundle-analyzer": "4.10.2"
   },
   "resolutions": {
     "ajv": "^6.12.6",
@@ -58,7 +59,10 @@
     "eject": "react-scripts eject",
     "dev": "concurrently \"npm start\" \"cd server && node api-proxy.js\"",
     "start:backend": "cd server && node api-proxy.js",
-    "build:check": "npm run build && echo 'Build successful'"
+    "build:check": "npm run build:optimized && npm run test:lighthouse",
+    "build:optimized": "cross-env GENERATE_SOURCEMAP=false INLINE_RUNTIME_CHUNK=false CI=false react-scripts build",
+    "build:analyze": "npm run build:optimized && npx source-map-explorer build/static/js/*.js",
+    "serve:build": "npm run build:optimized && npx serve -s build -l 3000"
   },
   "eslintConfig": {
     "extends": [

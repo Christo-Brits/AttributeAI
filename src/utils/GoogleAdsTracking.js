@@ -6,6 +6,9 @@
 // Google Ads Conversion ID
 const GOOGLE_ADS_ID = 'AW-17201839062';
 
+// Global gtag reference
+/* global gtag */
+
 class GoogleAdsTracking {
   
   // Track sign-up conversion

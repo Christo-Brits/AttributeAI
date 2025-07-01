@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#3B82F6" />
+    
+    <!-- Hotjar Tracking Code for AttributeAI -->
+    <script>
+        (function(h,o,t,j,a,r){
+            h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+            h._hjSettings={hjid:6448478,hjsv:6}; // AttributeAI Hotjar Site ID
+            a=o.getElementsByTagName('head')[0];
+            r=o.createElement('script');r.async=1;
+            r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+            a.appendChild(r);
+        })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+    </script>
+    
+    <!-- Google Analytics 4 (GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BDZZKFKYDV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      
+      // Configure GA4 with enhanced attribution and commerce tracking
+      gtag('config', 'G-BDZZKFKYDV', {
+        // Enhanced attribution settings for marketing platform
+        allow_enhanced_conversions: true,
+        allow_google_signals: true,
+        send_page_view: true,
+        
+        // Custom tracking for SaaS platform
+        custom_map: {
+          'custom_parameter_1': 'tool_used',
+          'custom_parameter_2': 'subscription_tier',
+          'custom_parameter_3': 'analysis_type'
+        },
+        
+        // Privacy and compliance settings
+        anonymize_ip: true,
+        cookie_flags: 'secure;samesite=strict',
+        cookie_expires: 63072000, // 2 years
+        
+        // Performance monitoring
+        page_title: document.title,
+        page_location: window.location.href,
+        
+        // Attribution platform specific settings
+        linker: {
+          domains: ['attributeai.app', 'www.attributeai.app']
+        }
+      });
+      
+      // Track initial platform load
+      gtag('event', 'platform_load', {
+        'event_category': 'engagement',
+        'event_label': 'initial_load',
+        'value': 1
+      });
+      
+      // Enhanced funnel tracking
+      gtag('event', 'page_view', {
+        page_title: document.title,
+        page_location: window.location.href,
+        user_agent: navigator.userAgent,
+        timestamp: new Date().toISOString()
+      });
+    </script>
+    
+    <!-- Google Ads Conversion Tracking -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17201839062"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'AW-17201839062');
+      
+      // Track initial page load as potential conversion event
+      gtag('event', 'page_view', {
+        'send_to': 'AW-17201839062'
+      });
+    </script>
+    
+    <!-- Enhanced SEO Meta Tags -->
+    <title>AttributeAI - AI-Powered Multi-Touch Marketing Attribution Platform | 14-Day Free Trial</title>
+    <meta name="description" content="Revolutionary AI-powered marketing attribution platform. Track every customer touchpoint, predict performance with 94% accuracy, and create content that converts. Start your 14-day free trial today." />
+    <meta name="keywords" content="marketing attribution, AI marketing tools, multi-touch attribution, customer journey analytics, predictive marketing, content marketing AI, marketing intelligence, ROI tracking, customer journey mapping, marketing analytics platform, attribution software, AI content generation" />
+    <meta name="author" content="AttributeAI" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="1 days" />
+    
+    <!-- Enhanced Open Graph Meta Tags -->
+    <meta property="og:title" content="AttributeAI - AI-Powered Marketing Attribution Platform" />
+    <meta property="og:description" content="Revolutionary AI-powered marketing attribution platform. Track every customer touchpoint, predict performance with 94% accuracy, and create content that converts. Start your 14-day free trial today." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://attributeai.app" />
+    <meta property="og:site_name" content="AttributeAI" />
+    <meta property="og:image" content="https://attributeai.app/attributeai-social-preview.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="AttributeAI - AI-Powered Marketing Attribution Platform" />
+    <meta property="og:locale" content="en_US" />
+    
+    <!-- Enhanced Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@AttributeAI" />
+    <meta name="twitter:creator" content="@AttributeAI" />
+    <meta name="twitter:title" content="AttributeAI - AI-Powered Marketing Attribution Platform" />
+    <meta name="twitter:description" content="Revolutionary AI-powered marketing attribution platform. Track every customer touchpoint, predict performance with 94% accuracy. Start your 14-day free trial today." />
+    <meta name="twitter:image" content="https://attributeai.app/attributeai-social-preview.png" />
+    <meta name="twitter:image:alt" content="AttributeAI - AI-Powered Marketing Attribution Platform" />
+    
+    <!-- Additional SEO Tags -->
+    <link rel="canonical" href="https://attributeai.app" />
+    <meta name="apple-mobile-web-app-title" content="AttributeAI" />
+    <meta name="application-name" content="AttributeAI" />
+    <meta name="msapplication-TileColor" content="#3B82F6" />
+    <meta name="msapplication-config" content="/browserconfig.xml" />
+    
+    <!-- Structured Data for SaaS Product -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "AttributeAI",
+      "alternateName": "Attribute AI",
+      "description": "Revolutionary AI-powered marketing attribution platform that tracks every customer touchpoint, predicts performance with 94% accuracy, and creates content that converts using advanced multi-model AI.",
+      "url": "https://attributeai.app",
+      "applicationCategory": "BusinessApplication",
+      "applicationSubCategory": "Marketing Analytics",
+      "operatingSystem": "Web Browser",
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Starter Plan",
+          "price": "29",
+          "priceCurrency": "USD",
+          "priceSpecification": {
+            "@type": "RecurringCharge",
+            "frequency": "monthly"
+          },
+          "eligibleQuantity": {
+            "@type": "QuantitativeValue",
+            "value": "1"
+          }
+        },
+        {
+          "@type": "Offer",
+          "name": "Growth Plan",
+          "price": "97",
+          "priceCurrency": "USD",
+          "priceSpecification": {
+            "@type": "RecurringCharge",
+            "frequency": "monthly"
+          },
+          "eligibleQuantity": {
+            "@type": "QuantitativeValue",
+            "value": "1"
+          }
+        },
+        {
+          "@type": "Offer",
+          "name": "Scale Plan",
+          "price": "297",
+          "priceCurrency": "USD",
+          "priceSpecification": {
+            "@type": "RecurringCharge",
+            "frequency": "monthly"
+          },
+          "eligibleQuantity": {
+            "@type": "QuantitativeValue",
+            "value": "1"
+          }
+        }
+      ],
+      "hasFreeTrial": true,
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "127",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "AttributeAI",
+        "url": "https://attributeai.app",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://attributeai.app/attributeai-logo.png"
+        }
+      },
+      "featureList": [
+        "Multi-touch attribution tracking",
+        "AI-powered content generation",
+        "Predictive analytics with 94% accuracy",
+        "Customer journey mapping",
+        "Real-time performance monitoring",
+        "Multi-model AI integration",
+        "Team collaboration tools",
+        "Advanced reporting dashboard"
+      ]
+    }
+    </script>
+    
+    <!-- Organization Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "AttributeAI",
+      "alternateName": "Attribute AI",
+      "url": "https://attributeai.app",
+      "logo": "https://attributeai.app/attributeai-logo.png",
+      "description": "Leading provider of AI-powered marketing attribution and analytics solutions.",
+      "foundingDate": "2025",
+      "sameAs": [
+        "https://twitter.com/AttributeAI",
+        "https://linkedin.com/company/attributeai"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "email": "support@attributeai.app"
+      }
+    }
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+      <!-- Performance Optimizations -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="//api.anthropic.com">
+    <link rel="dns-prefetch" href="//api.openai.com">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//static.hotjar.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <!-- Critical CSS will be inlined here -->
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
+</html>        </div>
+    </section>
+
+    <section class="social-proof">
+        <div class="container">
+            <div class="social-proof-content">
+                <div class="rating">⭐⭐⭐⭐⭐ 130+ early users</div>
+                <div>•</div>
+                <div class="value-prop">10x better value than Keywords Everywhere</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="final-cta" id="trial">
+        <div class="container">
+            <h2>Get Your Attribution Intelligence Demo</h2>
+            <p class="urgency">See which campaigns drive revenue in your first 15 minutes</p>
+            
+            <div class="cta-buttons">
+                <button class="primary-cta" id="trial-btn">Start Free 14-Day Trial →</button>
+                <button class="secondary-cta" id="calc-btn">Calculate Your Current Tool Cost</button>
+            </div>
+            
+            <p class="risk-reversal">14-day free trial • No credit card required • Setup in under 10 minutes</p>
+        </div>
+    </section>
+
+    <div class="calculator-modal" id="calc-modal">
+        <div class="calculator-content">
+            <button class="calculator-close" id="close-calc">&times;</button>
+            
+            <h2 class="calculator-title">Tool Cost Calculator</h2>
+            <p class="calculator-subtitle">See how much you're spending on fragmented marketing tools</p>
+            
+            <div class="tool-section">
+                <div class="tool-header">
+                    <span class="tool-name">HubSpot Marketing Hub</span>
+                    <label><input type="checkbox" id="hubspot-check"> Using this?</label>
+                </div>
+                <div class="tool-details">
+                    <div>
+                        <label class="input-label">Monthly Cost</label>
+                        <input type="number" class="price-input" id="hubspot-cost" value="800">
+                    </div>
+                    <div>
+                        <label class="input-label">Users</label>
+                        <input type="number" class="price-input" id="hubspot-users" value="5">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tool-section">
+                <div class="tool-header">
+                    <span class="tool-name">SEMrush / Ahrefs</span>
+                    <label><input type="checkbox" id="seo-check"> Using this?</label>
+                </div>
+                <div class="tool-details">
+                    <div>
+                        <label class="input-label">Monthly Cost</label>
+                        <input type="number" class="price-input" id="seo-cost" value="199">
+                    </div>
+                    <div>
+                        <label class="input-label">Plan</label>
+                        <select class="price-input" id="seo-plan">
+                            <option value="199">Pro ($199)</option>
+                            <option value="399">Guru ($399)</option>
+                            <option value="999">Business ($999)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tool-section">
+                <div class="tool-header">
+                    <span class="tool-name">Content Tools</span>
+                    <label><input type="checkbox" id="content-check"> Using this?</label>
+                </div>
+                <div class="tool-details">
+                    <div>
+                        <label class="input-label">Monthly Cost</label>
+                        <input type="number" class="price-input" id="content-cost" value="49">
+                    </div>
+                    <div>
+                        <label class="input-label">Users</label>
+                        <input type="number" class="price-input" id="content-users" value="3">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="results-section">
+                <div class="total-cost" id="total-display">$0</div>
+                <div class="cost-label">Current monthly tool costs</div>
+                
+                <div class="savings-highlight">
+                    <div>AttributeAI Professional: <strong>$97/month</strong></div>
+                    <div class="savings-amount" id="savings-display">Calculate your savings</div>
+                </div>
+                
+                <button class="calculator-cta" id="calc-cta">Start Your 14-Day Free Trial</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateTotal() {
+            var total = 0;
+            
+            if (document.getElementById('hubspot-check').checked) {
+                var cost = parseFloat(document.getElementById('hubspot-cost').value) || 0;
+                var users = parseFloat(document.getElementById('hubspot-users').value) || 1;
+                total += cost * users;
+            }
+            
+            if (document.getElementById('seo-check').checked) {
+                var seoCost = parseFloat(document.getElementById('seo-plan').value) || 0;
+                total += seoCost;
+            }
+            
+            if (document.getElementById('content-check').checked) {
+                var contentCost = parseFloat(document.getElementById('content-cost').value) || 0;
+                var contentUsers = parseFloat(document.getElementById('content-users').value) || 1;
+                total += contentCost * contentUsers;
+            }
+            
+            document.getElementById('total-display').textContent = '$' + total.toLocaleString();
+            
+            var savings = total - 97;
+            var savingsEl = document.getElementById('savings-display');
+            
+            if (savings > 0) {
+                savingsEl.textContent = 'Save $' + savings.toLocaleString() + '/month';
+                savingsEl.style.color = '#34d399';
+            } else {
+                savingsEl.textContent = 'Same cost + way better features';
+                savingsEl.style.color = '#fbbf24';
+            }
+        }
+        
+        function openCalc() {
+            document.getElementById('calc-modal').classList.add('active');
+            calculateTotal();
+        }
+        
+        function closeCalc() {
+            document.getElementById('calc-modal').classList.remove('active');
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calc-btn').addEventListener('click', openCalc);
+            document.getElementById('close-calc').addEventListener('click', closeCalc);
+            
+            document.getElementById('calc-modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeCalc();
+                }
+            });
+            
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            for (var i = 0; i < checkboxes.length; i++) {
+                checkboxes[i].addEventListener('change', calculateTotal);
+            }
+            
+            var inputs = document.querySelectorAll('.price-input');
+            for (var j = 0; j < inputs.length; j++) {
+                inputs[j].addEventListener('input', calculateTotal);
+            }
+            
+            var ctaButtons = document.querySelectorAll('.trial-btn, .cta-main, .primary-cta, #trial-btn, #calc-cta');
+            for (var k = 0; k < ctaButtons.length; k++) {
+                ctaButtons[k].addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Track conversion for A/B testing
+                    gtag('event', 'conversion', {
+                        'send_to': 'G-BDZZKFKYDV',
+                        'custom_parameter_1': 'framework_version_b'
+                    });
+                    // Redirect to signup
+                    window.location.href = '/signup';
+                });
+            }
+            
+            calculateTotal();
+        });
+    </script>
+</body>
+</html>
+    <!-- Cost Calculator Section -->
+    <section class="cost-calculator">
+        <div class="container">
+            <div class="calculator-content">
+                <h2>Calculate Your Marketing Attribution Savings</h2>
+                <p>See how much AttributeAI saves compared to traditional attribution tools</p>
+                
+                <div class="calculator-form">
+                    <div class="input-group">
+                        <label for="monthly-traffic">Monthly Website Traffic</label>
+                        <input type="number" id="monthly-traffic" value="50000" min="1000" max="10000000" step="1000">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="conversion-rate">Current Conversion Rate (%)</label>
+                        <input type="number" id="conversion-rate" value="2.5" min="0.1" max="20" step="0.1">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="avg-order-value">Average Order Value ($)</label>
+                        <input type="number" id="avg-order-value" value="150" min="10" max="10000" step="10">
+                    </div>
+                    
+                    <div class="results">
+                        <div class="result-item">
+                            <span class="label">Current Monthly Revenue:</span>
+                            <span class="value" id="current-revenue">$187,500</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">HubSpot/Salesforce Cost:</span>
+                            <span class="value competitor-cost" id="competitor-cost">$2,400/month</span>
+                        </div>
+                        <div class="result-item primary">
+                            <span class="label">AttributeAI Cost:</span>
+                            <span class="value" id="attributeai-cost">$197/month</span>
+                        </div>
+                        <div class="result-item savings">
+                            <span class="label">Monthly Savings:</span>
+                            <span class="value" id="monthly-savings">$2,203</span>
+                        </div>
+                        <div class="result-item total-savings">
+                            <span class="label">Annual Savings:</span>
+                            <span class="value" id="annual-savings">$26,436</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2>Why Marketing Teams Choose AttributeAI</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="feature-icon">🎯</div>
+                    <h3>True Multi-Touch Attribution</h3>
+                    <p>Track customer journeys across all touchpoints with AI-powered attribution modeling. See exactly which campaigns drive real revenue, not just clicks.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🤖</div>
+                    <h3>Multi-Model AI Intelligence</h3>
+                    <p>Claude, GPT-4, and Gemini working together to provide strategic insights, content optimization, and performance predictions with 94% accuracy.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Unlimited Keyword Research</h3>
+                    <p>Break free from credit limitations. Research unlimited keywords with AI-powered insights that competitors like Keywords Everywhere can't match.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📊</div>
+                    <h3>Real-Time Performance Tracking</h3>
+                    <p>Live dashboards showing attribution data, ROI metrics, and optimization opportunities. Make data-driven decisions with confidence.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">✍️</div>
+                    <h3>AI Content Generation</h3>
+                    <p>Create optimized content at scale with our multi-model AI engine. Generate articles, landing pages, and campaigns that convert.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🔗</div>
+                    <h3>Complete Platform Integration</h3>
+                    <p>Works seamlessly with Google Analytics, HubSpot, Salesforce, and all major marketing tools. One platform, infinite possibilities.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof -->
+    <section class="social-proof">
+        <div class="container">
+            <h2>Trusted by Marketing Teams Worldwide</h2>
+            <div class="testimonials">
+                <div class="testimonial">
+                    <p>"AttributeAI finally gave us the attribution clarity we needed. We identified $2.3M in previously invisible revenue sources within 30 days."</p>
+                    <div class="author">
+                        <strong>Sarah Chen</strong>
+                        <span>VP Marketing, TechScale Inc.</span>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <p>"The unlimited keyword research alone saves us $500/month compared to Keywords Everywhere. The AI insights are game-changing."</p>
+                    <div class="author">
+                        <strong>Marcus Rodriguez</strong>
+                        <span>SEO Director, GrowthLabs</span>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <p>"We replaced three expensive tools with AttributeAI and increased our attribution accuracy by 340%. ROI was immediate."</p>
+                    <div class="author">
+                        <strong>Jennifer Park</strong>
+                        <span>CMO, DataDriven Solutions</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Start Your 14-Day Free Trial</h2>
+                <p>Join thousands of marketing teams who've transformed their attribution strategy with AttributeAI</p>
+                <div class="cta-buttons">
+                    <a href="/signup" class="btn btn-primary btn-large">Start Free Trial</a>
+                    <a href="/demo" class="btn btn-secondary">Book a Demo</a>
+                </div>
+                <p class="guarantee">✅ No credit card required • ✅ Full feature access • ✅ Cancel anytime</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>AttributeAI</h3>
+                    <p>The complete marketing attribution platform for data-driven teams.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="link-group">
+                        <h4>Product</h4>
+                        <a href="/features">Features</a>
+                        <a href="/pricing">Pricing</a>
+                        <a href="/integrations">Integrations</a>
+                    </div>
+                    <div class="link-group">
+                        <h4>Company</h4>
+                        <a href="/about">About</a>
+                        <a href="/blog">Blog</a>
+                        <a href="/contact">Contact</a>
+                    </div>
+                    <div class="link-group">
+                        <h4>Support</h4>
+                        <a href="/docs">Documentation</a>
+                        <a href="/help">Help Center</a>
+                        <a href="/api">API</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 AttributeAI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Calculator JavaScript -->
+    <script>
+        function updateCalculator() {
+            const traffic = parseInt(document.getElementById('monthly-traffic').value) || 0;
+            const conversionRate = parseFloat(document.getElementById('conversion-rate').value) || 0;
+            const orderValue = parseFloat(document.getElementById('avg-order-value').value) || 0;
+            
+            const conversions = traffic * (conversionRate / 100);
+            const currentRevenue = conversions * orderValue;
+            
+            // Competitor pricing (HubSpot/Salesforce equivalent)
+            let competitorCost = 800; // Base cost
+            if (traffic > 100000) competitorCost = 2400;
+            else if (traffic > 50000) competitorCost = 1600;
+            else if (traffic > 20000) competitorCost = 1200;
+            
+            // AttributeAI pricing
+            let attributeaiCost = 97; // Professional plan
+            if (traffic > 200000) attributeaiCost = 497; // Enterprise
+            else if (traffic > 100000) attributeaiCost = 297; // Growth
+            else if (traffic > 50000) attributeaiCost = 197; // Professional Plus
+            
+            const monthlySavings = competitorCost - attributeaiCost;
+            const annualSavings = monthlySavings * 12;
+            
+            // Update display
+            document.getElementById('current-revenue').textContent = '$' + currentRevenue.toLocaleString();
+            document.getElementById('competitor-cost').textContent = '$' + competitorCost.toLocaleString() + '/month';
+            document.getElementById('attributeai-cost').textContent = '$' + attributeaiCost.toLocaleString() + '/month';
+            document.getElementById('monthly-savings').textContent = '$' + monthlySavings.toLocaleString();
+            document.getElementById('annual-savings').textContent = '$' + annualSavings.toLocaleString();
+        }
+        
+        // Initialize calculator
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCalculator();
+            
+            // Add event listeners to inputs
+            document.getElementById('monthly-traffic').addEventListener('input', updateCalculator);
+            document.getElementById('conversion-rate').addEventListener('input', updateCalculator);
+            document.getElementById('avg-order-value').addEventListener('input', updateCalculator);
+        });
+        
+        // GA4 Tracking for A/B test
+        gtag('event', 'landing_page_view', {
+            'page_version': 'framework_generated',
+            'test_type': 'framework_vs_original'
+        });
+    </script>
+</body>
+</html>

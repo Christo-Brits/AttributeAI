@@ -3,6 +3,21 @@ import './App.css';
 import { AuthProvider, useAuth } from './components/auth/AuthContext';
 import { ImprovedAuthProvider } from './components/auth/ImprovedAuthContext';
 import { HelmetProvider } from 'react-helmet-async';
+import ErrorBoundary from './components/ErrorBoundary';
+import { FullPageLoader, LoadingSpinner } from './components/ui/LoadingComponents';
+import AuthCallback from './components/auth/AuthCallback';
+
+// Mobile optimization imports
+import { useViewport } from './hooks/useViewport';
+import MobileNavigation from './components/MobileNavigation';
+import MobileUnifiedDashboard from './components/MobileUnifiedDashboard';
+import { 
+  MobileOptimizationProvider, 
+  TouchFeedback, 
+  MobilePerformanceMonitor, 
+  OfflineSupport, 
+  PWAFeatures 
+} from './components/MobileOptimizations';
 
 // Core components - Load immediately for better UX
 import SidebarNavigation from './components/SidebarNavigation';
@@ -161,15 +176,10 @@ const AutomatedSignupPrompts = createLazyComponent(
 
 // Enhanced loading component
 const ComponentLoader = ({ componentName }) => (
-  <div className="flex items-center justify-center min-h-screen">
-    <div className="text-center">
-      <div className="loading-spinner h-12 w-12 border-blue-600 mb-4 mx-auto"></div>
-      <p className="text-gray-600">Loading {componentName || 'component'}...</p>
-      <div className="w-64 bg-gray-200 rounded-full h-2 mx-auto mt-2">
-        <div className="bg-blue-600 h-2 rounded-full animate-pulse" style={{width: '60%'}}></div>
-      </div>
-    </div>
-  </div>
+  <FullPageLoader 
+    message={`Loading ${componentName || 'Component'}...`}
+    subMessage="Preparing your marketing intelligence tools"
+  />
 );
 
 function AuthenticatedApp() {
@@ -177,6 +187,9 @@ function AuthenticatedApp() {
   const [websiteAnalysisResults, setWebsiteAnalysisResults] = useState(null);
   const [currentView, setCurrentView] = useState('dashboard');
   const { user, updateUser } = useAuth();
+  
+  // Mobile optimization
+  const { isMobile, isTablet, isDesktop } = useViewport();
   
   const { trackFeatureClick, trackButtonClick, analytics } = useAttributeAIAnalytics('main_app');
 
@@ -261,10 +274,15 @@ function AuthenticatedApp() {
     }
 
     const components = {
-      dashboard: () => <UnifiedDashboard 
-        websiteAnalysis={websiteAnalysisResults} 
-        onNavigateToTab={handleTabChange}
-      />,
+      dashboard: () => isMobile 
+        ? <MobileUnifiedDashboard 
+            websiteAnalysis={websiteAnalysisResults} 
+            onNavigateToTab={handleTabChange}
+          />
+        : <UnifiedDashboard 
+            websiteAnalysis={websiteAnalysisResults} 
+            onNavigateToTab={handleTabChange}
+          />,
       'user-analytics': UserAnalyticsDashboard,
       'keyword-intelligence': KeywordIntelligenceEngine,
       'local-seo-matrix': LocalSEOMatrixGenerator,
@@ -305,7 +323,17 @@ function AuthenticatedApp() {
 
   return (
     <div className="flex min-h-screen bg-gray-900" style={{ background: 'linear-gradient(135deg, #0a0b0f 0%, #111218 100%)' }}>
-      {currentView === 'dashboard' && (
+      {/* Mobile Navigation */}
+      {currentView === 'dashboard' && isMobile && (
+        <MobileNavigation 
+          activeTab={activeTab} 
+          onTabChange={handleTabChange}
+          user={user}
+        />
+      )}
+
+      {/* Desktop Navigation */}
+      {currentView === 'dashboard' && !isMobile && (
         <SidebarNavigation 
           activeTab={activeTab} 
           setActiveTab={handleTabChange}
@@ -316,7 +344,8 @@ function AuthenticatedApp() {
       
       <main className={`
         flex-1 transition-all duration-300 ease-in-out
-        ${currentView === 'dashboard' ? 'md:ml-0 pt-16 md:pt-0' : 'ml-0'}
+        ${isMobile && currentView === 'dashboard' ? 'main-content-mobile' : ''}
+        ${currentView === 'dashboard' && !isMobile ? 'md:ml-0 pt-16 md:pt-0' : 'ml-0'}
       `} style={{ background: 'var(--bg-primary)' }}>
         {renderActiveComponent()}
         
@@ -372,13 +401,21 @@ function AuthenticatedApp() {
 
 function App() {
   return (
-    <HelmetProvider>
-      <ImprovedAuthProvider>
-        <AuthProvider>
-          <AppRouter />
-        </AuthProvider>
-      </ImprovedAuthProvider>
-    </HelmetProvider>
+    <ErrorBoundary>
+      <HelmetProvider>
+        <MobileOptimizationProvider>
+          <OfflineSupport>
+            <ImprovedAuthProvider>
+              <AuthProvider>
+                <AppRouter />
+                <MobilePerformanceMonitor />
+                <PWAFeatures />
+              </AuthProvider>
+            </ImprovedAuthProvider>
+          </OfflineSupport>
+        </MobileOptimizationProvider>
+      </HelmetProvider>
+    </ErrorBoundary>
   );
 }
 
@@ -387,6 +424,11 @@ function AppRouter() {
   const [appView, setAppView] = useState('landing');
   const [authMode, setAuthMode] = useState('login');
   const [currentView, setCurrentView] = useState('dashboard');
+
+  // Handle OAuth callback
+  if (window.location.pathname === '/auth/callback') {
+    return <AuthCallback />;
+  }
 
   React.useEffect(() => {
     initializeFunnelTracking();
@@ -429,12 +471,10 @@ function AppRouter() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <div className="loading-spinner h-12 w-12 border-blue-600 mb-4 mx-auto"></div>
-          <p className="text-gray-600">Loading AttributeAI...</p>
-        </div>
-      </div>
+      <FullPageLoader 
+        message="Initializing AttributeAI..."
+        subMessage="Setting up your marketing attribution platform"
+      />
     );
   }
 

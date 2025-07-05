@@ -131,34 +131,59 @@ const LoginPage = ({ onLoginSuccess, onSwitchToSignup }) => {
           </p>
         </div>
 
-        {/* Social Login Options - Temporarily Disabled */}
-        {false && (
+        {/* Social Login Options - Direct Implementation */}
         <div className="space-y-3 mb-6">
           <p className="text-sm text-gray-400 text-center mb-4">
             Quick sign in with your existing account
           </p>
           
-          {Object.entries(socialProviders).map(([provider, config]) => (
-            <button
-              key={provider}
-              onClick={() => handleSocialLogin(provider)}
-              disabled={socialLoading === provider}
-              className={`w-full bg-gradient-to-r ${config.color} text-white py-3 rounded-xl hover:opacity-90 transition-all duration-200 font-medium flex items-center justify-center space-x-3 shadow-lg hover:scale-105 transform disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none`}
-            >
-              <span className="text-lg">{config.icon}</span>
-              <span>
-                {socialLoading === provider ? 'Connecting...' : `Continue with ${config.name}`}
-              </span>
-              {socialLoading === provider && (
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-              )}
-            </button>
-          ))}
-        </div>
-        )}
+          {/* Google Sign-In Button */}
+          <button
+            onClick={() => handleSocialLogin('google')}
+            disabled={socialLoading === 'google'}
+            className="w-full bg-gradient-to-r from-red-500 to-red-600 text-white py-3 rounded-xl hover:opacity-90 transition-all duration-200 font-medium flex items-center justify-center space-x-3 shadow-lg hover:scale-105 transform disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+          >
+            <span className="text-lg">🔗</span>
+            <span>
+              {socialLoading === 'google' ? 'Connecting...' : 'Continue with Google'}
+            </span>
+            {socialLoading === 'google' && (
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+            )}
+          </button>
 
-        {/* Removed divider since social login is disabled */}
-        {false && (
+          {/* GitHub Sign-In Button */}
+          <button
+            onClick={() => handleSocialLogin('github')}
+            disabled={socialLoading === 'github'}
+            className="w-full bg-gradient-to-r from-gray-700 to-gray-800 text-white py-3 rounded-xl hover:opacity-90 transition-all duration-200 font-medium flex items-center justify-center space-x-3 shadow-lg hover:scale-105 transform disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+          >
+            <span className="text-lg">🐙</span>
+            <span>
+              {socialLoading === 'github' ? 'Connecting...' : 'Continue with GitHub'}
+            </span>
+            {socialLoading === 'github' && (
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+            )}
+          </button>
+
+          {/* Facebook Sign-In Button */}
+          <button
+            onClick={() => handleSocialLogin('facebook')}
+            disabled={socialLoading === 'facebook'}
+            className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 rounded-xl hover:opacity-90 transition-all duration-200 font-medium flex items-center justify-center space-x-3 shadow-lg hover:scale-105 transform disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+          >
+            <span className="text-lg">📘</span>
+            <span>
+              {socialLoading === 'facebook' ? 'Connecting...' : 'Continue with Facebook'}
+            </span>
+            {socialLoading === 'facebook' && (
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+            )}
+          </button>
+        </div>
+
+        {/* Social/Email Divider */}
         <div className="relative mb-6">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-600/50" />
@@ -167,7 +192,6 @@ const LoginPage = ({ onLoginSuccess, onSwitchToSignup }) => {
             <span className="px-3 bg-gray-800 text-gray-400">or sign in with email</span>
           </div>
         </div>
-        )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
           {errors.general && (

@@ -4,16 +4,43 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
 const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
 
+// Validate URL format
+const isValidUrl = (url) => {
+  if (!url || url.includes('your_') || url.includes('placeholder')) return false;
+  try {
+    new URL(url);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+// Get the correct redirect URL based on environment
+const getRedirectURL = () => {
+  if (typeof window !== 'undefined') {
+    // Client-side: use current origin for verification redirects
+    return window.location.origin;
+  }
+  
+  // Server-side or fallback
+  if (process.env.NODE_ENV === 'production') {
+    return process.env.REACT_APP_SITE_URL || 'https://leafy-biscotti-c87e93.netlify.app';
+  }
+  
+  return 'http://localhost:3000';
+};
+
 // Fallback for development - will use localStorage if Supabase not configured
 let supabase = null;
 
-if (supabaseUrl && supabaseAnonKey && supabaseUrl !== 'your_supabase_url_here') {
+if (supabaseUrl && supabaseAnonKey && isValidUrl(supabaseUrl) && !supabaseAnonKey.includes('your_')) {
   supabase = createClient(supabaseUrl, supabaseAnonKey, {
     auth: {
       persistSession: true,
       autoRefreshToken: true,
       detectSessionInUrl: true,
-      flowType: 'pkce'
+      flowType: 'pkce',
+      redirectTo: getRedirectURL() // This fixes the verification redirect!
     },
     realtime: {
       params: {
@@ -21,9 +48,15 @@ if (supabaseUrl && supabaseAnonKey && supabaseUrl !== 'your_supabase_url_here') 
       }
     }
   });
-  console.log('✅ Supabase client initialized with social auth support');
+  console.log('✅ Supabase client initialized with redirect URL:', getRedirectURL());
 } else {
-  console.log('⚠️ Supabase not configured - using localStorage fallback');
+  console.log('📱 Demo Mode: Supabase not configured - using localStorage fallback for mobile demo');
+  if (!supabaseUrl || supabaseUrl.includes('your_')) {
+    console.log('💡 To enable full features, add REACT_APP_SUPABASE_URL to .env file');
+  }
+  if (!supabaseAnonKey || supabaseAnonKey.includes('your_')) {
+    console.log('💡 To enable full features, add REACT_APP_SUPABASE_ANON_KEY to .env file');
+  }
 }
 
 // Social authentication providers configuration

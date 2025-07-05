@@ -1,6 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase, createUserProfile, onAuthStateChange, isSupabaseConfigured } from '../../lib/supabase';
 
+// Session timeout: 30 minutes
+const SESSION_TIMEOUT = 30 * 60 * 1000;
+
 const AuthContext = createContext();
 
 export const useAuth = () => {
@@ -16,6 +19,65 @@ export const AuthProvider = ({ children }) => {
   const [userProfile, setUserProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // Session timeout management
+  const updateLastActivity = () => {
+    if (isAuthenticated) {
+      localStorage.setItem('lastActivity', Date.now().toString());
+    }
+  };
+
+  const checkSessionTimeout = () => {
+    if (!isAuthenticated) return;
+    
+    const lastActivity = localStorage.getItem('lastActivity');
+    if (lastActivity && Date.now() - parseInt(lastActivity) > SESSION_TIMEOUT) {
+      console.log('Session expired due to inactivity');
+      logout();
+      return true;
+    }
+    return false;
+  };
+
+  // Set up session timeout checking and activity tracking
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    // Initial activity timestamp
+    updateLastActivity();
+
+    // Check session timeout every minute
+    const timeoutCheck = setInterval(checkSessionTimeout, 60000);
+
+    // Track user activity
+    const activityEvents = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
+    const throttledUpdateActivity = throttle(updateLastActivity, 30000); // Update at most every 30 seconds
+
+    activityEvents.forEach(event => {
+      document.addEventListener(event, throttledUpdateActivity, true);
+    });
+
+    return () => {
+      clearInterval(timeoutCheck);
+      activityEvents.forEach(event => {
+        document.removeEventListener(event, throttledUpdateActivity, true);
+      });
+    };
+  }, [isAuthenticated]);
+
+  // Simple throttle function
+  function throttle(func, limit) {
+    let inThrottle;
+    return function() {
+      const args = arguments;
+      const context = this;
+      if (!inThrottle) {
+        func.apply(context, args);
+        inThrottle = true;
+        setTimeout(() => inThrottle = false, limit);
+      }
+    };
+  }
 
   useEffect(() => {
     initializeAuth();
@@ -96,6 +158,9 @@ export const AuthProvider = ({ children }) => {
   const signup = async (userData) => {
     try {
       if (isSupabaseConfigured()) {
+        // Get current URL for proper verification redirect
+        const redirectUrl = window.location.origin + '/dashboard';
+        
         // Sign up with Supabase
         const { data, error } = await supabase.auth.signUp({
           email: userData.email,
@@ -105,7 +170,8 @@ export const AuthProvider = ({ children }) => {
               full_name: userData.full_name,
               first_name: userData.first_name,
               last_name: userData.last_name,
-            }
+            },
+            emailRedirectTo: redirectUrl // This fixes the verification redirect!
           }
         });
 
@@ -237,40 +303,7 @@ export const AuthProvider = ({ children }) => {
           }
         }
         
-        // If no existing account found, create a temporary one for testing
-        if (email === 'infinitebuildsolutions2024@gmail.com') {
-          const testUser = {
-            id: `user_${Date.now()}`,
-            email: email,
-            full_name: 'Test User',
-            first_name: 'Test',
-            last_name: 'User', 
-            company: 'Test Company',
-            website: '',
-            industry: 'Professional Services',
-            created_at: new Date().toISOString(),
-            subscription_tier: 'free',
-            monthly_usage: {
-              keywords_analyzed: 0,
-              content_generated: 0,
-              attribution_queries: 0,
-              last_reset: new Date().toISOString()
-            },
-            usage_limits: {
-              keywords_per_month: 100,
-              content_pieces_per_month: 5,
-              attribution_queries_per_month: 50
-            },
-            features_enabled: ['basic_keyword_analysis', 'basic_content_generation', 'basic_attribution']
-          };
-
-          localStorage.setItem('attributeai_user_profile', JSON.stringify(testUser));
-          setUser(testUser);
-          setUserProfile(testUser);
-          setIsAuthenticated(true);
-          return { user: testUser, profile: testUser };
-        }
-        
+        // If no existing account found, throw error - no test accounts allowed
         throw new Error('Invalid email or password. Please check your credentials or sign up for a new account.');
       }
     } catch (error) {
@@ -289,12 +322,16 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('attributeai_user_profile');
       }
 
+      // Clear session data
+      localStorage.removeItem('lastActivity');
+      
       setUser(null);
       setUserProfile(null);
       setIsAuthenticated(false);
     } catch (error) {
       console.error('Logout error:', error);
       // Still clear local state even if Supabase logout fails
+      localStorage.removeItem('lastActivity');
       setUser(null);
       setUserProfile(null);
       setIsAuthenticated(false);

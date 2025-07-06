@@ -425,11 +425,7 @@ function AppRouter() {
   const [authMode, setAuthMode] = useState('login');
   const [currentView, setCurrentView] = useState('dashboard');
 
-  // Handle OAuth callback
-  if (window.location.pathname === '/auth/callback') {
-    return <AuthCallback />;
-  }
-
+  // All React hooks must be called before any conditional returns
   React.useEffect(() => {
     initializeFunnelTracking();
     
@@ -446,6 +442,11 @@ function AppRouter() {
       setAppView('app');
     }
   }, [isAuthenticated]);
+
+  // Handle OAuth callback - moved after all hooks
+  if (window.location.pathname === '/auth/callback') {
+    return <AuthCallback />;
+  }
 
   const handleGetStarted = (plan) => {
     ConversionTracker.trackCTAClick('free_account');

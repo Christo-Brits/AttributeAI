@@ -1,0 +1,19 @@
+// OAuth Callback Handler Fix for App.js
+// Add this code to your AppRouter function in App.js
+
+// Add this import at the top of App.js:
+import AuthCallback from './components/auth/AuthCallback';
+
+// Then, in the AppRouter function, add this check at the very beginning:
+function AppRouter() {
+  const { isAuthenticated, isLoading, updateUser } = useAuth();
+  const [appView, setAppView] = useState('landing');
+  const [authMode, setAuthMode] = useState('login');
+  const [currentView, setCurrentView] = useState('dashboard');
+
+  // ADD THIS BLOCK - Handle OAuth callback
+  if (window.location.pathname === '/auth/callback') {
+    return <AuthCallback />;
+  }
+  
+  // Rest of your existing code continues here...

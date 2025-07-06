@@ -1,0 +1,29 @@
+🎯 SUPABASE CREDENTIALS SETUP GUIDE
+=====================================
+
+📊 STEP 1: Get Your Credentials
+1. In your Supabase dashboard, go to Settings > API
+2. Copy these two values:
+   - Project URL: https://[your-project-id].supabase.co
+   - anon public key: eyJhbGciOiJIUzI1NiIs... (long string)
+
+🔧 STEP 2: Update Environment File
+Run this command with YOUR actual credentials:
+
+setup-supabase-credentials.bat "https://your-project-id.supabase.co" "your-anon-key-here"
+
+🗄️ STEP 3: Set Up Database
+1. The script will open SQL Editor
+2. Copy ALL content from supabase\schema.sql
+3. Paste in SQL Editor and click RUN
+
+✅ STEP 4: Test & Restart
+1. Restart your development server: npm start
+2. Look for "Production DB" green badge
+3. Test keyword intelligence feature
+
+🚀 EXPECTED RESULT: 
+- Demo Mode banner disappears
+- Green "Production DB" badge appears
+- Social authentication creates real accounts
+- Data persists across browser sessions

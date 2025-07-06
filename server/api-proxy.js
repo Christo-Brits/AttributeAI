@@ -1,5 +1,8 @@
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const { body, validationResult } = require('express-validator');
 const fetch = require('node-fetch');
 require('dotenv').config();
 
@@ -21,12 +24,92 @@ const localSEORoutes = require('./local-seo-routes'); // NEW: Local SEO Matrix G
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Middleware
-app.use(cors({
-    origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'https://leafy-biscotti-c87e93.netlify.app'],
-    credentials: true
+// Security Middleware
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "https://www.googletagmanager.com", "https://static.hotjar.com"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+            fontSrc: ["'self'", "https://fonts.gstatic.com"],
+            imgSrc: ["'self'", "data:", "https:", "blob:"],
+            connectSrc: ["'self'", "https://api.anthropic.com", "https://api.openai.com"],
+        },
+    },
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
-app.use(express.json());
+
+// Rate limiting
+const generalLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+    message: { error: 'Too many requests from this IP, please try again later.' },
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+
+const strictLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 20, // limit each IP to 20 requests per windowMs for sensitive endpoints
+    message: { error: 'Too many requests to this endpoint, please try again later.' },
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+
+// Apply rate limiting
+app.use('/api/', generalLimiter);
+app.use('/api/claude-chat', strictLimiter);
+app.use('/api/create-checkout-session', strictLimiter);
+
+// CORS Configuration
+const allowedOrigins = process.env.NODE_ENV === 'production' 
+    ? [process.env.CLIENT_URL || 'https://leafy-biscotti-c87e93.netlify.app']
+    : ['http://localhost:3000', 'http://127.0.0.1:3000', 'https://leafy-biscotti-c87e93.netlify.app'];
+
+app.use(cors({
+    origin: allowedOrigins,
+    credentials: true,
+    maxAge: 86400 // 24 hours
+}));
+
+// Request parsing with size limits
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Input validation middleware
+const validateInput = (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ 
+            error: 'Invalid input',
+            details: errors.array()
+        });
+    }
+    next();
+};
+
+// Error handling middleware
+const errorHandler = (error, req, res, next) => {
+    console.error('API Error:', {
+        message: error.message,
+        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
+        url: req.url,
+        method: req.method,
+        ip: req.ip,
+        timestamp: new Date().toISOString()
+    });
+
+    // Don't expose internal error details in production
+    const message = process.env.NODE_ENV === 'production' 
+        ? 'An error occurred processing your request'
+        : error.message;
+
+    res.status(error.status || 500).json({ 
+        error: message,
+        ...(process.env.NODE_ENV === 'development' && { stack: error.stack })
+    });
+};
 
 // Route Modules
 app.use('/api/keyword-intelligence', keywordIntelligenceRoutes);
@@ -37,8 +120,13 @@ app.use('/api', weatherIntelligenceRoutes); // Weather intelligence endpoints
 app.use('/api/analytics', userAnalyticsRoutes); // User analytics and conversion tracking
 app.use('/api/local-seo', localSEORoutes); // NEW: Local SEO Matrix Generator routes
 
-// Stripe Integration Routes
-app.post('/api/create-checkout-session', async (req, res) => {
+// Stripe Integration Routes with validation
+app.post('/api/create-checkout-session', [
+    body('priceId').optional().isString().trim(),
+    body('plan').optional().isString().isIn(['starter', 'pro', 'scale']),
+    body('email').optional().isEmail().normalizeEmail(),
+    validateInput
+], async (req, res, next) => {
   try {
     if (!stripe) {
       return res.status(500).json({ 
@@ -84,8 +172,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
 
     res.json({ url: session.url });
   } catch (error) {
-    console.error('Error creating checkout session:', error);
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 
@@ -171,6 +258,18 @@ app.post('/api/create-checkout-session', async (req, res) => {
         });
     }
 });
+
+// 404 handler for undefined routes
+app.use('*', (req, res) => {
+    res.status(404).json({
+        error: 'Route not found',
+        path: req.originalUrl,
+        method: req.method
+    });
+});
+
+// Global error handling middleware (must be last)
+app.use(errorHandler);
 
 // Health check endpoint
 app.get('/health', (req, res) => {

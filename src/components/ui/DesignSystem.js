@@ -2,6 +2,7 @@
 // Based on modern dark UI with blue/purple/pink gradients
 
 import React from 'react';
+import { useViewport } from '../../hooks/useViewport';
 
 // ============================================================================
 // CLARITY DARK THEME TOKENS
@@ -413,5 +414,239 @@ export default {
   GradientText,
   Input,
   Badge,
+  // MobileButton, // Will be added after definition
+  // MobileCard,   // Will be added after definition
+  // MobileInput,  // Will be added after definition
+  // MobileTabs,   // Will be added after definition
+  // MobileSpinner, // Will be added after definition
+  // MobileModal,  // Will be added after definition
   clarityTheme,
+};
+// ============================================================================
+// MOBILE-OPTIMIZED COMPONENTS
+// ============================================================================
+
+// Mobile-Optimized Button
+export const MobileButton = ({ 
+  children, 
+  variant = 'primary', 
+  size = 'medium', 
+  onClick, 
+  className = '',
+  ...props 
+}) => {
+  const { isMobile } = useViewport();
+  
+  const variants = {
+    primary: 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700',
+    secondary: 'bg-gray-600 text-white hover:bg-gray-700',
+    outline: 'border-2 border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white',
+    ghost: 'text-gray-300 hover:bg-gray-800',
+  };
+  
+  const sizes = {
+    small: isMobile ? 'px-3 py-2 text-sm min-h-[44px]' : 'px-3 py-2 text-sm',
+    medium: isMobile ? 'px-4 py-3 text-base min-h-[48px]' : 'px-4 py-2 text-sm',
+    large: isMobile ? 'px-6 py-4 text-lg min-h-[52px]' : 'px-6 py-3 text-base',
+  };
+
+  return (
+    <button
+      className={`
+        inline-flex items-center justify-center gap-2 rounded-lg font-medium 
+        transition-all duration-200 active:scale-[0.98] focus:outline-none 
+        focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900
+        ${variants[variant]} ${sizes[size]} ${className}
+      `}
+      onClick={onClick}
+      style={{
+        fontSize: isMobile ? '16px' : undefined, // Prevents iOS zoom
+        minWidth: isMobile ? '120px' : 'auto'
+      }}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+};
+
+// Mobile-Optimized Card
+export const MobileCard = ({ 
+  children, 
+  variant = 'default', 
+  interactive = false,
+  className = '',
+  ...props 
+}) => {
+  const { isMobile } = useViewport();
+  
+  const variants = {
+    default: 'bg-gray-800 border-gray-700',
+    elevated: 'bg-gray-750 border-gray-600 shadow-xl',
+    gradient: 'bg-gradient-to-br from-gray-800 to-gray-900 border-gray-600',
+  };
+  
+  const interactiveStyles = interactive 
+    ? 'cursor-pointer hover:bg-gray-750 hover:border-gray-600 hover:shadow-lg transition-all duration-200 active:scale-[0.99]'
+    : '';
+
+  return (
+    <div
+      className={`
+        border rounded-xl backdrop-blur-sm
+        ${variants[variant]} ${interactiveStyles} ${className}
+      `}
+      style={{
+        padding: isMobile ? '1rem' : '1.5rem',
+        margin: isMobile ? '0.5rem 0' : '1rem 0'
+      }}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+};
+
+// Mobile-Optimized Input
+export const MobileInput = ({ 
+  label, 
+  type = 'text', 
+  placeholder, 
+  value, 
+  onChange,
+  required = false,
+  error = null,
+  className = '',
+  ...props 
+}) => {
+  const { isMobile } = useViewport();
+
+  return (
+    <div className="flex flex-col gap-2">
+      {label && (
+        <label className="text-sm font-medium text-gray-300">
+          {label}
+          {required && <span className="text-red-400 ml-1">*</span>}
+        </label>
+      )}
+      <input
+        type={type}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        className={`
+          w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg
+          text-white placeholder-gray-400 transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+          ${error ? 'border-red-500 focus:ring-red-500' : ''}
+          ${className}
+        `}
+        style={{
+          minHeight: isMobile ? '48px' : '40px',
+          fontSize: '16px' // Prevents iOS zoom
+        }}
+        {...props}
+      />
+      {error && (
+        <span className="text-sm text-red-400">{error}</span>
+      )}
+    </div>
+  );
+};
+
+// Touch-Optimized Tab Component
+export const MobileTabs = ({ tabs, activeTab, onTabChange, className = '' }) => {
+  const { isMobile } = useViewport();
+
+  return (
+    <div className={`mobile-tabs ${className}`}>
+      <div className="flex overflow-x-auto scrollbar-hide bg-gray-800 rounded-lg p-1">
+        {tabs.map(tab => (
+          <button
+            key={tab.id}
+            onClick={() => onTabChange(tab.id)}
+            className={`
+              flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-all duration-200
+              whitespace-nowrap flex-shrink-0
+              ${activeTab === tab.id 
+                ? 'bg-blue-600 text-white shadow-lg' 
+                : 'text-gray-400 hover:text-white hover:bg-gray-700'
+              }
+            `}
+            style={{
+              minHeight: isMobile ? '44px' : '36px',
+              minWidth: isMobile ? '100px' : '80px'
+            }}
+          >
+            {tab.icon && <span className="text-lg">{tab.icon}</span>}
+            <span className="text-sm">{tab.label}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// Mobile Loading Spinner
+export const MobileSpinner = ({ size = 'medium', className = '' }) => {
+  const sizes = {
+    small: 'w-4 h-4',
+    medium: 'w-6 h-6', 
+    large: 'w-8 h-8'
+  };
+
+  return (
+    <div className={`flex items-center justify-center ${className}`}>
+      <div className={`animate-spin rounded-full border-2 border-gray-600 border-t-blue-500 ${sizes[size]}`} />
+    </div>
+  );
+};
+
+// Mobile Modal/Overlay
+export const MobileModal = ({ 
+  isOpen, 
+  onClose, 
+  title, 
+  children, 
+  className = '' 
+}) => {
+  const { isMobile } = useViewport();
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 overflow-y-auto">
+      <div className="flex items-center justify-center min-h-screen px-4">
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
+          onClick={onClose}
+        />
+        <div 
+          className={`
+            relative bg-gray-800 rounded-xl border border-gray-700 shadow-2xl
+            w-full max-w-lg mx-auto ${className}
+          `}
+          style={{
+            maxHeight: isMobile ? '90vh' : '80vh',
+            margin: isMobile ? '1rem' : '2rem'
+          }}
+        >
+          {title && (
+            <div className="flex items-center justify-between p-6 border-b border-gray-700">
+              <h3 className="text-xl font-semibold text-white">{title}</h3>
+              <button
+                onClick={onClose}
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+          )}
+          <div className="p-6 overflow-y-auto">
+            {children}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };

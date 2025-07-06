@@ -1,0 +1,70 @@
+🔐 GOOGLE OAUTH SETUP - Quick Steps (5 minutes)
+================================================
+
+You need to complete Google OAuth setup to see the social login buttons.
+
+📋 STEP 1: Google Cloud Console (3 minutes)
+==========================================
+Tab opened: https://console.cloud.google.com/apis/credentials
+
+1. CREATE PROJECT (if needed):
+   - Click "Select a project" dropdown
+   - Click "New Project" 
+   - Name: "AttributeAI"
+   - Click "Create"
+
+2. CREATE OAUTH CREDENTIALS:
+   - Click "+ CREATE CREDENTIALS"
+   - Select "OAuth 2.0 Client IDs"
+   - Application type: "Web application"
+   - Name: "AttributeAI Production"
+
+3. ADD REDIRECT URIS (CRITICAL):
+   Authorized redirect URIs - ADD BOTH:
+   ✅ https://xpyfoutwwjslivrmbflm.supabase.co/auth/v1/callback
+   ✅ http://localhost:3000/auth/callback
+
+4. SAVE AND COPY:
+   - Click "Create"
+   - COPY the Client ID (long string ending in .apps.googleusercontent.com)
+   - COPY the Client Secret (shorter string)
+
+📋 STEP 2: Supabase Configuration (1 minute)
+===========================================
+Tab opened: https://xpyfoutwwjslivrmbflm.supabase.co/project/xpyfoutwwjslivrmbflm/auth/providers
+
+1. FIND GOOGLE PROVIDER:
+   - Scroll to "Google" section
+   - Toggle "Enable sign in with Google" to ON
+
+2. ENTER YOUR CREDENTIALS:
+   - Client ID: [paste from Google Console]
+   - Client Secret: [paste from Google Console]
+   - Click "Save"
+
+📋 STEP 3: Update Environment (30 seconds)
+=========================================
+Run this command with YOUR Google Client ID:
+
+update-google-oauth.bat "YOUR_GOOGLE_CLIENT_ID_HERE"
+
+Example:
+update-google-oauth.bat "123456789-abcdefgh.apps.googleusercontent.com"
+
+📋 STEP 4: Restart & Test (1 minute)
+===================================
+1. Restart dev server: Ctrl+C then npm start
+2. Refresh browser: http://localhost:3000
+3. Should now see "Continue with Google" button
+4. Click it to test the OAuth flow
+
+✅ SUCCESS INDICATORS:
+- Google sign-in button appears on login page
+- Clicking button redirects to Google
+- After Google login, redirects back to AttributeAI
+- User automatically logged into dashboard
+
+❌ TROUBLESHOOTING:
+- No Google button = Environment not updated or server not restarted
+- Button does nothing = Client ID wrong or not saved in Supabase
+- Redirect error = Callback URLs don't match exactly

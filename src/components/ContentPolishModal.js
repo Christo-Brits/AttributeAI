@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, CheckCircle, Loader, Download, Copy, Sparkles, Image, Share2, FileText } from 'lucide-react';
+import DOMPurify from 'dompurify';
 import ContentPolishService from '../services/ContentPolishService';
 
 const ContentPolishModal = ({ content, metadata, onClose }) => {
@@ -175,7 +176,13 @@ const ContentPolishModal = ({ content, metadata, onClose }) => {
                 <h3 className="text-lg font-semibold mb-4">Polished Content Preview</h3>
                 <div 
                   className="prose prose-sm max-w-none bg-white p-6 rounded-lg border border-gray-200 max-h-64 overflow-y-auto"
-                  dangerouslySetInnerHTML={{ __html: polishedData.content.substring(0, 1000) + '...' }}
+                  dangerouslySetInnerHTML={{ 
+                    __html: DOMPurify.sanitize(polishedData.content.substring(0, 1000) + '...', {
+                      ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'a'],
+                      ALLOWED_ATTR: ['href', 'target', 'rel'],
+                      ALLOWED_URI_REGEXP: /^https?:\/\//
+                    })
+                  }}
                 />
               </div>
 

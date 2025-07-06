@@ -1,0 +1,19 @@
+// Add this to your App.js routing logic
+
+// At the top of App.js, add this import:
+import AuthCallback from './components/auth/AuthCallback';
+
+// In your routing logic, add this check:
+React.useEffect(() => {
+  // Handle OAuth callback
+  const path = window.location.pathname;
+  if (path === '/auth/callback') {
+    // Don't render normal app, render auth callback handler
+    return <AuthCallback />;
+  }
+}, []);
+
+// Or if you're using conditional rendering in AppRouter:
+if (window.location.pathname === '/auth/callback') {
+  return <AuthCallback />;
+}

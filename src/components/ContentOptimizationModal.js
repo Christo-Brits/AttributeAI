@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import DOMPurify from 'dompurify';
 import { 
   X, 
   Wand2, 
@@ -376,7 +377,13 @@ const ContentOptimizationModal = ({
               </div>
               
               <div className="bg-gray-50 rounded-lg p-4 max-h-96 overflow-y-auto">
-                <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: optimizedContent }} />
+                <div className="prose max-w-none" dangerouslySetInnerHTML={{ 
+                  __html: DOMPurify.sanitize(optimizedContent, {
+                    ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'a'],
+                    ALLOWED_ATTR: ['href', 'target', 'rel'],
+                    ALLOWED_URI_REGEXP: /^https?:\/\//
+                  })
+                }} />
               </div>
               
               <div className="mt-4 p-4 bg-green-50 rounded-lg">

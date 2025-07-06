@@ -9,6 +9,7 @@ import AttributeAILogo from './ui/AttributeAILogo';
 import WeatherWidget from './WeatherWidget';
 import './WeatherWidget.css';
 import { ConversionBanner, QuickSignupModal } from './immediate-conversion-system';
+import logger from '../utils/logger';
 // import TrialCountdownBanner from './TrialCountdownBanner'; // Temporarily disabled
 
 const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
@@ -40,7 +41,7 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
     if (onNavigateToTab) {
       onNavigateToTab('keyword-intelligence');
     } else {
-      console.log('Navigate to keyword intelligence');
+      logger.warn('Navigation handler not available for keyword intelligence');
     }
   };
 
@@ -55,7 +56,7 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
     if (onNavigateToTab) {
       onNavigateToTab('seo-enhanced');
     } else {
-      console.log('Navigate to SEO analysis');
+      logger.warn('Navigation handler not available for SEO analysis');
     }
   };
 
@@ -69,7 +70,7 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
     if (onNavigateToTab) {
       onNavigateToTab('enhanced-content');
     } else {
-      console.log('Navigate to content generation');
+      logger.warn('Navigation handler not available for content generation');
     }
   };
 
@@ -83,12 +84,12 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
     if (onNavigateToTab) {
       onNavigateToTab('cro');
     } else {
-      console.log('Navigate to CRO analysis');
+      logger.warn('Navigation handler not available for CRO analysis');
     }
   };
 
   const handleSignupSuccess = (userData) => {
-    console.log('New user signed up from dashboard:', userData);
+    logger.success('New user signed up from dashboard', { userId: userData?.id, email: userData?.email });
     // Track the conversion
     if (window.gtag) {
       window.gtag('event', 'signup_completed', {
@@ -124,11 +125,11 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
   }, [data]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900/20 to-purple-900/20 p-6">
-      <div className="max-w-7xl mx-auto space-y-8">
+    <div className="bg-gradient-to-br from-gray-900 via-blue-900/20 to-purple-900/20 p-4">
+      <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="text-center">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-2">
             Marketing Intelligence Dashboard
           </h1>
           <p className="text-lg text-gray-400">
@@ -139,7 +140,7 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
         {/* Conversion Banner - Only show for unauthenticated users */}
         {!user && <ConversionBanner onSignup={() => setShowSignupModal(true)} />}
 
-        {/* Trial Countdown Banner - Temporarily disabled for debugging */}
+        {/* Trial Countdown Banner - Temporarily disabled for investor demo */}
         {/* {user && <TrialCountdownBanner />} */}
 
         {/* Featured Tool Callout */}
@@ -149,7 +150,7 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
               <h3 className="text-xl font-semibold text-white mb-2">
                 🚀 New: Keyword Intelligence Engine
               </h3>
-              <div className="grid grid-cols-3 gap-6 text-sm">
+              <div className="grid grid-cols-3 gap-4 text-sm">
                 <div className="flex items-center space-x-2">
                   <Zap className="h-5 w-5 text-blue-400" />
                   <span className="text-gray-300"><strong className="text-white">Unlimited Research</strong> • No credit limits</span>
@@ -172,7 +173,7 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
           <div className="mt-4 flex justify-center">
             <Button 
               onClick={handleKeywordIntelligenceClick}
-              className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white px-8 py-3 text-lg font-semibold hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 transition-all duration-200 transform hover:scale-105 shadow-lg"
+              className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white px-6 py-2 text-lg font-semibold hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 transition-all duration-200 transform hover:scale-105 shadow-lg"
             >
               <Search className="w-5 h-5 mr-2" />
               Try Keyword Intelligence
@@ -181,7 +182,7 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
         </div>
 
         {/* Performance Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card className="text-center group hover:scale-105 transition-all duration-300">
             <BarChart3 className="h-8 w-8 text-blue-400 mx-auto mb-2 group-hover:scale-110 transition-transform" />
             <div className="text-2xl font-bold text-white">
@@ -263,67 +264,56 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
           </Card>
         )}
 
-        {/* No Data Message */}
-        {(!insights?.quickWins?.length && !insights?.topOpportunities?.length) && (
-          <Card className="text-center py-12">
-            <AlertCircle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No Insights Available</h3>
-            <p className="text-gray-600 mb-6">
-              Run analysis in any of the marketing intelligence tools to see unified insights here.
-            </p>
-            <div className="flex justify-center space-x-3">
-              <Button 
-                variant="outline" 
-                size="sm"
+        {/* Compact Empty State - Show when no insights yet */}
+        {(!insights || (!insights?.quickWins?.length && !insights?.topOpportunities?.length)) && (
+          <Card className="text-center py-6">
+            <div className="mb-4">
+              <AlertCircle className="h-12 w-12 text-gray-400 mx-auto mb-3" />
+              <h3 className="text-lg font-semibold text-gray-700 mb-2">Ready to Generate Insights</h3>
+              <p className="text-sm text-gray-500 mb-4">
+                Run analysis in any tool to see unified insights here
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <Button
                 onClick={handleSEOAnalysisClick}
-                className="hover:bg-blue-50 hover:border-blue-300 transition-colors duration-200"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 text-sm"
               >
-                <Search className="w-4 h-4 mr-2" />
                 Run SEO Analysis
               </Button>
-              <Button 
-                variant="outline" 
-                size="sm"
+              <Button
                 onClick={handleGenerateContentClick}
-                className="hover:bg-green-50 hover:border-green-300 transition-colors duration-200"
+                className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 text-sm"
               >
-                <PenTool className="w-4 h-4 mr-2" />
                 Generate Content
               </Button>
-              <Button 
-                variant="outline" 
-                size="sm"
+              <Button
                 onClick={handleCROAnalysisClick}
-                className="hover:bg-purple-50 hover:border-purple-300 transition-colors duration-200"
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 text-sm"
               >
-                <TrendingUp className="w-4 h-4 mr-2" />
                 Analyze CRO
               </Button>
-              
-              {/* Survey System Test Button (Development) */}
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={() => {
-                  localStorage.removeItem('attributeai_user_metrics');
-                  window.location.reload();
-                }}
-                className="hover:bg-yellow-50 hover:border-yellow-300 transition-colors duration-200 text-xs"
-                title="Reset survey system for testing"
+              <Button
+                onClick={() => onNavigateToTab && onNavigateToTab('surveys')}
+                className="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 text-sm"
               >
-                <MessageCircle className="w-4 h-4 mr-2" />
                 Test Surveys
               </Button>
             </div>
           </Card>
         )}
+
+
       </div>
       
-      {/* Weather Intelligence Widget */}
-      <WeatherWidget />
+      {/* Weather Intelligence Widget - Compact */}
+      <div className="flex justify-end">
+        <WeatherWidget />
+      </div>
       
       {/* Footer */}
-      <footer className="mt-12 text-center text-xs text-gray-500 py-6">
+      <footer className="mt-6 text-center text-xs text-gray-500 py-3">
         &copy; {new Date().getFullYear()} AttributeAI &mdash; <a href="/privacy-policy.html" className="hover:underline text-blue-500">Privacy Policy</a>
       </footer>
       

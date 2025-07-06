@@ -1,43 +1,46 @@
 @echo off
-echo Fixing Netlify build error - Adding styled-components dependency
-cd "C:\Users\chris\Projects\AttributeAI"
+echo Committing missing files for Netlify build...
 
-echo Current directory:
-cd
+cd C:\Users\chris\Projects\AttributeAI
 
-echo.
-echo Adding styled-components to package.json...
-echo (Already updated in VS Code)
+REM Add critical missing files
+git add src/components/ErrorBoundary.js
+git add src/components/MobileNavigation.js
+git add src/components/MobileOptimizations.js
+git add src/components/MobileUnifiedDashboard.js
+git add src/components/ui/LoadingComponents.js
+git add src/hooks/useViewport.js
+git add src/components/auth/EnhancedLogin.js
+git add src/components/auth/EnhancedSignup.js
+git add src/components/auth/EnhancedSupabaseAuthContext.js
+git add src/services/SocialAuthService.js
+git add src/styles/mobile.css
+git add .github/instructions/
 
-echo.
-echo Checking git status:
-git status --porcelain
+REM Also add the modified files that are needed
+git add src/App.css
+git add src/index.js
+git add src/lib/supabase.js
+git add src/components/auth/AuthContext.js
+git add src/components/auth/LoginPage.js
 
-echo.
-echo Adding changes...
-git add package.json src/components/crm/DealPipeline.js
+REM Commit all the missing files
+git commit -m "Add missing files for Netlify build - ErrorBoundary and mobile components
 
-echo.
-echo Committing fixes...
-git commit -m "🔧 Fix Netlify build error - Add styled-components dependency
+- Added ErrorBoundary.js component
+- Added all mobile optimization components
+- Added enhanced auth components
+- Added SocialAuthService
+- Updated core files for OAuth support
+- This fixes the Netlify build error"
 
-- Added styled-components to package.json dependencies
-- Fixed Building component import in DealPipeline.js
-- Resolved build configuration issue for Netlify deployment
-
-Fixes:
-- Missing styled-components dependency causing build failure
-- Corrected lowercase <building> tag to <Building> component
-- Updated package.json to include styled-components ^6.1.11
-
-Ready for successful Netlify deployment!"
-
-echo.
-echo Pushing to GitHub to trigger Netlify build...
+REM Push to GitHub
 git push origin main
 
 echo.
-echo ✅ Build fixes committed and pushed!
-echo 🚀 Netlify will automatically deploy with fixes!
-
+echo ✅ Missing files committed and pushed!
+echo.
+echo Netlify should now rebuild automatically.
+echo Check: https://app.netlify.com/sites/leafy-biscotti-c87e93/deploys
+echo.
 pause

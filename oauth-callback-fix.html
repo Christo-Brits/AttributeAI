@@ -1,0 +1,13 @@
+// Temporary OAuth fix - add to index.html in public folder
+// Add this script before closing </body> tag
+
+<script>
+  // Handle OAuth callback on page load
+  if (window.location.pathname === '/auth/callback') {
+    // Redirect to the app with hash parameters
+    const hash = window.location.hash;
+    if (hash) {
+      window.location.href = '/#' + hash;
+    }
+  }
+</script>

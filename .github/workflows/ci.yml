@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-test-lint:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+
+    steps:
+      - name: "🛎️  Checkout repo"
+        uses: actions/checkout@v4
+
+      - name: "🔧  Setup Node & pnpm"
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: "pnpm"
+
+      - name: "📦  Install deps"
+        run: |
+          corepack enable
+          pnpm install --frozen-lockfile
+
+      - name: "🧪  Run unit tests"
+        run: pnpm test -- --ci
+
+      - name: "🧼  Run ESLint"
+        run: pnpm lint
+
+      - name: "🏗️  Build web + extension"
+        env:
+          VITE_PUBLIC_SUPABASE_URL: ${{ secrets.VITE_PUBLIC_SUPABASE_URL }}
+          VITE_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.VITE_PUBLIC_SUPABASE_ANON_KEY }}
+        run: pnpm build
+
+      - name: "📤  Upload build artifact (optional)"
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: |
+            dist
+            extension/dist

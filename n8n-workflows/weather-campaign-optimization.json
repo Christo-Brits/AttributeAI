@@ -1,0 +1,239 @@
+{
+  "name": "Weather-Triggered Campaign Optimization",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 */2 * * *"
+            }
+          ]
+        }
+      },
+      "id": "d5c6e56f-890b-234f-6789-234567890123",
+      "name": "Every 2 Hours",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "https://api.openweathermap.org/data/2.5/forecast",
+        "qs": {
+          "q": "Auckland,NZ",
+          "appid": "YOUR_OPENWEATHER_API_KEY",
+          "units": "metric",
+          "cnt": "16"
+        }
+      },
+      "id": "e6d7f67g-901c-345g-789a-345678901234",
+      "name": "Get Weather Forecast",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3001/api/active-campaigns",
+        "requestMethod": "GET",
+        "options": {
+          "headers": {
+            "Authorization": "Bearer YOUR_SUPABASE_KEY"
+          }
+        }
+      },
+      "id": "f7e8g78h-012d-456h-890b-456789012345",
+      "name": "Get Active Campaigns",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [460, 500]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "id": "g8f9h89i-123e-567i-901c-567890123456",
+      "name": "Combine Weather & Campaigns",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [680, 400]
+    },
+    {
+      "parameters": {
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "headerAuth",
+        "requestMethod": "POST",
+        "jsonParameters": true,
+        "bodyParametersJson": "{\n  \"model\": \"claude-3-sonnet-20240229\",\n  \"max_tokens\": 2000,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Weather-Based Campaign Optimization Analysis:\\n\\nWeather Forecast (next 48 hours):\\n{{$('Get Weather Forecast').first().json.list.map(item => `${new Date(item.dt * 1000).toISOString()}: ${item.main.temp}°C, ${item.weather[0].description}`).join('\\\\n')}}\\n\\nActive Campaigns:\\n{{$('Get Active Campaigns').first().json.campaigns.map(campaign => `${campaign.name}: ${campaign.type}, Budget: $${campaign.budget}, Target: ${campaign.target_audience}`).join('\\\\n')}}\\n\\nProvide detailed optimization recommendations:\\n1. Budget reallocation suggestions based on weather\\n2. Messaging adjustments for weather conditions\\n3. Timing optimizations for maximum engagement\\n4. Audience targeting refinements\\n5. Creative asset recommendations\\n6. Performance predictions\\n\\nFormat as JSON with specific actionable recommendations for each campaign.\"\n    }\n  ]\n}",
+        "options": {
+          "headers": {
+            "Content-Type": "application/json",
+            "anthropic-version": "2023-06-01"
+          }
+        },
+        "headerParametersJson": "{\"x-api-key\": \"YOUR_CLAUDE_API_KEY\"}"
+      },
+      "id": "h9g0i90j-234f-678j-012d-678901234567",
+      "name": "Generate Optimizations",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [900, 400]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "optimization_confidence",
+              "leftValue": "={{JSON.parse($json.content[0].text).confidence_score}}",
+              "rightValue": 0.7,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "i0h1j01k-345g-789k-123e-789012345678",
+      "name": "High Confidence Filter",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1120, 400]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3001/api/campaign-optimizations",
+        "requestMethod": "POST",
+        "jsonParameters": true,
+        "bodyParametersJson": "{\n  \"forecast_data\": {{$('Get Weather Forecast').first().json.list}},\n  \"campaigns\": {{$('Get Active Campaigns').first().json.campaigns}},\n  \"optimizations\": {{$('Generate Optimizations').first().json.content[0].text}},\n  \"timestamp\": \"{{new Date().toISOString()}}\",\n  \"confidence_score\": {{JSON.parse($('Generate Optimizations').first().json.content[0].text).confidence_score}},\n  \"recommendations_count\": {{JSON.parse($('Generate Optimizations').first().json.content[0].text).recommendations.length}}\n}",
+        "options": {
+          "headers": {
+            "Content-Type": "application/json"
+          }
+        }
+      },
+      "id": "j1i2k12l-456h-890l-234f-890123456789",
+      "name": "Store Optimizations",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1340, 320]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3001/api/slack-notifications",
+        "requestMethod": "POST",
+        "jsonParameters": true,
+        "bodyParametersJson": "{\n  \"channel\": \"#marketing-alerts\",\n  \"message\": \"🌤️ Weather-Based Campaign Optimization Alert\\n\\nHigh-confidence recommendations available:\\n• {{JSON.parse($('Generate Optimizations').first().json.content[0].text).recommendations.length}} optimization opportunities identified\\n• Confidence Score: {{JSON.parse($('Generate Optimizations').first().json.content[0].text).confidence_score}}\\n• Weather Impact: {{$('Get Weather Forecast').first().json.list[0].weather[0].description}}\\n\\nCheck AttributeAI dashboard for details.\",\n  \"timestamp\": \"{{new Date().toISOString()}}\"\n}",
+        "options": {
+          "headers": {
+            "Content-Type": "application/json"
+          }
+        }
+      },
+      "id": "k2j3l23m-567i-901m-345g-901234567890",
+      "name": "Send Alert",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1340, 480]
+    }
+  ],
+  "connections": {
+    "Every 2 Hours": {
+      "main": [
+        [
+          {
+            "node": "Get Weather Forecast",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Active Campaigns",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Weather Forecast": {
+      "main": [
+        [
+          {
+            "node": "Combine Weather & Campaigns",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Active Campaigns": {
+      "main": [
+        [
+          {
+            "node": "Combine Weather & Campaigns",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Combine Weather & Campaigns": {
+      "main": [
+        [
+          {
+            "node": "Generate Optimizations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Optimizations": {
+      "main": [
+        [
+          {
+            "node": "High Confidence Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "High Confidence Filter": {
+      "main": [
+        [
+          {
+            "node": "Store Optimizations",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-06-16T00:00:00.000Z",
+  "updatedAt": "2025-06-16T00:00:00.000Z",
+  "settings": {},
+  "staticData": null,
+  "pinData": {},
+  "versionId": "1",
+  "triggerCount": 1,
+  "tags": []
+}

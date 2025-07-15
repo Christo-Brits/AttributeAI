@@ -1,0 +1,2907 @@
+{
+  "timestamp": "2025-06-20T02:03:00.796Z",
+  "enterpriseAccounts": [
+    {
+      "type": "company",
+      "name": "Traffic Labs",
+      "users": [
+        {
+          "id": "ed2da43d-899c-4b91-b822-4bf2235f1b88",
+          "email": "tom.anderson@trafficlabs.com",
+          "company": "Traffic Labs",
+          "subscription_tier": "professional",
+          "created_at": "2025-06-19T22:40:11.743583+00:00",
+          "first_name": "Tom",
+          "last_name": "Anderson"
+        },
+        {
+          "id": "30c72404-498f-482c-8c2d-809217d7378c",
+          "email": "robert.young@marketing.com",
+          "company": "Traffic Labs",
+          "subscription_tier": "agency",
+          "created_at": "2025-05-12T23:01:19.311+00:00",
+          "first_name": "Robert",
+          "last_name": "Young"
+        },
+        {
+          "id": "b679b3bd-105b-4f3b-89c8-a0a75d9ee7af",
+          "email": "janet.taylor202@hotmail.com",
+          "company": "Traffic Labs",
+          "subscription_tier": "free",
+          "created_at": "2024-12-25T22:01:19.312+00:00",
+          "first_name": "Janet",
+          "last_name": "Taylor"
+        },
+        {
+          "id": "f7534aec-2c27-4886-8645-786fe4455209",
+          "email": "anthony.martin@hotmail.com",
+          "company": "Traffic Labs",
+          "subscription_tier": "professional",
+          "created_at": "2025-01-20T22:01:19.311+00:00",
+          "first_name": "Anthony",
+          "last_name": "Martin"
+        }
+      ],
+      "primaryUser": {
+        "id": "ed2da43d-899c-4b91-b822-4bf2235f1b88",
+        "email": "tom.anderson@trafficlabs.com",
+        "company": "Traffic Labs",
+        "subscription_tier": "professional",
+        "created_at": "2025-06-19T22:40:11.743583+00:00",
+        "first_name": "Tom",
+        "last_name": "Anderson"
+      },
+      "userCount": 4
+    },
+    {
+      "type": "company",
+      "name": "Keyword Research Pro",
+      "users": [
+        {
+          "id": "c8ba1cc1-c4b1-4004-b11f-8f5630f466ef",
+          "email": "susan.scott@gmail.com",
+          "company": "Keyword Research Pro",
+          "subscription_tier": "free",
+          "created_at": "2025-02-11T22:01:19.297+00:00",
+          "first_name": "Susan",
+          "last_name": "Scott"
+        },
+        {
+          "id": "ccedbb4a-ff45-4fcd-b195-2efb2d4a3ac8",
+          "email": "mark.wilson@yahoo.com",
+          "company": "Keyword Research Pro",
+          "subscription_tier": "free",
+          "created_at": "2025-01-09T22:01:19.311+00:00",
+          "first_name": "Mark",
+          "last_name": "Wilson"
+        },
+        {
+          "id": "5203a677-0754-4a4b-9c01-ea5eace23f00",
+          "email": "joseph.taylor@yahoo.com",
+          "company": "Keyword Research Pro",
+          "subscription_tier": "free",
+          "created_at": "2025-05-26T23:01:19.311+00:00",
+          "first_name": "Joseph",
+          "last_name": "Taylor"
+        },
+        {
+          "id": "bf264db9-2c42-40fb-852e-5348824d7518",
+          "email": "helen.thomas@marketing.com",
+          "company": "Keyword Research Pro",
+          "subscription_tier": "free",
+          "created_at": "2025-04-19T23:01:19.311+00:00",
+          "first_name": "Helen",
+          "last_name": "Thomas"
+        },
+        {
+          "id": "97e26c95-1d11-4f03-9601-5f82e609fe43",
+          "email": "jennifer.mitchell@consulting.com",
+          "company": "Keyword Research Pro",
+          "subscription_tier": "professional",
+          "created_at": "2025-06-04T23:01:19.311+00:00",
+          "first_name": "Jennifer",
+          "last_name": "Mitchell"
+        },
+        {
+          "id": "f5eda1a0-08ef-4d59-a330-f8ecf15224b2",
+          "email": "william.robinson221@marketing.com",
+          "company": "Keyword Research Pro",
+          "subscription_tier": "professional",
+          "created_at": "2025-02-23T22:01:19.312+00:00",
+          "first_name": "William",
+          "last_name": "Robinson"
+        }
+      ],
+      "primaryUser": {
+        "id": "c8ba1cc1-c4b1-4004-b11f-8f5630f466ef",
+        "email": "susan.scott@gmail.com",
+        "company": "Keyword Research Pro",
+        "subscription_tier": "free",
+        "created_at": "2025-02-11T22:01:19.297+00:00",
+        "first_name": "Susan",
+        "last_name": "Scott"
+      },
+      "userCount": 6
+    },
+    {
+      "type": "company",
+      "name": "Attribution Experts",
+      "users": [
+        {
+          "id": "dd7f7184-45a0-4309-b81e-4e20e05612c7",
+          "email": "nancy.garcia@yahoo.com",
+          "company": "Attribution Experts",
+          "subscription_tier": "professional",
+          "created_at": "2025-05-18T23:01:19.311+00:00",
+          "first_name": "Nancy",
+          "last_name": "Garcia"
+        },
+        {
+          "id": "9d17fff5-f296-4cb8-9395-330b19167829",
+          "email": "nancy.perez139@agency.com",
+          "company": "Attribution Experts",
+          "subscription_tier": "free",
+          "created_at": "2025-04-09T23:01:19.312+00:00",
+          "first_name": "Nancy",
+          "last_name": "Perez"
+        }
+      ],
+      "primaryUser": {
+        "id": "dd7f7184-45a0-4309-b81e-4e20e05612c7",
+        "email": "nancy.garcia@yahoo.com",
+        "company": "Attribution Experts",
+        "subscription_tier": "professional",
+        "created_at": "2025-05-18T23:01:19.311+00:00",
+        "first_name": "Nancy",
+        "last_name": "Garcia"
+      },
+      "userCount": 2
+    },
+    {
+      "type": "company",
+      "name": "TechFlow Solutions",
+      "users": [
+        {
+          "id": "82ba41b8-3f2a-432d-8b75-43351b699c2e",
+          "email": "john.nguyen@marketing.com",
+          "company": "TechFlow Solutions",
+          "subscription_tier": "professional",
+          "created_at": "2025-03-01T22:01:19.311+00:00",
+          "first_name": "John",
+          "last_name": "Nguyen"
+        },
+        {
+          "id": "c71bbd8a-ef8f-46ed-954b-e963b106b347",
+          "email": "charles.ramirez@outlook.com",
+          "company": "TechFlow Solutions",
+          "subscription_tier": "free",
+          "created_at": "2025-02-24T22:01:19.311+00:00",
+          "first_name": "Charles",
+          "last_name": "Ramirez"
+        },
+        {
+          "id": "1230e83a-b134-4f8d-88cb-84b84451ddda",
+          "email": "charles.martin80@consulting.com",
+          "company": "TechFlow Solutions",
+          "subscription_tier": "professional",
+          "created_at": "2025-02-09T22:01:19.311+00:00",
+          "first_name": "Charles",
+          "last_name": "Martin"
+        },
+        {
+          "id": "f9a86461-a306-4ef1-b4ec-dae9978d12fb",
+          "email": "andrew.moore146@agency.com",
+          "company": "TechFlow Solutions",
+          "subscription_tier": "free",
+          "created_at": "2025-03-05T22:01:19.312+00:00",
+          "first_name": "Andrew",
+          "last_name": "Moore"
+        },
+        {
+          "id": "0cfca7d1-21af-437a-b50f-f8c7ea09283b",
+          "email": "steven.perez165@consulting.com",
+          "company": "TechFlow Solutions",
+          "subscription_tier": "professional",
+          "created_at": "2025-03-30T22:01:19.312+00:00",
+          "first_name": "Steven",
+          "last_name": "Perez"
+        },
+        {
+          "id": "483a53b5-7156-423b-9a91-135521aa71bb",
+          "email": "susan.taylor167@agency.com",
+          "company": "TechFlow Solutions",
+          "subscription_tier": "free",
+          "created_at": "2025-02-26T22:01:19.312+00:00",
+          "first_name": "Susan",
+          "last_name": "Taylor"
+        }
+      ],
+      "primaryUser": {
+        "id": "82ba41b8-3f2a-432d-8b75-43351b699c2e",
+        "email": "john.nguyen@marketing.com",
+        "company": "TechFlow Solutions",
+        "subscription_tier": "professional",
+        "created_at": "2025-03-01T22:01:19.311+00:00",
+        "first_name": "John",
+        "last_name": "Nguyen"
+      },
+      "userCount": 6
+    },
+    {
+      "type": "company",
+      "name": "Marketing Automation",
+      "users": [
+        {
+          "id": "bdf87e14-0ed4-41c5-81ee-bc24d47389e1",
+          "email": "laura.martin@gmail.com",
+          "company": "Marketing Automation",
+          "subscription_tier": "free",
+          "created_at": "2025-06-15T23:01:19.311+00:00",
+          "first_name": "Laura",
+          "last_name": "Martin"
+        },
+        {
+          "id": "29ef136f-dc55-44ca-9f2c-a6e963c31213",
+          "email": "kenneth.thomas@marketingautomation.com",
+          "company": "Marketing Automation",
+          "subscription_tier": "professional",
+          "created_at": "2025-03-14T22:01:19.311+00:00",
+          "first_name": "Kenneth",
+          "last_name": "Thomas"
+        },
+        {
+          "id": "8c3e450f-13a4-483d-b916-64808b169172",
+          "email": "maria.flores94@business.com",
+          "company": "Marketing Automation",
+          "subscription_tier": "free",
+          "created_at": "2025-04-02T22:01:19.312+00:00",
+          "first_name": "Maria",
+          "last_name": "Flores"
+        }
+      ],
+      "primaryUser": {
+        "id": "bdf87e14-0ed4-41c5-81ee-bc24d47389e1",
+        "email": "laura.martin@gmail.com",
+        "company": "Marketing Automation",
+        "subscription_tier": "free",
+        "created_at": "2025-06-15T23:01:19.311+00:00",
+        "first_name": "Laura",
+        "last_name": "Martin"
+      },
+      "userCount": 3
+    },
+    {
+      "type": "company",
+      "name": "Conversion Analytics",
+      "users": [
+        {
+          "id": "e6ac70de-606e-44ac-b631-95f00cda6ec3",
+          "email": "laura.lee@outlook.com",
+          "company": "Conversion Analytics",
+          "subscription_tier": "free",
+          "created_at": "2025-05-15T23:01:19.311+00:00",
+          "first_name": "Laura",
+          "last_name": "Lee"
+        },
+        {
+          "id": "60eafa9b-e59f-48ac-9a35-6b8f284e9143",
+          "email": "kevin.johnson@consulting.com",
+          "company": "Conversion Analytics",
+          "subscription_tier": "free",
+          "created_at": "2025-02-09T22:01:19.311+00:00",
+          "first_name": "Kevin",
+          "last_name": "Johnson"
+        },
+        {
+          "id": "0d454912-2195-434c-bff0-6f5e7373d2b8",
+          "email": "james.young66@gmail.com",
+          "company": "Conversion Analytics",
+          "subscription_tier": "free",
+          "created_at": "2025-02-27T22:01:19.311+00:00",
+          "first_name": "James",
+          "last_name": "Young"
+        },
+        {
+          "id": "01ebb2c1-2945-43c7-b616-aa373c5083c6",
+          "email": "ashley.hall101@consulting.com",
+          "company": "Conversion Analytics",
+          "subscription_tier": "professional",
+          "created_at": "2025-02-12T22:01:19.312+00:00",
+          "first_name": "Ashley",
+          "last_name": "Hall"
+        },
+        {
+          "id": "954081a9-0cdd-494b-987b-2d6785ed8bbc",
+          "email": "anna.williams117@hotmail.com",
+          "company": "Conversion Analytics",
+          "subscription_tier": "free",
+          "created_at": "2025-04-29T23:01:19.312+00:00",
+          "first_name": "Anna",
+          "last_name": "Williams"
+        },
+        {
+          "id": "f2beb455-0f86-49df-a231-03a305af95e9",
+          "email": "jessica.sanchez@conversionanalytics.com",
+          "company": "Conversion Analytics",
+          "subscription_tier": "free",
+          "created_at": "2025-03-05T22:01:19.312+00:00",
+          "first_name": "Jessica",
+          "last_name": "Sanchez"
+        },
+        {
+          "id": "16b80548-2209-4ccf-b88b-7710cd5516a1",
+          "email": "dorothy.martin223@outlook.com",
+          "company": "Conversion Analytics",
+          "subscription_tier": "free",
+          "created_at": "2025-06-02T23:01:19.312+00:00",
+          "first_name": "Dorothy",
+          "last_name": "Martin"
+        },
+        {
+          "id": "f1fe20a5-5224-4dad-9dc0-c6ffbb1936ec",
+          "email": "dorothy.johnson233@marketing.com",
+          "company": "Conversion Analytics",
+          "subscription_tier": "professional",
+          "created_at": "2024-12-24T22:01:19.312+00:00",
+          "first_name": "Dorothy",
+          "last_name": "Johnson"
+        },
+        {
+          "id": "1a2f9c0b-3a4b-4221-8199-a37e81f80874",
+          "email": "donald.wilson168@marketing.com",
+          "company": "Conversion Analytics",
+          "subscription_tier": "free",
+          "created_at": "2025-04-15T23:01:19.312+00:00",
+          "first_name": "Donald",
+          "last_name": "Wilson"
+        },
+        {
+          "id": "bc558c56-ae3c-4ba7-a9ce-1462d3e17921",
+          "email": "daniel.rivera234@outlook.com",
+          "company": "Conversion Analytics",
+          "subscription_tier": "free",
+          "created_at": "2025-04-02T22:01:19.312+00:00",
+          "first_name": "Daniel",
+          "last_name": "Rivera"
+        }
+      ],
+      "primaryUser": {
+        "id": "e6ac70de-606e-44ac-b631-95f00cda6ec3",
+        "email": "laura.lee@outlook.com",
+        "company": "Conversion Analytics",
+        "subscription_tier": "free",
+        "created_at": "2025-05-15T23:01:19.311+00:00",
+        "first_name": "Laura",
+        "last_name": "Lee"
+      },
+      "userCount": 10
+    },
+    {
+      "type": "company",
+      "name": "Performance Marketing",
+      "users": [
+        {
+          "id": "b9abe743-2dc5-49aa-ae2f-53c42ffe6b63",
+          "email": "james.hernandez@yahoo.com",
+          "company": "Performance Marketing",
+          "subscription_tier": "free",
+          "created_at": "2025-06-12T23:01:19.311+00:00",
+          "first_name": "James",
+          "last_name": "Hernandez"
+        },
+        {
+          "id": "02b956a6-5b7f-446b-9824-b634a14f9e8f",
+          "email": "helen.moore@performancemarketing.com",
+          "company": "Performance Marketing",
+          "subscription_tier": "free",
+          "created_at": "2025-04-22T23:01:19.311+00:00",
+          "first_name": "Helen",
+          "last_name": "Moore"
+        },
+        {
+          "id": "c5a9cc32-b432-483c-ba11-e42fec4c31ca",
+          "email": "thomas.torres@performancemarketing.com",
+          "company": "Performance Marketing",
+          "subscription_tier": "free",
+          "created_at": "2025-03-29T22:01:19.311+00:00",
+          "first_name": "Thomas",
+          "last_name": "Torres"
+        },
+        {
+          "id": "a27f4f7c-3a91-4b95-ba40-2f515d541d3a",
+          "email": "jessica.baker114@outlook.com",
+          "company": "Performance Marketing",
+          "subscription_tier": "free",
+          "created_at": "2025-03-24T22:01:19.312+00:00",
+          "first_name": "Jessica",
+          "last_name": "Baker"
+        },
+        {
+          "id": "da4747ae-5abf-4979-a1ab-c645e61ed8b9",
+          "email": "sarah.clark@performancemarketing.com",
+          "company": "Performance Marketing",
+          "subscription_tier": "enterprise",
+          "created_at": "2025-04-21T23:01:19.312+00:00",
+          "first_name": "Sarah",
+          "last_name": "Clark"
+        },
+        {
+          "id": "693627c5-fb95-4b2d-b8a1-07794576ead9",
+          "email": "thomas.thompson132@marketing.com",
+          "company": "Performance Marketing",
+          "subscription_tier": "free",
+          "created_at": "2025-01-20T22:01:19.312+00:00",
+          "first_name": "Thomas",
+          "last_name": "Thompson"
+        },
+        {
+          "id": "458db3ae-442e-4ab3-9775-ae3085fefc6a",
+          "email": "linda.williams142@hotmail.com",
+          "company": "Performance Marketing",
+          "subscription_tier": "agency",
+          "created_at": "2025-06-19T23:01:19.312+00:00",
+          "first_name": "Linda",
+          "last_name": "Williams"
+        },
+        {
+          "id": "e17be944-6795-4ac4-9362-3139f70311a3",
+          "email": "patricia.wilson157@yahoo.com",
+          "company": "Performance Marketing",
+          "subscription_tier": "free",
+          "created_at": "2025-02-05T22:01:19.312+00:00",
+          "first_name": "Patricia",
+          "last_name": "Wilson"
+        },
+        {
+          "id": "8f8882c4-3d3b-45dd-8856-13c7780cb7d3",
+          "email": "nancy.jones172@hotmail.com",
+          "company": "Performance Marketing",
+          "subscription_tier": "free",
+          "created_at": "2025-01-16T22:01:19.312+00:00",
+          "first_name": "Nancy",
+          "last_name": "Jones"
+        },
+        {
+          "id": "0d630fd3-1978-4a7a-a605-175b29c76c2d",
+          "email": "rachel.brown@performancemarketing.com",
+          "company": "Performance Marketing",
+          "subscription_tier": "free",
+          "created_at": "2025-03-06T22:01:19.312+00:00",
+          "first_name": "Rachel",
+          "last_name": "Brown"
+        }
+      ],
+      "primaryUser": {
+        "id": "b9abe743-2dc5-49aa-ae2f-53c42ffe6b63",
+        "email": "james.hernandez@yahoo.com",
+        "company": "Performance Marketing",
+        "subscription_tier": "free",
+        "created_at": "2025-06-12T23:01:19.311+00:00",
+        "first_name": "James",
+        "last_name": "Hernandez"
+      },
+      "userCount": 10
+    },
+    {
+      "type": "company",
+      "name": "Marketing Tech",
+      "users": [
+        {
+          "id": "4ac6ecb5-d2e9-4183-a7bd-66f003685031",
+          "email": "anthony.king@hotmail.com",
+          "company": "Marketing Tech",
+          "subscription_tier": "professional",
+          "created_at": "2025-04-05T23:01:19.311+00:00",
+          "first_name": "Anthony",
+          "last_name": "King"
+        },
+        {
+          "id": "a9902609-c852-4cfc-94b0-3e6502ffbb8e",
+          "email": "joseph.sanchez@consulting.com",
+          "company": "Marketing Tech",
+          "subscription_tier": "free",
+          "created_at": "2025-04-22T23:01:19.311+00:00",
+          "first_name": "Joseph",
+          "last_name": "Sanchez"
+        },
+        {
+          "id": "36d60456-14cf-4490-ae9d-bbca91f5f77e",
+          "email": "jessica.clark51@business.com",
+          "company": "Marketing Tech",
+          "subscription_tier": "professional",
+          "created_at": "2025-01-22T22:01:19.311+00:00",
+          "first_name": "Jessica",
+          "last_name": "Clark"
+        },
+        {
+          "id": "33a0d265-74e8-4e75-b948-78c04648bbd3",
+          "email": "dorothy.hernandez56@consulting.com",
+          "company": "Marketing Tech",
+          "subscription_tier": "professional",
+          "created_at": "2024-12-24T22:01:19.311+00:00",
+          "first_name": "Dorothy",
+          "last_name": "Hernandez"
+        },
+        {
+          "id": "b5d61793-eb7b-4986-9a68-5d5ed9abdcfa",
+          "email": "thomas.scott@marketingtech.com",
+          "company": "Marketing Tech",
+          "subscription_tier": "enterprise",
+          "created_at": "2025-04-08T23:01:19.311+00:00",
+          "first_name": "Thomas",
+          "last_name": "Scott"
+        },
+        {
+          "id": "996303e7-e4dc-4857-ae11-0b6d95965fe4",
+          "email": "laura.hernandez77@growth.com",
+          "company": "Marketing Tech",
+          "subscription_tier": "free",
+          "created_at": "2025-01-27T22:01:19.311+00:00",
+          "first_name": "Laura",
+          "last_name": "Hernandez"
+        },
+        {
+          "id": "7bcdc19d-ed56-43bf-9317-6ea4e72cc4ef",
+          "email": "betty.lopez85@outlook.com",
+          "company": "Marketing Tech",
+          "subscription_tier": "free",
+          "created_at": "2025-04-27T23:01:19.311+00:00",
+          "first_name": "Betty",
+          "last_name": "Lopez"
+        },
+        {
+          "id": "0b500f36-2764-42cc-9309-4cdcc06b9d5c",
+          "email": "helen.taylor95@agency.com",
+          "company": "Marketing Tech",
+          "subscription_tier": "free",
+          "created_at": "2025-03-08T22:01:19.312+00:00",
+          "first_name": "Helen",
+          "last_name": "Taylor"
+        },
+        {
+          "id": "b56458e3-28b6-419d-b03a-11cd9fa23ed7",
+          "email": "jessica.brown120@marketing.com",
+          "company": "Marketing Tech",
+          "subscription_tier": "free",
+          "created_at": "2025-06-02T23:01:19.312+00:00",
+          "first_name": "Jessica",
+          "last_name": "Brown"
+        },
+        {
+          "id": "0c5aacd9-80fb-474a-8f75-6de3bf59b276",
+          "email": "charles.lee188@marketing.com",
+          "company": "Marketing Tech",
+          "subscription_tier": "professional",
+          "created_at": "2025-02-18T22:01:19.312+00:00",
+          "first_name": "Charles",
+          "last_name": "Lee"
+        },
+        {
+          "id": "45b2f130-30c3-490e-bd95-2b2337dee015",
+          "email": "james.hill225@agency.com",
+          "company": "Marketing Tech",
+          "subscription_tier": "free",
+          "created_at": "2025-03-14T22:01:19.312+00:00",
+          "first_name": "James",
+          "last_name": "Hill"
+        }
+      ],
+      "primaryUser": {
+        "id": "4ac6ecb5-d2e9-4183-a7bd-66f003685031",
+        "email": "anthony.king@hotmail.com",
+        "company": "Marketing Tech",
+        "subscription_tier": "professional",
+        "created_at": "2025-04-05T23:01:19.311+00:00",
+        "first_name": "Anthony",
+        "last_name": "King"
+      },
+      "userCount": 11
+    },
+    {
+      "type": "company",
+      "name": "Marketing Intelligence",
+      "users": [
+        {
+          "id": "9cd52b6b-3764-4bb8-8faa-86f31d2c1c51",
+          "email": "andrew.nguyen@yahoo.com",
+          "company": "Marketing Intelligence",
+          "subscription_tier": "free",
+          "created_at": "2025-05-20T23:01:19.311+00:00",
+          "first_name": "Andrew",
+          "last_name": "Nguyen"
+        },
+        {
+          "id": "029aa747-7a2c-4c9a-9385-714af2d556a9",
+          "email": "melissa.martinez@agency.com",
+          "company": "Marketing Intelligence",
+          "subscription_tier": "free",
+          "created_at": "2025-02-17T22:01:19.311+00:00",
+          "first_name": "Melissa",
+          "last_name": "Martinez"
+        },
+        {
+          "id": "c3f7bd03-08cd-4aaf-916c-ef29eac80803",
+          "email": "amanda.lewis81@business.com",
+          "company": "Marketing Intelligence",
+          "subscription_tier": "professional",
+          "created_at": "2025-04-17T23:01:19.311+00:00",
+          "first_name": "Amanda",
+          "last_name": "Lewis"
+        },
+        {
+          "id": "27251ad5-27d6-4162-9edd-9d22b2f6f7a4",
+          "email": "james.walker103@yahoo.com",
+          "company": "Marketing Intelligence",
+          "subscription_tier": "free",
+          "created_at": "2025-06-03T23:01:19.312+00:00",
+          "first_name": "James",
+          "last_name": "Walker"
+        },
+        {
+          "id": "d2241613-14a5-4f4a-8671-e74e63aee581",
+          "email": "maria.young@marketingintelligence.com",
+          "company": "Marketing Intelligence",
+          "subscription_tier": "agency",
+          "created_at": "2025-01-05T22:01:19.312+00:00",
+          "first_name": "Maria",
+          "last_name": "Young"
+        },
+        {
+          "id": "d1257ec5-0ba4-4275-91b8-492a945a3bea",
+          "email": "daniel.baker133@hotmail.com",
+          "company": "Marketing Intelligence",
+          "subscription_tier": "free",
+          "created_at": "2025-01-21T22:01:19.312+00:00",
+          "first_name": "Daniel",
+          "last_name": "Baker"
+        },
+        {
+          "id": "da211f15-34b1-4052-abdc-8a401d268489",
+          "email": "barbara.nguyen196@yahoo.com",
+          "company": "Marketing Intelligence",
+          "subscription_tier": "professional",
+          "created_at": "2025-05-13T23:01:19.312+00:00",
+          "first_name": "Barbara",
+          "last_name": "Nguyen"
+        },
+        {
+          "id": "7b661b5c-a7c2-47fa-8fa4-36888bd3c9c1",
+          "email": "melissa.campbell118@yahoo.com",
+          "company": "Marketing Intelligence",
+          "subscription_tier": "professional",
+          "created_at": "2025-02-23T22:01:19.312+00:00",
+          "first_name": "Melissa",
+          "last_name": "Campbell"
+        }
+      ],
+      "primaryUser": {
+        "id": "9cd52b6b-3764-4bb8-8faa-86f31d2c1c51",
+        "email": "andrew.nguyen@yahoo.com",
+        "company": "Marketing Intelligence",
+        "subscription_tier": "free",
+        "created_at": "2025-05-20T23:01:19.311+00:00",
+        "first_name": "Andrew",
+        "last_name": "Nguyen"
+      },
+      "userCount": 8
+    },
+    {
+      "type": "company",
+      "name": "SEO Intelligence",
+      "users": [
+        {
+          "id": "8bf45b4b-bd6f-4401-bd42-55f3ea26e87e",
+          "email": "janet.lewis@outlook.com",
+          "company": "SEO Intelligence",
+          "subscription_tier": "professional",
+          "created_at": "2024-12-22T22:01:19.311+00:00",
+          "first_name": "Janet",
+          "last_name": "Lewis"
+        },
+        {
+          "id": "4059bdaa-55fc-4a29-941a-1549ddb490ca",
+          "email": "daniel.miller@seointelligence.com",
+          "company": "SEO Intelligence",
+          "subscription_tier": "free",
+          "created_at": "2025-03-29T22:01:19.311+00:00",
+          "first_name": "Daniel",
+          "last_name": "Miller"
+        },
+        {
+          "id": "2e6961ce-6026-447f-9697-6ccbc3fb811a",
+          "email": "lisa.baker54@growth.com",
+          "company": "SEO Intelligence",
+          "subscription_tier": "free",
+          "created_at": "2025-01-28T22:01:19.311+00:00",
+          "first_name": "Lisa",
+          "last_name": "Baker"
+        },
+        {
+          "id": "8c1d23f2-9f33-4cbc-80b8-3e760d571ded",
+          "email": "anthony.ramirez73@gmail.com",
+          "company": "SEO Intelligence",
+          "subscription_tier": "professional",
+          "created_at": "2025-01-31T22:01:19.311+00:00",
+          "first_name": "Anthony",
+          "last_name": "Ramirez"
+        },
+        {
+          "id": "8c64ef95-228a-4eca-9e06-337727799797",
+          "email": "david.miller105@yahoo.com",
+          "company": "SEO Intelligence",
+          "subscription_tier": "free",
+          "created_at": "2025-02-10T22:01:19.312+00:00",
+          "first_name": "David",
+          "last_name": "Miller"
+        },
+        {
+          "id": "1d1fb5b5-f476-4968-8cd6-01e0120a8bd2",
+          "email": "john.wright128@hotmail.com",
+          "company": "SEO Intelligence",
+          "subscription_tier": "free",
+          "created_at": "2025-03-15T22:01:19.312+00:00",
+          "first_name": "John",
+          "last_name": "Wright"
+        },
+        {
+          "id": "5c174d4a-5959-47c1-ba85-d030a4d880f2",
+          "email": "dorothy.thompson232@hotmail.com",
+          "company": "SEO Intelligence",
+          "subscription_tier": "free",
+          "created_at": "2025-06-06T23:01:19.312+00:00",
+          "first_name": "Dorothy",
+          "last_name": "Thompson"
+        }
+      ],
+      "primaryUser": {
+        "id": "8bf45b4b-bd6f-4401-bd42-55f3ea26e87e",
+        "email": "janet.lewis@outlook.com",
+        "company": "SEO Intelligence",
+        "subscription_tier": "professional",
+        "created_at": "2024-12-22T22:01:19.311+00:00",
+        "first_name": "Janet",
+        "last_name": "Lewis"
+      },
+      "userCount": 7
+    },
+    {
+      "type": "company",
+      "name": "Performance Analytics",
+      "users": [
+        {
+          "id": "4907514d-1763-4f4b-8299-62c96a67f415",
+          "email": "susan.walker@business.com",
+          "company": "Performance Analytics",
+          "subscription_tier": "free",
+          "created_at": "2025-02-25T22:01:19.311+00:00",
+          "first_name": "Susan",
+          "last_name": "Walker"
+        },
+        {
+          "id": "81ac618f-d482-43e5-95f1-ed86c3975284",
+          "email": "david.williams150@outlook.com",
+          "company": "Performance Analytics",
+          "subscription_tier": "free",
+          "created_at": "2025-05-09T23:01:19.312+00:00",
+          "first_name": "David",
+          "last_name": "Williams"
+        },
+        {
+          "id": "3cd072e8-ccb0-495b-b414-8dd1fe0f4067",
+          "email": "kevin.lopez154@consulting.com",
+          "company": "Performance Analytics",
+          "subscription_tier": "professional",
+          "created_at": "2025-03-21T22:01:19.312+00:00",
+          "first_name": "Kevin",
+          "last_name": "Lopez"
+        },
+        {
+          "id": "6c98e22f-971f-4218-97f9-abc1c6a54695",
+          "email": "robert.williams181@agency.com",
+          "company": "Performance Analytics",
+          "subscription_tier": "free",
+          "created_at": "2025-03-08T22:01:19.312+00:00",
+          "first_name": "Robert",
+          "last_name": "Williams"
+        },
+        {
+          "id": "6831551e-a58b-4aab-a6ca-f998b6380129",
+          "email": "paul.ramirez191@consulting.com",
+          "company": "Performance Analytics",
+          "subscription_tier": "free",
+          "created_at": "2025-04-23T23:01:19.312+00:00",
+          "first_name": "Paul",
+          "last_name": "Ramirez"
+        }
+      ],
+      "primaryUser": {
+        "id": "4907514d-1763-4f4b-8299-62c96a67f415",
+        "email": "susan.walker@business.com",
+        "company": "Performance Analytics",
+        "subscription_tier": "free",
+        "created_at": "2025-02-25T22:01:19.311+00:00",
+        "first_name": "Susan",
+        "last_name": "Walker"
+      },
+      "userCount": 5
+    },
+    {
+      "type": "company",
+      "name": "Digital Attribution",
+      "users": [
+        {
+          "id": "d33ab44c-6365-4a39-9c0a-ad483ae8632a",
+          "email": "chris.thompson@agency.com",
+          "company": "Digital Attribution",
+          "subscription_tier": "free",
+          "created_at": "2025-05-01T23:01:19.311+00:00",
+          "first_name": "Chris",
+          "last_name": "Thompson"
+        },
+        {
+          "id": "1146e477-3819-46e3-9c5a-b0a93addec37",
+          "email": "david.nguyen55@agency.com",
+          "company": "Digital Attribution",
+          "subscription_tier": "free",
+          "created_at": "2025-01-24T22:01:19.311+00:00",
+          "first_name": "David",
+          "last_name": "Nguyen"
+        },
+        {
+          "id": "505bb6ed-acbc-465e-b4b3-cf2e88c9eed8",
+          "email": "anna.rodriguez144@business.com",
+          "company": "Digital Attribution",
+          "subscription_tier": "free",
+          "created_at": "2025-01-06T22:01:19.312+00:00",
+          "first_name": "Anna",
+          "last_name": "Rodriguez"
+        },
+        {
+          "id": "255c3e08-3082-492b-8e0d-84f4cd69044b",
+          "email": "sarah.brown@digitalattribution.com",
+          "company": "Digital Attribution",
+          "subscription_tier": "free",
+          "created_at": "2025-02-24T22:01:19.312+00:00",
+          "first_name": "Sarah",
+          "last_name": "Brown"
+        },
+        {
+          "id": "1ef1fe52-eba4-4741-8b18-168c791f3469",
+          "email": "janet.sanchez194@gmail.com",
+          "company": "Digital Attribution",
+          "subscription_tier": "free",
+          "created_at": "2025-05-24T23:01:19.312+00:00",
+          "first_name": "Janet",
+          "last_name": "Sanchez"
+        },
+        {
+          "id": "dfeca056-8258-44cd-bc54-c08ef6cada9c",
+          "email": "laura.thomas197@consulting.com",
+          "company": "Digital Attribution",
+          "subscription_tier": "free",
+          "created_at": "2025-03-20T22:01:19.312+00:00",
+          "first_name": "Laura",
+          "last_name": "Thomas"
+        }
+      ],
+      "primaryUser": {
+        "id": "d33ab44c-6365-4a39-9c0a-ad483ae8632a",
+        "email": "chris.thompson@agency.com",
+        "company": "Digital Attribution",
+        "subscription_tier": "free",
+        "created_at": "2025-05-01T23:01:19.311+00:00",
+        "first_name": "Chris",
+        "last_name": "Thompson"
+      },
+      "userCount": 6
+    },
+    {
+      "type": "company",
+      "name": "Growth Engine Media",
+      "users": [
+        {
+          "id": "27fd73fa-ea93-4fd2-b72b-69c7ff5973e1",
+          "email": "barbara.scott@growthenginemedia.com",
+          "company": "Growth Engine Media",
+          "subscription_tier": "free",
+          "created_at": "2025-04-13T23:01:19.311+00:00",
+          "first_name": "Barbara",
+          "last_name": "Scott"
+        },
+        {
+          "id": "b33f3bac-f9b3-4cb7-b31c-d7f6db76a502",
+          "email": "kenneth.baker@growthenginemedia.com",
+          "company": "Growth Engine Media",
+          "subscription_tier": "enterprise",
+          "created_at": "2025-01-23T22:01:19.311+00:00",
+          "first_name": "Kenneth",
+          "last_name": "Baker"
+        },
+        {
+          "id": "474d9e0d-92d3-4148-8cd7-cf02081d91be",
+          "email": "kenneth.wilson@marketing.com",
+          "company": "Growth Engine Media",
+          "subscription_tier": "free",
+          "created_at": "2025-03-21T22:01:19.311+00:00",
+          "first_name": "Kenneth",
+          "last_name": "Wilson"
+        },
+        {
+          "id": "a65832a1-330c-4536-a27c-97bdb435b9e4",
+          "email": "charles.hernandez106@business.com",
+          "company": "Growth Engine Media",
+          "subscription_tier": "professional",
+          "created_at": "2025-03-28T22:01:19.312+00:00",
+          "first_name": "Charles",
+          "last_name": "Hernandez"
+        },
+        {
+          "id": "1f7cd093-9f03-445f-a9c4-ae0e30b0160a",
+          "email": "matthew.robinson@growthenginemedia.com",
+          "company": "Growth Engine Media",
+          "subscription_tier": "professional",
+          "created_at": "2025-06-10T23:01:19.312+00:00",
+          "first_name": "Matthew",
+          "last_name": "Robinson"
+        },
+        {
+          "id": "0e7c1a48-4ec0-4e0f-a5f8-eedf9937d9e6",
+          "email": "melissa.lopez147@yahoo.com",
+          "company": "Growth Engine Media",
+          "subscription_tier": "free",
+          "created_at": "2025-05-26T23:01:19.312+00:00",
+          "first_name": "Melissa",
+          "last_name": "Lopez"
+        },
+        {
+          "id": "1aa76a91-cc34-40ed-9f03-ea7be3a09e77",
+          "email": "laura.gonzalez160@growth.com",
+          "company": "Growth Engine Media",
+          "subscription_tier": "free",
+          "created_at": "2025-02-24T22:01:19.312+00:00",
+          "first_name": "Laura",
+          "last_name": "Gonzalez"
+        },
+        {
+          "id": "0b9ff6cd-cff8-4fb5-9703-9f9bd18165eb",
+          "email": "nancy.hernandez183@growth.com",
+          "company": "Growth Engine Media",
+          "subscription_tier": "agency",
+          "created_at": "2025-05-22T23:01:19.312+00:00",
+          "first_name": "Nancy",
+          "last_name": "Hernandez"
+        },
+        {
+          "id": "08234da0-d131-49b9-964c-7feed85a6174",
+          "email": "jessica.jones57@marketing.com",
+          "company": "Growth Engine Media",
+          "subscription_tier": "free",
+          "created_at": "2025-06-11T23:01:19.311+00:00",
+          "first_name": "Jessica",
+          "last_name": "Jones"
+        }
+      ],
+      "primaryUser": {
+        "id": "27fd73fa-ea93-4fd2-b72b-69c7ff5973e1",
+        "email": "barbara.scott@growthenginemedia.com",
+        "company": "Growth Engine Media",
+        "subscription_tier": "free",
+        "created_at": "2025-04-13T23:01:19.311+00:00",
+        "first_name": "Barbara",
+        "last_name": "Scott"
+      },
+      "userCount": 9
+    },
+    {
+      "type": "company",
+      "name": "Lead Generation Pro",
+      "users": [
+        {
+          "id": "ce2586f0-b7a0-4d07-8bfa-22a8aff0a393",
+          "email": "melissa.garcia@growth.com",
+          "company": "Lead Generation Pro",
+          "subscription_tier": "professional",
+          "created_at": "2025-06-05T23:01:19.311+00:00",
+          "first_name": "Melissa",
+          "last_name": "Garcia"
+        },
+        {
+          "id": "6c005561-5f79-4d4e-af1e-59c2d1832726",
+          "email": "thomas.wright152@consulting.com",
+          "company": "Lead Generation Pro",
+          "subscription_tier": "free",
+          "created_at": "2025-04-24T23:01:19.312+00:00",
+          "first_name": "Thomas",
+          "last_name": "Wright"
+        },
+        {
+          "id": "71aaa576-5d9e-4a2e-bf48-84facd594cad",
+          "email": "patricia.allen200@marketing.com",
+          "company": "Lead Generation Pro",
+          "subscription_tier": "free",
+          "created_at": "2025-01-06T22:01:19.312+00:00",
+          "first_name": "Patricia",
+          "last_name": "Allen"
+        },
+        {
+          "id": "60a044c4-321e-41c9-a569-b63cf383da01",
+          "email": "jessica.campbell@leadgenerationpro.com",
+          "company": "Lead Generation Pro",
+          "subscription_tier": "professional",
+          "created_at": "2025-02-01T22:01:19.311+00:00",
+          "first_name": "Jessica",
+          "last_name": "Campbell"
+        },
+        {
+          "id": "12ed6126-0ea7-41ca-ad77-857a0313c532",
+          "email": "betty.lopez87@consulting.com",
+          "company": "Lead Generation Pro",
+          "subscription_tier": "professional",
+          "created_at": "2025-02-09T22:01:19.311+00:00",
+          "first_name": "Betty",
+          "last_name": "Lopez"
+        }
+      ],
+      "primaryUser": {
+        "id": "ce2586f0-b7a0-4d07-8bfa-22a8aff0a393",
+        "email": "melissa.garcia@growth.com",
+        "company": "Lead Generation Pro",
+        "subscription_tier": "professional",
+        "created_at": "2025-06-05T23:01:19.311+00:00",
+        "first_name": "Melissa",
+        "last_name": "Garcia"
+      },
+      "userCount": 5
+    },
+    {
+      "type": "company",
+      "name": "Traffic Generation Co",
+      "users": [
+        {
+          "id": "f83c0c48-68c9-46f9-823f-0c478c1726f1",
+          "email": "elizabeth.mitchell@trafficgenerationco.com",
+          "company": "Traffic Generation Co",
+          "subscription_tier": "professional",
+          "created_at": "2025-02-17T22:01:19.311+00:00",
+          "first_name": "Elizabeth",
+          "last_name": "Mitchell"
+        },
+        {
+          "id": "ca4cee6a-75d2-4ca3-9533-aecb76e26aea",
+          "email": "elizabeth.mitchell60@growth.com",
+          "company": "Traffic Generation Co",
+          "subscription_tier": "enterprise",
+          "created_at": "2025-03-30T22:01:19.311+00:00",
+          "first_name": "Elizabeth",
+          "last_name": "Mitchell"
+        },
+        {
+          "id": "11ba2a5d-3959-4712-af39-b57989b46c1f",
+          "email": "donald.baker78@hotmail.com",
+          "company": "Traffic Generation Co",
+          "subscription_tier": "free",
+          "created_at": "2025-03-03T22:01:19.311+00:00",
+          "first_name": "Donald",
+          "last_name": "Baker"
+        },
+        {
+          "id": "d853a594-55a2-41d9-b71c-7322573c3e56",
+          "email": "tom.taylor89@outlook.com",
+          "company": "Traffic Generation Co",
+          "subscription_tier": "free",
+          "created_at": "2025-04-15T23:01:19.312+00:00",
+          "first_name": "Tom",
+          "last_name": "Taylor"
+        },
+        {
+          "id": "b8779da6-668b-46bf-8058-bc71391608cf",
+          "email": "dorothy.robinson107@consulting.com",
+          "company": "Traffic Generation Co",
+          "subscription_tier": "free",
+          "created_at": "2025-06-12T23:01:19.312+00:00",
+          "first_name": "Dorothy",
+          "last_name": "Robinson"
+        },
+        {
+          "id": "474e9c2e-c17a-465d-9382-ff2b3eaf34fe",
+          "email": "daniel.allen166@agency.com",
+          "company": "Traffic Generation Co",
+          "subscription_tier": "professional",
+          "created_at": "2025-05-11T23:01:19.312+00:00",
+          "first_name": "Daniel",
+          "last_name": "Allen"
+        },
+        {
+          "id": "0d6061ac-48cf-4659-a508-d61142396d93",
+          "email": "nancy.flores177@marketing.com",
+          "company": "Traffic Generation Co",
+          "subscription_tier": "professional",
+          "created_at": "2024-12-26T22:01:19.312+00:00",
+          "first_name": "Nancy",
+          "last_name": "Flores"
+        },
+        {
+          "id": "5ef466a5-2f5d-4bc3-8d7f-3a5037d3c545",
+          "email": "betty.ramirez214@business.com",
+          "company": "Traffic Generation Co",
+          "subscription_tier": "enterprise",
+          "created_at": "2025-06-16T23:01:19.312+00:00",
+          "first_name": "Betty",
+          "last_name": "Ramirez"
+        },
+        {
+          "id": "5de447ed-c4b4-438c-8810-f61f0f244ad2",
+          "email": "kevin.nguyen190@business.com",
+          "company": "Traffic Generation Co",
+          "subscription_tier": "professional",
+          "created_at": "2025-06-03T23:01:19.312+00:00",
+          "first_name": "Kevin",
+          "last_name": "Nguyen"
+        }
+      ],
+      "primaryUser": {
+        "id": "f83c0c48-68c9-46f9-823f-0c478c1726f1",
+        "email": "elizabeth.mitchell@trafficgenerationco.com",
+        "company": "Traffic Generation Co",
+        "subscription_tier": "professional",
+        "created_at": "2025-02-17T22:01:19.311+00:00",
+        "first_name": "Elizabeth",
+        "last_name": "Mitchell"
+      },
+      "userCount": 9
+    },
+    {
+      "type": "company",
+      "name": "Performance Intelligence",
+      "users": [
+        {
+          "id": "a558cd2e-f888-46b3-92e1-87533a500bf8",
+          "email": "brian.mitchell@business.com",
+          "company": "Performance Intelligence",
+          "subscription_tier": "professional",
+          "created_at": "2025-05-30T23:01:19.311+00:00",
+          "first_name": "Brian",
+          "last_name": "Mitchell"
+        },
+        {
+          "id": "c092aaa6-0a45-48dc-ace4-ec6a3f50e3ad",
+          "email": "anna.robinson@performanceintelligence.com",
+          "company": "Performance Intelligence",
+          "subscription_tier": "professional",
+          "created_at": "2025-03-08T22:01:19.311+00:00",
+          "first_name": "Anna",
+          "last_name": "Robinson"
+        },
+        {
+          "id": "1cccf4ce-7a1e-48fd-8d46-88e85b2e870c",
+          "email": "jessica.nelson124@agency.com",
+          "company": "Performance Intelligence",
+          "subscription_tier": "free",
+          "created_at": "2025-06-14T23:01:19.312+00:00",
+          "first_name": "Jessica",
+          "last_name": "Nelson"
+        },
+        {
+          "id": "1668cd06-eb07-4b7f-a77a-b238cb820c79",
+          "email": "robert.wright192@consulting.com",
+          "company": "Performance Intelligence",
+          "subscription_tier": "free",
+          "created_at": "2025-06-03T23:01:19.312+00:00",
+          "first_name": "Robert",
+          "last_name": "Wright"
+        },
+        {
+          "id": "2b9831c1-4b97-47e1-8efa-5507a75dcda6",
+          "email": "chris.moore218@consulting.com",
+          "company": "Performance Intelligence",
+          "subscription_tier": "free",
+          "created_at": "2025-05-25T23:01:19.312+00:00",
+          "first_name": "Chris",
+          "last_name": "Moore"
+        },
+        {
+          "id": "bd61c7dd-5d5f-46b0-84fc-37d7447d12c6",
+          "email": "richard.davis209@consulting.com",
+          "company": "Performance Intelligence",
+          "subscription_tier": "free",
+          "created_at": "2025-04-07T23:01:19.312+00:00",
+          "first_name": "Richard",
+          "last_name": "Davis"
+        }
+      ],
+      "primaryUser": {
+        "id": "a558cd2e-f888-46b3-92e1-87533a500bf8",
+        "email": "brian.mitchell@business.com",
+        "company": "Performance Intelligence",
+        "subscription_tier": "professional",
+        "created_at": "2025-05-30T23:01:19.311+00:00",
+        "first_name": "Brian",
+        "last_name": "Mitchell"
+      },
+      "userCount": 6
+    },
+    {
+      "type": "company",
+      "name": "Digital Growth Agency",
+      "users": [
+        {
+          "id": "0b6f8702-bd97-4311-a35c-cd19a442d3b8",
+          "email": "george.lopez@hotmail.com",
+          "company": "Digital Growth Agency",
+          "subscription_tier": "free",
+          "created_at": "2025-05-09T23:01:19.311+00:00",
+          "first_name": "George",
+          "last_name": "Lopez"
+        },
+        {
+          "id": "3268526f-5655-4923-bca7-111aebc8199d",
+          "email": "john.rivera@outlook.com",
+          "company": "Digital Growth Agency",
+          "subscription_tier": "professional",
+          "created_at": "2025-06-15T23:01:19.311+00:00",
+          "first_name": "John",
+          "last_name": "Rivera"
+        },
+        {
+          "id": "f60bc283-7a1c-4ef2-8041-2a29117bc18d",
+          "email": "maria.clark63@yahoo.com",
+          "company": "Digital Growth Agency",
+          "subscription_tier": "free",
+          "created_at": "2025-03-31T22:01:19.311+00:00",
+          "first_name": "Maria",
+          "last_name": "Clark"
+        },
+        {
+          "id": "2860a6e3-00ea-4039-b4a4-0f7516714f20",
+          "email": "brian.lee98@hotmail.com",
+          "company": "Digital Growth Agency",
+          "subscription_tier": "free",
+          "created_at": "2025-03-03T22:01:19.312+00:00",
+          "first_name": "Brian",
+          "last_name": "Lee"
+        }
+      ],
+      "primaryUser": {
+        "id": "0b6f8702-bd97-4311-a35c-cd19a442d3b8",
+        "email": "george.lopez@hotmail.com",
+        "company": "Digital Growth Agency",
+        "subscription_tier": "free",
+        "created_at": "2025-05-09T23:01:19.311+00:00",
+        "first_name": "George",
+        "last_name": "Lopez"
+      },
+      "userCount": 4
+    },
+    {
+      "type": "company",
+      "name": "Traffic Optimization",
+      "users": [
+        {
+          "id": "19a0ee6f-5042-4f00-b271-734b7f865913",
+          "email": "christopher.torres@marketing.com",
+          "company": "Traffic Optimization",
+          "subscription_tier": "professional",
+          "created_at": "2025-03-09T22:01:19.311+00:00",
+          "first_name": "Christopher",
+          "last_name": "Torres"
+        },
+        {
+          "id": "b7394e79-0f83-4ba9-82e1-c274b2f7f2a9",
+          "email": "donald.perez84@marketing.com",
+          "company": "Traffic Optimization",
+          "subscription_tier": "free",
+          "created_at": "2025-03-30T22:01:19.311+00:00",
+          "first_name": "Donald",
+          "last_name": "Perez"
+        },
+        {
+          "id": "c693e0fa-9112-49a0-8851-7b0459aaa013",
+          "email": "janet.martinez86@growth.com",
+          "company": "Traffic Optimization",
+          "subscription_tier": "professional",
+          "created_at": "2025-02-24T22:01:19.311+00:00",
+          "first_name": "Janet",
+          "last_name": "Martinez"
+        },
+        {
+          "id": "5d734c14-7184-4d1f-b8eb-1a29335f77bf",
+          "email": "jennifer.williams116@growth.com",
+          "company": "Traffic Optimization",
+          "subscription_tier": "enterprise",
+          "created_at": "2025-05-06T23:01:19.312+00:00",
+          "first_name": "Jennifer",
+          "last_name": "Williams"
+        },
+        {
+          "id": "a9c00873-23e6-41bd-8cec-21ed9cdfc2a3",
+          "email": "paul.green227@agency.com",
+          "company": "Traffic Optimization",
+          "subscription_tier": "free",
+          "created_at": "2025-04-13T23:01:19.312+00:00",
+          "first_name": "Paul",
+          "last_name": "Green"
+        },
+        {
+          "id": "ca848834-33cd-4780-a174-d229f497c2bb",
+          "email": "carolyn.white229@consulting.com",
+          "company": "Traffic Optimization",
+          "subscription_tier": "free",
+          "created_at": "2025-03-12T22:01:19.312+00:00",
+          "first_name": "Carolyn",
+          "last_name": "White"
+        }
+      ],
+      "primaryUser": {
+        "id": "19a0ee6f-5042-4f00-b271-734b7f865913",
+        "email": "christopher.torres@marketing.com",
+        "company": "Traffic Optimization",
+        "subscription_tier": "professional",
+        "created_at": "2025-03-09T22:01:19.311+00:00",
+        "first_name": "Christopher",
+        "last_name": "Torres"
+      },
+      "userCount": 6
+    },
+    {
+      "type": "company",
+      "name": "Growth Catalyst",
+      "users": [
+        {
+          "id": "25f99ca0-f197-48a8-a39a-817fcb8f4a0e",
+          "email": "mark.hernandez@gmail.com",
+          "company": "Growth Catalyst",
+          "subscription_tier": "free",
+          "created_at": "2025-02-28T22:01:19.311+00:00",
+          "first_name": "Mark",
+          "last_name": "Hernandez"
+        },
+        {
+          "id": "310c8fe8-c329-4afb-b490-8473b3669802",
+          "email": "barbara.robinson@yahoo.com",
+          "company": "Growth Catalyst",
+          "subscription_tier": "free",
+          "created_at": "2025-06-14T23:01:19.311+00:00",
+          "first_name": "Barbara",
+          "last_name": "Robinson"
+        },
+        {
+          "id": "42f5773b-c277-4018-8690-5a8ffec0daa8",
+          "email": "rachel.allen69@agency.com",
+          "company": "Growth Catalyst",
+          "subscription_tier": "enterprise",
+          "created_at": "2025-06-01T23:01:19.311+00:00",
+          "first_name": "Rachel",
+          "last_name": "Allen"
+        },
+        {
+          "id": "de631fa8-9631-4f84-b798-de500099738b",
+          "email": "john.johnson158@yahoo.com",
+          "company": "Growth Catalyst",
+          "subscription_tier": "free",
+          "created_at": "2025-05-18T23:01:19.312+00:00",
+          "first_name": "John",
+          "last_name": "Johnson"
+        },
+        {
+          "id": "73400056-db8d-4c30-afb8-117fd8c9081d",
+          "email": "linda.lee208@outlook.com",
+          "company": "Growth Catalyst",
+          "subscription_tier": "free",
+          "created_at": "2025-01-29T22:01:19.312+00:00",
+          "first_name": "Linda",
+          "last_name": "Lee"
+        },
+        {
+          "id": "b40eee88-f981-4467-8f98-78cb04cdc03c",
+          "email": "dorothy.thomas@growthcatalyst.com",
+          "company": "Growth Catalyst",
+          "subscription_tier": "free",
+          "created_at": "2025-01-18T22:01:19.312+00:00",
+          "first_name": "Dorothy",
+          "last_name": "Thomas"
+        },
+        {
+          "id": "b28d5747-6b70-4fe7-8389-4668fef03be0",
+          "email": "nancy.allen@hotmail.com",
+          "company": "Growth Catalyst",
+          "subscription_tier": "professional",
+          "created_at": "2025-03-14T22:01:19.311+00:00",
+          "first_name": "Nancy",
+          "last_name": "Allen"
+        }
+      ],
+      "primaryUser": {
+        "id": "25f99ca0-f197-48a8-a39a-817fcb8f4a0e",
+        "email": "mark.hernandez@gmail.com",
+        "company": "Growth Catalyst",
+        "subscription_tier": "free",
+        "created_at": "2025-02-28T22:01:19.311+00:00",
+        "first_name": "Mark",
+        "last_name": "Hernandez"
+      },
+      "userCount": 7
+    },
+    {
+      "type": "company",
+      "name": "Conversion Experts",
+      "users": [
+        {
+          "id": "342ffc01-fd2a-4eb8-9a12-760722c7f2bf",
+          "email": "anna.torres@conversionexperts.com",
+          "company": "Conversion Experts",
+          "subscription_tier": "professional",
+          "created_at": "2024-12-23T22:01:19.311+00:00",
+          "first_name": "Anna",
+          "last_name": "Torres"
+        },
+        {
+          "id": "264ee940-b7c9-4427-9b1d-8e1ba94210f5",
+          "email": "betty.anderson67@growth.com",
+          "company": "Conversion Experts",
+          "subscription_tier": "free",
+          "created_at": "2025-02-21T22:01:19.311+00:00",
+          "first_name": "Betty",
+          "last_name": "Anderson"
+        },
+        {
+          "id": "764040d3-6bcd-46d9-b4d9-cd35aa121c05",
+          "email": "mark.hernandez138@business.com",
+          "company": "Conversion Experts",
+          "subscription_tier": "free",
+          "created_at": "2025-01-30T22:01:19.312+00:00",
+          "first_name": "Mark",
+          "last_name": "Hernandez"
+        },
+        {
+          "id": "c95b4434-6dcf-4dec-9434-55ad7493d9c1",
+          "email": "steven.harris180@marketing.com",
+          "company": "Conversion Experts",
+          "subscription_tier": "professional",
+          "created_at": "2025-06-15T23:01:19.312+00:00",
+          "first_name": "Steven",
+          "last_name": "Harris"
+        }
+      ],
+      "primaryUser": {
+        "id": "342ffc01-fd2a-4eb8-9a12-760722c7f2bf",
+        "email": "anna.torres@conversionexperts.com",
+        "company": "Conversion Experts",
+        "subscription_tier": "professional",
+        "created_at": "2024-12-23T22:01:19.311+00:00",
+        "first_name": "Anna",
+        "last_name": "Torres"
+      },
+      "userCount": 4
+    },
+    {
+      "type": "company",
+      "name": "Conversion Optimization",
+      "users": [
+        {
+          "id": "f6ce8452-8335-46f3-94a4-f924d4812b4b",
+          "email": "melissa.lewis@agency.com",
+          "company": "Conversion Optimization",
+          "subscription_tier": "free",
+          "created_at": "2025-01-07T22:01:19.311+00:00",
+          "first_name": "Melissa",
+          "last_name": "Lewis"
+        },
+        {
+          "id": "29544d72-4b1f-48b2-ac17-b55266584cd4",
+          "email": "andrew.robinson@growth.com",
+          "company": "Conversion Optimization",
+          "subscription_tier": "free",
+          "created_at": "2024-12-25T22:01:19.311+00:00",
+          "first_name": "Andrew",
+          "last_name": "Robinson"
+        },
+        {
+          "id": "2beada0a-0a62-4fd5-8b6c-965be79e6060",
+          "email": "donald.lopez71@business.com",
+          "company": "Conversion Optimization",
+          "subscription_tier": "enterprise",
+          "created_at": "2025-04-12T23:01:19.311+00:00",
+          "first_name": "Donald",
+          "last_name": "Lopez"
+        },
+        {
+          "id": "0cb65926-670c-41b3-a615-62dc527cf3e2",
+          "email": "mark.lee112@business.com",
+          "company": "Conversion Optimization",
+          "subscription_tier": "free",
+          "created_at": "2025-03-27T22:01:19.312+00:00",
+          "first_name": "Mark",
+          "last_name": "Lee"
+        },
+        {
+          "id": "495a64ae-0e20-488b-971c-aea4a2dfda37",
+          "email": "anna.baker115@gmail.com",
+          "company": "Conversion Optimization",
+          "subscription_tier": "free",
+          "created_at": "2025-03-20T22:01:19.312+00:00",
+          "first_name": "Anna",
+          "last_name": "Baker"
+        },
+        {
+          "id": "038fefe0-0fb7-42de-87a3-cf61b3c93721",
+          "email": "matthew.moore186@marketing.com",
+          "company": "Conversion Optimization",
+          "subscription_tier": "free",
+          "created_at": "2025-05-20T23:01:19.312+00:00",
+          "first_name": "Matthew",
+          "last_name": "Moore"
+        },
+        {
+          "id": "01b8e6d6-03ab-432f-845a-5e4e3d26bd47",
+          "email": "barbara.nguyen220@growth.com",
+          "company": "Conversion Optimization",
+          "subscription_tier": "professional",
+          "created_at": "2024-12-28T22:01:19.312+00:00",
+          "first_name": "Barbara",
+          "last_name": "Nguyen"
+        },
+        {
+          "id": "8a725201-8046-4cee-ba96-dd42319948e7",
+          "email": "steven.harris@conversionoptimization.com",
+          "company": "Conversion Optimization",
+          "subscription_tier": "free",
+          "created_at": "2025-05-04T23:01:19.312+00:00",
+          "first_name": "Steven",
+          "last_name": "Harris"
+        }
+      ],
+      "primaryUser": {
+        "id": "f6ce8452-8335-46f3-94a4-f924d4812b4b",
+        "email": "melissa.lewis@agency.com",
+        "company": "Conversion Optimization",
+        "subscription_tier": "free",
+        "created_at": "2025-01-07T22:01:19.311+00:00",
+        "first_name": "Melissa",
+        "last_name": "Lewis"
+      },
+      "userCount": 8
+    },
+    {
+      "type": "company",
+      "name": "MarketPro Analytics",
+      "users": [
+        {
+          "id": "73901355-91ec-426a-beab-caa411526f7a",
+          "email": "jessica.scott@yahoo.com",
+          "company": "MarketPro Analytics",
+          "subscription_tier": "free",
+          "created_at": "2025-04-05T23:01:19.311+00:00",
+          "first_name": "Jessica",
+          "last_name": "Scott"
+        },
+        {
+          "id": "f7a708f3-36d1-41dc-b57f-bcfdfdbe4f4b",
+          "email": "emma.campbell@outlook.com",
+          "company": "MarketPro Analytics",
+          "subscription_tier": "free",
+          "created_at": "2025-02-17T22:01:19.311+00:00",
+          "first_name": "Emma",
+          "last_name": "Campbell"
+        },
+        {
+          "id": "8e2fd47e-0cce-4297-945f-4320577d9cfc",
+          "email": "barbara.williams59@yahoo.com",
+          "company": "MarketPro Analytics",
+          "subscription_tier": "free",
+          "created_at": "2024-12-31T22:01:19.311+00:00",
+          "first_name": "Barbara",
+          "last_name": "Williams"
+        },
+        {
+          "id": "04b1b490-a17d-42fc-9582-fb6a1914022a",
+          "email": "elizabeth.wright140@marketing.com",
+          "company": "MarketPro Analytics",
+          "subscription_tier": "professional",
+          "created_at": "2025-03-19T22:01:19.312+00:00",
+          "first_name": "Elizabeth",
+          "last_name": "Wright"
+        },
+        {
+          "id": "d82d7a18-b354-485e-8e3a-cc7332e268b2",
+          "email": "john.taylor@marketproanalytics.com",
+          "company": "MarketPro Analytics",
+          "subscription_tier": "free",
+          "created_at": "2025-06-19T23:01:19.312+00:00",
+          "first_name": "John",
+          "last_name": "Taylor"
+        }
+      ],
+      "primaryUser": {
+        "id": "73901355-91ec-426a-beab-caa411526f7a",
+        "email": "jessica.scott@yahoo.com",
+        "company": "MarketPro Analytics",
+        "subscription_tier": "free",
+        "created_at": "2025-04-05T23:01:19.311+00:00",
+        "first_name": "Jessica",
+        "last_name": "Scott"
+      },
+      "userCount": 5
+    },
+    {
+      "type": "company",
+      "name": "Digital Performance",
+      "users": [
+        {
+          "id": "b34380d8-0d7e-4adf-a7a8-1faaa9114f61",
+          "email": "deborah.baker@agency.com",
+          "company": "Digital Performance",
+          "subscription_tier": "free",
+          "created_at": "2025-03-15T22:01:19.311+00:00",
+          "first_name": "Deborah",
+          "last_name": "Baker"
+        },
+        {
+          "id": "f817040f-dd38-4b8a-99f0-730a598d685a",
+          "email": "richard.perez@marketing.com",
+          "company": "Digital Performance",
+          "subscription_tier": "professional",
+          "created_at": "2025-04-11T23:01:19.311+00:00",
+          "first_name": "Richard",
+          "last_name": "Perez"
+        },
+        {
+          "id": "e3809546-d1aa-42f8-b6fc-8c077fa2dd35",
+          "email": "amanda.thompson148@hotmail.com",
+          "company": "Digital Performance",
+          "subscription_tier": "enterprise",
+          "created_at": "2025-01-13T22:01:19.312+00:00",
+          "first_name": "Amanda",
+          "last_name": "Thompson"
+        },
+        {
+          "id": "32575cbf-8967-4079-a80b-339b5de63cc1",
+          "email": "elizabeth.robinson173@hotmail.com",
+          "company": "Digital Performance",
+          "subscription_tier": "professional",
+          "created_at": "2025-04-11T23:01:19.312+00:00",
+          "first_name": "Elizabeth",
+          "last_name": "Robinson"
+        },
+        {
+          "id": "ccc43f41-76ae-4977-ad64-42b12fa925bc",
+          "email": "nancy.baker174@marketing.com",
+          "company": "Digital Performance",
+          "subscription_tier": "enterprise",
+          "created_at": "2025-05-21T23:01:19.312+00:00",
+          "first_name": "Nancy",
+          "last_name": "Baker"
+        },
+        {
+          "id": "7639991f-6182-4177-a106-633bae7fe727",
+          "email": "sarah.wilson210@yahoo.com",
+          "company": "Digital Performance",
+          "subscription_tier": "free",
+          "created_at": "2025-03-10T22:01:19.312+00:00",
+          "first_name": "Sarah",
+          "last_name": "Wilson"
+        },
+        {
+          "id": "ddd47733-14a8-4449-a1ea-8aaf231fd897",
+          "email": "melissa.miller211@gmail.com",
+          "company": "Digital Performance",
+          "subscription_tier": "professional",
+          "created_at": "2025-04-08T23:01:19.312+00:00",
+          "first_name": "Melissa",
+          "last_name": "Miller"
+        }
+      ],
+      "primaryUser": {
+        "id": "b34380d8-0d7e-4adf-a7a8-1faaa9114f61",
+        "email": "deborah.baker@agency.com",
+        "company": "Digital Performance",
+        "subscription_tier": "free",
+        "created_at": "2025-03-15T22:01:19.311+00:00",
+        "first_name": "Deborah",
+        "last_name": "Baker"
+      },
+      "userCount": 7
+    },
+    {
+      "type": "company",
+      "name": "Marketing Dynamics",
+      "users": [
+        {
+          "id": "892e7fc6-3058-4d3e-a6e7-c9dc610013a9",
+          "email": "nancy.harris@outlook.com",
+          "company": "Marketing Dynamics",
+          "subscription_tier": "free",
+          "created_at": "2025-01-17T22:01:19.311+00:00",
+          "first_name": "Nancy",
+          "last_name": "Harris"
+        },
+        {
+          "id": "1de0e59e-9bf3-403a-a7d6-328a46fb3dac",
+          "email": "linda.jones75@gmail.com",
+          "company": "Marketing Dynamics",
+          "subscription_tier": "free",
+          "created_at": "2025-03-03T22:01:19.311+00:00",
+          "first_name": "Linda",
+          "last_name": "Jones"
+        },
+        {
+          "id": "c376a5c5-b70d-4041-b44d-95e6a8ddcefb",
+          "email": "john.adams153@business.com",
+          "company": "Marketing Dynamics",
+          "subscription_tier": "free",
+          "created_at": "2025-01-05T22:01:19.312+00:00",
+          "first_name": "John",
+          "last_name": "Adams"
+        },
+        {
+          "id": "adb27b58-ce47-48bb-856e-46bc2689d39d",
+          "email": "james.hernandez178@business.com",
+          "company": "Marketing Dynamics",
+          "subscription_tier": "free",
+          "created_at": "2025-05-12T23:01:19.312+00:00",
+          "first_name": "James",
+          "last_name": "Hernandez"
+        },
+        {
+          "id": "4f1c48b2-f9a2-4560-8bc0-81f4f3e8729c",
+          "email": "christopher.perez215@consulting.com",
+          "company": "Marketing Dynamics",
+          "subscription_tier": "professional",
+          "created_at": "2025-01-21T22:01:19.312+00:00",
+          "first_name": "Christopher",
+          "last_name": "Perez"
+        },
+        {
+          "id": "fae84754-3a42-473a-b92c-4f200cb3a272",
+          "email": "kate.sanchez222@outlook.com",
+          "company": "Marketing Dynamics",
+          "subscription_tier": "free",
+          "created_at": "2025-04-04T22:01:19.312+00:00",
+          "first_name": "Kate",
+          "last_name": "Sanchez"
+        }
+      ],
+      "primaryUser": {
+        "id": "892e7fc6-3058-4d3e-a6e7-c9dc610013a9",
+        "email": "nancy.harris@outlook.com",
+        "company": "Marketing Dynamics",
+        "subscription_tier": "free",
+        "created_at": "2025-01-17T22:01:19.311+00:00",
+        "first_name": "Nancy",
+        "last_name": "Harris"
+      },
+      "userCount": 6
+    },
+    {
+      "type": "company",
+      "name": "Content Masters",
+      "users": [
+        {
+          "id": "13c0fc8c-7850-4507-a5b4-1af364c5f11b",
+          "email": "andrew.taylor@business.com",
+          "company": "Content Masters",
+          "subscription_tier": "free",
+          "created_at": "2025-02-13T22:01:19.311+00:00",
+          "first_name": "Andrew",
+          "last_name": "Taylor"
+        },
+        {
+          "id": "674ddb66-cb77-4c2c-813b-84ff1c36aa34",
+          "email": "carolyn.rodriguez122@consulting.com",
+          "company": "Content Masters",
+          "subscription_tier": "free",
+          "created_at": "2025-03-29T22:01:19.312+00:00",
+          "first_name": "Carolyn",
+          "last_name": "Rodriguez"
+        },
+        {
+          "id": "37426471-efeb-4708-a970-e969303a2208",
+          "email": "anthony.white141@business.com",
+          "company": "Content Masters",
+          "subscription_tier": "enterprise",
+          "created_at": "2025-06-12T23:01:19.312+00:00",
+          "first_name": "Anthony",
+          "last_name": "White"
+        },
+        {
+          "id": "96913c3b-7e1d-49b8-9a49-019b23e22b22",
+          "email": "anna.miller161@marketing.com",
+          "company": "Content Masters",
+          "subscription_tier": "free",
+          "created_at": "2025-03-02T22:01:19.312+00:00",
+          "first_name": "Anna",
+          "last_name": "Miller"
+        },
+        {
+          "id": "678108da-1fae-4ce6-b86f-47b4b22ad6a1",
+          "email": "jennifer.williams170@outlook.com",
+          "company": "Content Masters",
+          "subscription_tier": "professional",
+          "created_at": "2025-04-05T23:01:19.312+00:00",
+          "first_name": "Jennifer",
+          "last_name": "Williams"
+        },
+        {
+          "id": "e4b4f37a-203b-46cc-a803-0e2c3da792a6",
+          "email": "john.lee231@outlook.com",
+          "company": "Content Masters",
+          "subscription_tier": "enterprise",
+          "created_at": "2024-12-26T22:01:19.312+00:00",
+          "first_name": "John",
+          "last_name": "Lee"
+        }
+      ],
+      "primaryUser": {
+        "id": "13c0fc8c-7850-4507-a5b4-1af364c5f11b",
+        "email": "andrew.taylor@business.com",
+        "company": "Content Masters",
+        "subscription_tier": "free",
+        "created_at": "2025-02-13T22:01:19.311+00:00",
+        "first_name": "Andrew",
+        "last_name": "Taylor"
+      },
+      "userCount": 6
+    },
+    {
+      "type": "company",
+      "name": "Digital Strategy Group",
+      "users": [
+        {
+          "id": "52c02fd8-ab79-491f-a19b-e6b81b9bbffb",
+          "email": "michael.robinson@outlook.com",
+          "company": "Digital Strategy Group",
+          "subscription_tier": "free",
+          "created_at": "2025-06-14T23:01:19.311+00:00",
+          "first_name": "Michael",
+          "last_name": "Robinson"
+        },
+        {
+          "id": "978cdb9b-7e7d-4194-b8cd-0dab532f0269",
+          "email": "patricia.harris83@yahoo.com",
+          "company": "Digital Strategy Group",
+          "subscription_tier": "free",
+          "created_at": "2025-05-28T23:01:19.311+00:00",
+          "first_name": "Patricia",
+          "last_name": "Harris"
+        },
+        {
+          "id": "b816eb4f-4891-4365-a8d8-54e925a9ea2f",
+          "email": "chris.thomas119@hotmail.com",
+          "company": "Digital Strategy Group",
+          "subscription_tier": "free",
+          "created_at": "2025-05-30T23:01:19.312+00:00",
+          "first_name": "Chris",
+          "last_name": "Thomas"
+        },
+        {
+          "id": "89f7f58c-b477-435d-a041-a49a5d8fb7f0",
+          "email": "janet.jackson207@gmail.com",
+          "company": "Digital Strategy Group",
+          "subscription_tier": "free",
+          "created_at": "2024-12-26T22:01:19.312+00:00",
+          "first_name": "Janet",
+          "last_name": "Jackson"
+        },
+        {
+          "id": "ec441e63-3867-4d52-ac01-38095abfbe52",
+          "email": "jennifer.smith236@business.com",
+          "company": "Digital Strategy Group",
+          "subscription_tier": "professional",
+          "created_at": "2025-02-22T22:01:19.312+00:00",
+          "first_name": "Jennifer",
+          "last_name": "Smith"
+        }
+      ],
+      "primaryUser": {
+        "id": "52c02fd8-ab79-491f-a19b-e6b81b9bbffb",
+        "email": "michael.robinson@outlook.com",
+        "company": "Digital Strategy Group",
+        "subscription_tier": "free",
+        "created_at": "2025-06-14T23:01:19.311+00:00",
+        "first_name": "Michael",
+        "last_name": "Robinson"
+      },
+      "userCount": 5
+    },
+    {
+      "type": "company",
+      "name": "Attribution Analytics",
+      "users": [
+        {
+          "id": "b57e689f-035a-4833-b4b0-12fa9eefd640",
+          "email": "brian.green@growth.com",
+          "company": "Attribution Analytics",
+          "subscription_tier": "free",
+          "created_at": "2025-02-04T22:01:19.311+00:00",
+          "first_name": "Brian",
+          "last_name": "Green"
+        },
+        {
+          "id": "04b9d9cd-22d3-4171-b01a-1719c43232cd",
+          "email": "chris.robinson68@growth.com",
+          "company": "Attribution Analytics",
+          "subscription_tier": "free",
+          "created_at": "2025-05-26T23:01:19.311+00:00",
+          "first_name": "Chris",
+          "last_name": "Robinson"
+        },
+        {
+          "id": "9562b51d-36c0-4332-ac30-be11d530be3f",
+          "email": "steven.perez70@gmail.com",
+          "company": "Attribution Analytics",
+          "subscription_tier": "free",
+          "created_at": "2025-02-04T22:01:19.311+00:00",
+          "first_name": "Steven",
+          "last_name": "Perez"
+        },
+        {
+          "id": "105229ff-38ad-43fc-bb0b-9ff0e04b103a",
+          "email": "anna.ramirez123@agency.com",
+          "company": "Attribution Analytics",
+          "subscription_tier": "free",
+          "created_at": "2025-01-11T22:01:19.312+00:00",
+          "first_name": "Anna",
+          "last_name": "Ramirez"
+        },
+        {
+          "id": "87fded3c-c188-4fe8-a737-f94725bbd5a8",
+          "email": "matthew.gonzalez187@outlook.com",
+          "company": "Attribution Analytics",
+          "subscription_tier": "free",
+          "created_at": "2025-02-09T22:01:19.312+00:00",
+          "first_name": "Matthew",
+          "last_name": "Gonzalez"
+        },
+        {
+          "id": "b41c4551-3ce2-4349-8bd4-f4a402027c35",
+          "email": "mark.williams201@agency.com",
+          "company": "Attribution Analytics",
+          "subscription_tier": "professional",
+          "created_at": "2025-06-17T23:01:19.312+00:00",
+          "first_name": "Mark",
+          "last_name": "Williams"
+        },
+        {
+          "id": "24198fe7-52f6-4352-903d-083da9a4dc10",
+          "email": "matthew.baker99@hotmail.com",
+          "company": "Attribution Analytics",
+          "subscription_tier": "free",
+          "created_at": "2025-05-23T23:01:19.312+00:00",
+          "first_name": "Matthew",
+          "last_name": "Baker"
+        }
+      ],
+      "primaryUser": {
+        "id": "b57e689f-035a-4833-b4b0-12fa9eefd640",
+        "email": "brian.green@growth.com",
+        "company": "Attribution Analytics",
+        "subscription_tier": "free",
+        "created_at": "2025-02-04T22:01:19.311+00:00",
+        "first_name": "Brian",
+        "last_name": "Green"
+      },
+      "userCount": 7
+    },
+    {
+      "type": "company",
+      "name": "Growth Intelligence",
+      "users": [
+        {
+          "id": "3ac752d3-f7e6-492d-af01-bf6b11f0b2da",
+          "email": "jessica.scott@outlook.com",
+          "company": "Growth Intelligence",
+          "subscription_tier": "professional",
+          "created_at": "2025-01-09T22:01:19.311+00:00",
+          "first_name": "Jessica",
+          "last_name": "Scott"
+        },
+        {
+          "id": "98280ad7-3f4f-486b-adfb-6388aa287abd",
+          "email": "helen.adams104@marketing.com",
+          "company": "Growth Intelligence",
+          "subscription_tier": "free",
+          "created_at": "2025-05-31T23:01:19.312+00:00",
+          "first_name": "Helen",
+          "last_name": "Adams"
+        },
+        {
+          "id": "206bf8e4-ae4a-4e04-80fb-9f7a9dfdf6a5",
+          "email": "elizabeth.lewis163@agency.com",
+          "company": "Growth Intelligence",
+          "subscription_tier": "free",
+          "created_at": "2025-01-13T22:01:19.312+00:00",
+          "first_name": "Elizabeth",
+          "last_name": "Lewis"
+        },
+        {
+          "id": "65f32c9b-ce75-4b45-aa0e-82a1cac88344",
+          "email": "brian.martinez171@yahoo.com",
+          "company": "Growth Intelligence",
+          "subscription_tier": "free",
+          "created_at": "2025-04-25T23:01:19.312+00:00",
+          "first_name": "Brian",
+          "last_name": "Martinez"
+        },
+        {
+          "id": "e5f2f9cb-a0d5-46bc-9a4b-3c6594df3dc7",
+          "email": "richard.brown162@business.com",
+          "company": "Growth Intelligence",
+          "subscription_tier": "professional",
+          "created_at": "2025-02-15T22:01:19.312+00:00",
+          "first_name": "Richard",
+          "last_name": "Brown"
+        }
+      ],
+      "primaryUser": {
+        "id": "3ac752d3-f7e6-492d-af01-bf6b11f0b2da",
+        "email": "jessica.scott@outlook.com",
+        "company": "Growth Intelligence",
+        "subscription_tier": "professional",
+        "created_at": "2025-01-09T22:01:19.311+00:00",
+        "first_name": "Jessica",
+        "last_name": "Scott"
+      },
+      "userCount": 5
+    },
+    {
+      "type": "company",
+      "name": "Revenue Growth Partners",
+      "users": [
+        {
+          "id": "1aab8421-16b9-4e6f-bfd3-aff6f3c4090b",
+          "email": "jennifer.campbell@business.com",
+          "company": "Revenue Growth Partners",
+          "subscription_tier": "free",
+          "created_at": "2025-02-28T22:01:19.311+00:00",
+          "first_name": "Jennifer",
+          "last_name": "Campbell"
+        },
+        {
+          "id": "67e83f05-c98f-45c2-a8b8-f57e4ace6d90",
+          "email": "kenneth.green145@business.com",
+          "company": "Revenue Growth Partners",
+          "subscription_tier": "professional",
+          "created_at": "2025-06-16T23:01:19.312+00:00",
+          "first_name": "Kenneth",
+          "last_name": "Green"
+        },
+        {
+          "id": "f0697246-7f7e-42e5-9f36-2a1ca657a772",
+          "email": "donald.torres185@marketing.com",
+          "company": "Revenue Growth Partners",
+          "subscription_tier": "free",
+          "created_at": "2025-06-19T23:01:19.312+00:00",
+          "first_name": "Donald",
+          "last_name": "Torres"
+        },
+        {
+          "id": "8e3e3bcf-81ae-4579-9b5c-a0a20cd75445",
+          "email": "john.torres@marketing.com",
+          "company": "Revenue Growth Partners",
+          "subscription_tier": "enterprise",
+          "created_at": "2025-03-27T22:01:19.311+00:00",
+          "first_name": "John",
+          "last_name": "Torres"
+        },
+        {
+          "id": "20218a75-2252-4788-8f4b-1b365568dbd8",
+          "email": "mark.anderson235@gmail.com",
+          "company": "Revenue Growth Partners",
+          "subscription_tier": "free",
+          "created_at": "2025-05-10T23:01:19.312+00:00",
+          "first_name": "Mark",
+          "last_name": "Anderson"
+        }
+      ],
+      "primaryUser": {
+        "id": "1aab8421-16b9-4e6f-bfd3-aff6f3c4090b",
+        "email": "jennifer.campbell@business.com",
+        "company": "Revenue Growth Partners",
+        "subscription_tier": "free",
+        "created_at": "2025-02-28T22:01:19.311+00:00",
+        "first_name": "Jennifer",
+        "last_name": "Campbell"
+      },
+      "userCount": 5
+    },
+    {
+      "type": "company",
+      "name": "Content Strategy Co",
+      "users": [
+        {
+          "id": "d0664ce7-2944-4608-8679-c8629ee18bac",
+          "email": "paul.wright52@gmail.com",
+          "company": "Content Strategy Co",
+          "subscription_tier": "free",
+          "created_at": "2025-01-06T22:01:19.311+00:00",
+          "first_name": "Paul",
+          "last_name": "Wright"
+        },
+        {
+          "id": "13016eb4-4e30-4277-87ec-7e7596b77eb5",
+          "email": "george.white205@hotmail.com",
+          "company": "Content Strategy Co",
+          "subscription_tier": "enterprise",
+          "created_at": "2025-02-20T22:01:19.312+00:00",
+          "first_name": "George",
+          "last_name": "White"
+        }
+      ],
+      "primaryUser": {
+        "id": "d0664ce7-2944-4608-8679-c8629ee18bac",
+        "email": "paul.wright52@gmail.com",
+        "company": "Content Strategy Co",
+        "subscription_tier": "free",
+        "created_at": "2025-01-06T22:01:19.311+00:00",
+        "first_name": "Paul",
+        "last_name": "Wright"
+      },
+      "userCount": 2
+    },
+    {
+      "type": "company",
+      "name": "SEO Boost Labs",
+      "users": [
+        {
+          "id": "cb7981bf-7b79-4709-b3d0-4697ec22989d",
+          "email": "matthew.gonzalez53@agency.com",
+          "company": "SEO Boost Labs",
+          "subscription_tier": "free",
+          "created_at": "2025-02-16T22:01:19.311+00:00",
+          "first_name": "Matthew",
+          "last_name": "Gonzalez"
+        },
+        {
+          "id": "b2d1568c-44d6-4062-bd3f-e234aff2ed22",
+          "email": "thomas.taylor102@growth.com",
+          "company": "SEO Boost Labs",
+          "subscription_tier": "enterprise",
+          "created_at": "2025-03-26T22:01:19.312+00:00",
+          "first_name": "Thomas",
+          "last_name": "Taylor"
+        },
+        {
+          "id": "b5f7bb44-17be-40d8-ba2a-8d720717f490",
+          "email": "nancy.rivera130@business.com",
+          "company": "SEO Boost Labs",
+          "subscription_tier": "free",
+          "created_at": "2025-02-20T22:01:19.312+00:00",
+          "first_name": "Nancy",
+          "last_name": "Rivera"
+        },
+        {
+          "id": "1ff433b1-bb3c-4cdf-9356-2cbe7725d17e",
+          "email": "rachel.lewis136@hotmail.com",
+          "company": "SEO Boost Labs",
+          "subscription_tier": "free",
+          "created_at": "2025-03-20T22:01:19.312+00:00",
+          "first_name": "Rachel",
+          "last_name": "Lewis"
+        },
+        {
+          "id": "7b306f41-4c85-48b3-9c49-bdb56430faad",
+          "email": "joseph.campbell143@gmail.com",
+          "company": "SEO Boost Labs",
+          "subscription_tier": "free",
+          "created_at": "2025-01-20T22:01:19.312+00:00",
+          "first_name": "Joseph",
+          "last_name": "Campbell"
+        },
+        {
+          "id": "93c63893-8a87-43d5-b34d-121988f218f4",
+          "email": "charles.thompson175@gmail.com",
+          "company": "SEO Boost Labs",
+          "subscription_tier": "free",
+          "created_at": "2025-01-11T22:01:19.312+00:00",
+          "first_name": "Charles",
+          "last_name": "Thompson"
+        },
+        {
+          "id": "daec97c7-a66c-4f06-beb5-bc938c97d41e",
+          "email": "kate.davis189@yahoo.com",
+          "company": "SEO Boost Labs",
+          "subscription_tier": "free",
+          "created_at": "2025-03-04T22:01:19.312+00:00",
+          "first_name": "Kate",
+          "last_name": "Davis"
+        },
+        {
+          "id": "ac7225c5-ec7f-4358-a8c9-cc649adf3804",
+          "email": "james.martinez230@consulting.com",
+          "company": "SEO Boost Labs",
+          "subscription_tier": "professional",
+          "created_at": "2025-04-07T23:01:19.312+00:00",
+          "first_name": "James",
+          "last_name": "Martinez"
+        },
+        {
+          "id": "2094e515-3382-42f7-8b0e-88e206fbb1cf",
+          "email": "sarah.williams@seoboostlabs.com",
+          "company": "SEO Boost Labs",
+          "subscription_tier": "free",
+          "created_at": "2025-06-08T23:01:19.312+00:00",
+          "first_name": "Sarah",
+          "last_name": "Williams"
+        }
+      ],
+      "primaryUser": {
+        "id": "cb7981bf-7b79-4709-b3d0-4697ec22989d",
+        "email": "matthew.gonzalez53@agency.com",
+        "company": "SEO Boost Labs",
+        "subscription_tier": "free",
+        "created_at": "2025-02-16T22:01:19.311+00:00",
+        "first_name": "Matthew",
+        "last_name": "Gonzalez"
+      },
+      "userCount": 9
+    },
+    {
+      "type": "company",
+      "name": "Growth Hackers Inc",
+      "users": [
+        {
+          "id": "bab3800c-2791-4609-a97b-e92d9f5e0708",
+          "email": "anthony.jackson58@marketing.com",
+          "company": "Growth Hackers Inc",
+          "subscription_tier": "professional",
+          "created_at": "2025-04-12T23:01:19.311+00:00",
+          "first_name": "Anthony",
+          "last_name": "Jackson"
+        },
+        {
+          "id": "bb5c6b24-f353-4ffe-8e89-82809439b6a5",
+          "email": "amanda.williams76@business.com",
+          "company": "Growth Hackers Inc",
+          "subscription_tier": "professional",
+          "created_at": "2025-06-16T23:01:19.311+00:00",
+          "first_name": "Amanda",
+          "last_name": "Williams"
+        },
+        {
+          "id": "54aead95-a42f-405a-9bac-fe9ed1986e51",
+          "email": "christopher.johnson91@gmail.com",
+          "company": "Growth Hackers Inc",
+          "subscription_tier": "free",
+          "created_at": "2025-05-22T23:01:19.312+00:00",
+          "first_name": "Christopher",
+          "last_name": "Johnson"
+        },
+        {
+          "id": "cfe54fc9-bf2a-45c5-ad3e-6b3401bab612",
+          "email": "brian.mitchell92@yahoo.com",
+          "company": "Growth Hackers Inc",
+          "subscription_tier": "free",
+          "created_at": "2025-01-20T22:01:19.312+00:00",
+          "first_name": "Brian",
+          "last_name": "Mitchell"
+        },
+        {
+          "id": "ab1b64b2-8c00-496f-ac65-4cc7a4a5f955",
+          "email": "charles.miller93@marketing.com",
+          "company": "Growth Hackers Inc",
+          "subscription_tier": "professional",
+          "created_at": "2025-04-10T23:01:19.312+00:00",
+          "first_name": "Charles",
+          "last_name": "Miller"
+        },
+        {
+          "id": "7dba5faf-ff47-42d8-b965-16028d80834b",
+          "email": "amanda.gonzalez@growthhackersinc.com",
+          "company": "Growth Hackers Inc",
+          "subscription_tier": "professional",
+          "created_at": "2025-06-15T23:01:19.312+00:00",
+          "first_name": "Amanda",
+          "last_name": "Gonzalez"
+        },
+        {
+          "id": "d6267ddd-c728-4a36-8838-92e5cdedee0e",
+          "email": "amanda.sanchez156@yahoo.com",
+          "company": "Growth Hackers Inc",
+          "subscription_tier": "free",
+          "created_at": "2025-05-07T23:01:19.312+00:00",
+          "first_name": "Amanda",
+          "last_name": "Sanchez"
+        },
+        {
+          "id": "7c1495fe-1ffe-404a-b1ed-2b511d63edb4",
+          "email": "nancy.nelson184@marketing.com",
+          "company": "Growth Hackers Inc",
+          "subscription_tier": "free",
+          "created_at": "2025-05-29T23:01:19.312+00:00",
+          "first_name": "Nancy",
+          "last_name": "Nelson"
+        },
+        {
+          "id": "13b321f4-fddd-4fbd-aac5-29ce2671cf3a",
+          "email": "carolyn.brown@growthhackersinc.com",
+          "company": "Growth Hackers Inc",
+          "subscription_tier": "professional",
+          "created_at": "2025-05-07T23:01:19.312+00:00",
+          "first_name": "Carolyn",
+          "last_name": "Brown"
+        },
+        {
+          "id": "d094ad16-5ef8-43f4-a66e-520136129b96",
+          "email": "robert.miller217@consulting.com",
+          "company": "Growth Hackers Inc",
+          "subscription_tier": "free",
+          "created_at": "2025-03-30T22:01:19.312+00:00",
+          "first_name": "Robert",
+          "last_name": "Miller"
+        }
+      ],
+      "primaryUser": {
+        "id": "bab3800c-2791-4609-a97b-e92d9f5e0708",
+        "email": "anthony.jackson58@marketing.com",
+        "company": "Growth Hackers Inc",
+        "subscription_tier": "professional",
+        "created_at": "2025-04-12T23:01:19.311+00:00",
+        "first_name": "Anthony",
+        "last_name": "Jackson"
+      },
+      "userCount": 10
+    },
+    {
+      "type": "company",
+      "name": "Revenue Attribution",
+      "users": [
+        {
+          "id": "8e5a7f7e-8086-495e-99fe-bf2290702d0c",
+          "email": "jennifer.walker61@yahoo.com",
+          "company": "Revenue Attribution",
+          "subscription_tier": "free",
+          "created_at": "2024-12-31T22:01:19.311+00:00",
+          "first_name": "Jennifer",
+          "last_name": "Walker"
+        },
+        {
+          "id": "3b53bff8-0da0-47da-bea2-e473c4a34812",
+          "email": "robert.lewis64@gmail.com",
+          "company": "Revenue Attribution",
+          "subscription_tier": "free",
+          "created_at": "2025-03-21T22:01:19.311+00:00",
+          "first_name": "Robert",
+          "last_name": "Lewis"
+        },
+        {
+          "id": "3ab24014-b3af-41f3-af3d-9a0d7fce1314",
+          "email": "amanda.harris88@gmail.com",
+          "company": "Revenue Attribution",
+          "subscription_tier": "free",
+          "created_at": "2025-04-30T23:01:19.312+00:00",
+          "first_name": "Amanda",
+          "last_name": "Harris"
+        },
+        {
+          "id": "89901ce3-880e-4b90-8d17-647546103b0a",
+          "email": "robert.scott96@business.com",
+          "company": "Revenue Attribution",
+          "subscription_tier": "free",
+          "created_at": "2025-06-12T23:01:19.312+00:00",
+          "first_name": "Robert",
+          "last_name": "Scott"
+        },
+        {
+          "id": "e8059d21-097d-48a0-ac0c-49f8a3dbe6b0",
+          "email": "steven.martinez137@consulting.com",
+          "company": "Revenue Attribution",
+          "subscription_tier": "free",
+          "created_at": "2025-01-11T22:01:19.312+00:00",
+          "first_name": "Steven",
+          "last_name": "Martinez"
+        }
+      ],
+      "primaryUser": {
+        "id": "8e5a7f7e-8086-495e-99fe-bf2290702d0c",
+        "email": "jennifer.walker61@yahoo.com",
+        "company": "Revenue Attribution",
+        "subscription_tier": "free",
+        "created_at": "2024-12-31T22:01:19.311+00:00",
+        "first_name": "Jennifer",
+        "last_name": "Walker"
+      },
+      "userCount": 5
+    },
+    {
+      "type": "company",
+      "name": "Revenue Growth Lab",
+      "users": [
+        {
+          "id": "aaf0ba8b-0916-46c1-978e-52104867f55c",
+          "email": "anna.rodriguez74@hotmail.com",
+          "company": "Revenue Growth Lab",
+          "subscription_tier": "agency",
+          "created_at": "2025-01-31T22:01:19.311+00:00",
+          "first_name": "Anna",
+          "last_name": "Rodriguez"
+        },
+        {
+          "id": "c5c13963-9f5e-43fd-a36c-a266ed8544b0",
+          "email": "robert.anderson109@growth.com",
+          "company": "Revenue Growth Lab",
+          "subscription_tier": "free",
+          "created_at": "2025-05-08T23:01:19.312+00:00",
+          "first_name": "Robert",
+          "last_name": "Anderson"
+        },
+        {
+          "id": "8fb6a8b2-69f0-455c-a083-77e112b46880",
+          "email": "mark.rodriguez110@gmail.com",
+          "company": "Revenue Growth Lab",
+          "subscription_tier": "free",
+          "created_at": "2025-01-19T22:01:19.312+00:00",
+          "first_name": "Mark",
+          "last_name": "Rodriguez"
+        },
+        {
+          "id": "a060c63a-ed88-4ed1-af3c-d3116b56afa7",
+          "email": "rachel.davis159@hotmail.com",
+          "company": "Revenue Growth Lab",
+          "subscription_tier": "free",
+          "created_at": "2025-05-18T23:01:19.312+00:00",
+          "first_name": "Rachel",
+          "last_name": "Davis"
+        },
+        {
+          "id": "128030d0-9967-43f6-bfcc-166e37336121",
+          "email": "tom.wilson213@consulting.com",
+          "company": "Revenue Growth Lab",
+          "subscription_tier": "free",
+          "created_at": "2025-06-08T23:01:19.312+00:00",
+          "first_name": "Tom",
+          "last_name": "Wilson"
+        }
+      ],
+      "primaryUser": {
+        "id": "aaf0ba8b-0916-46c1-978e-52104867f55c",
+        "email": "anna.rodriguez74@hotmail.com",
+        "company": "Revenue Growth Lab",
+        "subscription_tier": "agency",
+        "created_at": "2025-01-31T22:01:19.311+00:00",
+        "first_name": "Anna",
+        "last_name": "Rodriguez"
+      },
+      "userCount": 5
+    },
+    {
+      "type": "company",
+      "name": "Growth Marketing Agency",
+      "users": [
+        {
+          "id": "e8bcd760-ba32-40fe-b1a2-832659f16363",
+          "email": "jessica.thomas@growthmarketingagency.com",
+          "company": "Growth Marketing Agency",
+          "subscription_tier": "professional",
+          "created_at": "2025-04-20T23:01:19.311+00:00",
+          "first_name": "Jessica",
+          "last_name": "Thomas"
+        },
+        {
+          "id": "aed8f1b8-cf67-4e29-9772-a1f12ae19b6e",
+          "email": "brian.white224@agency.com",
+          "company": "Growth Marketing Agency",
+          "subscription_tier": "agency",
+          "created_at": "2025-03-05T22:01:19.312+00:00",
+          "first_name": "Brian",
+          "last_name": "White"
+        },
+        {
+          "id": "a1a17237-ce33-4d66-b42b-b955c77f87db",
+          "email": "michael.martinez237@yahoo.com",
+          "company": "Growth Marketing Agency",
+          "subscription_tier": "professional",
+          "created_at": "2025-06-19T23:01:19.312+00:00",
+          "first_name": "Michael",
+          "last_name": "Martinez"
+        }
+      ],
+      "primaryUser": {
+        "id": "e8bcd760-ba32-40fe-b1a2-832659f16363",
+        "email": "jessica.thomas@growthmarketingagency.com",
+        "company": "Growth Marketing Agency",
+        "subscription_tier": "professional",
+        "created_at": "2025-04-20T23:01:19.311+00:00",
+        "first_name": "Jessica",
+        "last_name": "Thomas"
+      },
+      "userCount": 3
+    },
+    {
+      "type": "company",
+      "name": "Marketing Science",
+      "users": [
+        {
+          "id": "1b27969f-70c0-4e38-83e7-acbba6d8a629",
+          "email": "christopher.ramirez90@outlook.com",
+          "company": "Marketing Science",
+          "subscription_tier": "free",
+          "created_at": "2025-03-17T22:01:19.312+00:00",
+          "first_name": "Christopher",
+          "last_name": "Ramirez"
+        },
+        {
+          "id": "212b3cf1-2952-4fd9-832d-0b0ac94f3e32",
+          "email": "amanda.robinson193@consulting.com",
+          "company": "Marketing Science",
+          "subscription_tier": "professional",
+          "created_at": "2025-01-02T22:01:19.312+00:00",
+          "first_name": "Amanda",
+          "last_name": "Robinson"
+        },
+        {
+          "id": "cfa7fb17-137e-4441-89fa-0048114c80a1",
+          "email": "steven.thomas195@gmail.com",
+          "company": "Marketing Science",
+          "subscription_tier": "professional",
+          "created_at": "2025-02-06T22:01:19.312+00:00",
+          "first_name": "Steven",
+          "last_name": "Thomas"
+        },
+        {
+          "id": "9af060ca-ea24-4e8a-9e15-3465f33da46a",
+          "email": "kate.anderson228@agency.com",
+          "company": "Marketing Science",
+          "subscription_tier": "free",
+          "created_at": "2025-05-06T23:01:19.312+00:00",
+          "first_name": "Kate",
+          "last_name": "Anderson"
+        },
+        {
+          "id": "be3bf794-5553-45fa-bb83-a75c01a1d2ed",
+          "email": "charles.allen199@outlook.com",
+          "company": "Marketing Science",
+          "subscription_tier": "free",
+          "created_at": "2025-01-08T22:01:19.312+00:00",
+          "first_name": "Charles",
+          "last_name": "Allen"
+        }
+      ],
+      "primaryUser": {
+        "id": "1b27969f-70c0-4e38-83e7-acbba6d8a629",
+        "email": "christopher.ramirez90@outlook.com",
+        "company": "Marketing Science",
+        "subscription_tier": "free",
+        "created_at": "2025-03-17T22:01:19.312+00:00",
+        "first_name": "Christopher",
+        "last_name": "Ramirez"
+      },
+      "userCount": 5
+    },
+    {
+      "type": "company",
+      "name": "Digital Marketing Hub",
+      "users": [
+        {
+          "id": "45b82767-83d9-4fef-9951-3ab3a6384c12",
+          "email": "jessica.ramirez97@hotmail.com",
+          "company": "Digital Marketing Hub",
+          "subscription_tier": "free",
+          "created_at": "2025-01-05T22:01:19.312+00:00",
+          "first_name": "Jessica",
+          "last_name": "Ramirez"
+        },
+        {
+          "id": "9ba7e3a3-3375-4508-914f-7b7e719e15c1",
+          "email": "ashley.robinson108@growth.com",
+          "company": "Digital Marketing Hub",
+          "subscription_tier": "free",
+          "created_at": "2025-02-12T22:01:19.312+00:00",
+          "first_name": "Ashley",
+          "last_name": "Robinson"
+        },
+        {
+          "id": "b19780f7-7fbd-4753-8202-02cd16bbf168",
+          "email": "jennifer.clark125@marketing.com",
+          "company": "Digital Marketing Hub",
+          "subscription_tier": "free",
+          "created_at": "2025-04-26T23:01:19.312+00:00",
+          "first_name": "Jennifer",
+          "last_name": "Clark"
+        },
+        {
+          "id": "d8438ce7-9b2e-44d9-b623-6a3e7018e6b8",
+          "email": "jennifer.rodriguez@digitalmarketinghub.com",
+          "company": "Digital Marketing Hub",
+          "subscription_tier": "free",
+          "created_at": "2025-06-03T23:01:19.312+00:00",
+          "first_name": "Jennifer",
+          "last_name": "Rodriguez"
+        },
+        {
+          "id": "cccfc416-6c93-43df-bd4a-8c5487765c57",
+          "email": "ashley.johnson198@yahoo.com",
+          "company": "Digital Marketing Hub",
+          "subscription_tier": "free",
+          "created_at": "2025-01-29T22:01:19.312+00:00",
+          "first_name": "Ashley",
+          "last_name": "Johnson"
+        },
+        {
+          "id": "9c8f9cbf-dc0d-4313-b0ca-24be997f0e9e",
+          "email": "elizabeth.hill206@hotmail.com",
+          "company": "Digital Marketing Hub",
+          "subscription_tier": "free",
+          "created_at": "2025-03-20T22:01:19.312+00:00",
+          "first_name": "Elizabeth",
+          "last_name": "Hill"
+        },
+        {
+          "id": "cbee6546-1157-49a5-9e81-4f99b45f2055",
+          "email": "william.nelson226@consulting.com",
+          "company": "Digital Marketing Hub",
+          "subscription_tier": "free",
+          "created_at": "2025-04-17T23:01:19.312+00:00",
+          "first_name": "William",
+          "last_name": "Nelson"
+        }
+      ],
+      "primaryUser": {
+        "id": "45b82767-83d9-4fef-9951-3ab3a6384c12",
+        "email": "jessica.ramirez97@hotmail.com",
+        "company": "Digital Marketing Hub",
+        "subscription_tier": "free",
+        "created_at": "2025-01-05T22:01:19.312+00:00",
+        "first_name": "Jessica",
+        "last_name": "Ramirez"
+      },
+      "userCount": 7
+    },
+    {
+      "type": "company",
+      "name": "Brand Accelerator",
+      "users": [
+        {
+          "id": "71604174-fbc8-435b-9e2a-cc7b3bb8bc6e",
+          "email": "michael.robinson113@yahoo.com",
+          "company": "Brand Accelerator",
+          "subscription_tier": "free",
+          "created_at": "2025-03-26T22:01:19.312+00:00",
+          "first_name": "Michael",
+          "last_name": "Robinson"
+        },
+        {
+          "id": "c2619734-1a27-4256-b005-f97f821ca582",
+          "email": "sarah.hill@brandaccelerator.com",
+          "company": "Brand Accelerator",
+          "subscription_tier": "free",
+          "created_at": "2025-01-11T22:01:19.312+00:00",
+          "first_name": "Sarah",
+          "last_name": "Hill"
+        },
+        {
+          "id": "e5c7a238-dde0-4fb0-8b09-70f7f2c7e59b",
+          "email": "donald.hernandez135@outlook.com",
+          "company": "Brand Accelerator",
+          "subscription_tier": "free",
+          "created_at": "2024-12-31T22:01:19.312+00:00",
+          "first_name": "Donald",
+          "last_name": "Hernandez"
+        }
+      ],
+      "primaryUser": {
+        "id": "71604174-fbc8-435b-9e2a-cc7b3bb8bc6e",
+        "email": "michael.robinson113@yahoo.com",
+        "company": "Brand Accelerator",
+        "subscription_tier": "free",
+        "created_at": "2025-03-26T22:01:19.312+00:00",
+        "first_name": "Michael",
+        "last_name": "Robinson"
+      },
+      "userCount": 3
+    },
+    {
+      "type": "company",
+      "name": "Marketing Analytics",
+      "users": [
+        {
+          "id": "d085dc77-b35b-4abd-bef1-7cc29c47304e",
+          "email": "chris.baker@marketinganalytics.com",
+          "company": "Marketing Analytics",
+          "subscription_tier": "free",
+          "created_at": "2025-06-06T23:01:19.312+00:00",
+          "first_name": "Chris",
+          "last_name": "Baker"
+        },
+        {
+          "id": "591ae87d-512b-41ee-8028-9f3d0366e573",
+          "email": "janet.torres155@gmail.com",
+          "company": "Marketing Analytics",
+          "subscription_tier": "professional",
+          "created_at": "2025-03-03T22:01:19.312+00:00",
+          "first_name": "Janet",
+          "last_name": "Torres"
+        },
+        {
+          "id": "4fbc089c-68cd-496e-9d4e-5d9b1d0ce2c0",
+          "email": "christopher.rivera176@consulting.com",
+          "company": "Marketing Analytics",
+          "subscription_tier": "free",
+          "created_at": "2025-01-15T22:01:19.312+00:00",
+          "first_name": "Christopher",
+          "last_name": "Rivera"
+        }
+      ],
+      "primaryUser": {
+        "id": "d085dc77-b35b-4abd-bef1-7cc29c47304e",
+        "email": "chris.baker@marketinganalytics.com",
+        "company": "Marketing Analytics",
+        "subscription_tier": "free",
+        "created_at": "2025-06-06T23:01:19.312+00:00",
+        "first_name": "Chris",
+        "last_name": "Baker"
+      },
+      "userCount": 3
+    },
+    {
+      "type": "company",
+      "name": "Marketing Insights",
+      "users": [
+        {
+          "id": "6cb7866f-21ef-443c-b854-c2bd2c5563b3",
+          "email": "jessica.martinez131@agency.com",
+          "company": "Marketing Insights",
+          "subscription_tier": "free",
+          "created_at": "2025-03-06T22:01:19.312+00:00",
+          "first_name": "Jessica",
+          "last_name": "Martinez"
+        },
+        {
+          "id": "4002dcd3-4f97-41c5-970f-2158d559a2ce",
+          "email": "laura.mitchell149@hotmail.com",
+          "company": "Marketing Insights",
+          "subscription_tier": "professional",
+          "created_at": "2025-01-11T22:01:19.312+00:00",
+          "first_name": "Laura",
+          "last_name": "Mitchell"
+        },
+        {
+          "id": "83aa14e4-70a5-4197-a204-65a00332b903",
+          "email": "janet.lopez182@growth.com",
+          "company": "Marketing Insights",
+          "subscription_tier": "free",
+          "created_at": "2025-04-04T22:01:19.312+00:00",
+          "first_name": "Janet",
+          "last_name": "Lopez"
+        },
+        {
+          "id": "62e71bd8-6ad5-400f-82c1-66e627b46942",
+          "email": "dorothy.martinez203@hotmail.com",
+          "company": "Marketing Insights",
+          "subscription_tier": "free",
+          "created_at": "2025-05-30T23:01:19.312+00:00",
+          "first_name": "Dorothy",
+          "last_name": "Martinez"
+        },
+        {
+          "id": "88ded347-0dbe-4cad-b1d4-1b6b8e7d35fc",
+          "email": "nancy.johnson204@gmail.com",
+          "company": "Marketing Insights",
+          "subscription_tier": "professional",
+          "created_at": "2025-01-23T22:01:19.312+00:00",
+          "first_name": "Nancy",
+          "last_name": "Johnson"
+        },
+        {
+          "id": "64827885-079f-4fe0-86d1-d677e8252714",
+          "email": "sarah.white212@yahoo.com",
+          "company": "Marketing Insights",
+          "subscription_tier": "free",
+          "created_at": "2025-06-04T23:01:19.312+00:00",
+          "first_name": "Sarah",
+          "last_name": "White"
+        }
+      ],
+      "primaryUser": {
+        "id": "6cb7866f-21ef-443c-b854-c2bd2c5563b3",
+        "email": "jessica.martinez131@agency.com",
+        "company": "Marketing Insights",
+        "subscription_tier": "free",
+        "created_at": "2025-03-06T22:01:19.312+00:00",
+        "first_name": "Jessica",
+        "last_name": "Martinez"
+      },
+      "userCount": 6
+    },
+    {
+      "type": "domain",
+      "name": "attributeai.com",
+      "users": [
+        {
+          "id": "00000000-0000-0000-0000-000000000002",
+          "email": "pro@attributeai.com",
+          "company": null,
+          "subscription_tier": "professional",
+          "created_at": "2025-06-13T20:03:20.295065+00:00",
+          "first_name": null,
+          "last_name": null
+        },
+        {
+          "id": "00000000-0000-0000-0000-000000000003",
+          "email": "enterprise@attributeai.com",
+          "company": null,
+          "subscription_tier": "enterprise",
+          "created_at": "2025-06-13T20:03:20.295065+00:00",
+          "first_name": null,
+          "last_name": null
+        },
+        {
+          "id": "00000000-0000-0000-0000-000000000001",
+          "email": "demo@attributeai.com",
+          "company": null,
+          "subscription_tier": "free",
+          "created_at": "2025-06-13T20:03:20.295065+00:00",
+          "first_name": null,
+          "last_name": null
+        }
+      ],
+      "primaryUser": {
+        "id": "00000000-0000-0000-0000-000000000002",
+        "email": "pro@attributeai.com",
+        "company": null,
+        "subscription_tier": "professional",
+        "created_at": "2025-06-13T20:03:20.295065+00:00",
+        "first_name": null,
+        "last_name": null
+      },
+      "userCount": 3
+    },
+    {
+      "type": "domain",
+      "name": "attributeai.app",
+      "users": [
+        {
+          "id": "68cf92b6-9316-4734-9491-9c506dc3aeca",
+          "email": "dbtest-1750242679069@attributeai.app",
+          "company": null,
+          "subscription_tier": "free",
+          "created_at": "2025-06-18T10:31:18.699462+00:00",
+          "first_name": "Database",
+          "last_name": "Test"
+        },
+        {
+          "id": "5b7dcd35-ee1a-4e3b-a948-6aadf515cc53",
+          "email": "dbtest-1750243039510@attributeai.app",
+          "company": null,
+          "subscription_tier": "free",
+          "created_at": "2025-06-18T10:37:19.583557+00:00",
+          "first_name": "Database",
+          "last_name": "Test"
+        }
+      ],
+      "primaryUser": {
+        "id": "68cf92b6-9316-4734-9491-9c506dc3aeca",
+        "email": "dbtest-1750242679069@attributeai.app",
+        "company": null,
+        "subscription_tier": "free",
+        "created_at": "2025-06-18T10:31:18.699462+00:00",
+        "first_name": "Database",
+        "last_name": "Test"
+      },
+      "userCount": 2
+    }
+  ],
+  "segments": {
+    "trial_active": 50,
+    "trial_expired_individual": 0,
+    "trial_expired_enterprise": 0,
+    "high_usage": 143,
+    "low_usage": 30
+  },
+  "emailTemplates": {
+    "trial_active": {
+      "subject": "How's your AttributeAI trial going? 🚀",
+      "content": "Hi {firstName},\n        \nWe hope you're getting great value from AttributeAI! Your 14-day trial ends on {trialEndDate}.\n\nQuick question: What's been your favorite feature so far?\n\n🎁 SPECIAL OFFER: Complete our 2-minute feedback survey and get 50% off your first month when you upgrade!\n\n[Take Survey & Claim Discount]\n\nBest regards,\nThe AttributeAI Team"
+    },
+    "trial_expired_individual": {
+      "subject": "Your feedback = 50% off AttributeAI! 💰",
+      "content": "Hi {firstName},\n        \nYour AttributeAI trial recently ended. We'd love to hear about your experience!\n\n🎁 EXCLUSIVE OFFER: Share your feedback in our 2-minute survey and unlock 50% off your first month (just $23.50 instead of $47).\n\nThis offer expires in 7 days.\n\n[Complete Survey & Get 50% Off]\n\nQuestions? Just reply to this email.\n\nBest,\nThe AttributeAI Team"
+    },
+    "trial_expired_enterprise": {
+      "subject": "Scale your team with AttributeAI - 50% off for feedback!",
+      "content": "Hi {firstName},\n        \nWe noticed {company} had multiple team members try AttributeAI during your trial period.\n\n🏢 ENTERPRISE OFFER: Share your team's feedback and get 50% off your first month for up to 5 users ($97.50 instead of $195).\n\nPerfect for agencies and growing marketing teams!\n\n[Schedule Team Demo & Claim Discount]\n\nBest regards,\nThe AttributeAI Team"
+    },
+    "high_usage": {
+      "subject": "Power user alert! You've earned a special discount 🌟",
+      "content": "Hi {firstName},\n        \nWow! You've analyzed {keywordCount}+ keywords during your trial. You're clearly getting serious value from AttributeAI.\n\n🎁 POWER USER BONUS: Take our quick survey and get 50% off PLUS a bonus month free (2 months for $23.50!).\n\n[Claim Your Power User Discount]\n\nKeep crushing those keyword research goals!\n\nThe AttributeAI Team"
+    }
+  }
+}

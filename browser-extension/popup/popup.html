@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AttributeAI - Complete Marketing Intelligence & CRM</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="popup-container">
+        <!-- Header -->
+        <header class="popup-header">
+            <div class="logo-section">
+                <img src="../icons/icon32.png" alt="AttributeAI" class="logo">
+                <div class="title-section">
+                    <h1>AttributeAI</h1>
+                    <span class="subtitle">Marketing Intelligence & CRM</span>
+                </div>
+            </div>
+            <div class="status-indicators">
+                <div id="connection-status" class="status-badge">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Connecting...</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="popup-nav">
+            <button class="nav-tab active" data-tab="keywords">
+                <span class="tab-icon">🔍</span>
+                <span>Keywords</span>
+            </button>
+            <button class="nav-tab" data-tab="crm">
+                <span class="tab-icon">👥</span>
+                <span>CRM</span>
+            </button>
+            <button class="nav-tab" data-tab="analytics">
+                <span class="tab-icon">📊</span>
+                <span>Analytics</span>
+            </button>
+        </nav>
+
+        <!-- User Info -->
+        <div id="user-section" class="user-section hidden">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <span id="user-initials">AA</span>
+                </div>
+                <div class="user-details">
+                    <div id="user-name" class="user-name">Demo User</div>
+                    <div id="user-tier" class="user-tier">Free Plan</div>
+                </div>
+            </div>
+            <div class="quota-section">
+                <div class="quota-header">
+                    <span>Monthly Usage</span>
+                    <span id="quota-text">0 / 1000</span>
+                </div>
+                <div class="quota-bar">
+                    <div id="quota-progress" class="quota-progress"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Keywords Tab Content -->
+        <div id="keywords-tab" class="tab-content active">
+            <!-- Quick Search -->
+            <div class="search-section">
+                <div class="search-container">
+                    <input 
+                        type="text" 
+                        id="keyword-input" 
+                        placeholder="Enter keyword for AI analysis..."
+                        class="keyword-input"
+                    >
+                    <button id="analyze-btn" class="analyze-button">
+                        <span class="btn-icon">🧠</span>
+                        <span class="btn-text">Analyze</span>
+                    </button>
+                </div>
+                <div class="search-suggestions" id="search-suggestions"></div>
+            </div>
+
+            <!-- Page Analysis -->
+            <div class="page-analysis-section">
+                <button id="analyze-page-btn" class="page-analysis-btn">
+                    <span class="btn-icon">📊</span>
+                    <span>Analyze Current Page</span>
+                </button>
+            </div>
+
+            <!-- Results Section -->
+            <div id="results-section" class="results-section hidden">
+                <div class="results-header">
+                    <h3>Keyword Analysis</h3>
+                    <button id="export-btn" class="export-btn">Export</button>
+                </div>
+                
+                <div class="keyword-result">
+                    <div class="keyword-title" id="result-keyword">digital marketing</div>
+                    <div class="metrics-grid">
+                        <div class="metric">
+                            <div class="metric-value" id="search-volume">12,000</div>
+                            <div class="metric-label">Search Volume</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" id="difficulty">65</div>
+                            <div class="metric-label">Difficulty</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" id="cpc">$3.25</div>
+                            <div class="metric-label">CPC</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" id="intent">Commercial</div>
+                            <div class="metric-label">Intent</div>
+                        </div>
+                    </div>
+                    
+                    <div class="ai-insights">
+                        <div class="insight-item">
+                            <div class="insight-source">
+                                <span class="ai-badge claude">Claude</span>
+                                <span class="confidence">94%</span>
+                            </div>
+                            <div class="insight-text" id="claude-insight">
+                                Strategic keyword with strong commercial intent...
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="action-btn primary" id="view-full-analysis">
+                            <span>View Full Analysis</span>
+                            <span class="btn-arrow">→</span>
+                        </button>
+                        <button class="action-btn secondary" id="save-keyword">
+                            <span>Save Keyword</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CRM Tab Content -->
+        <div id="crm-tab" class="tab-content">
+            <div class="crm-overview">
+                <div class="current-site-info">
+                    <h3>🌐 Current Site Analysis</h3>
+                    <div class="site-card">
+                        <div class="site-domain" id="current-domain">example.com</div>
+                        <div class="site-status" id="site-status">
+                            <span class="status-indicator unknown"></span>
+                            <span>Analyzing...</span>
+                        </div>
+                        <div class="site-actions">
+                            <button class="site-action-btn" id="add-to-crm">
+                                <span class="icon">➕</span>
+                                <span>Add to CRM</span>
+                            </button>
+                            <button class="site-action-btn" id="view-contacts">
+                                <span class="icon">👥</span>
+                                <span>Find Contacts</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="crm-quick-actions">
+                    <h3>⚡ Quick Actions</h3>
+                    <div class="quick-actions-grid">
+                        <button class="quick-crm-action" id="log-website-visit">
+                            <span class="icon">📝</span>
+                            <span>Log Visit</span>
+                        </button>
+                        <button class="quick-crm-action" id="create-contact">
+                            <span class="icon">👤</span>
+                            <span>New Contact</span>
+                        </button>
+                        <button class="quick-crm-action" id="create-deal">
+                            <span class="icon">💰</span>
+                            <span>New Deal</span>
+                        </button>
+                        <button class="quick-crm-action" id="schedule-followup">
+                            <span class="icon">📅</span>
+                            <span>Schedule</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="recent-activities">
+                    <h3>📋 Recent Activities</h3>
+                    <div class="activities-list" id="activities-list">
+                        <div class="activity-item">
+                            <div class="activity-icon">📝</div>
+                            <div class="activity-content">
+                                <div class="activity-title">Visited stripe.com</div>
+                                <div class="activity-time">2 hours ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">👤</div>
+                            <div class="activity-content">
+                                <div class="activity-title">Added John Smith to CRM</div>
+                                <div class="activity-time">1 day ago</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Tab Content -->
+        <div id="analytics-tab" class="tab-content">
+            <div class="analytics-overview">
+                <div class="analytics-summary">
+                    <h3>📊 Weekly Summary</h3>
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <div class="summary-value">47</div>
+                            <div class="summary-label">Keywords Analyzed</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-value">12</div>
+                            <div class="summary-label">Sites Visited</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-value">8</div>
+                            <div class="summary-label">Contacts Added</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-value">3</div>
+                            <div class="summary-label">Deals Created</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="top-insights">
+                    <h3>🎯 Top Insights</h3>
+                    <div class="insights-list">
+                        <div class="insight-card">
+                            <div class="insight-icon">🚀</div>
+                            <div class="insight-content">
+                                <div class="insight-title">SaaS keywords performing well</div>
+                                <div class="insight-desc">65% higher conversion potential</div>
+                            </div>
+                        </div>
+                        <div class="insight-card">
+                            <div class="insight-icon">📈</div>
+                            <div class="insight-content">
+                                <div class="insight-title">Lead generation trending up</div>
+                                <div class="insight-desc">+23% from last week</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loading-section" class="loading-section hidden">
+            <div class="loading-animation">
+                <div class="loading-spinner"></div>
+            </div>
+            <div class="loading-text">
+                <div class="loading-title">Analyzing with AI...</div>
+                <div class="loading-subtitle">Multi-model intelligence in progress</div>
+            </div>
+            <div class="loading-progress">
+                <div class="progress-step active">
+                    <span class="step-icon">🧠</span>
+                    <span>Claude Analysis</span>
+                </div>
+                <div class="progress-step">
+                    <span class="step-icon">⚡</span>
+                    <span>GPT-4 Insights</span>
+                </div>
+                <div class="progress-step">
+                    <span class="step-icon">🔮</span>
+                    <span>Gemini Predictions</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Actions -->
+        <div class="main-actions">
+            <button class="main-action-btn primary" id="open-dashboard">
+                <span class="action-icon">🏠</span>
+                <span>Open Dashboard</span>
+            </button>
+            <button class="main-action-btn secondary" id="open-crm-dashboard">
+                <span class="action-icon">📊</span>
+                <span>CRM Dashboard</span>
+            </button>
+        </div>
+
+        <!-- Footer -->
+        <footer class="popup-footer">
+            <div class="footer-links">
+                <a href="#" id="settings-link">Settings</a>
+                <a href="#" id="help-link">Help</a>
+                <a href="#" id="feedback-link">Feedback</a>
+            </div>
+            <div class="version-info">
+                <span>v2.0.0</span>
+                <span class="competitive-edge">The HubSpot Killer</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>

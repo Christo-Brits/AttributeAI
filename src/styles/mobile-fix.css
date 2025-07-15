@@ -1,0 +1,219 @@
+/* 
+=================================================================
+MOBILE CSS FIXES FOR ATTRIBUTEAI
+Addresses bottom layout issues and mobile viewport problems
+=================================================================
+*/
+
+/* Fix 100vh mobile viewport bug (WebKit/Safari issue) */
+html {
+  height: -webkit-fill-available;
+}
+
+body {
+  min-height: 100vh;
+  /* Mobile viewport bug fix */
+  min-height: -webkit-fill-available;
+  /* Ensure proper mobile scrolling */
+  overflow-x: hidden;
+  /* Prevent horizontal scroll */
+  -webkit-overflow-scrolling: touch;
+  /* Smooth scrolling on iOS */
+}
+
+.App {
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  position: relative;
+  /* Ensure proper stacking context */
+}
+
+/* Fix floating elements on mobile */
+.floating-chat-button {
+  position: fixed !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  z-index: 9999 !important;
+  /* Ensure it's always on top */
+}
+
+/* Fix bottom navigation issues */
+.bottom-tab-bar {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 1000 !important;
+  /* Add safe area padding for modern devices */
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Fix mobile navigation positioning */
+.mobile-navigation {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 1000 !important;
+  /* Add safe area padding for notched devices */
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* Ensure main content doesn't get hidden behind fixed elements */
+.main-content-mobile {
+  padding-top: calc(80px + env(safe-area-inset-top, 0px)) !important;
+  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px)) !important;
+  min-height: calc(100vh - 160px);
+  min-height: calc(100vh - 160px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+}
+
+/* Fix overlay positioning issues */
+.mobile-menu {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  z-index: 9998 !important;
+  /* Below floating chat button */
+}
+
+/* Prevent content from being cut off at bottom */
+.mobile-container {
+  padding-bottom: 100px !important;
+  /* Extra space at bottom */
+}
+
+/* Fix viewport height issues for modals and full-screen elements */
+.full-height-mobile {
+  height: 100vh;
+  height: -webkit-fill-available;
+  /* iOS Safari fix */
+}
+
+/* Fix iOS Safari bottom bar issues */
+@supports (-webkit-touch-callout: none) {
+  .mobile-safe-area {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  .fixed-bottom-element {
+    bottom: env(safe-area-inset-bottom, 0px) !important;
+  }
+}
+
+/* Prevent zoom on input focus (iOS Safari) */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+select,
+textarea {
+  font-size: 16px !important;
+  /* Prevents zoom on iOS */
+}
+
+/* Fix sticky footer issues */
+.sticky-footer {
+  position: sticky !important;
+  bottom: 0 !important;
+  margin-top: auto !important;
+}
+
+/* Ensure proper scroll behavior */
+.scrollable-content {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  /* Smooth scrolling on iOS */
+}
+
+/* Fix Android Chrome viewport issues */
+@media screen and (max-height: 640px) {
+  .mobile-navigation {
+    height: 60px !important;
+  }
+  
+  .main-content-mobile {
+    padding-top: 70px !important;
+    padding-bottom: 70px !important;
+  }
+}
+
+/* Very small screens (iPhone SE, etc.) */
+@media screen and (max-height: 568px) {
+  .mobile-navigation {
+    height: 50px !important;
+  }
+  
+  .main-content-mobile {
+    padding-top: 60px !important;
+    padding-bottom: 60px !important;
+  }
+  
+  .floating-chat-button {
+    bottom: 15px !important;
+    right: 15px !important;
+    transform: scale(0.9) !important;
+  }
+}
+
+/* Landscape orientation fixes */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+  .mobile-navigation {
+    height: 50px !important;
+  }
+  
+  .bottom-tab-bar {
+    height: 50px !important;
+  }
+  
+  .main-content-mobile {
+    padding-top: 60px !important;
+    padding-bottom: 60px !important;
+  }
+}
+
+/* Fix for devices with dynamic viewports (mobile browsers) */
+@media screen and (max-width: 768px) {
+  .viewport-height-fix {
+    height: 100vh;
+    height: -webkit-fill-available;
+  }
+  
+  /* Ensure content is always scrollable */
+  .mobile-page {
+    min-height: calc(100vh - 160px);
+  }
+  
+  /* Fix for bottom sheet style components */
+  .bottom-sheet {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 9997 !important;
+    max-height: calc(100vh - 100px);
+  }
+}
+
+/* Debug helper - remove in production */
+.mobile-debug {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  background: rgba(255, 0, 0, 0.8);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  z-index: 10000;
+}
+
+/* Hide debug on desktop */
+@media screen and (min-width: 769px) {
+  .mobile-debug {
+    display: none !important;
+  }
+}

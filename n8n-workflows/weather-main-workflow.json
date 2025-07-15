@@ -1,0 +1,145 @@
+{
+  "name": "AttributeAI Weather Intelligence - Main",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      },
+      "id": "schedule-trigger",
+      "name": "Every 30 Minutes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://api.openweathermap.org/data/2.5/weather",
+        "options": {
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "q",
+                "value": "New York,US"
+              },
+              {
+                "name": "appid",
+                "value": "{{ $env.OPENWEATHER_API_KEY }}"
+              },
+              {
+                "name": "units",
+                "value": "imperial"
+              }
+            ]
+          }
+        }
+      },
+      "id": "weather-api",
+      "name": "Get Weather Data",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// AttributeAI Weather Intelligence Processing\nconst weatherData = $input.all()[0].json;\n\n// Helper function to get weather icon\nfunction getWeatherIcon(condition) {\n  const icons = {\n    'Clear': '☀️',\n    'Clouds': '☁️',\n    'Rain': '🌧️',\n    'Drizzle': '🌦️',\n    'Thunderstorm': '⛈️',\n    'Snow': '❄️',\n    'Mist': '🌫️',\n    'Fog': '🌫️',\n    'Haze': '🌫️'\n  };\n  return icons[condition] || '🌤️';\n}\n\n// Calculate spend recommendation based on weather\nfunction calculateSpendRecommendation(data) {\n  const temp = data.main.temp;\n  const condition = data.weather[0].main;\n  const humidity = data.main.humidity;\n  \n  let change = 0;\n  let reason = 'Normal weather conditions - maintain current spend';\n  let confidence = 75;\n  \n  // Temperature-based recommendations\n  if (temp > 90) {\n    change = 30;\n    reason = 'Extreme heat drives high demand for cooling products and indoor activities';\n    confidence = 95;\n  } else if (temp > 80) {\n    change = 20;\n    reason = 'Hot weather increases engagement for summer products and outdoor activities';\n    confidence = 92;\n  } else if (temp > 70) {\n    change = 10;\n    reason = 'Warm weather boosts outdoor shopping and lifestyle product interest';\n    confidence = 87;\n  } else if (temp < 35) {\n    change = -20;\n    reason = 'Very cold weather reduces foot traffic - focus on indoor/comfort products';\n    confidence = 89;\n  } else if (temp < 50) {\n    change = -10;\n    reason = 'Cold weather may reduce outdoor activities and shopping';\n    confidence = 84;\n  }\n  \n  // Weather condition adjustments\n  if (condition === 'Rain' || condition === 'Drizzle') {\n    change -= 8;\n    reason = 'Rainy weather - shift budget to indoor activities, delivery services, and comfort products';\n    confidence = 91;\n  } else if (condition === 'Thunderstorm') {\n    change -= 15;\n    reason = 'Severe weather - reduce outdoor advertising, focus on essential products';\n    confidence = 93;\n  } else if (condition === 'Clear' && temp > 65 && temp < 85) {\n    change += 8;\n    reason = 'Perfect weather conditions - ideal for outdoor product campaigns and lifestyle marketing';\n    confidence = 96;\n  } else if (condition === 'Snow') {\n    change -= 12;\n    reason = 'Snow conditions - promote winter products, indoor entertainment, and delivery services';\n    confidence = 88;\n  }\n  \n  // Humidity adjustments for certain conditions\n  if (humidity > 80 && temp > 75) {\n    change += 5;\n    reason += ' (High humidity increases demand for cooling solutions)';\n  }\n  \n  // Ensure reasonable bounds\n  change = Math.max(-40, Math.min(40, change));\n  \n  return { change, reason, confidence };\n}\n\n// Generate weather-based alerts\nfunction generateAlerts(data) {\n  const alerts = [];\n  const temp = data.main.temp;\n  const condition = data.weather[0].main;\n  const windSpeed = data.wind?.speed || 0;\n  \n  // Temperature alerts\n  if (temp > 95) {\n    alerts.push({\n      type: 'critical',\n      icon: '🔥',\n      message: 'Extreme heat warning - maximize cooling product campaigns and hydration ads'\n    });\n  } else if (temp > 85) {\n    alerts.push({\n      type: 'opportunity',\n      icon: '☀️',\n      message: 'Hot weather opportunity - increase summer product advertising by 25-35%'\n    });\n  }\n  \n  // Perfect weather alerts\n  if (condition === 'Clear' && temp > 65 && temp < 80) {\n    alerts.push({\n      type: 'opportunity',\n      icon: '🎯',\n      message: 'Perfect weather conditions - ideal time for outdoor campaigns and lifestyle products'\n    });\n  }\n  \n  // Weather warning alerts\n  if (condition === 'Thunderstorm') {\n    alerts.push({\n      type: 'warning',\n      icon: '⛈️',\n      message: 'Severe weather alert - pause outdoor campaigns, focus on indoor/essential products'\n    });\n  } else if (condition === 'Rain') {\n    alerts.push({\n      type: 'adjustment',\n      icon: '🌧️',\n      message: 'Rainy conditions - shift marketing to indoor activities, delivery, and comfort products'\n    });\n  }\n  \n  // Wind alerts\n  if (windSpeed > 20) {\n    alerts.push({\n      type: 'warning',\n      icon: '💨',\n      message: 'High winds detected - reduce outdoor event promotion, focus on indoor alternatives'\n    });\n  }\n  \n  // Cold weather alerts\n  if (temp < 32) {\n    alerts.push({\n      type: 'adjustment',\n      icon: '❄️',\n      message: 'Freezing conditions - promote winter gear, indoor entertainment, and warm products'\n    });\n  }\n  \n  return alerts;\n}\n\n// Process the weather data\nconst processed = {\n  current: {\n    temperature: Math.round(weatherData.main.temp),\n    condition: weatherData.weather[0].description\n      .split(' ')\n      .map(word => word.charAt(0).toUpperCase() + word.slice(1))\n      .join(' '),\n    icon: getWeatherIcon(weatherData.weather[0].main),\n    humidity: weatherData.main.humidity,\n    windSpeed: Math.round(weatherData.wind?.speed || 0),\n    pressure: weatherData.main.pressure,\n    feelsLike: Math.round(weatherData.main.feels_like),\n    location: `${weatherData.name}, ${weatherData.sys.country}`\n  },\n  recommendation: calculateSpendRecommendation(weatherData),\n  alerts: generateAlerts(weatherData),\n  metadata: {\n    timestamp: new Date().toISOString(),\n    source: 'OpenWeatherMap',\n    updateFrequency: '30 minutes',\n    confidence: 'High',\n    dataPoints: {\n      temperature: weatherData.main.temp,\n      condition: weatherData.weather[0].main,\n      humidity: weatherData.main.humidity,\n      windSpeed: weatherData.wind?.speed || 0,\n      pressure: weatherData.main.pressure\n    }\n  }\n};\n\nreturn [{ json: processed }];"
+      },
+      "id": "weather-processor",
+      "name": "Process Weather Intelligence",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=C:/Users/chris/Projects/AttributeAI/weather-data/dashboard.json",
+        "dataPropertyName": "json",
+        "options": {
+          "encoding": "utf8"
+        }
+      },
+      "id": "save-dashboard",
+      "name": "Save Dashboard Data",
+      "type": "n8n-nodes-base.writeFile",
+      "typeVersion": 1,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3001/api/weather/health",
+        "options": {
+          "timeout": 5000
+        }
+      },
+      "id": "notify-api",
+      "name": "Notify AttributeAI API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [900, 480],
+      "continueOnFail": true
+    }
+  ],
+  "connections": {
+    "Every 30 Minutes": {
+      "main": [
+        [
+          {
+            "node": "Get Weather Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Weather Data": {
+      "main": [
+        [
+          {
+            "node": "Process Weather Intelligence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Weather Intelligence": {
+      "main": [
+        [
+          {
+            "node": "Save Dashboard Data",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Notify AttributeAI API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-06-16T10:27:00.000Z",
+      "updatedAt": "2024-06-16T10:27:00.000Z",
+      "id": "weather-intelligence",
+      "name": "Weather Intelligence"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-06-16T10:27:00.000Z",
+  "versionId": "1"
+}

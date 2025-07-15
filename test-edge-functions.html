@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Supabase Edge Functions</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <h1>Supabase Edge Functions Test</h1>
+    <div id="results"></div>
+
+    <script>
+        // Your Supabase configuration
+        const supabaseUrl = 'https://xpyfoutwwjslivrmbflm.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhweWZvdXR3d2pzbGl2cm1iZmxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk4NDMyODcsImV4cCI6MjA2NTQxOTI4N30.SmuHFfvlbgvU0rWsPZyn-UuZ3l135g3nKkZJqFA_bpc';
+        
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+        const results = document.getElementById('results');
+
+        async function testFunctions() {
+            results.innerHTML = '<h2>Testing Edge Functions...</h2>';
+
+            // Test 1: Claude Chat
+            try {
+                results.innerHTML += '<p>Testing Claude Chat...</p>';
+                const { data, error } = await supabase.functions.invoke('claude-chat', {
+                    body: { 
+                        message: 'Hello! Can you confirm you are working through Supabase Edge Functions?',
+                        context: 'Testing Edge Function integration'
+                    }
+                });
+
+                if (error) throw error;
+                results.innerHTML += '<p style="color: green">✅ Claude Chat: ' + (data.response || 'Working!').substring(0, 100) + '...</p>';
+            } catch (error) {
+                results.innerHTML += '<p style="color: red">❌ Claude Chat Error: ' + error.message + '</p>';
+            }
+
+            // Test 2: Website Analysis
+            try {
+                results.innerHTML += '<p>Testing Website Analysis...</p>';
+                const { data, error } = await supabase.functions.invoke('analyze-website', {
+                    body: { url: 'https://example.com' }
+                });
+
+                if (error) throw error;
+                results.innerHTML += '<p style="color: green">✅ Website Analysis: SEO Score = ' + (data.analysis?.seoScore || 'N/A') + '</p>';
+            } catch (error) {
+                results.innerHTML += '<p style="color: red">❌ Website Analysis Error: ' + error.message + '</p>';
+            }
+
+            results.innerHTML += '<h3>Test Complete!</h3>';
+        }
+
+        // Run tests when page loads
+        testFunctions();
+    </script>
+</body>
+</html>

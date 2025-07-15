@@ -1,0 +1,26 @@
+# Netlify Ignore - Exclude server-side code from frontend builds
+server/
+*.server.js
+api-proxy.js
+
+# Development files
+*.log
+.env.local
+.env.development
+.env.test
+
+# Testing
+coverage/
+.nyc_output
+
+# Build tools
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary
+*.tmp
+*.temp

@@ -1,0 +1,170 @@
+{
+  "name": "Weather-Based Customer Segmentation",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 */6 * * *"
+            }
+          ]
+        }
+      },
+      "id": "7f6e8901-2345-6789-0123-678901234567",
+      "name": "Every 6 Hours",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3001/api/user-locations",
+        "requestMethod": "GET",
+        "options": {
+          "headers": {
+            "Authorization": "Bearer YOUR_SUPABASE_KEY"
+          }
+        }
+      },
+      "id": "8071901a-3456-789a-1234-789012345678",
+      "name": "Get User Locations",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "9182a12b-4567-890b-2345-890123456789",
+      "name": "Split Locations",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "https://api.openweathermap.org/data/2.5/weather",
+        "qs": {
+          "lat": "={{$json.latitude}}",
+          "lon": "={{$json.longitude}}",
+          "appid": "YOUR_OPENWEATHER_API_KEY",
+          "units": "metric"
+        }
+      },
+      "id": "a293b23c-5678-901c-3456-901234567890",
+      "name": "Get Weather for Location",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "headerAuth",
+        "requestMethod": "POST",
+        "jsonParameters": true,
+        "bodyParametersJson": "{\n  \"model\": \"claude-3-sonnet-20240229\",\n  \"max_tokens\": 1500,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Analyze this weather data for marketing segmentation:\\n\\nLocation: {{$('Split Locations').first().json.city}}, {{$('Split Locations').first().json.country}}\\nWeather: {{$json.main.temp}}°C, {{$json.weather[0].description}}\\nHumidity: {{$json.main.humidity}}%\\nWind: {{$json.wind.speed}}m/s\\nTime: {{new Date().toISOString()}}\\n\\nProvide customer segmentation insights including:\\n1. Behavioral patterns likely for this weather\\n2. Product/service interests\\n3. Optimal messaging tone\\n4. Best contact times\\n5. Seasonal marketing opportunities\\n\\nFormat as JSON with clear segments and actionable recommendations.\"\n    }\n  ]\n}",
+        "options": {
+          "headers": {
+            "Content-Type": "application/json",
+            "anthropic-version": "2023-06-01"
+          }
+        },
+        "headerParametersJson": "{\"x-api-key\": \"YOUR_CLAUDE_API_KEY\"}"
+      },
+      "id": "b3a4c34d-6789-012d-4567-012345678901",
+      "name": "Generate Segmentation",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1120, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3001/api/customer-segments",
+        "requestMethod": "POST",
+        "jsonParameters": true,
+        "bodyParametersJson": "{\n  \"location\": {\n    \"city\": \"{{$('Split Locations').first().json.city}}\",\n    \"country\": \"{{$('Split Locations').first().json.country}}\",\n    \"latitude\": {{$('Split Locations').first().json.latitude}},\n    \"longitude\": {{$('Split Locations').first().json.longitude}}\n  },\n  \"weather\": {\n    \"temperature\": {{$('Get Weather for Location').first().json.main.temp}},\n    \"description\": \"{{$('Get Weather for Location').first().json.weather[0].description}}\",\n    \"humidity\": {{$('Get Weather for Location').first().json.main.humidity}},\n    \"windSpeed\": {{$('Get Weather for Location').first().json.wind.speed}}\n  },\n  \"segmentation\": {{$json.content[0].text}},\n  \"timestamp\": \"{{new Date().toISOString()}}\",\n  \"users_affected\": {{$('Split Locations').first().json.user_count}}\n}",
+        "options": {
+          "headers": {
+            "Content-Type": "application/json"
+          }
+        }
+      },
+      "id": "c4b5d45e-789a-123e-5678-123456789012",
+      "name": "Store Segments",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1340, 300]
+    }
+  ],
+  "connections": {
+    "Every 6 Hours": {
+      "main": [
+        [
+          {
+            "node": "Get User Locations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get User Locations": {
+      "main": [
+        [
+          {
+            "node": "Split Locations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Locations": {
+      "main": [
+        [
+          {
+            "node": "Get Weather for Location",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Weather for Location": {
+      "main": [
+        [
+          {
+            "node": "Generate Segmentation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Segmentation": {
+      "main": [
+        [
+          {
+            "node": "Store Segments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-06-16T00:00:00.000Z",
+  "updatedAt": "2025-06-16T00:00:00.000Z",
+  "settings": {},
+  "staticData": null,
+  "pinData": {},
+  "versionId": "1",
+  "triggerCount": 1,
+  "tags": []
+}

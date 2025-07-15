@@ -1,0 +1,32 @@
+🔑 GOOGLE OAUTH FIX - QUICK REFERENCE CARD
+==========================================
+
+🎯 YOUR GOOGLE CLIENT ID:
+669005398506-s4s400hvq0c5oh5shs407tdtl9l7gnj7.apps.googleusercontent.com
+
+📋 STEP-BY-STEP INSTRUCTIONS:
+============================
+
+1. 🌐 Google Cloud Console is opening...
+   Look for Client ID: 669005398506-s4s400hvq0c5oh5shs407tdtl9l7gnj7
+
+2. 📝 Click on that Client ID to edit it
+
+3. 🔧 Scroll to "Authorized redirect URIs"
+
+4. ➕ Click "+ ADD URI" and add these 3 URLs EXACTLY:
+
+   ✅ https://xpyfoutwwjslivrmbflm.supabase.co/auth/v1/callback
+   ✅ https://leafy-biscotti-c87e93.netlify.app/auth/callback
+   ✅ http://localhost:3000/auth/callback
+
+5. 💾 Click "SAVE"
+
+6. 🧪 Test at: https://leafy-biscotti-c87e93.netlify.app
+
+🎯 SUCCESS = Google login works and redirects to YOUR domain
+❌ FAIL = Still goes to localhost or shows error
+
+⚠️ CRITICAL: Copy URLs exactly - no spaces, typos, or extra characters!
+
+🚀 This fix will solve the localhost redirect issue permanently!

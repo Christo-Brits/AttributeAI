@@ -1,0 +1,168 @@
+{
+  "name": "Weather Customer Segmentation",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6
+            }
+          ]
+        }
+      },
+      "id": "1",
+      "name": "Every 6 Hours",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3001/api/user-locations",
+        "options": {
+          "headers": {
+            "Authorization": "Bearer YOUR_SUPABASE_KEY"
+          }
+        }
+      },
+      "id": "2",
+      "name": "Get User Locations",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "3",
+      "name": "Split Locations",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://api.openweathermap.org/data/2.5/weather",
+        "options": {
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "lat",
+                "value": "={{ $json.latitude }}"
+              },
+              {
+                "name": "lon",
+                "value": "={{ $json.longitude }}"
+              },
+              {
+                "name": "appid",
+                "value": "YOUR_OPENWEATHER_API_KEY"
+              },
+              {
+                "name": "units",
+                "value": "metric"
+              }
+            ]
+          }
+        }
+      },
+      "id": "4",
+      "name": "Get Weather for Location",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Generate customer segmentation based on weather\nconst locationData = $('Split Locations').first().json;\nconst weatherData = $input.all()[0].json;\n\n// Analyze weather patterns for customer behavior\nfunction analyzeCustomerBehavior(weather, location) {\n  const temp = weather.main.temp;\n  const condition = weather.weather[0].main;\n  const humidity = weather.main.humidity;\n  \n  const segments = {\n    weatherSensitive: {\n      size: 0,\n      characteristics: [],\n      recommendations: []\n    },\n    opportunistic: {\n      size: 0,\n      characteristics: [],\n      recommendations: []\n    },\n    stable: {\n      size: 0,\n      characteristics: [],\n      recommendations: []\n    }\n  };\n  \n  // Weather-sensitive segment (30-40%)\n  if (condition === 'Rain' || temp < 5 || temp > 30) {\n    segments.weatherSensitive.size = 35;\n    segments.weatherSensitive.characteristics = [\n      'Highly responsive to weather changes',\n      'Adjusts purchasing based on conditions',\n      'Higher engagement during extreme weather'\n    ];\n    segments.weatherSensitive.recommendations = [\n      'Target with weather-specific product recommendations',\n      'Send timely alerts for weather-related products',\n      'Adjust pricing based on weather demand'\n    ];\n  }\n  \n  // Opportunistic segment (25-35%)\n  if (condition === 'Clear' && temp > 15 && temp < 25) {\n    segments.opportunistic.size = 30;\n    segments.opportunistic.characteristics = [\n      'Takes advantage of good weather',\n      'Outdoor activity focused',\n      'Higher spending during pleasant weather'\n    ];\n    segments.opportunistic.recommendations = [\n      'Promote outdoor products and experiences',\n      'Increase marketing during good weather',\n      'Focus on lifestyle and leisure categories'\n    ];\n  }\n  \n  // Stable segment (30-45%)\n  segments.stable.size = 35;\n  segments.stable.characteristics = [\n    'Consistent behavior regardless of weather',\n    'Regular purchasing patterns',\n    'Less influenced by weather conditions'\n  ];\n  segments.stable.recommendations = [\n    'Maintain consistent messaging',\n    'Focus on routine product categories',\n    'Use weather data for timing optimization only'\n  ];\n  \n  return segments;\n}\n\nconst segmentation = {\n  location: {\n    city: locationData.city,\n    country: locationData.country,\n    latitude: locationData.latitude,\n    longitude: locationData.longitude\n  },\n  weather: {\n    temperature: weatherData.main.temp,\n    condition: weatherData.weather[0].description,\n    humidity: weatherData.main.humidity,\n    windSpeed: weatherData.wind?.speed || 0\n  },\n  segments: analyzeCustomerBehavior(weatherData, locationData),\n  usersAffected: locationData.user_count,\n  timestamp: new Date().toISOString(),\n  confidence: 0.82\n};\n\nreturn [{ json: segmentation }];"
+      },
+      "id": "5",
+      "name": "Generate Segmentation",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1120, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3001/api/customer-segments",
+        "requestMethod": "POST",
+        "jsonParameters": true,
+        "bodyParametersJson": "={{ JSON.stringify($json) }}",
+        "options": {
+          "headers": {
+            "Content-Type": "application/json"
+          }
+        }
+      },
+      "id": "6",
+      "name": "Store Segments",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1340, 300]
+    }
+  ],
+  "connections": {
+    "Every 6 Hours": {
+      "main": [
+        [
+          {
+            "node": "Get User Locations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get User Locations": {
+      "main": [
+        [
+          {
+            "node": "Split Locations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Locations": {
+      "main": [
+        [
+          {
+            "node": "Get Weather for Location",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Weather for Location": {
+      "main": [
+        [
+          {
+            "node": "Generate Segmentation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Segmentation": {
+      "main": [
+        [
+          {
+            "node": "Store Segments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

@@ -1,0 +1,88 @@
+count,\n  timestamp: new Date().toISOString(),\n  confidence: 0.87,\n  recommendations: {\n    immediate: [\n      'Adjust email send times based on engagement multipliers',\n      'Modify social media posting frequency',\n      'Update search ad bidding strategies',\n      'Optimize conversion funnel for weather conditions'\n    ],\n    strategic: [\n      'Develop weather-specific customer personas',\n      'Create segment-targeted product bundles',\n      'Build weather-responsive marketing automation',\n      'Implement dynamic pricing based on weather demand'\n    ]\n  }\n};\n\nreturn [{ json: segmentation }];"
+      },
+      "id": "5",
+      "name": "Generate Segmentation",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1120, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3001/api/customer-segments",
+        "requestMethod": "POST",
+        "jsonParameters": true,
+        "bodyParametersJson": "={{ JSON.stringify($json) }}",
+        "options": {
+          "headers": {
+            "Content-Type": "application/json"
+          }
+        }
+      },
+      "id": "6",
+      "name": "Store Segments",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1340, 300]
+    }
+  ],
+  "connections": {
+    "Every 6 Hours": {
+      "main": [
+        [
+          {
+            "node": "Get User Locations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get User Locations": {
+      "main": [
+        [
+          {
+            "node": "Split Locations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Locations": {
+      "main": [
+        [
+          {
+            "node": "Get Weather for Location",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Weather for Location": {
+      "main": [
+        [
+          {
+            "node": "Generate Segmentation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Segmentation": {
+      "main": [
+        [
+          {
+            "node": "Store Segments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

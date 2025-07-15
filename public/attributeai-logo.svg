@@ -1,0 +1,23 @@
+<svg width="512" height="128" viewBox="0 0 512 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Hexagonal Icon -->
+  <g transform="translate(16, 16)">
+    <!-- Hexagon outline -->
+    <path d="M24 8.6603L48 0L72 8.6603V25.9808L48 34.641L24 25.9808V8.6603Z" stroke="white" stroke-width="3" fill="none"/>
+    <path d="M24 69.3397L48 96L72 69.3397V52.0192L48 61.359L24 52.0192V69.3397Z" stroke="white" stroke-width="3" fill="none"/>
+    <path d="M8.6603 24L0 48L8.6603 72L25.9808 72L34.641 48L25.9808 24H8.6603Z" stroke="white" stroke-width="3" fill="none"/>
+    <path d="M69.3397 24L96 48L69.3397 72L52.0192 72L61.359 48L52.0192 24H69.3397Z" stroke="white" stroke-width="3" fill="none"/>
+    
+    <!-- Center hexagon -->
+    <path d="M32 32L48 24L64 32V48L48 56L32 48V32Z" stroke="white" stroke-width="3" fill="none"/>
+    
+    <!-- A Letter -->
+    <path d="M40 44L48 28L56 44M42 40H54" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  
+  <!-- ATTRIBUTEAI Text -->
+  <g transform="translate(128, 32)">
+    <text x="0" y="24" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="32" font-weight="700" fill="white" letter-spacing="-0.02em">
+      ATTRIBUTEAI
+    </text>
+  </g>
+</svg>

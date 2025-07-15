@@ -1,0 +1,42 @@
+🔍 OAUTH REDIRECT ISSUE - ROOT CAUSE ANALYSIS
+============================================
+
+🚨 PROBLEM: Still redirecting to localhost:3000
+
+🎯 LIKELY CAUSES:
+
+1. 🔧 SUPABASE SITE URL CONFIGURATION
+   - Supabase "Site URL" setting may still be localhost:3000
+   - This overrides all other redirect settings
+   - Location: Auth > URL Configuration
+
+2. 🔗 SUPABASE REDIRECT URLs
+   - Additional redirect URLs not configured in Supabase
+   - Need to add production domains to allowed redirects
+   - Location: Auth > URL Configuration
+
+3. 🌐 BROWSER CACHE
+   - OAuth tokens/sessions cached from localhost testing
+   - Old redirect URLs cached in browser
+   - Solution: Clear all data for your sites
+
+4. 📊 ENVIRONMENT MISMATCH
+   - Production build using wrong environment variables
+   - .env.production not being used correctly on Netlify
+
+🚀 IMMEDIATE ACTIONS:
+
+✅ Check Supabase Site URL (most likely culprit)
+✅ Check Supabase Additional Redirect URLs  
+✅ Clear browser cache completely
+✅ Test in incognito/private window
+
+🎯 CRITICAL SETTINGS TO VERIFY:
+
+Supabase Auth > URL Configuration:
+- Site URL: https://leafy-biscotti-c87e93.netlify.app
+- Additional redirect URLs: 
+  * https://attributeai.app/**
+  * https://leafy-biscotti-c87e93.netlify.app/**
+
+🔧 If Site URL is localhost:3000, that's your problem!

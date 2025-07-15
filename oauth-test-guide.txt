@@ -1,0 +1,22 @@
+REM Quick commands to test OAuth
+
+echo Testing OAuth on AttributeAI...
+echo.
+echo Step 1: Start the dev server
+echo Run: npm start
+echo.
+echo Step 2: Once server is running, your browser will open
+echo.
+echo Step 3: Click Sign In or Login
+echo.
+echo Step 4: Click "Continue with Google"
+echo.
+echo Step 5: Complete Google sign-in
+echo.
+echo The OAuth flow:
+echo 1. localhost:3000 (your app)
+echo 2. accounts.google.com (Google sign-in)
+echo 3. localhost:3000/auth/callback (automatic redirect)
+echo 4. localhost:3000/dashboard (final destination)
+echo.
+echo DO NOT navigate directly to /auth/callback!

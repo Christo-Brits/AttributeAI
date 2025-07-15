@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase, createUserProfile, onAuthStateChange, isSupabaseConfigured } from '../../lib/supabase';
+import secureStorage from '../../utils/SecureStorage'; // SECURE: Use encrypted storage
 
 // Session timeout: 30 minutes
 const SESSION_TIMEOUT = 30 * 60 * 1000;
@@ -20,18 +21,20 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Session timeout management
+  // Session timeout management - SECURE VERSION
   const updateLastActivity = () => {
     if (isAuthenticated) {
-      localStorage.setItem('lastActivity', Date.now().toString());
+      secureStorage.setItem('lastActivity', Date.now(), { 
+        expiresAt: Date.now() + SESSION_TIMEOUT 
+      });
     }
   };
 
   const checkSessionTimeout = () => {
     if (!isAuthenticated) return;
     
-    const lastActivity = localStorage.getItem('lastActivity');
-    if (lastActivity && Date.now() - parseInt(lastActivity) > SESSION_TIMEOUT) {
+    const lastActivity = secureStorage.getItem('lastActivity');
+    if (lastActivity && Date.now() - lastActivity > SESSION_TIMEOUT) {
       console.log('Session expired due to inactivity');
       logout();
       return true;

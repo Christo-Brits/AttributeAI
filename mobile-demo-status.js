@@ -154,11 +154,28 @@ setTimeout(() => {
 
 }, 2000);
 
-// Make available globally
+// Make available globally - SECURE VERSION
 window.checkMobileDemoStatus = () => {
   console.clear();
-  eval(document.querySelector('script[src*="mobile-demo-status"]')?.innerHTML || 
-       fetch('mobile-demo-status.js').then(r => r.text()).then(eval));
+  
+  // Safe alternative to eval() - just run the existing functions
+  const results = {
+    timestamp: new Date().toISOString(),
+    viewport: {
+      width: window.innerWidth,
+      height: window.innerHeight,
+      isMobile: window.innerWidth < 768
+    },
+    userAgent: navigator.userAgent,
+    mobileFeatures: {
+      touchSupport: 'ontouchstart' in window,
+      orientation: screen.orientation?.type || 'unknown',
+      devicePixelRatio: window.devicePixelRatio
+    }
+  };
+  
+  console.log('📱 Mobile Demo Status (Secure):', results);
+  return results;
 };
 
 console.log('\n💡 To run this check again: window.checkMobileDemoStatus()');

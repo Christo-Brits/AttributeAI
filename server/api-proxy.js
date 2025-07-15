@@ -24,42 +24,95 @@ const localSEORoutes = require('./local-seo-routes'); // NEW: Local SEO Matrix G
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Security Middleware
+// Security Middleware - Enhanced for YC Production Standards
 app.use(helmet({
     contentSecurityPolicy: {
         directives: {
             defaultSrc: ["'self'"],
-            scriptSrc: ["'self'", "'unsafe-inline'", "https://www.googletagmanager.com", "https://static.hotjar.com"],
+            scriptSrc: [
+                "'self'", 
+                "'unsafe-inline'", // Minimize usage
+                "https://www.googletagmanager.com", 
+                "https://static.hotjar.com"
+            ],
             styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
             fontSrc: ["'self'", "https://fonts.gstatic.com"],
             imgSrc: ["'self'", "data:", "https:", "blob:"],
-            connectSrc: ["'self'", "https://api.anthropic.com", "https://api.openai.com"],
+            connectSrc: [
+                "'self'", 
+                "https://api.anthropic.com", 
+                "https://api.openai.com",
+                "https://xpyfoutwwjslivrmbflm.supabase.co" // Supabase API
+            ],
+            frameSrc: ["'none'"], // Prevent iframe embedding
+            objectSrc: ["'none'"], // Prevent object/embed
+            baseUri: ["'self'"], // Restrict base tag
+            formAction: ["'self'"] // Restrict form submissions
         },
     },
     crossOriginEmbedderPolicy: false,
-    crossOriginResourcePolicy: { policy: "cross-origin" }
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+    
+    // Enhanced security headers for production
+    hsts: {
+        maxAge: 31536000, // 1 year
+        includeSubDomains: true,
+        preload: true
+    },
+    noSniff: true, // X-Content-Type-Options: nosniff
+    frameguard: { action: 'deny' }, // X-Frame-Options: DENY
+    xssFilter: true, // X-XSS-Protection: 1; mode=block
+    referrerPolicy: { policy: "strict-origin-when-cross-origin" }
 }));
 
-// Rate limiting
+// Enhanced Rate limiting for YC Production
 const generalLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100, // limit each IP to 100 requests per windowMs
-    message: { error: 'Too many requests from this IP, please try again later.' },
+    message: { 
+        error: 'Too many requests from this IP, please try again later.',
+        code: 'RATE_LIMIT_EXCEEDED',
+        retryAfter: '15 minutes'
+    },
     standardHeaders: true,
     legacyHeaders: false,
+    keyGenerator: (req) => {
+        // Use both IP and user ID if available for better rate limiting
+        return req.user?.id || req.ip;
+    }
 });
 
 const strictLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 20, // limit each IP to 20 requests per windowMs for sensitive endpoints
-    message: { error: 'Too many requests to this endpoint, please try again later.' },
+    message: { 
+        error: 'Too many requests to this endpoint, please try again later.',
+        code: 'STRICT_RATE_LIMIT_EXCEEDED',
+        retryAfter: '15 minutes'
+    },
     standardHeaders: true,
     legacyHeaders: false,
+    keyGenerator: (req) => {
+        return req.user?.id || req.ip;
+    }
+});
+
+// API-specific rate limiting
+const aiLimiter = rateLimit({
+    windowMs: 60 * 1000, // 1 minute
+    max: 10, // 10 AI requests per minute
+    message: { 
+        error: 'AI request limit exceeded. Please wait before making more requests.',
+        code: 'AI_RATE_LIMIT',
+        retryAfter: '1 minute'
+    }
 });
 
 // Apply rate limiting
 app.use('/api/', generalLimiter);
 app.use('/api/claude-chat', strictLimiter);
+app.use('/api/generate-content', aiLimiter);
+app.use('/api/keyword-intelligence/analyze', aiLimiter);
 app.use('/api/create-checkout-session', strictLimiter);
 
 // CORS Configuration
@@ -73,41 +126,72 @@ app.use(cors({
     maxAge: 86400 // 24 hours
 }));
 
-// Request parsing with size limits
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+// Enhanced request parsing with endpoint-specific limits
+app.use('/api/generate-content', express.json({ limit: '1mb' }));
+app.use('/api/keyword-intelligence', express.json({ limit: '100kb' }));
+app.use('/api/claude-chat', express.json({ limit: '500kb' }));
+app.use('/api/', express.json({ limit: '2mb' })); // Default for other endpoints
+app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 
-// Input validation middleware
+// Enhanced input validation middleware
 const validateInput = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ 
             error: 'Invalid input',
-            details: errors.array()
+            code: 'VALIDATION_ERROR',
+            details: errors.array().map(err => ({
+                field: err.param,
+                message: err.msg,
+                value: typeof err.value === 'string' ? err.value.substring(0, 100) : err.value
+            }))
         });
     }
     next();
 };
 
-// Error handling middleware
+// Enhanced error handling middleware for YC standards
 const errorHandler = (error, req, res, next) => {
+    // Enhanced logging with security considerations
     console.error('API Error:', {
         message: error.message,
-        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
+        stack: process.env.NODE_ENV === 'development' ? error.stack : '[REDACTED]',
         url: req.url,
         method: req.method,
         ip: req.ip,
-        timestamp: new Date().toISOString()
+        userAgent: req.get('User-Agent'),
+        timestamp: new Date().toISOString(),
+        userId: req.user?.id || 'anonymous'
     });
 
-    // Don't expose internal error details in production
-    const message = process.env.NODE_ENV === 'production' 
-        ? 'An error occurred processing your request'
-        : error.message;
+    // Determine error response based on error type
+    if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED') {
+        return res.status(503).json({ 
+            error: 'Service temporarily unavailable',
+            code: 'SERVICE_UNAVAILABLE'
+        });
+    }
 
+    if (error.name === 'ValidationError') {
+        return res.status(400).json({ 
+            error: 'Invalid request data',
+            code: 'VALIDATION_ERROR'
+        });
+    }
+
+    if (error.status === 429) {
+        return res.status(429).json({ 
+            error: 'Rate limit exceeded',
+            code: 'RATE_LIMIT_EXCEEDED'
+        });
+    }
+
+    // Generic error response (don't leak sensitive info)
+    const isDevelopment = process.env.NODE_ENV === 'development';
     res.status(error.status || 500).json({ 
-        error: message,
-        ...(process.env.NODE_ENV === 'development' && { stack: error.stack })
+        error: isDevelopment ? error.message : 'Internal server error',
+        code: 'INTERNAL_ERROR',
+        requestId: req.id || Date.now().toString()
     });
 };
 

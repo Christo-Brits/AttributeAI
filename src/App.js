@@ -7,6 +7,10 @@ import ErrorBoundary from './components/ErrorBoundary';
 import { FullPageLoader, LoadingSpinner } from './components/ui/LoadingComponents';
 import AuthCallback from './components/auth/AuthCallback';
 
+// Security imports - YC Production Ready
+import envValidator from './utils/EnvironmentValidator';
+import secureStorage from './utils/SecureStorage';
+
 // Mobile optimization imports
 import { useViewport } from './hooks/useViewport';
 import MobileNavigation from './components/MobileNavigation';
@@ -204,6 +208,12 @@ function AuthenticatedApp() {
   } = useSurveyManager();
 
   useEffect(() => {
+    // SECURITY: Environment validation on startup
+    const envReport = envValidator.validateOnStartup();
+    if (!envReport.summary.ready && process.env.NODE_ENV === 'production') {
+      console.error('❌ Production environment validation failed');
+    }
+    
     if (!sessionStorage.getItem('session_initialized')) {
       sessionStorage.setItem('session_initialized', 'true');
       
@@ -211,12 +221,13 @@ function AuthenticatedApp() {
         'user_authenticated': !!user,
         'user_type': user ? 'registered' : 'guest',
         'initial_view': currentView,
-        'has_previous_session': !!localStorage.getItem('session_count')
+        'has_previous_session': !!secureStorage.getItem('session_count'),
+        'environment_valid': envReport.summary.ready
       });
     }
 
-    const sessionCount = parseInt(localStorage.getItem('session_count') || '0') + 1;
-    localStorage.setItem('session_count', sessionCount.toString());
+    const sessionCount = (secureStorage.getItem('session_count') || 0) + 1;
+    secureStorage.setItem('session_count', sessionCount);
 
     checkSurveyTriggers();
     trackSession();

@@ -1,5 +1,6 @@
 // AttributeAI Content Script
 // Runs on supported websites to display keyword data and analysis
+// SECURE VERSION - No eval(), proper sanitization
 
 class AttributeAIContentScript {
   constructor() {
@@ -18,6 +19,31 @@ class AttributeAIContentScript {
     this.isEnabled = true;
     
     this.init();
+  }
+
+  // SECURITY: Text sanitization method
+  sanitizeText(text) {
+    if (typeof text !== 'string') return '';
+    return text.replace(/[<>&"']/g, (char) => {
+      const map = {
+        '<': '&lt;',
+        '>': '&gt;',
+        '&': '&amp;',
+        '"': '&quot;',
+        "'": '&#x27;'
+      };
+      return map[char] || char;
+    });
+  }
+
+  // SECURITY: URL validation
+  isValidUrl(url) {
+    try {
+      const parsed = new URL(url);
+      return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+    } catch {
+      return false;
+    }
   }
 
   async init() {
@@ -96,13 +122,26 @@ class AttributeAIContentScript {
   createSearchQueryWidget(query) {
     const widget = document.createElement('div');
     widget.className = 'attributeai-search-widget';
-    widget.innerHTML = `
-      <div class="attributeai-search-header">
-        <img src="${chrome.runtime.getURL('icons/icon16.png')}" alt="AttributeAI">
-        <span>AttributeAI Keyword Intelligence</span>
-        <button class="attributeai-analyze-btn" data-keyword="${query}">
-          Analyze "${query}"
-        </button>
+    
+    // SECURE: Use textContent instead of innerHTML
+    const header = document.createElement('div');
+    header.className = 'attributeai-search-header';
+    
+    const img = document.createElement('img');
+    img.src = chrome.runtime.getURL('icons/icon16.png');
+    img.alt = 'AttributeAI';
+    
+    const span = document.createElement('span');
+    span.textContent = 'AttributeAI Keyword Intelligence';
+    
+    const button = document.createElement('button');
+    button.className = 'attributeai-analyze-btn';
+    button.setAttribute('data-keyword', this.sanitizeText(query));
+    button.textContent = `Analyze "${this.sanitizeText(query)}"`;
+    
+    header.appendChild(img);
+    header.appendChild(span);
+    header.appendChild(button);
       </div>
       <div class="attributeai-search-metrics" id="metrics-${this.generateId()}">
         <div class="attributeai-metric">

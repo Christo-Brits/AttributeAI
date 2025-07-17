@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from './AuthContext';
+import FounderBadge from '../ui/FounderBadge';
 import { User, Globe, BarChart3, Facebook, Search, Edit3, Save, X, CheckCircle, AlertCircle, Mail, Building, Briefcase, Globe2 } from 'lucide-react';
 
 const UserProfile = ({ onClose }) => {
@@ -85,6 +86,10 @@ const UserProfile = ({ onClose }) => {
               <div>
                 <h2 className="text-xl font-bold">{user.firstName} {user.lastName}</h2>
                 <p className="text-blue-100">{user.email}</p>
+                {/* Founder Badge */}
+                <div className="mt-2">
+                  <FounderBadge userProfile={user} showDetails={false} />
+                </div>
               </div>
             </div>
             <button

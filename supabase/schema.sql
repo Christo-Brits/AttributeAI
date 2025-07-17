@@ -19,12 +19,16 @@ CREATE TABLE public.users (
     company TEXT,
     industry TEXT,
     website_url TEXT,
-    subscription_tier TEXT DEFAULT 'free' CHECK (subscription_tier IN ('free', 'professional', 'enterprise', 'agency')),
+    subscription_tier TEXT DEFAULT 'free' CHECK (subscription_tier IN ('free', 'professional', 'enterprise', 'agency', 'founder')),
     subscription_status TEXT DEFAULT 'active' CHECK (subscription_status IN ('active', 'cancelled', 'past_due', 'trialing')),
     trial_ends_at TIMESTAMP WITH TIME ZONE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     last_active_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    
+    -- Founder/Admin flags
+    is_founder BOOLEAN DEFAULT FALSE,
+    is_admin BOOLEAN DEFAULT FALSE,
     
     -- Keyword Intelligence specific fields
     monthly_keyword_quota INTEGER DEFAULT 1000,

@@ -19,6 +19,15 @@ const SUBSCRIPTION_LIMITS = {
     content_pieces_per_month: -1, // unlimited
     attribution_queries_per_month: -1, // unlimited
     features: ['all_features', 'priority_support', 'custom_integrations', 'white_label']
+  },
+  founder: {
+    keywords_per_month: -1, // unlimited
+    content_pieces_per_month: -1, // unlimited
+    attribution_queries_per_month: -1, // unlimited
+    ai_requests_per_day: -1, // unlimited
+    export_downloads_per_month: -1, // unlimited
+    api_calls_per_hour: -1, // unlimited
+    features: ['all_features', 'founder_access', 'admin_panel', 'unlimited_everything', 'priority_support', 'beta_features']
   }
 };
 
@@ -74,6 +83,17 @@ export const useUsageLimits = () => {
   }, [updateProfile]);
 
   const checkLimit = useCallback((type) => {
+    // Check if founder account first
+    if (userProfile?.is_founder || userProfile?.subscription_tier === 'founder') {
+      return { 
+        allowed: true, 
+        remaining: -1, 
+        percentage: 0, 
+        unlimited: true,
+        isFounder: true 
+      };
+    }
+    
     const current = usageStats[type] || 0;
     const limit = limits[`${type}_per_month`];
     

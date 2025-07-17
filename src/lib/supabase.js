@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { isFounderEmail, getFounderProfile } from '../config/founderConfig';
 
 // Supabase configuration
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
@@ -104,8 +105,18 @@ export const signInWithProvider = async (provider) => {
 
 // Enhanced user profile creation with email verification
 export const createUserProfile = async (user, additionalData = {}) => {
+  // Check if this is a founder account
+  const isFounder = isFounderEmail(user.email);
+  
   if (!supabase) {
     // Fallback to localStorage for demo
+    if (isFounder) {
+      const founderProfile = getFounderProfile(user, additionalData);
+      localStorage.setItem('attributeai_user_profile', JSON.stringify(founderProfile));
+      console.log('🎉 Founder account activated with unlimited access!');
+      return founderProfile;
+    }
+    
     const profileData = {
       id: user.id,
       email: user.email,
@@ -131,12 +142,33 @@ export const createUserProfile = async (user, additionalData = {}) => {
   }
 
   // Create/update user profile in Supabase
+  if (isFounder) {
+    // Founder gets unlimited access
+    const founderProfile = getFounderProfile(user, additionalData);
+    
+    const { data, error } = await supabase
+      .from('user_profiles')
+      .upsert(founderProfile)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error creating founder profile:', error);
+      throw error;
+    }
+
+    console.log('🎉 Founder account activated in database with unlimited access!');
+    return data;
+  }
+  
+  // Regular user profile
   const profileData = {
     id: user.id,
     email: user.email,
     full_name: user.user_metadata?.full_name || additionalData.full_name,
     avatar_url: user.user_metadata?.avatar_url,
     subscription_tier: 'free',
+    is_founder: false,
     monthly_usage: {
       keywords_analyzed: 0,
       content_generated: 0,
@@ -239,11 +271,31 @@ export const trackUsage = async (userId, usageType, amount = 1) => {
   if (!supabase) {
     // Update localStorage usage
     const profile = JSON.parse(localStorage.getItem('attributeai_user_profile') || '{}');
+    
+    // Founder accounts don't track usage (unlimited)
+    if (profile.is_founder || profile.subscription_tier === 'founder') {
+      console.log('🎉 Founder account - unlimited usage, not tracking');
+      return profile;
+    }
+    
     if (profile.monthly_usage) {
       profile.monthly_usage[usageType] = (profile.monthly_usage[usageType] || 0) + amount;
       localStorage.setItem('attributeai_user_profile', JSON.stringify(profile));
     }
     return profile;
+  }
+
+  // Check if founder first
+  const { data: userProfile } = await supabase
+    .from('user_profiles')
+    .select('is_founder, subscription_tier, email')
+    .eq('id', userId)
+    .single();
+
+  if (userProfile?.is_founder || userProfile?.subscription_tier === 'founder' || 
+      isFounderEmail(userProfile?.email)) {
+    console.log('🎉 Founder account - unlimited usage, not tracking');
+    return { unlimited: true };
   }
 
   const { data, error } = await supabase.rpc('increment_usage', {
@@ -264,6 +316,18 @@ export const trackUsage = async (userId, usageType, amount = 1) => {
 export const checkUsageLimit = async (userId, usageType) => {
   if (!supabase) {
     const profile = JSON.parse(localStorage.getItem('attributeai_user_profile') || '{}');
+    
+    // Founder accounts have unlimited usage
+    if (profile.is_founder || profile.subscription_tier === 'founder') {
+      return {
+        current: 0,
+        limit: 999999,
+        exceeded: false,
+        remaining: 999999,
+        unlimited: true
+      };
+    }
+    
     const current = profile.monthly_usage?.[usageType] || 0;
     const limit = profile.usage_limits?.[usageType] || 0;
     return {
@@ -276,13 +340,25 @@ export const checkUsageLimit = async (userId, usageType) => {
 
   const { data, error } = await supabase
     .from('user_profiles')
-    .select('monthly_usage, usage_limits')
+    .select('monthly_usage, usage_limits, is_founder, subscription_tier, email')
     .eq('id', userId)
     .single();
 
   if (error) {
     console.error('Error checking usage limit:', error);
     return { exceeded: false, remaining: 0 };
+  }
+
+  // Check if founder account
+  if (data.is_founder || data.subscription_tier === 'founder' || 
+      isFounderEmail(data.email)) {
+    return {
+      current: 0,
+      limit: 999999,
+      exceeded: false,
+      remaining: 999999,
+      unlimited: true
+    };
   }
 
   const current = data.monthly_usage?.[usageType] || 0;

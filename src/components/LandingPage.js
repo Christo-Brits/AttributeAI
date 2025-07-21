@@ -628,8 +628,8 @@ const LandingPage = ({ onGetStarted, onSignIn }) => {
               <div className="bg-green-500/20 p-4 rounded-lg mb-4">
                 <div className="text-green-400 font-bold">Results in 60 days:</div>
                 <div className="text-white text-sm">• 12 new customers ($47K revenue)</div>
-                <div className="text-white text-sm">• 67% lower customer acquisition cost</div>
-                <div className="text-white text-sm">• 3x faster sales cycle</div>
+                <div className="text-white text-sm">• 245% increase in marketing ROI</div>
+                <div className="text-white text-sm">• 3x faster sales cycle with attribution</div>
               </div>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-sm">SC</div>

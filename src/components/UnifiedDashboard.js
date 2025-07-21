@@ -137,6 +137,75 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
           </p>
         </div>
 
+        {/* Onboarding Checklist for New Users */}
+        {(!insights || !data || Object.keys(data).length === 0) && user && (
+          <div className="bg-gradient-to-r from-blue-800/50 to-purple-800/50 backdrop-blur-sm border border-blue-600/50 rounded-xl p-6 mb-8 shadow-2xl">
+            <div className="text-center mb-6">
+              <h3 className="text-2xl font-semibold text-white mb-2">
+                🚀 Welcome to AttributeAI! Let's get you started
+              </h3>
+              <p className="text-gray-300">Complete these 3 steps to unlock your marketing intelligence</p>
+            </div>
+            
+            <div className="grid md:grid-cols-3 gap-6">
+              {/* Step 1: Connect GA4 */}
+              <div className="bg-gray-900/60 backdrop-blur p-6 rounded-xl border border-gray-700 text-center">
+                <div className="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center mb-4 mx-auto">
+                  <Globe className="w-6 h-6 text-blue-400" />
+                </div>
+                <h4 className="font-bold text-white mb-2">1. Connect Analytics</h4>
+                <p className="text-gray-400 text-sm mb-4">Link Google Analytics to track visitor behavior</p>
+                <Button 
+                  onClick={() => onNavigateToTab('seo-competitor-analysis')}
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 text-sm"
+                >
+                  Connect GA4 →
+                </Button>
+              </div>
+
+              {/* Step 2: Import Ad Spend */}
+              <div className="bg-gray-900/60 backdrop-blur p-6 rounded-xl border border-gray-700 text-center">
+                <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center mb-4 mx-auto">
+                  <BarChart3 className="w-6 h-6 text-purple-400" />
+                </div>
+                <h4 className="font-bold text-white mb-2">2. Import Ad Spend</h4>
+                <p className="text-gray-400 text-sm mb-4">Upload campaign data for attribution analysis</p>
+                <Button 
+                  onClick={() => onNavigateToTab('attribution-engine')}
+                  className="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 text-sm"
+                >
+                  Import Data →
+                </Button>
+              </div>
+
+              {/* Step 3: Run First Attribution */}
+              <div className="bg-gray-900/60 backdrop-blur p-6 rounded-xl border border-gray-700 text-center">
+                <div className="w-12 h-12 bg-pink-500/20 rounded-xl flex items-center justify-center mb-4 mx-auto">
+                  <Target className="w-6 h-6 text-pink-400" />
+                </div>
+                <h4 className="font-bold text-white mb-2">3. Run Attribution</h4>
+                <p className="text-gray-400 text-sm mb-4">Generate your first attribution report</p>
+                <Button 
+                  onClick={handleKeywordIntelligenceClick}
+                  className="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 text-sm"
+                >
+                  Start Analysis →
+                </Button>
+              </div>
+            </div>
+            
+            {/* Progress indicator */}
+            <div className="mt-6 text-center">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <div className="w-3 h-3 bg-gray-600 rounded-full"></div>
+                <div className="w-3 h-3 bg-gray-600 rounded-full"></div>
+                <div className="w-3 h-3 bg-gray-600 rounded-full"></div>
+              </div>
+              <p className="text-sm text-gray-400">0 of 3 steps completed • Takes about 5 minutes</p>
+            </div>
+          </div>
+        )}
+
         {/* Conversion Banner - Only show for unauthenticated users */}
         {!user && <ConversionBanner onSignup={() => setShowSignupModal(true)} />}
 

@@ -114,17 +114,21 @@ const LandingPage = ({ onGetStarted, onSignIn }) => {
           </div>
           
           <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white">
-            Turn Marketing Spend into <br/>
             <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-              Guaranteed Customers
+              AttributeAI surfaces the 5% of campaigns
             </span>
+            <br/>generating 80% of revenue—automatically
           </h1>
           
           <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-4xl mx-auto">
             Stop wasting money on Keywords Everywhere credits and HubSpot fees. 
             Get <strong className="text-white">unlimited research</strong> + 
-            <strong className="text-white"> AI attribution</strong> + 
-            <strong className="text-white"> guaranteed customer introductions</strong>.
+            <strong className="text-white"> AI attribution intelligence</strong> + 
+            <strong className="text-white"> proven customer generation</strong>.
+            <br/>
+            <span className="text-blue-300 text-lg mt-2 inline-block">
+              📊 <a href="#proof" className="underline hover:text-blue-200">See 245% lift case study</a>
+            </span>
           </p>
 
           {/* Value Props */}
@@ -157,14 +161,17 @@ const LandingPage = ({ onGetStarted, onSignIn }) => {
               onClick={onGetStarted}
               className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-lg text-lg hover:from-blue-600 hover:to-purple-600 transition-all transform hover:scale-105 shadow-lg"
             >
-              Get Unlimited Research + Customers →
+              Start Free Trial (14 Days) →
             </button>
+          </div>
+          
+          <div className="text-center mb-8">
             <button
               onClick={() => setShowVideo(true)}
-              className="px-8 py-4 bg-gray-800 text-white font-bold rounded-lg text-lg hover:bg-gray-700 transition-all border border-gray-700 flex items-center gap-2 justify-center"
+              className="text-blue-300 hover:text-blue-200 underline text-lg flex items-center gap-2 justify-center mx-auto"
             >
-              <Play className="w-5 h-5" />
-              Watch 2-Min Demo
+              <Play className="w-4 h-4" />
+              Need a demo instead? Watch 2-min overview
             </button>
           </div>
 
@@ -180,6 +187,28 @@ const LandingPage = ({ onGetStarted, onSignIn }) => {
             <div className="flex items-center gap-2">
               <Check className="w-4 h-4 text-green-400" />
               <span>Average ROI: 325%</span>
+            </div>
+          </div>
+          
+          {/* Trust Bar */}
+          <div className="mt-12 pt-8 border-t border-gray-700">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-8 text-gray-400">
+              <div className="flex items-center gap-2">
+                <Users className="w-5 h-5 text-blue-400" />
+                <span className="text-sm">Used by 500+ marketers</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Shield className="w-5 h-5 text-green-400" />
+                <span className="text-sm">SOC 2 Compliant</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Star className="w-5 h-5 text-yellow-400" />
+                <span className="text-sm">4.9/5 Customer Rating</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-purple-400" />
+                <span className="text-sm">245% Avg Performance Lift</span>
+              </div>
             </div>
           </div>
         </div>

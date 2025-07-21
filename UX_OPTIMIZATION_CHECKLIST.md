@@ -36,30 +36,30 @@
   - [ ] **Commit:** "feat: align pricing page CTAs with simplified architecture"
 
 ### **3. Empty-State Dashboard Fix (CRITICAL)**
-- [ ] **Add onboarding checklist to dashboard**
-  - [ ] 3-step checklist: "Connect GA4" → "Import Ad Spend" → "Run First Attribution"
-  - [ ] Progress indicator and completion celebration
-  - [ ] **File:** `src/components/UnifiedDashboard.js`
-  - [ ] **Commit:** "feat: add 3-step onboarding checklist to empty dashboard state"
+- [x] **Add onboarding checklist to dashboard** ✅
+  - [x] 3-step checklist: "Connect GA4" → "Import Ad Spend" → "Run First Attribution" ✅
+  - [x] Progress indicator and completion celebration ✅
+  - [x] **File:** `src/components/UnifiedDashboard.js` ✅
+  - [x] **Commit:** "feat: add 3-step onboarding checklist to dashboard and improve authentication with Google SSO and better error messages" ✅
 
-- [ ] **Add contextual tooltips**
-  - [ ] First-time user tooltips for each major feature
-  - [ ] "Getting started" modal on first login
-  - [ ] **Files:** Dashboard components
-  - [ ] **Commit:** "feat: add contextual onboarding tooltips for new users"
+- [x] **Add contextual tooltips** ✅
+  - [x] First-time user tooltips for each major feature ✅
+  - [x] "Getting started" modal on first login ✅
+  - [x] **Files:** Dashboard components ✅
+  - [x] **Commit:** "feat: add 3-step onboarding checklist to dashboard and improve authentication with Google SSO and better error messages" ✅
 
 ### **4. Authentication Flow Improvements**
-- [ ] **Add Google SSO**
-  - [ ] Implement Google OAuth integration
-  - [ ] Add "Sign in with Google" button
-  - [ ] **Files:** `src/components/auth/`, API authentication
-  - [ ] **Commit:** "feat: add Google SSO to reduce signup friction"
+- [x] **Add Google SSO** ✅
+  - [x] Implement Google OAuth integration ✅
+  - [x] Add "Sign in with Google" button ✅
+  - [x] **Files:** `src/components/auth/LoginPage.js`, API authentication ✅
+  - [x] **Commit:** "feat: add 3-step onboarding checklist to dashboard and improve authentication with Google SSO and better error messages" ✅
 
-- [ ] **Improve error messaging**
-  - [ ] Clear error: "We didn't find that account—want to sign up instead?"
-  - [ ] Auto-suggest signup flow for invalid login
-  - [ ] **File:** `src/components/auth/Login.js`
-  - [ ] **Commit:** "feat: improve authentication error messages and flow"
+- [x] **Improve error messaging** ✅
+  - [x] Clear error: "We didn't find that account—want to sign up instead?" ✅
+  - [x] Auto-suggest signup flow for invalid login ✅
+  - [x] **File:** `src/components/auth/LoginPage.js` ✅
+  - [x] **Commit:** "feat: add 3-step onboarding checklist to dashboard and improve authentication with Google SSO and better error messages" ✅
 
 - [ ] **Consolidate signup flows**
   - [ ] Merge "Free Account" and "Trial" into single form with plan toggle

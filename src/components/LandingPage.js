@@ -11,55 +11,55 @@ const LandingPage = ({ onGetStarted, onSignIn }) => {
 
   const pricingPlans = [
     {
-      name: 'Keywords Everywhere Killer',
+      name: 'Professional',
       price: 197,
       originalPrice: 394,
       popular: false,
-      badge: 'UNLIMITED RESEARCH',
+      badge: 'KEYWORDS EVERYWHERE KILLER',
       features: [
-        '🔥 UNLIMITED keyword research (vs 100k credits)',
-        '🤖 3 AI models (Claude + GPT-4 + Gemini)', 
-        '📊 Real attribution tracking',
-        '🎯 5 customer introductions/month',
-        '📧 Email support & tutorials'
+        '🔥 UNLIMITED keyword research (vs 100k credits for $10)',
+        '🤖 Multi-model AI (Claude + GPT-4 + Gemini)', 
+        '📊 Basic attribution tracking',
+        '📝 AI content generation',
+        '📧 Standard support'
       ],
       highlighted: false,
-      cta: 'Get Unlimited Research',
-      subtitle: 'Perfect for solo founders'
+      cta: 'Start Free Trial',
+      subtitle: 'Perfect for solo marketers and small teams'
     },
     {
-      name: 'HubSpot Alternative', 
-      price: 397,
-      originalPrice: 794,
+      name: 'Enterprise', 
+      price: 497,
+      originalPrice: 994,
       popular: true,
       badge: 'MOST POPULAR',
       features: [
-        '✅ Everything in Keywords Killer',
-        '🚀 15 customer introductions/month',
-        '📞 Monthly strategy calls',
-        '⚡ Priority support',
-        '🎯 Advanced attribution models'
+        '✅ Everything in Professional',
+        '🎯 Advanced multi-touch attribution',
+        '👥 Team collaboration features',
+        '📊 Custom reporting & dashboards',
+        '⚡ Priority support & API access'
       ],
       highlighted: true,
-      cta: 'Beat HubSpot Pricing',
-      subtitle: '75% cheaper than HubSpot ($1,600/month)'
+      cta: 'Start Free Trial',
+      subtitle: '1/4 the price of HubSpot ($1,600/month)'
     },
     {
-      name: 'Customer Generation Guarantee',
-      price: 697,
-      originalPrice: 1394,
+      name: 'Transformation',
+      price: 1997,
+      originalPrice: 3994,
       popular: false,
-      badge: 'GUARANTEED RESULTS',
+      badge: 'ENTERPRISE FRAMEWORKS',
       features: [
-        '💎 Everything in HubSpot Alternative',
-        '♾️ UNLIMITED customer introductions', 
-        '🤝 White-glove implementation',
-        '📞 Weekly founder calls',
-        '💰 We work FREE until you get 10 customers'
+        '💎 Everything in Enterprise',
+        '🏢 Organizational framework licensing', 
+        '🤖 Custom AI training',
+        '🎯 Dedicated success manager',
+        '📊 White-label & enterprise consulting'
       ],
       highlighted: false,
-      cta: 'Get Customer Guarantee',
-      subtitle: 'We guarantee results or work for free'
+      cta: 'Contact Sales',
+      subtitle: 'AI-native organizational transformation'
     }
   ];
 
@@ -72,26 +72,26 @@ const LandingPage = ({ onGetStarted, onSignIn }) => {
     },
     {
       feature: 'AI Analysis', 
-      attributeai: '🤖 3 AI Models',
+      attributeai: '🤖 Multi-Model AI',
       keywordsEverywhere: '❌ None',
       hubspot: '⚠️ Limited'
     },
     {
-      feature: 'Customer Attribution',
-      attributeai: '🎯 Full Journey',
+      feature: 'Attribution Intelligence',
+      attributeai: '🎯 Full Multi-Touch',
       keywordsEverywhere: '❌ None', 
-      hubspot: '⚠️ Basic'
+      hubspot: '⚠️ Basic only'
     },
     {
-      feature: 'Customer Generation',
-      attributeai: '🔥 GUARANTEED',
+      feature: 'Team Collaboration',
+      attributeai: '👥 Full Enterprise',
       keywordsEverywhere: '❌ None',
-      hubspot: '❌ None'
+      hubspot: '✅ Yes ($1,600/month)'
     },
     {
       feature: 'Monthly Price',
-      attributeai: '💚 $197-697',
-      keywordsEverywhere: '💸 $10 + limits',
+      attributeai: '💚 $197-497',
+      keywordsEverywhere: '💸 $10 + credit limits',
       hubspot: '🔴 $800-1,600'
     }
   ];
@@ -465,6 +465,70 @@ const LandingPage = ({ onGetStarted, onSignIn }) => {
             <p className="text-xl text-gray-300">
               <span className="bg-red-500 text-white px-2 py-1 rounded font-bold">50% OFF</span> Launch Week Special - {foundingSpots} founding spots left
             </p>
+          </div>
+
+          {/* ROI Calculator */}
+          <div className="bg-gradient-to-r from-gray-800/80 to-gray-700/80 backdrop-blur-sm border border-gray-600/50 rounded-xl p-8 mb-12 shadow-2xl">
+            <div className="text-center mb-6">
+              <h3 className="text-2xl font-semibold text-white mb-2">
+                💰 Calculate Your Savings
+              </h3>
+              <p className="text-gray-300">See how much you'll save vs. your current tools</p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 gap-8">
+              <div>
+                <h4 className="text-lg font-semibold text-white mb-4">Your Current Costs:</h4>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Keywords Everywhere credits:</span>
+                    <span className="text-white font-semibold">$50/month</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">HubSpot/Attribution tool:</span>
+                    <span className="text-white font-semibold">$800/month</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Content creation tools:</span>
+                    <span className="text-white font-semibold">$200/month</span>
+                  </div>
+                  <div className="border-t border-gray-600 pt-3 flex justify-between text-lg font-bold">
+                    <span className="text-white">Total Current Cost:</span>
+                    <span className="text-red-400">$1,050/month</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <h4 className="text-lg font-semibold text-white mb-4">With AttributeAI:</h4>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">UNLIMITED keyword research:</span>
+                    <span className="text-green-400 font-semibold">✓ Included</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Advanced attribution:</span>
+                    <span className="text-green-400 font-semibold">✓ Included</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">AI content generation:</span>
+                    <span className="text-green-400 font-semibold">✓ Included</span>
+                  </div>
+                  <div className="border-t border-gray-600 pt-3 flex justify-between text-lg font-bold">
+                    <span className="text-white">AttributeAI Enterprise:</span>
+                    <span className="text-green-400">$497/month</span>
+                  </div>
+                </div>
+                
+                <div className="mt-6 bg-green-900/30 border border-green-500/50 rounded-lg p-4">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-green-400">$553/month saved</div>
+                    <div className="text-sm text-green-300">$6,636 per year savings</div>
+                    <div className="text-xs text-gray-400 mt-1">Plus unlimited research & better attribution</div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8">

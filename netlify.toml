@@ -1,11 +1,24 @@
 [build]
+  command = "npm ci --legacy-peer-deps --no-optional && npm run build"
   publish = "build"
-  command = "npm install && npm run build"
+  ignore = "server/"
   functions = "netlify/functions"
 
 [build.environment]
   CI = "false"
+  GENERATE_SOURCEMAP = "false"
   NODE_VERSION = "18.20.3"
+  NPM_VERSION = "9.6.7"
+  NPM_CONFIG_FUND = "false"
+  NPM_CONFIG_AUDIT = "false"
+  NPM_CONFIG_UPDATE_NOTIFIER = "false"
+  SKIP_PREFLIGHT_CHECK = "true"
+  DISABLE_ESLINT_PLUGIN = "true"
+  ESLINT_NO_DEV_ERRORS = "true"
+  TSC_COMPILE_ON_ERROR = "true"
+  NPM_CONFIG_CACHE = "/tmp/.npm"
+  REACT_APP_GA4_MEASUREMENT_ID = "G-BDZZKFKYDV"
+  REACT_APP_ENABLE_ANALYTICS = "true"
 
 # SPA Redirect for React Router
 [[redirects]]
@@ -13,6 +26,7 @@
   to = "/index.html"
   status = 200
 
+# Performance headers
 [[headers]]
   for = "/static/*"
   [headers.values]
@@ -28,7 +42,7 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000"
 
-# Headers for custom domain
+# Security headers
 [[headers]]
   for = "/*"
   [headers.values]
@@ -36,3 +50,9 @@
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+
+[context.production.environment]
+  NODE_VERSION = "18.20.3"
+  NPM_VERSION = "9.6.7"
+  CI = "false"
+  REACT_APP_GA4_MEASUREMENT_ID = "G-BDZZKFKYDV"

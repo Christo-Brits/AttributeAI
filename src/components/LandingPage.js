@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Check, Star, Users, TrendingUp, Shield, Zap, BarChart3, Target, Brain, Sparkles, Play, X, ChevronDown } from 'lucide-react';
 
 const LandingPage = ({ onGetStarted, onSignIn }) => {
-  const navigate = useNavigate();
   const [showVideo, setShowVideo] = useState(false);
 
   // Remove fake countdown timer - use real urgency instead

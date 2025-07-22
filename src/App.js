@@ -1,5 +1,6 @@
 import React, { lazy, Suspense, useState, useEffect } from 'react';
 import './App.css';
+import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider, useAuth } from './components/auth/AuthContext';
 import { ImprovedAuthProvider } from './components/auth/ImprovedAuthContext';
 import { HelmetProvider } from 'react-helmet-async';
@@ -418,7 +419,9 @@ function App() {
           <OfflineSupport>
             <ImprovedAuthProvider>
               <AuthProvider>
-                <AppRouter />
+                <BrowserRouter>
+                  <AppRouter />
+                </BrowserRouter>
                 <MobilePerformanceMonitor />
                 <PWAFeatures />
               </AuthProvider>

@@ -1,5 +1,6 @@
 import React, { lazy, Suspense, useState, useEffect } from 'react';
 import './App.css';
+import './styles/yc-demo-theme.css'; // YC Demo optimized theme
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider, useAuth } from './components/auth/AuthContext';
 import { ImprovedAuthProvider } from './components/auth/ImprovedAuthContext';

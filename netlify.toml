@@ -20,7 +20,33 @@
   REACT_APP_GA4_MEASUREMENT_ID = "G-BDZZKFKYDV"
   REACT_APP_ENABLE_ANALYTICS = "true"
 
-# SPA Redirect for React Router
+# API Redirects to Netlify Functions (MUST come before catch-all)
+[[redirects]]
+  from = "/api/claude-chat"
+  to = "/.netlify/functions/claude-chat"
+  status = 200
+
+[[redirects]]
+  from = "/api/openai-chat"
+  to = "/.netlify/functions/openai-chat"
+  status = 200
+
+[[redirects]]
+  from = "/api/keyword-intelligence"
+  to = "/.netlify/functions/keyword-intelligence"
+  status = 200
+
+[[redirects]]
+  from = "/api/generate-content"
+  to = "/.netlify/functions/generate-content"
+  status = 200
+
+[[redirects]]
+  from = "/api/analyze-url"
+  to = "/.netlify/functions/analyze-url"
+  status = 200
+
+# SPA Redirect for React Router (MUST come last)
 [[redirects]]
   from = "/*"
   to = "/index.html"

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BarChart3, TrendingUp, Target, Zap, AlertCircle, CheckCircle, Clock, Users, Globe, Brain, MessageCircle, Search, Eye, PenTool, Edit3, Shield } from 'lucide-react';
+import { BarChart3, TrendingUp, Target, Zap, AlertCircle, CheckCircle, Clock, Users, Globe, Brain, MessageCircle, Search, Eye, PenTool, Edit3, Shield, Crown } from 'lucide-react';
 import { Card, Button } from './ui/DesignSystem';
 import { useDataBridge } from '../utils/DataBridge';
 import { useAuth } from './auth/AuthContext';
@@ -9,6 +9,7 @@ import AttributeAILogo from './ui/AttributeAILogo';
 import WeatherWidget from './WeatherWidget';
 import './WeatherWidget.css';
 import { ConversionBanner, QuickSignupModal } from './immediate-conversion-system';
+import YCDemoMode from './YCDemoMode';
 import logger from '../utils/logger';
 // import TrialCountdownBanner from './TrialCountdownBanner'; // Temporarily disabled
 
@@ -20,6 +21,7 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
   const [insights, setInsights] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showSignupModal, setShowSignupModal] = useState(false);
+  const [showYCDemo, setShowYCDemo] = useState(false);
 
   const handleKeywordIntelligenceClick = () => {
     // Enhanced analytics tracking
@@ -124,8 +126,51 @@ const UnifiedDashboard = ({ websiteAnalysis, onNavigateToTab }) => {
     loadInsights();
   }, [data]);
 
+  // YC Demo Mode Check
+  if (showYCDemo) {
+    return <YCDemoMode onNavigate={onNavigateToTab} />;
+  }
+
   return (
     <div className="bg-gradient-to-br from-gray-900 via-blue-900/20 to-purple-900/20 p-4">
+      {/* YC Demo Toggle Button */}
+      <div style={{ 
+        position: 'fixed', 
+        top: '20px', 
+        right: '20px', 
+        zIndex: 1000 
+      }}>
+        <button
+          onClick={() => setShowYCDemo(true)}
+          style={{
+            background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
+            color: '#1f2937',
+            border: 'none',
+            padding: '0.75rem 1rem',
+            borderRadius: '8px',
+            fontWeight: 600,
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            boxShadow: '0 4px 12px rgba(251, 191, 36, 0.3)',
+            fontSize: '0.875rem',
+            transition: 'all 0.2s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.transform = 'translateY(-2px)';
+            e.target.style.boxShadow = '0 8px 20px rgba(251, 191, 36, 0.4)';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.transform = 'translateY(0)';
+            e.target.style.boxShadow = '0 4px 12px rgba(251, 191, 36, 0.3)';
+          }}
+        >
+          <Crown size={16} />
+          YC DEMO MODE
+        </button>
+      </div>
+
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="text-center">
